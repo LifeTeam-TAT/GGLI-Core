@@ -1,0 +1,318 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['MANAGE_PORT_TITLE']}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="portEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" />
+			<div style="padding-left: 15px;">
+				<h:outputText rendered="#{ManagePortActionBean.createNew}" style="padding-top:-10px;" styleClass="table-title" value="#{label['MANAGE_PORT_ADDNEW_LABEL']}" />
+				<h:outputText rendered="#{!ManagePortActionBean.createNew}" style="padding-top:-10px;" styleClass="table-title" value="#{label['MANAGE_PORT_EDIT_LABEL']}" />
+				<table>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td valign="top">
+										<table>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="name" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText style="color:red;" value="#{label['STAR_SIGN_LABEL']}" />
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_PORT_NAME_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="name" required="true" style="width:250px;" value="#{ManagePortActionBean.port.name}">
+														<f:validateLength maximum="100" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="address" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText style="color:red;" value="#{label['STAR_SIGN_LABEL']}" />
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_PORT_ADDRESS_LABEL']}" />
+												</td>
+												<td>
+													<p:inputTextarea id="address" required="true" rows="5" style="width:250px;" value="#{ManagePortActionBean.port.address.permanentAddress}">
+														<f:validateLength maximum="300" />
+													</p:inputTextarea>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="township" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText style="color:red;" value="#{label['STAR_SIGN_LABEL']}" />
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_PORT_TOWNSHIP_LABEL']}" />
+												</td>
+												<td>
+													<h:panelGrid columns="3" id="townshipPanelGroup">
+														<p:inputText id="township" readonly="#{ManagePortActionBean.port.address.township == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true"
+															style="width:250px;margin-left:-4px;" value="#{ManagePortActionBean.port.address.township == null ? '' : ManagePortActionBean.port.address.township.name}" />
+														<p:commandLink actionListener="#{ManagePortActionBean.selectTownship()}" id="selectTownshipDialogLink" immediate="true">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{ManagePortActionBean.returnTownship}" update="townshipPanelGroup" />
+														</p:commandLink>
+													</h:panelGrid>
+												</td>
+											</tr>
+											<!-- <tr>
+									<td>
+										<h:outputText value=""/>
+									</td>
+									<td style="width: 115px;">
+										<p:message for="branch"/>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;">
+										<h:outputText style="color:red;" value="*"/>
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_BRANCH_LABEL']}"/>
+									</td>
+									<td>
+										<h:panelGrid columns="3" id="branchPanelGroup">
+											<p:inputText id="branch" readonly="true" style="width:250px;margin-left:-4px;" value="#{ManagePortActionBean.organization.branch == null ? '' : ManagePortActionBean.organization.branch.name}"/>
+											<p:commandLink actionListener="#{ManagePortActionBean.selectBranch()}" id="selectBranchDialogLink" immediate="true">
+												<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}"/>
+												<p:ajax event="dialogReturn" listener="#{ManagePortActionBean.returnBranch}" update="branchPanelGroup"/>
+											</p:commandLink>
+										</h:panelGrid>
+									</td>
+								</tr> -->
+
+										</table>
+									</td>
+									<td valign="top">
+										<table>
+
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<div style="width: 270px; margin-left: -5px;">
+														<p:message for="phone" />
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_PORT_PHONE_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="phone" style="width:250px;" value="#{ManagePortActionBean.port.contentInfo.phone}">
+														<f:validateLength maximum="100" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<div style="width: 270px; margin-left: -5px;">
+														<p:message for="fax" />
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_PORT_FAX_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="fax" style="width:250px;" value="#{ManagePortActionBean.port.contentInfo.fax}">
+														<f:validateLength maximum="100" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<div style="width: 270px; margin-left: -5px;">
+														<p:message for="mobile" />
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_PORT_MOBILE_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="mobile" style="width:250px;" value="#{ManagePortActionBean.port.contentInfo.mobile}">
+														<f:validateLength maximum="100" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<div style="width: 270px; margin-left: -5px;">
+														<p:message for="email" />
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_PORT_EMAIL_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="email" style="width:250px;" value="#{ManagePortActionBean.port.contentInfo.email}">
+														<f:validateLength maximum="200" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<div style="width: 270px; margin-left: -5px;">
+														<p:message for="description" />
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText style="color:red;" value="#{label['STAR_SIGN_LABEL']}" />
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_PORT_DESCRIPTION_LABEL']}" />
+												</td>
+												<td>
+													<p:inputTextarea id="description" required="true" rows="5" style="width:250px;" value="#{ManagePortActionBean.port.description}">
+														<f:validateLength maximum="300" />
+													</p:inputTextarea>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p:commandButton action="#{ManagePortActionBean.addNewPort}" id="addBtn" rendered="#{ManagePortActionBean.createNew}" style="width: 80px;"
+								update=":portEntryForm :portTableForm" value="#{label['COMMON_ADDNEW_BTN']}" />
+							<p:commandButton action="#{ManagePortActionBean.updatePort}" id="editBtn" oncomplete="PF('organizationTable.filter();" rendered="#{!ManagePortActionBean.createNew}"
+								update="portEntryForm" value="#{label['COMMON_UPDATE_BTN']}" />
+						</td>
+					</tr>
+				</table>
+			</div>
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			<br />
+			<p:separator style="height:5px;" />
+		</h:form>
+		<h:form id="portTableForm">
+			<h:commandLink action="#{ManagePortActionBean.createNewPort}">
+				<h:panelGrid columns="2">
+					<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+					<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+				</h:panelGrid>
+			</h:commandLink>
+			<p:outputPanel id="listPanel">
+				<table>
+					<tr>
+						<td>
+							<h:outputText value="Name" />
+						</td>
+						<td>
+							<p:inputText id="portCriteria" style="height:20px;width: 200px;" value="#{ManagePortActionBean.criteria}" />
+						</td>
+						<td>
+							<p:commandButton action="#{ManagePortActionBean.searchPort}" id="searchPortButtonBtn" update=":portTableForm" value="Search" />
+						</td>
+						<td>
+							<p:commandButton action="#{ManagePortActionBean.init()}" id="resetPortButtonBtn" update=":portTableForm" value="Reset" />
+						</td>
+					</tr>
+				</table>
+				<p:dataTable id="portTable" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+					rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManagePortActionBean.portList}" var="port" widgetVar="portTable">
+					<p:column filterBy="#{port.name}" filterMatchMode="contains" headerText="#{label['MANAGE_PORT_NAME_LABEL']}">
+						<h:outputText value="#{port.name}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_PORT_ADDRESS_LABEL']}">
+						<h:outputText value="#{port.address.permanentAddress}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_PORT_TOWNSHIP_LABEL']}">
+						<h:outputText value="#{port.address.township.name}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_PORT_PHONE_LABEL']}">
+						<h:outputText value="#{port.contentInfo.phone}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_PORT_FAX_LABEL']}">
+						<h:outputText value="#{port.contentInfo.fax}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_PORT_MOBILE_LABEL']}">
+						<h:outputText value="#{port.contentInfo.mobile}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_PORT_EMAIL_LABEL']}">
+						<h:outputText value="#{port.contentInfo.email}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_PORT_DESCRIPTION_LABEL']}">
+						<h:outputText value="#{organization.description}" />
+					</p:column>
+					<p:column style="width:50px;">
+						<p:commandLink action="#{ManagePortActionBean.prepareUpdatePort(port)}" update=":portEntryForm">
+							<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width:50px;">
+						<p:commandLink id="deleteGroupLink" oncomplete="PF('confirmationDialog').show()">
+							<f:setPropertyActionListener target="#{ManagePortActionBean.port}" value="#{port}" />
+							<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<h:form id="confiationForm">
+			<p:dialog header="#{label['MANAGE_PORT_DELETE_CONFIRM']}" height="100" hideEffect="explode" id="confirmationDialog" resizable="false" showEffect="explode"
+				widgetVar="confirmationDialog" width="250">
+				<h:panelGroup id="confirmationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" />
+							</td>
+						</tr>
+					</table>
+					<br />
+					<p:commandButton action="#{ManagePortActionBean.deletePort}" immediate="true" oncomplete="PF('confirmationDialog').hide(); organizationTable.filter();" update=":portEntryForm"
+						value="#{label['COMMON_YES_BTN']}" />
+					<p:commandButton immediate="true" oncomplete="PF('confirmationDialog').hide()" value="#{label['COMMON_NO_BTN']}" />
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

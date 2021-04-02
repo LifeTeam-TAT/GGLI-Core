@@ -1,0 +1,316 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:param name="uploadRootPath" value="/image" />
+	<ui:define name="content">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:form id="lifeClaimInfoForm">
+	<p:wizard widgetVar="wiz">
+		<p:tab id="claimInfo" title="Claim Info">
+			<p:panel header="Claim Info" style="min-height:410px;">
+				<table>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td width="120px;">
+										<h:outputText value="#{label['LIFEDEATHCLAIMCUSTOMERINFORM_POLICY_NO_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{LifeClaimInfoTemplateActionBean.lifeClaim.lifePolicy.policyNo}" style="width:250px;" id="policyNo" readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{label['LIFEDEATHCLAIMCUSTOMERINFORM_INSURED_PERSON_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{LifeClaimInfoTemplateActionBean.lifeClaim.claimInsuredPerson.policyInsuredPerson.getFullName()}" style="width:250px;" id="insuredPerson" readonly="true" />
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<div style="padding-left: 5px;">
+					<h:panelGroup rendered="#{LifeClaimInfoTemplateActionBean.lifeClaim.deathClaim}">
+						<fieldset>
+							<legend>
+								<h:outputText value="Beneficiary  List" styleClass="input-label" />
+							</legend>
+							<p:dataTable var="classValue" value="#{LifeClaimInfoTemplateActionBean.lifeClaim.claimInsuredPersonBeneficiaryList}" id="selectedClassValueTable" paginator="true" rows="10" style="width:100%;"
+								paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10, 15">
+								<p:column headerText="#{label['LIFEDEATHCLAIMCUSTOMERINFORM_BENEFICIARY_NAME_LABEL']}">
+									<h:outputText value="#{classValue.policyInsuredPersonBeneficiaries.getFullName()}" />
+								</p:column>
+								<p:column headerText="NRC">
+									<h:outputText value="#{classValue.policyInsuredPersonBeneficiaries.idNo}" />
+								</p:column>
+								<p:column headerText="#{label['LIFEDEATHCLAIMCUSTOMERINFORM_PERCENTAGE_LABEL']}">
+									<h:outputText value="#{classValue.policyInsuredPersonBeneficiaries.percentage}" />
+								</p:column>
+								<p:column headerText="#{label['LIFEDEATHCLAIMCUSTOMERINFORM_RELATIONSHIP_LABEL']}">
+									<h:outputText value="#{classValue.policyInsuredPersonBeneficiaries.relationship.name}" />
+								</p:column>
+								<p:column headerText="Claim Status">
+									<h:outputText value="#{classValue.claimStatus}" />
+								</p:column>
+							</p:dataTable>
+						</fieldset>
+					</h:panelGroup>
+				</div>
+				<table>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td width="120px;">
+										<h:outputText value="#{label['LIFEDEATHCLAIMCUSTOMERINFORM_SALEMAN_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{LifeClaimInfoTemplateActionBean.lifeClaim.saleman.fullName}" style="width:250px;" id="saleMan" readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{label['LIFEDEATHCLAIMCUSTOMERINFORM_BRANCH_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{LifeClaimInfoTemplateActionBean.lifeClaim.branch.name}" style="width:250px;" id="branch" readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{label['LIFEDEATHCLAIMCUSTOMERINFORM_SUBMITTED_DATE_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{LifeClaimInfoTemplateActionBean.lifeClaim.submittedDate}" style="width:250px;" id="submittedDate" readonly="true">
+											<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+										</p:inputText>
+									</td>
+								</tr>
+							</table>
+						</td>
+						<td valign="top">
+							<table>
+								<tr>
+									<td width="120px;">
+										<h:outputText value="#{label['LIFEDEATHCLAIMCUSTOMERINFORM_CUSTOMER_NAME_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{LifeClaimInfoTemplateActionBean.lifeClaim.successor.name}" style="width:250px;" id="customerName" readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{label['LIFEDEATHCLAIMCUSTOMERINFORM_NRC_NO_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{LifeClaimInfoTemplateActionBean.lifeClaim.successor.nrcNo}" style="width:250px;" id="nrcNo" readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{label['LIFEDEATHCLAIMCUSTOMERINFORM_RELATIONSHIP_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{LifeClaimInfoTemplateActionBean.lifeClaim.successor.relationShip.name}" style="width:250px;" id="relationship" readonly="true" />
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td valign="top">
+							<h:panelGroup>
+								<fieldset>
+									<legend>
+										<h:outputText value="Claim Amount" styleClass="input-label" />
+									</legend>
+									<table border="1" style="border-collapse: collapse;">
+										<tr>
+											<td colspan="3" style="height: 25px;"></td>
+											<td align="center" style="width: 120px;">
+												<h:outputText value="Deduction Amount" styleClass="input-label" />
+											</td>
+											<td align="center" style="width: 120px;">
+												<h:outputText value="Liabilities Amount" styleClass="input-label" />
+											</td>
+										</tr>
+										<tr>
+											<td colspan="3" style="height: 25px; width: 120px;">
+												<h:outputText value="Claim Amount" styleClass="input-label" />
+											</td>
+											<td align="right">
+												<h:outputText value="">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+											<td align="right">
+												<h:outputText value="#{LifeClaimInfoTemplateActionBean.lifeClaim.totalClaimAmount}">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="3" style="height: 25px; width: 120px;">
+												<h:outputText value="Loan Amount" styleClass="input-label" />
+											</td>
+											<td align="right">
+												<h:outputText value="#{LifeClaimInfoTemplateActionBean.lifeClaim.totalLoanAmount}">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+											<td align="right">
+												<h:outputText value="">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="3" style="height: 25px; width: 120px;">
+												<h:outputText value="Loan Interest" styleClass="input-label" />
+											</td>
+											<td align="right">
+												<h:outputText value="#{LifeClaimInfoTemplateActionBean.lifeClaim.totalLoanInterest}">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+											<td align="right">
+												<h:outputText value="">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="3" style="height: 25px; width: 120px;">
+												<h:outputText value="Renewel Amount" styleClass="input-label" />
+											</td>
+											<td align="right">
+												<h:outputText value="#{LifeClaimInfoTemplateActionBean.lifeClaim.totalRenewelAmount}">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+											<td align="right">
+												<h:outputText value="">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="3" style="height: 25px; width: 120px;">
+												<h:outputText value="Renewel Interest" styleClass="input-label" />
+											</td>
+											<td align="right">
+												<h:outputText value="#{LifeClaimInfoTemplateActionBean.lifeClaim.totalRenewelInterest}">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+											<td align="right">
+												<h:outputText value="">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="3" style="height: 25px;"></td>
+											<td align="right" style="width: 120px;">
+												<h:outputText value="Net Claim Amount" styleClass="input-label" />
+											</td>
+											<td align="right">
+												<h:outputText value="#{LifeClaimInfoTemplateActionBean.lifeClaim.totalNetClaimAmount}">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</h:panelGroup>
+						</td>
+					</tr>
+				</table>
+			</p:panel>
+		</p:tab>
+		<p:tab id="insuredPersonWizardTab" title="Insured Person">
+			<p:panel header="Insured Person" id="insuredPersonWizardPanel" style="min-height:410px;">
+				<p:dataTable value="#{LifeClaimInfoTemplateActionBean.lifeClaim.lifePolicy.policyInsuredPersonList}" var="insuredPersonInfo" id="insuredPersonInfoTable" style="width:100%" paginator="true">
+					<p:column headerText="Insured Person">
+						<h:outputText value="#{insuredPersonInfo.getFullName()}" />
+					</p:column>
+					<p:column headerText="CommencementDate">
+						<h:outputText value="#{insuredPersonInfo.dateOfBirth}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Payment Type">
+						<h:outputText value="#{insuredPersonInfo.lifePolicy.paymentType.name}" />
+					</p:column>
+					<p:column headerText="Period of Insurance (Year)">
+						<h:outputText value="#{insuredPersonInfo.periodYears}" />
+					</p:column>
+					<p:column headerText="Sum Insured">
+						<h:outputText value="#{insuredPersonInfo.sumInsured}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Product Type">
+						<h:outputText value="#{insuredPersonInfo.product.name}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</p:tab>
+		<p:tab id="attachmentWizardTab" title="Attachment">
+			<p:panel header="Attachment" id="attachmentWizardPanel" style="min-height:410px;">
+				<fieldset>
+					<legend>
+						<h:outputText value="Claim Attachment" style="font-size: 9pt;" styleClass="table-title" />
+					</legend>
+					<p:dataGrid var="image" value="#{LifeClaimInfoTemplateActionBean.lifeClaim.claimAttachmentList}" columns="8" rows="16" paginator="true" id="claimAttachmentImageGrid"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+						<h:outputLink onclick="window.open('#{uploadRootPath}#{image.filePath}');return false;">
+							<h:graphicImage value="#{uploadRootPath}#{image.filePath}" style="width:120px;height:120px;" />
+						</h:outputLink>
+					</p:dataGrid>
+				</fieldset>
+				<fieldset>
+					<legend>
+						<h:outputText value="Claim Insured Person Attachment" style="font-size: 9pt;" styleClass="table-title" />
+					</legend>
+					<p:dataGrid var="image" value="#{LifeClaimInfoTemplateActionBean.lifeClaim.claimInsuredPerson.claimInsuredPersonAttachmentList}" columns="8" rows="16" paginator="true"
+						id="claimInsuredPersonAttachmentImageGrid"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+						<h:outputLink onclick="window.open('#{uploadRootPath}#{image.filePath}');return false;">
+							<h:graphicImage value="#{uploadRootPath}#{image.filePath}" style="width:120px;height:120px;" />
+						</h:outputLink>
+					</p:dataGrid>
+				</fieldset>
+			</p:panel>
+		</p:tab>
+		<p:tab id="workFlowWizardTab" title="Remark">
+			<p:panel header="Remark" id="workflowWizardPanel" style="min-height:410px;">
+				<p:dataTable value="#{LifeClaimInfoTemplateActionBean.workFlowList}" var="workflow" id="workflow" style="width:100%" paginator="true" rows="10">
+					<p:column headerText="From">
+						<h:outputText value="#{workflow.createdUser.name}" />
+					</p:column>
+					<p:column headerText="To">
+						<h:outputText value="#{workflow.responsiblePerson.name}" />
+					</p:column>
+					<p:column headerText="Task">
+						<h:outputText value="#{workflow.workflowTask.label}" />
+					</p:column>
+					<p:column headerText="Date">
+						<h:outputText value="#{workflow.workflowDate}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateTimeFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Remark">
+						<h:outputText value="#{workflow.remark}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</p:tab>
+	</p:wizard>
+	</h:form>
+	</ui:define>
+</ui:composition>

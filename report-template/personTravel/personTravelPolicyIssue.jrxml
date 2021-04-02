@@ -1,0 +1,690 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="personTravelPolicyIssue" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="130" bottomMargin="20" resourceBundle="LANGUAGE_en" isIgnorePagination="true" uuid="7a050334-234e-4e25-a668-7fa2e189532e">
+	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="392"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 7">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 7_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 7_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 7_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 8">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 8_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 8_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 8_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 9">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 9_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 9_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 9_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 10">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 10_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 10_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 10_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="date" class="java.util.Date"/>
+	<parameter name="policyNo" class="java.lang.String"/>
+	<parameter name="agentNameCode" class="java.lang.String"/>
+	<parameter name="customer" class="java.lang.String"/>
+	<parameter name="idNo" class="java.lang.String"/>
+	<parameter name="fatherName" class="java.lang.String"/>
+	<parameter name="address" class="java.lang.String"/>
+	<parameter name="unit" class="java.lang.Integer"/>
+	<parameter name="departureDay" class="java.util.Date"/>
+	<parameter name="premium" class="java.lang.Double"/>
+	<parameter name="travelPlace" class="java.lang.String"/>
+	<parameter name="premiumRate" class="java.lang.Double"/>
+	<parameter name="arrivalDay" class="java.util.Date"/>
+	<parameter name="usageOfVehicle2" class="java.lang.String"/>
+	<parameter name="usageOfVehicle3" class="java.lang.String"/>
+	<parameter name="usageOfVehicle4" class="java.lang.String"/>
+	<parameter name="usageOfVehicle1" class="java.lang.String"/>
+	<parameter name="isUsageOfVehicle1" class="java.lang.Boolean"/>
+	<parameter name="isUsageOfVehicle2" class="java.lang.Boolean"/>
+	<parameter name="isUsageOfVehicle3" class="java.lang.Boolean"/>
+	<parameter name="isUsageOfVehicle4" class="java.lang.Boolean"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="692" splitType="Stretch">
+			<staticText>
+				<reportElement x="188" y="2" width="134" height="20" uuid="0a4085cb-8389-4878-9b0f-9ac1e9ad8646"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ခရီးသြားအာမခံလက္မွတ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="37" width="48" height="20" uuid="aaf78104-403a-4c6a-b18d-3d7025edf11d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ရက္စြဲ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="344" y="59" width="211" height="20" uuid="66fe0a01-0a71-4067-b4d0-34f0e95680d6"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{agentNameCode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="344" y="37" width="211" height="20" uuid="33c16435-8ab5-40b1-a260-6175279e6895"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{policyNo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="81" width="357" height="20" uuid="acc9535c-1072-484f-aa52-17cca89dfa11"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{customer}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="81" width="187" height="20" uuid="dbd16880-70b4-4271-a898-4a97a865384c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ေပၚလစီ၀ယ္ယူသူအမည္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="102" width="187" height="20" uuid="0c26797a-d493-43fd-9b10-b2afaa96a203"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ႏိုင္ငံသားစိစစ္ေရး/ႏိုင္ငံကူးလက္မွတ္အမွတ္]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="102" width="357" height="20" uuid="fa53e5d1-b0e4-4c25-8f5b-3eadf58714ca"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{idNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="124" width="187" height="20" uuid="ae871260-b51c-4225-983e-8e23c5cf13a7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အဖအမည္]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="124" width="357" height="20" uuid="6e88c9ce-6358-4192-b4e8-aa8348ac7d4d"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fatherName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="146" width="187" height="20" uuid="e0059827-f5ac-4f0f-a9a4-227945589f9d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ေနရပ္လိပ္စာ/ဖုန္းနံပါတ္/အီးေမးလ္]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="198" y="146" width="357" height="42" isPrintWhenDetailOverflows="true" uuid="9058ebdd-f440-452c-9017-031de15a5677"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{address}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="188" width="187" height="20" uuid="e8cf9580-bc2e-41bf-93ce-3324d95a3a6a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အာမခံ၀ယ္ယူသည့္ယူနစ္/တန္ဖိုး]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="198" y="188" width="357" height="20" uuid="8d374d90-9e2d-4881-9964-70abb750c269"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{unit}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="210" width="187" height="20" uuid="8cd4b463-bcb1-44c7-b4d1-d99171526129"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[က်သင့္ပရီမီယံ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="211" y="210" width="42" height="20" uuid="e791f8b6-9955-4e27-9ef9-5671b56c8185"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{premiumRate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="337" y="210" width="217" height="20" uuid="d755b108-892d-4a5a-af8f-f8d97b674f1e"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{premium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="232" width="187" height="20" uuid="fbaadb1d-975c-4886-9825-9d6a721ff4f9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အာမခံထားသည့္ခရီးစဥ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="277" width="187" height="20" uuid="aae05b68-89dc-434a-9a22-12cc02b36d8d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အာမခံထားသည့္ကာလ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="299" width="187" height="20" uuid="080e9403-194b-451d-88ec-a47c56e4f763"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အသံုးျပဳသည့္ယာဥ္]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="198" y="232" width="357" height="42" isPrintWhenDetailOverflows="true" uuid="5ec6656a-733a-4eb1-83cc-6e0a0c02147d"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{travelPlace}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="49" y="37" width="62" height="20" uuid="5de81835-338b-4ffe-87a6-e1591c137a1f"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{date}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="37" width="69" height="20" uuid="22c5c8c5-279b-4b30-b33b-0a295b8eae24"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အမွတ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="59" width="68" height="20" uuid="673b1362-0ed3-4c32-b8ae-ffc826027079"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ကိုယ္စားလွယ္]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="277" y="277" width="64" height="20" uuid="d6733e91-1f30-4a70-8b58-06c9635371ca"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{arrivalDay}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="261" y="277" width="16" height="20" uuid="164f7d9f-daa6-4f9a-95b7-051f67b746d2"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[to]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="198" y="277" width="64" height="20" uuid="0520780f-8d66-43bf-91d1-19d9d90ea06e"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{departureDay}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="198" y="210" width="13" height="20" uuid="64cc8f5c-cd36-425d-8361-9161893d18eb"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[(]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="253" y="210" width="9" height="20" uuid="d2cfba80-57b0-4ac5-9330-ba4aff795249"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="262" y="210" width="19" height="20" uuid="ea322215-37d5-4535-874d-129cc4db6d1d"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{unit}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="279" y="210" width="58" height="20" uuid="e3501168-383c-4261-a1b5-48125de39ef5"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ယူနစ္)က်ပ္]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="198" y="299" width="357" height="20" isRemoveLineWhenBlank="true" uuid="d62c890c-5097-4742-a453-61000ca67bb7">
+					<printWhenExpression><![CDATA[$P{isUsageOfVehicle1}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usageOfVehicle1}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement x="198" y="319" width="357" height="20" isRemoveLineWhenBlank="true" uuid="ed1bbaf7-ff3d-41b8-a1ad-c28ed7c2c4a1">
+					<printWhenExpression><![CDATA[$P{isUsageOfVehicle2}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usageOfVehicle2}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement x="198" y="339" width="357" height="20" isRemoveLineWhenBlank="true" uuid="1a644cfa-42ca-4565-b02e-e9ab9a6ad79c">
+					<printWhenExpression><![CDATA[$P{isUsageOfVehicle3}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usageOfVehicle3}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement x="198" y="359" width="357" height="20" isRemoveLineWhenBlank="true" uuid="4b52dc69-1d60-47a4-b694-81e751b44214">
+					<printWhenExpression><![CDATA[$P{isUsageOfVehicle4}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usageOfVehicle4}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="362" y="534" width="40" height="20" uuid="d6d3be56-f84a-453e-b3c7-ce928aef8f02"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အမည္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="403" y="534" width="151" height="20" uuid="edf4a27d-8288-4c06-b864-da84ad5ceebb"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="362" y="554" width="40" height="20" uuid="90ab1130-a9b5-437e-94a0-742d433b0285"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ရာထူး]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="403" y="554" width="151" height="20" uuid="14e9cda1-0404-4b72-b13e-0ee0afaacc81"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="362" y="577" width="192" height="20" uuid="06749d96-2bf8-48dc-b860-592c7c3b36c7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[(အတည္ျပဳသူ)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="-1" y="418" width="555" height="84" isPrintWhenDetailOverflows="true" uuid="1418f27e-a2e7-4f74-9ac3-9747eacf5479"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Zawgyi-One"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[	(အာမခံထားသူေပးသြင္းေသာ ပရီမီယံကို အေၾကာင္းျပဳ၍ အာမခံထားသည့္ကာလႏွင့္ အာမခံခရီးစဥ္အတြင္း ယာဥ္မေတာ္တဆ ထိခိုက္မွုေၾကာင့္ အာမခံထားသူ အသက္ဆံုးရႈံးျခင္း၊ ထာ၀စဥ္မစြမ္းမသန္ျဖစ္ျခင္းႏွင့္ ထိခိုက္ဒဏ္ရာ ရျခင္းစသည္မ်ားအတြက္ ပူးတြဲပါအက်ိဳးခံစားခြင့္မ်ားကို ပူးတြဲပါ စည္းမ်ဥ္းမ်ားႏွင့္အညီ အာမခံထားသူ / အက်ိဳးခံစားခြင့္ရွိသူသို႔ ထုတ္ေပးရန္ ဤအာမခံကုမၸဏီက တာ၀န္ယူကတိျပဳပါသည္။)]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

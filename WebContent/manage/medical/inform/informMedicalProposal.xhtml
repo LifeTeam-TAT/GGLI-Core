@@ -1,0 +1,227 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Medical Proposal Inform" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="informMedicalProposal">
+			<p:growl globalOnly="true" id="messages" showDetail="true" escape="false" />
+			<p:panel>
+				<table>
+					<tr>
+						<td style="width: 150px;">
+							<h:outputText styleClass="input-label" value="Proposal No" />
+						</td>
+						<td>
+							<h:panelGrid columns="2">
+								<p:inputText id="proposalNo" readonly="true" style="width:250px; margin-left:-2px;" value="#{MedicalProposalInformActionBean.medProDTO.proposalNo}"></p:inputText>
+								<p:commandLink id="detailsProposal" immediate="true" oncomplete="PF('medicalProposalDetailsDialog').show()">
+									<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+					<tr>
+						<td />
+						<td>
+							<p:message for="basicPremium" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Basic Premium" />
+						</td>
+						<td>
+							<p:inputText id="basicPremium" style="width:250px; text-align: right;" value="#{MedicalProposalInformActionBean.acceptedInfo.basicPremium}" readonly="true">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<!-- 					<tr height="3" /> -->
+					<!-- 					<tr> -->
+					<!-- 						<td /> -->
+					<!-- 						<td> -->
+					<!-- 							<p:message for="basicPlusPremium" /> -->
+					<!-- 						</td> -->
+					<!-- 					</tr> -->
+					<!-- 					<tr> -->
+					<!-- 						<td> -->
+					<!-- 							<h:outputText styleClass="input-label" value="Basic Plus Premium" /> -->
+					<!-- 						</td> -->
+					<!-- 						<td > -->
+					<!-- 							<p:inputText id="basicPlusPremium" style="width:250px; text-align: right;" value="#{MedicalProposalInformActionBean.medProDTO.basicPlusPremium}" readonly="true" rendered=""> -->
+					<!-- 								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" /> -->
+					<!-- 							</p:inputText> -->
+					<!-- 						</td> -->
+					<!-- 					</tr> -->
+					<!-- 					<tr height="3" /> -->
+					<tr>
+						<td />
+						<td>
+							<p:message for="addOnPremium" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="AddOn Premium" />
+						</td>
+						<td>
+							<p:inputText id="addOnPremium" style="width:250px; text-align: right;" value="#{MedicalProposalInformActionBean.acceptedInfo.addOnPremium}" readonly="true">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td />
+						<td>
+							<p:message for="totalPremium" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Total Premium" />
+						</td>
+						<td>
+							<p:inputText id="totalPremium" style="width:250px; text-align: right;" value="#{MedicalProposalInformActionBean.acceptedInfo.netPremium}" readonly="true">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td />
+						<td>
+							<p:message for="amount" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Discount Percent" />
+						</td>
+						<td>
+							<p:inputText id="amount" style="width:250px; text-align: right;" value="#{MedicalProposalInformActionBean.acceptedInfo.discountPercent}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+								<f:validateDoubleRange minimum="0" maximum="100" />
+								<p:ajax event="keyup" listener="#{MedicalProposalInformActionBean.netAmount()}" update="netAmount" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td />
+						<td>
+							<p:message for="serviceCharges" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Service Charges" />
+						</td>
+						<td>
+							<p:inputText id="serviceCharges" style="width:250px; text-align: right;" value="#{MedicalProposalInformActionBean.acceptedInfo.servicesCharges}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+								<f:validateDoubleRange minimum="0" />
+								<p:ajax event="keyup" listener="#{MedicalProposalInformActionBean.netAmount()}" update="netAmount" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td />
+						<td>
+							<p:message for="stampFees" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Policy Stamp Fees" />
+						</td>
+						<td>
+							<p:inputText disabled="true" id="stampFees" style="width:250px; text-align: right;" value="#{MedicalProposalInformActionBean.acceptedInfo.stampFees}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+								<f:validateDoubleRange minimum="0" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Net Amount" />
+						</td>
+						<td>
+							<p:inputText readonly="true" id="netAmount" style="width:250px; text-align: right;" value="#{MedicalProposalInformActionBean.netAmount()}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td valign="top">
+							<h:outputText styleClass="input-label" value="Remark" />
+						</td>
+						<td>
+							<p:inputTextarea autoResize="true" id="remark" rows="7" style="width:400px;" value="#{MedicalProposalInformActionBean.remark}">
+								<f:validateLength maximum="8000" />
+							</p:inputTextarea>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td />
+						<td>
+							<p:message for="responsiblePerson" />
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 130px;">
+							<h:outputText style="color:red;" value="*" />
+							<h:outputText styleClass="input-label" value="Responsible Person" />
+						</td>
+						<td>
+							<h:panelGrid columns="3" id="responsiblePersonPanel">
+								<p:inputText id="responsiblePerson" readonly="#{MedicalProposalInformActionBean.responsiblePerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+									required="true" style="width:250px;margin-left:-4px;"
+									value="#{MedicalProposalInformActionBean.responsiblePerson == null ? '' : MedicalProposalInformActionBean.responsiblePerson.name}" />
+								<p:commandLink actionListener="#{MedicalProposalInformActionBean.selectUser()}" id="selectUserDialogLink" immediate="true">
+									<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+									<p:ajax event="dialogReturn" listener="#{MedicalProposalInformActionBean.returnUser}" update="responsiblePersonPanel" />
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+				</table>
+			</p:panel>
+			<br />
+			<p:commandButton action="#{MedicalProposalInformActionBean.informApprovedMedicalProposal}" disabled="#{!MedicalProposalInformActionBean.disablePrintBtn}" id="approvedBtn"
+				rendered="#{MedicalProposalInformActionBean.approvedProposal}" style="width: 70px;" value="Submit" update=":informMedicalProposal" />
+			<p:commandButton action="#{MedicalProposalInformActionBean.informRejectMedicalProposal}" disabled="#{!MedicalProposalInformActionBean.disablePrintBtn}" id="rejectBtn"
+				rendered="#{!MedicalProposalInformActionBean.approvedProposal}" style="width: 70px;" value="Reject" update=":informMedicalProposal" />
+			<p:spacer width="10" />
+			<p:commandButton style="width: 70px;" action="dashboard" id="cancelBtn" value="Cancel" immediate="true" />
+			<p:spacer width="10" />
+			<p:commandButton actionListener="#{MedicalProposalInformActionBean.selectLanguage()}" id="selectLanguageDialogLink" value="Print Preview" process="@this"
+											disabled="#{MedicalProposalInformActionBean.disablePrintBtn}" >
+											<p:ajax event="dialogReturn" listener="#{MedicalProposalInformActionBean.returnLanguage}" update=":acceptLetterForm" process="@this"/>
+		</p:commandButton>
+		</h:form>
+		<h:form id="acceptLetterForm" enctype="multipart/form-data">
+			<p:dialog widgetVar="acceptedLetterDialog" resizable="false" id="acceptedLetterDialog" width="1050" height="500" appendTo="@(body)" dynamic="true">
+				<p:ajax event="close" update=":acceptLetterForm :informMedicalProposal" listener="#{MedicalProposalInformActionBean.handleClose}" />
+				<p:outputPanel id="printPannel">
+					<p:media id="pdfPlayer" value="#{MedicalProposalInformActionBean.reportStream}" player="pdf"  width="1050" height="500" cache="false"/>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+		<h:form id="medicalProposalDetailsForm">
+			<p:dialog appendTo="@(body)" modal="true" dynamic="true" header="Medical Proposal Details" height="550" hideEffect="explode" id="medicalProposalDetailsDialog" resizable="false"
+				showEffect="explode" widgetVar="medicalProposalDetailsDialog" width="1000">
+				<ui:include src="/manage/medical/medicalProposalInfoTemplate.xhtml">
+					<ui:param name="medicalProposal" value="#{MedicalProposalInformActionBean.medProDTO}" />
+					<ui:param name="showPolicy" value="#{false}" />
+					<ui:param name="medicalPolicy" value="#{null}" />
+					<ui:param name="workFlowList" value="#{MedicalProposalInformActionBean.workFlowList}" />
+				</ui:include>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

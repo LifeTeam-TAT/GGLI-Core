@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="coinsuranceSummaryReport" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="14" rightMargin="14" topMargin="20" bottomMargin="20" resourceBundle="LANGUAGE_en" uuid="0b0dd665-4a08-4b9f-a6ed-b143e1afc1dd">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="header_one" forecolor="#000000" backcolor="#FFFFFF" fill="Solid" hAlign="Center" vAlign="Middle" isBlankWhenNull="true" fontName="Zawgyi-One" fontSize="16" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<box leftPadding="0">
+			<pen lineWidth="0.75" lineColor="#000000"/>
+			<topPen lineWidth="0.0" lineColor="#FFFFFF"/>
+			<leftPen lineWidth="0.0" lineColor="#FFFFFF"/>
+			<bottomPen lineWidth="0.0" lineColor="#FFFFFF"/>
+			<rightPen lineWidth="0.0" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="header_two" forecolor="#000000" backcolor="#FFFFFF" fill="Solid" hAlign="Center" vAlign="Middle" fontName="Zawgyi-One" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<box leftPadding="0">
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineWidth="0.0" lineColor="#FFFFFF"/>
+			<leftPen lineWidth="0.0" lineColor="#FFFFFF"/>
+			<bottomPen lineWidth="0.0" lineColor="#FFFFFF"/>
+			<rightPen lineWidth="0.0" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="header_three" mode="Opaque" forecolor="#000000" backcolor="#DBE6F1" fill="Solid" hAlign="Center" vAlign="Middle" fontName="Zawgyi-One" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<box leftPadding="0">
+			<pen lineWidth="0.0" lineColor="#000000"/>
+			<topPen lineWidth="0.0"/>
+			<leftPen lineWidth="0.0"/>
+			<bottomPen lineWidth="0.0"/>
+			<rightPen lineWidth="0.0"/>
+		</box>
+	</style>
+	<style name="default" isDefault="true" mode="Opaque" forecolor="#000000" backcolor="#FFFFFF" fill="Solid" hAlign="Center" vAlign="Middle" fontName="Zawgyi-One" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<box leftPadding="0">
+			<pen lineWidth="0.0" lineColor="#000000"/>
+			<topPen lineWidth="0.0"/>
+			<leftPen lineWidth="0.0"/>
+			<bottomPen lineWidth="0.0"/>
+			<rightPen lineWidth="0.0"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="ef880c4f-b6a2-44ec-a8e8-67e9a8c77b66">
+		<field name="coinsuranceCompanyName" class="java.lang.String"/>
+		<field name="inAmount" class="java.lang.Double"/>
+		<field name="outAmount" class="java.lang.Double"/>
+		<field name="difference" class="java.lang.Double"/>
+	</subDataset>
+	<parameter name="TableDataSource" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="243a3bee-c95d-4362-b1cc-e19c7ec2d201" x="0" y="0" width="494" height="36"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="97a620f2-dfdc-4415-929a-fc1063986fe0" style="header_one" x="2" y="2" width="490" height="32"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$R{GRAND_GUARDIAN_LABEL}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="753ddb50-6274-4888-bfc7-a6cc282a9bc4" x="0" y="36" width="494" height="24"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="85b0d6d2-a7c5-4c84-ac95-09fd550c8f32" style="header_two" x="2" y="38" width="490" height="20"/>
+				<textElement/>
+				<text><![CDATA[Co-Insurance Summary Report]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="58">
+			<componentElement>
+				<reportElement uuid="b98a8ee5-39a5-4802-86e0-6c1dbd0e6f0b" mode="Opaque" x="0" y="0" width="494" height="53"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="Table Dataset 1" uuid="7768ae41-f4ef-4c80-932b-e410d865a30a">
+						<dataSourceExpression><![CDATA[$P{TableDataSource}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="54" uuid="ad031f24-7d11-4416-876a-1654a985bdff">
+						<jr:columnHeader style="header_three" height="29" rowSpan="1">
+							<box leftPadding="4">
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement uuid="694ad339-2134-4d79-a69f-d1e4ccb9002f" mode="Transparent" x="4" y="4" width="30" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="9"/>
+								</textElement>
+								<text><![CDATA[Sr No.]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="26" rowSpan="1">
+							<box leftPadding="4">
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+							</box>
+							<textField>
+								<reportElement uuid="f6e87086-e7a1-4716-87d1-b6a82af32532" style="default" mode="Transparent" x="3" y="4" width="40" height="20"/>
+								<textElement/>
+								<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="140" uuid="936f2cac-0cd9-4fb7-8192-61438abe8282">
+						<jr:columnHeader style="header_three" height="29" rowSpan="1">
+							<box leftPadding="4">
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement uuid="6c212d63-ad5d-441f-a758-f31cc808256d" mode="Transparent" x="4" y="4" width="126" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="9"/>
+								</textElement>
+								<text><![CDATA[Co-Insurance Company]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="26" rowSpan="1">
+							<box leftPadding="4">
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+							</box>
+							<textField>
+								<reportElement uuid="0c0f2b26-0855-4e00-b604-3f030dfb1411" style="default" mode="Transparent" x="11" y="4" width="119" height="20"/>
+								<textElement/>
+								<textFieldExpression><![CDATA[$F{coinsuranceCompanyName}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="92" uuid="7f0edc75-ce60-4bfc-85ee-5af665b691a4">
+						<jr:columnHeader style="header_three" height="29" rowSpan="1">
+							<box leftPadding="4">
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement uuid="61e6fada-fab3-45b9-b849-51566388de84" mode="Transparent" x="4" y="4" width="80" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="9"/>
+								</textElement>
+								<text><![CDATA[In (Amount)]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="26" rowSpan="1">
+							<box leftPadding="4">
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+							</box>
+							<textField pattern="">
+								<reportElement uuid="0b8d1247-daed-4ebe-b718-3b1813b673a8" style="default" mode="Transparent" x="4" y="4" width="80" height="20"/>
+								<textElement/>
+								<textFieldExpression><![CDATA[$F{inAmount}]]></textFieldExpression>
+								<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="98" uuid="9428743a-5859-4c76-89b5-40b54b71cb9d">
+						<jr:columnHeader style="header_three" height="29" rowSpan="1">
+							<box leftPadding="4">
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement uuid="bb92409c-d502-4b21-a3f9-111fd75ea3f1" mode="Transparent" x="4" y="4" width="80" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="9"/>
+								</textElement>
+								<text><![CDATA[Out (Amount)]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="26" rowSpan="1">
+							<box leftPadding="4">
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+							</box>
+							<textField pattern="">
+								<reportElement uuid="97aa007b-d5b2-4998-b2ca-51c3a3e3b69d" style="default" mode="Transparent" x="7" y="5" width="80" height="20"/>
+								<textElement textAlignment="Justified"/>
+								<textFieldExpression><![CDATA[$F{outAmount}]]></textFieldExpression>
+								<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="110" uuid="efb8bc09-b9d9-4c07-a6c1-9b8646bf5970">
+						<jr:columnHeader style="header_three" height="29" rowSpan="1">
+							<box leftPadding="4">
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement uuid="84b49e7c-1e71-4506-900d-924f5e576d16" mode="Transparent" x="15" y="4" width="80" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="9"/>
+								</textElement>
+								<text><![CDATA[Difference]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="26" rowSpan="1">
+							<box leftPadding="4">
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+							</box>
+							<textField pattern="">
+								<reportElement uuid="7d525422-8f68-41db-9e8e-6814f62084db" style="default" mode="Transparent" x="14" y="5" width="80" height="20"/>
+								<textElement/>
+								<textFieldExpression><![CDATA[$F{difference}]]></textFieldExpression>
+								<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+</jasperReport>

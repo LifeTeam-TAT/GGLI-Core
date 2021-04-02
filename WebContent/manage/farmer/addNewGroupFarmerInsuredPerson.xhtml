@@ -1,0 +1,822 @@
+ <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui"
+	template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Add New Farmer Insured Person" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form enctype="multipart/form-data" id="groupFarmerInsForm">
+			<p:panel header="InsuredPerson Information"
+				id="insuredPersonInfoWizardPanel" style="min-height:270px;">
+				<table>
+					<tr>
+						<td></td>
+						<td><p:message for="customer" /></td>
+					</tr>
+					<tr>
+						<td style="width: 30%;"><h:outputText style="color:red;"
+								value="*" /> <h:outputText value="Existing Customer"></h:outputText>
+						</td>
+						<td><h:panelGrid columns="3" id="customerPanelGroup">
+								<p:inputText id="customer" required="true"
+									readonly="#{AddNewInsuredPersonActionBean.proposalInsuredPerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+									style="width:250px;margin-left:-4px;"
+									value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.fullName}" />
+								<p:commandLink
+									actionListener="#{AddNewInsuredPersonActionBean.selectCustomer()}"
+									id="selectCustomerDialogLink" immediate="true"
+									update="insuredPersonInfoWizardPanel">
+									<h:graphicImage
+										styleClass="#{ApplicationSetting.searchStyleClass}"
+										url="#{ApplicationSetting.searchIcon}" />
+									<p:ajax event="dialogReturn"
+										listener="#{AddNewInsuredPersonActionBean.returnCustomer}"
+										update="customerPanelGroup,insuredPersonInfoWizardPanel" />
+								</p:commandLink>
+							</h:panelGrid></td>
+					</tr>
+				</table>
+				<p:separator />
+				<table style="width: 100%;">
+					<tr>
+						<td style="width: 40%;" valign="top">
+							<table cellspacing="5">
+								<tr>
+									<td />
+									<td style="width: 115px;"><p:message for="initialId" /></td>
+								</tr>
+								<tr>
+									<td style="width: 115px;"><h:outputText style="color:red;"
+											value="*" /> <h:outputText styleClass="input-label"
+											value="#{label['MANAGE_CUSTOMER_INITIALID_LABEL']}" /></td>
+									<td><p:inputText id="initialId" required="true"
+											style="width:250px;"
+											value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.initialId}">
+											<f:validateLength maximum="36" />
+										</p:inputText></td>
+								</tr>
+								<tr>
+									<td />
+									<td><p:message for="firstName" /></td>
+								</tr>
+								<tr>
+									<td><h:outputText style="color:red;" value="*" /> <h:outputText
+											styleClass="input-label"
+											value="#{label['MANAGE_CUSTOMER_FIRSTNAME_LABEL']}" /></td>
+									<td><p:inputText id="firstName" required="true"
+											style="width:250px;"
+											value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.name.firstName}">
+											<f:validateLength maximum="360" />
+										</p:inputText></td>
+								</tr>
+								<tr>
+									<td />
+									<td><p:message for="middleName" /></td>
+								</tr>
+								<tr>
+									<td><h:outputText styleClass="input-label"
+											value="#{label['MANAGE_CUSTOMER_MIDDLENAME_LABEL']}" /></td>
+									<td><p:inputText id="middleName" style="width:250px;"
+											value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.name.middleName}">
+											<f:validateLength maximum="100" />
+										</p:inputText></td>
+								</tr>
+								<tr>
+									<td />
+									<td><p:message for="lastName" /></td>
+								</tr>
+								<tr>
+									<td><h:outputText styleClass="input-label"
+											value="#{label['MANAGE_CUSTOMER_LASTNAME_LABEL']}" /></td>
+									<td><p:inputText id="lastName" style="width:250px;"
+											value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.name.lastName}">
+											<f:validateLength maximum="100" />
+										</p:inputText></td>
+								</tr>
+								<tr>
+									<td />
+									<td><p:message for="fatherName" /></td>
+								</tr>
+								<tr>
+									<td><h:outputText style="color:red;" value="*" /> <h:outputText
+											styleClass="input-label" value="Father Name" /></td>
+									<td><p:inputText id="fatherName" required="true"
+											style="width:250px;"
+											value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.fatherName}">
+											<f:validateLength maximum="100" />
+										</p:inputText></td>
+								</tr>
+								<tr>
+									<td />
+									<td><p:message for="idType" /></td>
+								</tr>
+								<tr>
+									<td><h:outputText style="color:red;" value="*" /> <h:outputText
+											styleClass="input-label" value="ID Type" /></td>
+									<td><p:selectOneMenu
+											converter="omnifaces.SelectItemsConverter" required="true"
+											id="idType" style="width: 258px;"
+											value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.idType}">
+											<f:selectItem itemLabel="-- Select Id Type --"
+												noSelectionOption="true" />
+											<f:selectItems itemLabel="#{type.label}" itemValue="#{type}"
+												value="#{AddNewInsuredPersonActionBean.idTypes}" var="type" />
+											<p:ajax event="valueChange"
+												update="insuredPersonIdNoPanelGrid customerIdNoPanelGrid"
+												listener="#{AddNewInsuredPersonActionBean.changeInsuredPersonIdType}" />
+										</p:selectOneMenu></td>
+								</tr>
+								<tr>
+									<td />
+									<td><p:message for="idNo" /></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td><h:panelGrid columns="5"
+											id="insuredPersonIdNoPanelGrid">
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+												id="insuredPersonstateCode"
+												rendered="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.idType ne 'STILL_APPLYING' and AddNewInsuredPersonActionBean.proposalInsuredPerson.idType ne 'FRCNO' and
+										AddNewInsuredPersonActionBean.proposalInsuredPerson.idType ne 'PASSPORTNO'}"
+												required="true" style="width:55px;"
+												value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.provinceCode}">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems var="stateCode"
+													itemLabel="#{stateCode.codeNo}"
+													itemValue="#{stateCode.codeNo}"
+													value="#{AddNewInsuredPersonActionBean.stateCodeList}" />
+												<p:ajax event="valueChange"
+													listener="#{AddNewInsuredPersonActionBean.changeStateCode}"
+													update="insuredPersontownshipCode" />
+											</p:selectOneMenu>
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+												id="insuredPersontownshipCode"
+												value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.townshipCode}"
+												rendered="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.idType ne 'STILL_APPLYING' and AddNewInsuredPersonActionBean.proposalInsuredPerson.idType ne 'FRCNO' and
+										AddNewInsuredPersonActionBean.proposalInsuredPerson.idType ne 'PASSPORTNO'}"
+												required="true" style="width:100px;">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems var="townshipCode"
+													itemLabel="#{townshipCode.townshipcodeno}"
+													itemValue="#{townshipCode.townshipcodeno}"
+													value="#{AddNewInsuredPersonActionBean.townshipCodeList}" />
+											</p:selectOneMenu>
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+												id="insuredPersonidConditionType"
+												value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.idConditionType}"
+												style="width:50px;"
+												rendered="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.idType ne 'STILL_APPLYING' and AddNewInsuredPersonActionBean.proposalInsuredPerson.idType ne 'FRCNO' and
+										AddNewInsuredPersonActionBean.proposalInsuredPerson.idType ne 'PASSPORTNO'}">
+												<f:selectItems itemLabel="#{type.label}"
+													itemValue="#{type.label}"
+													value="#{AddNewInsuredPersonActionBean.idConditionType}"
+													var="type" />
+											</p:selectOneMenu>
+											<p:inputText id="idNo"
+												value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.idNo}"
+												required="true"
+												rendered="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.idType eq 'NRCNO'}"
+												maxlength="6"
+												onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"
+												style="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.idType eq 'NRCNO' ?'width:100px':'width:320px'};">
+												<f:validateLength
+													disabled="#{empty param[isRequired.clientId]}" maximum="6"
+													minimum="6" />
+											</p:inputText>
+										</h:panelGrid></td>
+								</tr>
+								<tr>
+									<td />
+									<td><p:message for="customerRegIdNo" display="text" /></td>
+								</tr>
+								<tr>
+									<td><h:outputText /></td>
+									<td><h:panelGrid columns="1" id="customerIdNoPanelGrid"
+											width="100%">
+											<p:inputText id="customerRegIdNo"
+												rendered="#{(AddNewInsuredPersonActionBean.proposalInsuredPerson.idType eq 'FRCNO' or AddNewInsuredPersonActionBean.proposalInsuredPerson.idType eq 'PASSPORTNO' ) and AddNewInsuredPersonActionBean.proposalInsuredPerson.idType ne null}"
+												value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.idNo}"
+												required="true" maxlength="30" style="width:250px;" />
+										</h:panelGrid></td>
+								</tr>
+								<tr>
+									<td />
+									<td><p:message for="dateOfBirth" /></td>
+								</tr>
+								<tr>
+									<td><h:outputText style="color:red;" value="*" /> <h:outputText
+											styleClass="input-label" value="DateOfBirth" /></td>
+									<td><p:inputMask id="dateOfBirth" required="true"
+											mask="99-99-9999" style="width:250px;"
+											value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.dateOfBirth}">
+											<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}"
+												timeZone="#{ApplicationSetting.timeZone}" />
+										</p:inputMask></td>
+								</tr>
+							</table>
+						</td>
+						<td style="width: 5%;" />
+						<td style="width: 55%;" valign="top">
+							<table align="top" width="100%">
+								<tr>
+									<td />
+									<td><p:message for="resident" /></td>
+								</tr>
+								<tr>
+									<td style="width: 150px;" valign="top"><h:outputText
+											style="color:red;" value="*" /> <h:outputText
+											styleClass="input-label" value="Resident Address" /></td>
+									<td><p:inputTextarea id="resident" required="true"
+											style="width:250px;"
+											value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.residentAddress.residentAddress}">
+											<f:validateLength maximum="200" />
+										</p:inputTextarea></td>
+								</tr>
+								<tr>
+									<td />
+									<td><p:message for="townShip" /></td>
+								</tr>
+								<tr>
+									<td><h:outputText style="color:red;" value="*" /> <h:outputText
+											styleClass="input-label" value="Resident TownShip" /></td>
+									<td><h:panelGrid columns="3" id="townShipPanelGroup1">
+											<p:inputText id="townShip" required="true"
+												style="width:250px;margin-left:-4px;"
+												readonly="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.residentAddress.township.name == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.residentAddress.township == null ? '' : AddNewInsuredPersonActionBean.proposalInsuredPerson.residentAddress.township.name}" />
+											<p:commandLink
+												actionListener="#{AddNewInsuredPersonActionBean.selectTownship()}"
+												id="selectTownShipDialogLink1" immediate="true">
+												<h:graphicImage
+													styleClass="#{ApplicationSetting.searchStyleClass}"
+													url="#{ApplicationSetting.searchIcon}" />
+												<p:ajax event="dialogReturn"
+													listener="#{AddNewInsuredPersonActionBean.returnInsuredPersonTownShip}"
+													update="townShipPanelGroup1" />
+											</p:commandLink>
+										</h:panelGrid></td>
+								</tr>
+								<tr>
+									<td />
+									<td><p:message for="occupation" /></td>
+								</tr>
+								<tr>
+									<td><h:outputText styleClass="input-label"
+											value="Occupation" /></td>
+									<td><h:panelGrid columns="3" id="occupationPanelGroup">
+											<p:inputText id="occupation" readonly="true"
+												style="width:250px;margin-left:-4px;"
+												value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.occupation == null ? '' : AddNewInsuredPersonActionBean.proposalInsuredPerson.occupation.name}" />
+											<p:commandLink
+												actionListener="#{AddNewInsuredPersonActionBean.selectOccupation()}"
+												id="selectOccupationDialogLink1" immediate="true">
+												<h:graphicImage
+													styleClass="#{ApplicationSetting.searchStyleClass}"
+													url="#{ApplicationSetting.searchIcon}" />
+												<p:ajax event="dialogReturn"
+													listener="#{AddNewInsuredPersonActionBean.returnOccupation}"
+													update="occupationPanelGroup" />
+											</p:commandLink>
+											<p:commandLink
+												action="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.setOccupation(null)}"
+												update=":groupFarmerInsForm:occupation">
+												<p:graphicImage
+													styleClass="#{ApplicationSetting.deleteStyleClass}"
+													value="#{ApplicationSetting.deleteIcon}" />
+											</p:commandLink>
+										</h:panelGrid></td>
+								</tr>
+								<tr>
+									<td />
+									<td><p:message for="gender" /></td>
+								</tr>
+								<tr>
+									<td><h:outputText style="color:red;" value="*" /> <h:outputText
+											styleClass="input-label" value="Gender" /></td>
+									<td><p:selectOneMenu required="true"
+											converter="omnifaces.SelectItemsConverter" id="gender"
+											style="width: 258px;"
+											value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.gender}">
+											<f:selectItem itemLabel=" -- Select Gender --"
+												noSelectionOption="true" />
+											<f:selectItems itemLabel="#{type.label}" itemValue="#{type}"
+												value="#{AddNewInsuredPersonActionBean.gender}" var="type" />
+										</p:selectOneMenu></td>
+								</tr>
+								<tr>
+									<td />
+									<td><p:message for="sumInsuredInfo" /></td>
+								</tr>
+								<tr>
+									<td valign="top"><h:outputText style="color:red;"
+											value="*" /> <h:outputText styleClass="input-label"
+											value="Sum Insured" /></td>
+									<td><p:inputText id="sumInsuredInfo" required="true"
+											style="width:250px;"
+											value="#{AddNewInsuredPersonActionBean.proposalInsuredPerson.sumInsuredInfoNum}">
+											<f:convertNumber
+												pattern="#{ApplicationSetting.currencyFormat}" />
+										</p:inputText></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td align="left" colspan="3" style="width: 100%;"><p:message
+								for="beneficiariesInfoTablePanel" /> <h:panelGroup
+								id="beneficiariesInfoTablePanel" style="width: 100%">
+								<fieldset style="width: 100%">
+									<legend>
+										<table>
+											<tr>
+												<td><p:commandLink id="beneficiarieid"
+														action="#{AddNewInsuredPersonActionBean.prepareAddNewBeneficiariesInfo()}"
+														immediate="true"
+														oncomplete="PF('beneficiariesInfoEntryDialog').show()"
+														update=":beneficiaryInfoEntryForm">
+														<h:graphicImage
+															styleClass="#{ApplicationSetting.addStyleClass}"
+															value="#{ApplicationSetting.addIcon}" />
+													</p:commandLink></td>
+												<td><h:outputText styleClass="input-label"
+														value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIESINFO_LABLE']}" />
+												</td>
+											</tr>
+										</table>
+									</legend>
+									<p:dataTable id="beneficiaryPersonTable" style="width:100%"
+										value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiariesList}"
+										var="beneficiary">
+										<p:column headerText="Beneficiary">
+											<h:outputText value="#{beneficiary.fullName}" />
+										</p:column>
+										<p:column headerText="Age">
+											<h:outputText value="#{beneficiary.age}" />
+										</p:column>
+										<p:column headerText="Gender">
+											<h:outputText value="#{beneficiary.gender}" />
+										</p:column>
+										<p:column headerText="ID NO.">
+											<h:outputText value="#{beneficiary.fullIdNo}" />
+										</p:column>
+										<p:column headerText="Resident TownShip">
+											<h:outputText
+												value="#{beneficiary.residentAddress.township.name}" />
+										</p:column>
+										<p:column headerText="Beneficiary Percentage">
+											<h:outputText value="#{beneficiary.percentage}%" />
+										</p:column>
+										<p:column headerText="Relationship">
+											<h:outputText value="#{beneficiary.relationship.name}" />
+										</p:column>
+										<p:column headerText="Edit"
+											style="width:50px; text-align: center;">
+											<p:commandLink
+												action="#{AddNewInsuredPersonActionBean.prepareEditBeneficiariesInfo(beneficiary)}"
+												id="editBeneficiaryLink" immediate="true"
+												oncomplete="PF('beneficiariesInfoEntryDialog').show()"
+												update=":beneficiaryInfoEntryForm">
+												<p:graphicImage
+													styleClass="#{ApplicationSetting.editStyleClass}"
+													value="#{ApplicationSetting.editIcon}" />
+											</p:commandLink>
+										</p:column>
+										<p:column headerText="Delete"
+											style="width:50px; text-align: center;">
+											<p:commandLink
+												action="#{AddNewInsuredPersonActionBean.removeBeneficiariesInfo(beneficiary)}"
+												process="@this" id="removeBeneficiaryLink"
+												update=":groupFarmerInsForm:beneficiariesInfoTablePanel">
+												<p:graphicImage
+													styleClass="#{ApplicationSetting.deleteStyleClass}"
+													value="#{ApplicationSetting.deleteIcon}" />
+											</p:commandLink>
+										</p:column>
+									</p:dataTable>
+								</fieldset>
+							</h:panelGroup></td>
+					</tr>
+				</table>
+				<br />
+				<p:commandButton style="width: 80px;"
+					action="#{AddNewInsuredPersonActionBean.saveGroupFarmerInsuredPerson()}"
+					id="addInsuredPersonInfoBtn"
+					update=":groupFarmerInsForm:insuredPersonInfoWizardPanel"
+					value="#{AddNewInsuredPersonActionBean.createNewInsuredPersonInfo ? label['COMMON_ADDNEW_BTN'] : label['COMMON_UPDATE_BTN']}"
+					binding="#{isRequired}" />
+				<br />
+				<p:separator style="height:3px" />
+				<h:panelGrid columns="4">
+					<h:commandLink
+						action="#{AddNewInsuredPersonActionBean.prepareAddNewInsuredPersonInfo()}"
+						immediate="true"
+						update=":groupFarmerInsForm:insuredPersonInfoWizardPanel">
+						<f:ajax render=":groupFarmerInsForm:insuredPersonInfoWizardPanel" />
+						<h:panelGrid columns="2">
+							<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}"
+								value="#{ApplicationSetting.addIcon}" />
+							<h:outputText styleClass="command-link"
+								value="#{label['COMMON_ADDNEW_LINK']}" />
+						</h:panelGrid>
+					</h:commandLink>
+				</h:panelGrid>
+				<p:message for="proposalInsuredPersonTable" />
+				<p:dataTable id="proposalInsuredPersonTable" rowIndexVar="index"
+					rowStyleClass="#{empty proposalInsuredPerson.beneficiariesInfoDTOList ? 'rowWarnning' : null}"
+					style="width:100%"
+					value="#{AddNewInsuredPersonActionBean.insuredPersonDTOList}"
+					var="proposalInsuredPerson">
+					<p:column headerText="No" style="width: 5%;">
+						<h:outputText value="#{index + 1}" />
+					</p:column>
+					<p:column headerText="Name">
+						<h:outputText value="#{proposalInsuredPerson.fullName}" />
+					</p:column>
+					<p:column headerText="Date Of Birth">
+						<h:outputText value="#{proposalInsuredPerson.dateOfBirth}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}"
+								timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Father Name">
+						<h:outputText value="#{proposalInsuredPerson.fatherName}" />
+					</p:column>
+					<p:column headerText="Address">
+						<h:outputText value="#{proposalInsuredPerson.fullAddress}" />
+					</p:column>
+					<p:column headerText="Sum Insured">
+						<h:outputText style="float: right;"
+							value="#{proposalInsuredPerson.sumInsuredInfo}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Product Type" style="text-align: center">
+						<h:outputText value="#{proposalInsuredPerson.product.name}" />
+					</p:column>
+					<p:column headerText="Age" style="text-align:left;">
+						<h:outputText value="#{proposalInsuredPerson.ageForNextYear}" />
+					</p:column>
+					<p:column headerText="Period">
+						<h:outputText style="float:left;"
+							value="#{proposalInsuredPerson.periodOfYears}" />
+					</p:column>
+					<p:column headerText="End Date">
+						<h:outputText value="#{proposalInsuredPerson.endDate}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}"
+								timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Edit" style="width:50px; text-align:center;">
+						<h:commandLink
+							action="#{AddNewInsuredPersonActionBean.prepareEditInsuredPersonInfo(proposalInsuredPerson)}"
+							id="editInsuredPersonInfoLink"
+							update=":groupFarmerInsForm:insuredPersonInfoWizardPanel">
+							<f:ajax render=":groupFarmerInsForm:insuredPersonInfoWizardPanel" />
+							<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}"
+								value="#{ApplicationSetting.editIcon}" />
+						</h:commandLink>
+					</p:column>
+					<p:column headerText="Delete"
+						style="width:50px; text-align:center;">
+						<p:commandLink
+							action="#{AddNewInsuredPersonActionBean.removeInsuredPersonInfo(proposalInsuredPerson)}"
+							id="removeEditInsuredPersonInfoLink"
+							update=":groupFarmerInsForm:insuredPersonInfoWizardPanel"
+							immediate="true">
+							<p:graphicImage
+								styleClass="#{ApplicationSetting.deleteStyleClass}"
+								value="#{ApplicationSetting.deleteIcon}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+				<br />
+				<p:commandButton value="Submit Proposal"
+					action="#{AddNewInsuredPersonActionBean.addNewFarmerProposal}"
+					update=":groupFarmerInsForm:insuredPersonInfoWizardPanel"
+					process="@this" />
+				<p:spacer width="10" />
+				<p:commandButton value="cancel" action="groupFarmerPolicyListForm"
+					immediate="true" />
+			</p:panel>
+		</h:form>
+		<p:dialog
+			header="#{label['MANAGE_INSUREDPERSON_BENEFICIARIESINFO_LABLE']}"
+			hideEffect="explode" id="beneficiariesInfoEntryDialog"
+			resizable="false" showEffect="explode"
+			visible="#{facesContext.validationFailed}"
+			widgetVar="beneficiariesInfoEntryDialog" dynamic="true" modal="true"
+			appendTo="@(body)">
+			<h:form id="beneficiaryInfoEntryForm">
+				<h:panelGroup id="beneficiariesInfoPanel">
+					<table cellspacing="5">
+						<tr>
+							<td>
+								<table>
+									<tr>
+										<td><h:outputText value="" /></td>
+										<td style="width: 150px;"><p:message for="initialId" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;"><h:outputText
+												style="color:red;" value="*" /> <h:outputText
+												styleClass="input-label" value="Initial ID" /></td>
+										<td><p:inputText id="initialId" required="true"
+												style="width:250px;"
+												value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.initialId}">
+												<f:validateLength maximum="50" />
+											</p:inputText></td>
+									</tr>
+									<tr>
+										<td><h:outputText value="" /></td>
+										<td style="width: 150px;"><p:message for="firstName" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;"><h:outputText
+												style="color:red;" value="*" /> <h:outputText
+												styleClass="input-label" value="First Name" /></td>
+										<td><p:inputText id="firstName" required="true"
+												style="width:250px;"
+												value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.name.firstName}">
+												<f:validateLength maximum="50" />
+											</p:inputText></td>
+									</tr>
+									<tr>
+										<td><h:outputText value="" /></td>
+										<td style="width: 150px;"><p:message for="middleName" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;"><h:outputText
+												styleClass="input-label" value="Middle Name" /></td>
+										<td><p:inputText id="middleName" style="width:250px;"
+												value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.name.middleName}">
+												<f:validateLength maximum="50" />
+											</p:inputText></td>
+									</tr>
+									<tr>
+										<td><h:outputText value="" /></td>
+										<td style="width: 150px;"><p:message for="lastName" /></td>
+									</tr>
+									<tr>
+										<td style="width: 150px;"><h:outputText
+												styleClass="input-label" value="Last Name" /></td>
+										<td><p:inputText id="lastName" style="width:250px;"
+												value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.name.lastName}">
+												<f:validateLength maximum="50" />
+											</p:inputText></td>
+									</tr>
+									<tr>
+										<td><h:outputText value="" /></td>
+										<td style="width: 150px;"><p:message for="idType" /></td>
+									</tr>
+									<tr>
+										<td style="width: 150px;"><h:outputText
+												style="color:red;" value="*" /> <h:outputText
+												styleClass="input-label" value="IdType" /></td>
+										<td><p:selectOneMenu required="true"
+												converter="omnifaces.SelectItemsConverter" id="idType"
+												style="width: 258px;"
+												value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idType}">
+												<f:selectItems
+													value="#{AddNewInsuredPersonActionBean.idTypes}" />
+												<p:ajax event="valueChange"
+													update="beneIdNoPanelGrid beneIdNo"
+													listener="#{AddNewInsuredPersonActionBean.changeBeneIdType}" />
+											</p:selectOneMenu></td>
+									</tr>
+									<tr>
+										<td><h:outputLabel /></td>
+										<td><h:panelGrid columns="5" id="beneIdNoPanelGrid">
+												<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+													id="benePersonstateCode"
+													rendered="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idType ne 'STILL_APPLYING' and AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idType ne 'FRCNO' and
+									AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idType ne 'PASSPORTNO'}"
+													required="true" style="width:55px;"
+													value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.provinceCode}">
+													<f:selectItem itemLabel="---" noSelectionOption="true" />
+													<f:selectItems var="stateCode"
+														itemLabel="#{stateCode.codeNo}"
+														itemValue="#{stateCode.codeNo}"
+														value="#{AddNewInsuredPersonActionBean.stateCodeList}" />
+													<p:ajax event="valueChange"
+														listener="#{AddNewInsuredPersonActionBean.changeBeneStateCode}"
+														update="beneTownshipCode" />
+												</p:selectOneMenu>
+												<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+													id="beneTownshipCode"
+													value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.townshipCode}"
+													rendered="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idType ne 'STILL_APPLYING' and AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idType ne 'FRCNO' and
+									AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idType ne 'PASSPORTNO'}"
+													required="true" style="width:100px;">
+													<f:selectItem itemLabel="---" noSelectionOption="true" />
+													<f:selectItems var="townshipCode"
+														itemLabel="#{townshipCode.townshipcodeno}"
+														itemValue="#{townshipCode.townshipcodeno}"
+														value="#{AddNewInsuredPersonActionBean.benTownshipCodeList}" />
+												</p:selectOneMenu>
+												<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+													id="insuredPersonidConditionType"
+													value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idConditionType}"
+													style="width:50px;"
+													rendered="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idType ne 'STILL_APPLYING' and AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idType ne 'FRCNO' and
+									AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idType ne 'PASSPORTNO'}">
+													<f:selectItems itemLabel="#{type.label}"
+														itemValue="#{type.label}"
+														value="#{AddNewInsuredPersonActionBean.idConditionType}"
+														var="type" />
+												</p:selectOneMenu>
+												<p:inputText id="idNo"
+													value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idNo}"
+													required="true"
+													rendered="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idType eq 'NRCNO' }"
+													maxlength="6"
+													onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"
+													style="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idType eq 'NRCNO'?'width:60px':'width:280px'};">
+													<f:validateLength maximum="6" minimum="6" />
+												</p:inputText>
+											</h:panelGrid></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td><p:message for="beneRegIdNo" display="text" /></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td><h:panelGrid columns="1" id="beneIdNo" width="100%">
+												<p:inputText id="beneRegIdNo" style="width:250px"
+													rendered="#{(AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idType eq 'FRCNO' or AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idType eq 'PASSPORTNO' )  and AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idType ne null}"
+													value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.idNo}"
+													required="true" maxlength="30" />
+											</h:panelGrid></td>
+									</tr>
+									<tr>
+										<td><h:outputText value="" /></td>
+										<td style="width: 150px;"><p:message for="gender" /></td>
+									</tr>
+									<tr>
+										<td style="width: 150px;"><h:outputText
+												style="color:red;" value="*" /> <h:outputText
+												styleClass="input-label" value="Gender" /></td>
+										<td><p:selectOneMenu required="true"
+												converter="omnifaces.SelectItemsConverter" id="gender"
+												style="width: 258px;"
+												value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.gender}">
+												<f:selectItem itemLabel="-- Select Gender --"
+													noSelectionOption="true" />
+												<f:selectItems itemLabel="#{type.label}" itemValue="#{type}"
+													value="#{AddNewInsuredPersonActionBean.gender}" var="type" />
+											</p:selectOneMenu></td>
+									</tr>
+								</table>
+							</td>
+							<td valign="top">
+								<table>
+									<tr>
+										<td><h:outputText value="" /></td>
+										<td>
+											<div style="width: 270px; margin-left: -5px;">
+												<p:message for="beneficiaryRelationShip" />
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;"><h:outputText
+												style="color:red;" value="*" /> <h:outputText
+												styleClass="input-label"
+												value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_RELATIONSHIP_LABEL']}" />
+										</td>
+										<td><p:selectOneMenu required="true"
+												converter="omnifaces.SelectItemsConverter"
+												id="beneficiaryRelationShip" style="width: 258px;"
+												value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.relationship}">
+												<f:selectItem itemLabel="Select" noSelectionOption="true" />
+												<f:selectItems
+													value="#{AddNewInsuredPersonActionBean.relationshipList}"
+													var="relationship" itemLabel="#{relationship.name}"
+													itemValue="#{relationship}" />
+											</p:selectOneMenu></td>
+									</tr>
+									<tr>
+										<td><h:outputText value="" /></td>
+										<td style="width: 150px;"><p:message for="percentage" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;"><h:outputText
+												style="color:red;" value="*" /> <h:outputText
+												styleClass="input-label"
+												value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_PERCENTAGE_LABEL']}" />
+										</td>
+										<td><p:inputText id="percentage" required="true"
+												style="width:250px;"
+												value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.percentage}">
+												<p:ajax process="@this" />
+											</p:inputText></td>
+									</tr>
+									
+									<tr>
+									  	 <td>
+											<h:outputText />
+											<h:outputText value="#{label['MANAGE_CUSTOMER_DOB_LABEL']}" />
+										</td>
+										<td>
+											<p:inputMask id="dateOfBirth" mask="99-99-9999" style="width:250px;"  placeholder="dd-mm-yyy"  value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.dateOfBirth}">
+												<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+												<p:ajax event="valueChange" listener="#{AddNewInsuredPersonActionBean.calculateAgeForBene}" update="benificiaryAge"></p:ajax>
+												<p:ajax event="change" listener="#{AddNewInsuredPersonActionBean.calculateAgeForBene}" update="benificiaryAge"></p:ajax>
+											</p:inputMask>
+										</td>
+									</tr>
+									
+									<tr>
+										<td><h:outputText value="" /></td>
+										<td style="width: 150px;"><p:message for="benificiaryAge" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+										<h:outputText/> 
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_AGE_LABEL']}" />
+										</td>
+										<td><p:inputText id="benificiaryAge" style="width:250px;" value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.age}">
+												<f:validateDoubleRange minimum="1" maximum="100" />
+											</p:inputText>
+										</td>
+									</tr>
+									<tr>
+										<td><h:outputText value="" /></td>
+										<td style="width: 115px;"><p:message for="townShip" /></td>
+									</tr>
+									<tr>
+										<td style="width: 115px;"><h:outputText
+												style="color:red;" value="*" /> <h:outputText
+												styleClass="input-label" value="Resident TownShip" /></td>
+										<td><h:panelGrid columns="3" id="townShipPanelGroup2">
+												<p:inputText id="townShip"
+													style="width:250px;margin-left:-4px;" required="true"
+													readonly="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.residentAddress.township.name == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+													value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.residentAddress.township == null ? '' : AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.residentAddress.township.name}">
+													<f:validateLength maximum="36" />
+												</p:inputText>
+												<p:commandLink
+													actionListener="#{AddNewInsuredPersonActionBean.selectTownship()}"
+													id="selectTownShipDialogLink2" immediate="true">
+													<h:graphicImage
+														styleClass="#{ApplicationSetting.searchStyleClass}"
+														url="#{ApplicationSetting.searchIcon}" />
+													<p:ajax event="dialogReturn"
+														listener="#{AddNewInsuredPersonActionBean.returnBeneficiariesTownShip}"
+														update="townShipPanelGroup2" />
+												</p:commandLink>
+											</h:panelGrid></td>
+									</tr>
+									<tr>
+										<td><h:outputText value="" /></td>
+										<td style="width: 150px;"><p:message for="address" /></td>
+									</tr>
+									<tr>
+										<td style="width: 150px;"><h:outputText
+												style="color:red;" value="*" /> <h:outputText
+												styleClass="input-label" value="Resident Address" /></td>
+										<td><p:inputTextarea id="address" required="true"
+												style="width:250px;"
+												value="#{AddNewInsuredPersonActionBean.proposalInsuredPersonBeneficiaries.residentAddress.residentAddress}">
+												<f:validateLength maximum="300" />
+											</p:inputTextarea></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					<p:separator />
+					<p:commandButton id="saveBtn" style="width: 60px;"
+						action="#{AddNewInsuredPersonActionBean.saveBeneficiariesInfo()}"
+						update="@form :groupFarmerInsForm:beneficiariesInfoTablePanel"
+						value="#{AddNewInsuredPersonActionBean.createEditBeneficiariesInfo == true ? 'Edit' : 'Save'}" />
+					<p:spacer width="10" />
+					<p:commandButton immediate="true" style="width: 60px;"
+						oncomplete="PF('beneficiariesInfoEntryDialog').hide()"
+						value="Cancel" />
+					<br />
+				</h:panelGroup>
+			</h:form>
+		</p:dialog>
+		<h:form enctype="multipart/form-data" id="pdfPrintForm">
+			<p:dialog appendTo="@(body)" dynamic="true" height="550"
+				id="issuePolicyPDFDialogSingle" resizable="false"
+				widgetVar="issuePolicyPDFDialogSingle" width="1024">
+				<p:ajax event="close" update=":pdfPrintForm :groupFarmerInsForm"
+					listener="#{AddNewInsuredPersonActionBean.handleClose}" />
+				<p:outputPanel id="printPannel">
+					<p:media height="550" id="pdfPlayer" player="pdf"
+						value="#{AddNewInsuredPersonActionBean.reportStream}" width="1000"  cache="false"/>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

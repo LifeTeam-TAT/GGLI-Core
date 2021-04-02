@@ -1,0 +1,33 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/dialog/dialogTemplate.xhtml">
+	<ui:define name="content">
+		<h:form id="addOnForm">
+			<style>
+.ui-chkbox.ui-chkbox-all.ui-widget {
+	display: none !important;
+}
+</style>
+			<h:head>Additional Cover</h:head>
+			<p:dataTable id="addOnTable" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" style="margin-top:10px;" rows="10" paginator="true" selection="#{AddOnDialogActionBean.selectedAddOnList}"
+				value="#{AddOnDialogActionBean.addOnList}" var="addOn" rowKey="#{addOn.id}">
+				<p:ajax event="rowSelectCheckbox" update="@form" />
+				<p:ajax event="rowUnselectCheckbox" update="@form" />
+				<p:ajax event="rowSelect" update="@form" />
+				<p:ajax event="rowUnselect" update="@form" />
+				<p:column selectionMode="multiple" style="width:10px;text-align:center" />
+				<p:column headerText="#{label['MANAGE_BANK_NAME_LABEL']}">
+					<h:outputText value="#{addOn.name}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_BANK_DESCRIPTION_LABEL']}">
+					<h:outputText value="#{addOn.description}" />
+				</p:column>
+				<f:facet name="footer">
+					<p:commandLink immediate="true" id="addOnLink" action="#{AddOnDialogActionBean.selectAddOn}" update=":addOnForm">
+						<h:graphicImage styleClass="#{ApplicationSetting.selectStyleClass}" url="#{ApplicationSetting.selectIcon}" />
+					</p:commandLink>
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

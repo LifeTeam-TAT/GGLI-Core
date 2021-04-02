@@ -1,0 +1,102 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+ xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+ <ui:param name="header" value="Life Claim Inform" />
+ <ui:param name="headerRendered" value="true" />
+ <ui:define name="content">
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  <h:form enctype="multipart/form-data" id="lifeClaimInformForm">
+  	<p:growl globalOnly="true" id="messages" showDetail="true" escape="false" />
+   <p:panel>
+    <h:panelGrid columns="2" cellspacing="8px">
+     <h:outputText styleClass="input-label" value="Claim No" />
+     <h:panelGrid columns="2" id="medicalClaimPanelGroup">
+      <p:inputText readonly="true" style="width:250px;margin-left:-2px;" value="#{InformLifeClaimActionBean.lifeClaimProposal.claimProposalNo}" />
+      <p:commandLink id="detailsProposal" actionListener="#{InformLifeClaimActionBean.openTemplateDialog()}" process="@this" immediate="true">
+       <h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+      </p:commandLink>
+     </h:panelGrid>
+     <h:outputText styleClass="input-label" value="Hospital Claim Amount" rendered="#{InformLifeClaimActionBean.isHospitalClaim}" />
+     <p:inputText id="hsAmount" readonly="true" style="width:250px; text-align: right;" value="#{InformLifeClaimActionBean.lifeClaimProposal.hospitalClaimAmount}"
+      rendered="#{InformLifeClaimActionBean.isHospitalClaim}">
+      <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+     </p:inputText>
+     <h:outputText styleClass="input-label" value="Death Claim Amount" rendered="#{InformLifeClaimActionBean.isDeathClaim}" />
+     <p:inputText id="deathAmount" readonly="true" style="width:250px; text-align: right;" value="#{InformLifeClaimActionBean.lifeClaimProposal.deathClaimAmount}"
+      rendered="#{InformLifeClaimActionBean.isDeathClaim}">
+      <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+     </p:inputText>
+     <h:outputText styleClass="input-label" value="Disability Claim Amount" rendered="#{InformLifeClaimActionBean.isDisabilityClaim}" />
+     <p:inputText id="disabilityAmount" readonly="true" style="width:250px; text-align: right;" value="#{InformLifeClaimActionBean.lifeClaimProposal.disabilityClaimAmount}"
+      rendered="#{InformLifeClaimActionBean.isDisabilityClaim}">
+      <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+     </p:inputText>
+     <h:outputText styleClass="input-label" value="Disability PaymentStatus" rendered="#{InformLifeClaimActionBean.isDisabilityClaim}" />
+     <p:selectOneMenu required="true" style="width:260px" converter="omnifaces.SelectItemsConverter" id="paymetStatus"
+      value="#{InformLifeClaimActionBean.disabiliyClaim.paymentStatus}" rendered="#{InformLifeClaimActionBean.isDisabilityClaim}">
+      <f:selectItem itemLabel="Select Payment Status" />
+      <f:selectItems itemLabel="#{status.label}" value="#{InformLifeClaimActionBean.paymentStatus}" itemValue="#{status}" />
+      <p:ajax event="change" listener="#{InformLifeClaimActionBean.changePaymentStatus}" update="lifeClaimInformForm" />
+     </p:selectOneMenu>
+     <h:outputText />
+     <p:message for="waitingStartDate" />
+     <h:outputText styleClass="input-label" value="Waiting Started Date" rendered="#{InformLifeClaimActionBean.disabiliyClaim.paymentStatus == 'WAITING' ? true : false}" />
+     <p:calendar id="waitingStartDate" required="true" pattern="#{ApplicationSetting.dateFormat}" value="#{InformLifeClaimActionBean.disabiliyClaim.waitingStartDate}"
+      rendered="#{InformLifeClaimActionBean.disabiliyClaim.paymentStatus == 'WAITING' ? true : false}" size="33" showOn="button" timeZone="#{ApplicationSetting.timeZone}" />
+     <h:outputText />
+     <p:message for="waitingEndtDate" />
+     <h:outputText styleClass="input-label" value="Waiting End Date" rendered="#{InformLifeClaimActionBean.disabiliyClaim.paymentStatus == 'WAITING' ? true : false}" />
+     <p:calendar id="waitingEndtDate" required="true" pattern="#{ApplicationSetting.dateFormat}" value="#{InformLifeClaimActionBean.disabiliyClaim.waitingEndDate}"
+      rendered="#{InformLifeClaimActionBean.disabiliyClaim.paymentStatus == 'WAITING' ? true : false}" size="33" showOn="button" timeZone="#{ApplicationSetting.timeZone}" />
+     <h:outputText styleClass="input-label mandatory" value="Payment Type" rendered="#{InformLifeClaimActionBean.disabiliyClaim.paymentStatus == 'PAID' ? true : false}" />
+     <h:panelGrid columns="3" id="disabiliyClaimPanel" rendered="#{InformLifeClaimActionBean.disabiliyClaim.paymentStatus == 'PAID' ? true : false}">
+      <p:inputText id="disabiliyClaim" required="true" readonly="#{InformLifeClaimActionBean.disabiliyClaim.paymentType == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+       style="width:250px;margin-left:-4px;"
+       value="#{InformLifeClaimActionBean.disabiliyClaim.paymentType == null ? '' : InformLifeClaimActionBean.disabiliyClaim.paymentType.name}" />
+      <p:commandLink actionListener="#{InformLifeClaimActionBean.selectPaymentType()}" id="selectPaymentDialogLink" immediate="true">
+       <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+       <p:ajax event="dialogReturn" listener="#{InformLifeClaimActionBean.returnPaymentType}" update="disabiliyClaimPanel termAmount claimAmount" />
+      </p:commandLink>
+     </h:panelGrid>
+     <h:outputText styleClass="input-label" value="Disability TermClaimAmount" rendered="#{InformLifeClaimActionBean.disabiliyClaim.paymentStatus == 'PAID' ? true : false}" />
+     <p:inputText id="termAmount" readonly="true" style="width:250px; text-align: right;" value="#{InformLifeClaimActionBean.disabiliyClaim.termDisabilityAmount}"
+      rendered="#{InformLifeClaimActionBean.disabiliyClaim.paymentStatus == 'PAID' ? true : false}">
+      <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+     </p:inputText>
+     <h:outputText styleClass="input-label" value="Total Claim Amount" />
+     <p:inputText id="claimAmount" readonly="true" style="width:250px; text-align: right;" value="#{InformLifeClaimActionBean.claimAcceptedInfo.claimAmount}">
+      <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+     </p:inputText>
+     <h:outputText styleClass="input-label" value="#{label['MEDICALCLAIMINFORM_SERVICE_CHARGES_LABEL']}" />
+     <p:inputText id="additionalCharges" style="width:250px; text-align: right;" value="#{InformLifeClaimActionBean.claimAcceptedInfo.servicesChargesNum}">
+      <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+     </p:inputText>
+     <h:outputText styleClass="input-label" value="#{label['MEDICALCLAIMINFORM_REMARK_LABEL']}" />
+     <p:inputTextarea id="remark" autoResize="true" rows="7" style="width:250px;" value="#{InformLifeClaimActionBean.remark}">
+      <f:validateLength maximum="8000" />
+     </p:inputTextarea>
+     <h:outputText />
+     <p:message for="responsiblePerson" />
+     <h:outputText styleClass="input-label mandatory" value="Responsible Person" />
+     <h:panelGrid columns="3" id="responsiblePersonPanel">
+      <p:inputText id="responsiblePerson" required="true" readonly="#{InformLifeClaimActionBean.responsiblePerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+       style="width:250px;margin-left:-4px;" value="#{InformLifeClaimActionBean.responsiblePerson == null ? '' : InformLifeClaimActionBean.responsiblePerson.name}" />
+      <p:commandLink actionListener="#{InformLifeClaimActionBean.selectUser()}" id="selectUserDialogLink" immediate="true">
+       <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+       <p:ajax event="dialogReturn" listener="#{InformLifeClaimActionBean.returnUser}" update="responsiblePersonPanel" />
+      </p:commandLink>
+     </h:panelGrid>
+    </h:panelGrid>
+   </p:panel>
+   <br />
+   <h:panelGrid columns="2" cellspacing="5px">
+    <p:commandButton disabled="#{InformLifeClaimActionBean.isPrint}" style="width: 65px;" id="approveBtn" action="#{InformLifeClaimActionBean.informLifeClaim()}"
+     update="lifeClaimInformForm" value="Inform" rendered="#{!InformLifeClaimActionBean.reject}"/>
+     <p:commandButton value="Reject" action="#{InformLifeClaimActionBean.rejectLifeClaim()}" disabled="#{InformLifeClaimActionBean.isPrint}" rendered="#{InformLifeClaimActionBean.reject}" update="lifeClaimInformForm"/>
+    <p:commandButton style="width: 65px;" id="pdfSingleBtn" action="dashboard" immediate="true" value="Cancel" />
+   </h:panelGrid>
+   <br />
+   <br />
+   <h:outputText style="color:red;" styleClass="input-label" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+  </h:form>
+ </ui:define>
+</ui:composition>

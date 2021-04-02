@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="motorRenewalNoticeLetter" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="515" leftMargin="40" rightMargin="40" topMargin="165" bottomMargin="40" resourceBundle="LANGUAGE_en" uuid="0bc6c320-2197-4b12-a310-ff85799b4277">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="304"/>
+	<parameter name="activedPolicyEndDate" class="java.lang.String"/>
+	<parameter name="firstYearNCB" class="java.lang.Float"/>
+	<parameter name="secondYearNCB" class="java.lang.Float"/>
+	<parameter name="thirdYearNCB" class="java.lang.Float"/>
+	<parameter name="aboveThirdYearNCB" class="java.lang.Float"/>
+	<parameter name="NCBPercentage" class="java.lang.String"/>
+	<parameter name="vehicleInsured" class="java.lang.Double"/>
+	<parameter name="totalSumInsured" class="java.lang.Double"/>
+	<parameter name="policyNo" class="java.lang.String"/>
+	<parameter name="date" class="java.util.Date"/>
+	<parameter name="originalPremium" class="java.lang.Double"/>
+	<parameter name="noClaimBonus" class="java.lang.Double"/>
+	<parameter name="renewalPremium" class="java.lang.Double"/>
+	<parameter name="renewalPolicyEndDate" class="java.lang.String"/>
+	<parameter name="customerName" class="java.lang.String"/>
+	<parameter name="customerAddress" class="java.lang.String"/>
+	<parameter name="penaltyPremium" class="java.lang.Double"/>
+	<parameter name="winScreen" class="java.lang.Double"/>
+	<detail>
+		<band height="634" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="0" y="20" width="83" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Policy No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="0" y="103" width="73" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Dear Sir,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="397" y="1" width="47" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[Dated  -]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="160" y="87" width="180" height="20"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Motor Insurance Renewal Notice]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="15ee5b9c-aeda-44fb-a765-0db8c5048804" x="0" y="121" width="516" height="65"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph lineSpacing="Single" leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA["As your motor Insurance policy will expire on the coming " +  $P{activedPolicyEndDate}  +  ",  you are requested to pay the net renewal premium as calculated below not later than " +  $P{activedPolicyEndDate}  +  " in order to renew your motor policy for a further period of  12 Months ending  "+  $P{renewalPolicyEndDate} + " . "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="483" y="186" width="30" height="20"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[Kyats]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="269" y="207" width="120" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[Original premium]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="269" y="243" width="120" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[Penalty premium]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="f72d3885-f9d1-4bba-9a3a-41eaf1fd3b45" x="269" y="225" width="120" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{NCBPercentage}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="0" y="265" width="101" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Wind Screen]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="0" y="284" width="101" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Sum Insured]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="102" y="265" width="10" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[=]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="102" y="284" width="10" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[=]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="0" y="323" width="101" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Authorized Executive]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="d4ffbad7-9659-412c-a644-21de74a2ed67" x="2" y="344" width="510" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="219" y="346" width="55" height="20"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Attention]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="12" y="368" width="504" height="35"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[ A motor insurance policy for which no claim has been paid is allowed a no claim-bonus on renewal as follows:-
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="0" y="368" width="10" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[1.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="12" y="412" width="187" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[1st year following the no claim-year]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="12" y="431" width="187" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[2nd year following the no claim-year]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="12" y="449" width="187" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[3rd year following the no claim-year]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="12" y="468" width="187" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[4th year following the no claim-year]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="f72d3885-f9d1-4bba-9a3a-41eaf1fd3b45" x="199" y="412" width="108" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["( " +$P{firstYearNCB} + " %)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f72d3885-f9d1-4bba-9a3a-41eaf1fd3b45" x="199" y="431" width="108" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["( " +$P{secondYearNCB} + " %)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f72d3885-f9d1-4bba-9a3a-41eaf1fd3b45" x="199" y="450" width="108" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["( " +$P{thirdYearNCB} + " %)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f72d3885-f9d1-4bba-9a3a-41eaf1fd3b45" x="199" y="468" width="108" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["( " +$P{aboveThirdYearNCB} + " %)"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="0" y="487" width="10" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[2.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="12" y="487" width="503" height="33"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[If changes to the present coverage are contemplated, please contact the Motor Insurance Department before expire date.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="0" y="521" width="10" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[3.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="12" y="521" width="504" height="33"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[The renewal premium should be paid before the expiry of the current term (on or before.....) so that there shall be no gap between the 2 terms.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="0" y="555" width="10" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[4.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="12" y="555" width="503" height="50"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[This renewal notices is sent to remind you of the impending expiry of the current term and for renewal and to send it is not obligatory our part. Hence it is best for you and for us, if you kindly pay your renewal premium before the current term expires regardless of the notice being received or not. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="0" y="606" width="10" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[5.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="12" y="606" width="502" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Please quote your policy and motor vehicle numbers, in all your communication with us.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="0" y="1" width="147" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Motor Insurance Department]]></text>
+			</staticText>
+			<textField pattern="##,###.00">
+				<reportElement uuid="7dcc82cb-e217-431e-86d0-d1712802b9eb" x="114" y="265" width="130" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{winScreen}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##,###.00">
+				<reportElement uuid="35f468de-6751-47c3-90a5-67c725c363bf" x="114" y="284" width="130" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalSumInsured}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8fa29009-e36f-4eba-aba2-64959d02b486" x="100" y="20" width="416" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{policyNo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-yyyy">
+				<reportElement uuid="4cf9b688-d104-43ff-9d4c-d936a961458a" x="446" y="1" width="67" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement uuid="996004d9-b274-4a4f-ba67-9edcd3d2c18c" x="388" y="207" width="125" height="18"/>
+				<textElement textAlignment="Right">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{originalPremium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement uuid="8781f5fd-454a-4a51-9124-fd62525f63b5" x="388" y="225" width="125" height="18"/>
+				<textElement textAlignment="Right">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{noClaimBonus}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement uuid="a652831d-9d2b-4dbf-8c2d-c1ec11c3cda8" x="388" y="243" width="125" height="18"/>
+				<textElement textAlignment="Right">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{penaltyPremium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="79b66a2a-b519-4c4a-869b-254ec38e3e6b" x="100" y="38" width="416" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{customerName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e46bcbe0-715b-4978-a2e5-e4275f7c1f4e" x="100" y="56" width="416" height="30"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{customerAddress}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="0" y="38" width="83" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Customer Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="0" y="56" width="83" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<text><![CDATA[Customer Address]]></text>
+			</staticText>
+			<textField pattern="##,###.00">
+				<reportElement uuid="35f468de-6751-47c3-90a5-67c725c363bf" x="0" y="303" width="514" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA["For and on behalf of the "+$R{GRAND_GUARDIAN_LABEL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="90" y="20" width="9" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="90" y="38" width="9" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="90" y="56" width="9" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="269" y="261" width="120" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[Net renewal premium]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement uuid="a652831d-9d2b-4dbf-8c2d-c1ec11c3cda8" x="388" y="261" width="125" height="18"/>
+				<textElement textAlignment="Right">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{renewalPremium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="321" y="392" width="90" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[Private Car]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="426" y="392" width="90" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[Commercial Car]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="321" y="411" width="90" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[(0.0%)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="321" y="430" width="90" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[(25%)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="321" y="449" width="90" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[(30%)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="321" y="467" width="90" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[(40%)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="426" y="411" width="90" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[(0.0%)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="426" y="430" width="90" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[(15%)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="426" y="449" width="90" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[(20%)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d" x="426" y="468" width="90" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[(25%)]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

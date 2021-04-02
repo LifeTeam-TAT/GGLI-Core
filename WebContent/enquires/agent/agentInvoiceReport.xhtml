@@ -1,0 +1,110 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Agent Invoice Enquiry" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="agentInvoiceReportForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="invoiceNo" value="Invoice No." />
+						<p:inputText id="invoiceNo" value="#{AgentInvoiceReportActionBean.criteria.invoiceNo}" />
+						<h:outputLabel for="branch" value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="branchPanelGroup">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="branchPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" disabled="#{!AgentInvoiceReportActionBean.accessBranch}"
+										actionListener="#{AgentInvoiceReportActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{AgentInvoiceReportActionBean.returnBranch}" update="branch" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true" value="#{AgentInvoiceReportActionBean.criteria.branch == null ? 'All' : AgentInvoiceReportActionBean.criteria.branch.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{!AgentInvoiceReportActionBean.accessBranch}"
+										action="#{AgentInvoiceReportActionBean.criteria.setBranch(null)}" process="@this" update="branch" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="insuranceType" value="Insurance Type" />
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuranceType" value="#{AgentInvoiceReportActionBean.criteria.insuranceType}">
+							<f:selectItems value="#{AgentInvoiceReportActionBean.insuranceTypeList}" />
+						</p:selectOneMenu>
+						<h:outputText styleClass="input-label" value="#{label['ADDNEWMOTORPROPOSAL_AGENT_LABEL']}" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="agentPanelGroup">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="agentPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentInvoiceReportActionBean.selectAgent()}" id="selectAgentDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{AgentInvoiceReportActionBean.returnAgent}" update="agent" />
+									</p:commandButton>
+									<p:inputText id="agent" readonly="true" value="#{AgentInvoiceReportActionBean.criteria.agent == null ? '' : AgentInvoiceReportActionBean.criteria.agent.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times"
+										action="#{AgentInvoiceReportActionBean.criteria.setAgent(null)}" process="@this" update="agent" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton style="width:80px;" action="#{AgentInvoiceReportActionBean.filter}" update=":agentInvoiceReportForm:agentInvoiceTable" value="Search" />
+				<p:commandButton style="width:80px;" action="#{AgentInvoiceReportActionBean.reset()}" update=":agentInvoiceReportForm" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="agentInvoiceTable" styleClass="fixed-size" lazy="true" paginator="true" rowIndexVar="rowIndex" rowKey="index" rows="10" rowsPerPageTemplate="5,10,15"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" style="width:100%;"
+				value="#{AgentInvoiceReportActionBean.agentInvoiceReportList}" var="agentInvoice">
+				<p:column headerText="No." style="width:3%;">
+					<h:outputText value="#{rowIndex + 1}" />
+				</p:column>
+				<p:column headerText="Invoice No" style="width:20%;">
+					<h:outputText value="#{agentInvoice.invoiceNo}" />
+				</p:column>
+				<p:column headerText="Invoice Date" style="width:10%;">
+					<h:outputText value="#{agentInvoice.invoiceDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Agent Name" style="width:20%;">
+					<h:outputText value="#{agentInvoice.agentName}">
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Liscense No" style="width:10%;">
+					<h:outputText value="#{agentInvoice.liscenseNo}" />
+				</p:column>
+				<p:column headerText="Reference Type" style="width:20%;">
+					<h:outputText value="#{agentInvoice.referenceType.label}">
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Commission Amount" style="width:12%;">
+					<h:outputText value="#{agentInvoice.commissionAmount}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Print" style="width:5%;">
+					<p:commandLink action="#{AgentInvoiceReportActionBean.generateAgentDetails(agentInvoice)}" oncomplete="PF('pdfPreviewDialog1').show()" update=":printPreviewPdf:pdfPanel">
+						<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" title="PDF Print" url="#{ApplicationSetting.printIcon}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<!-- PDF Preview Form 1-->
+		<h:form enctype="multipart/form-data" id="printPreviewPdf">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview (PDF)" height="500" hideEffect="fade" id="pdfPreviewDialog1" resizable="false" showEffect="fade"
+				widgetVar="pdfPreviewDialog1" width="1024">
+				<p:ajax event="close" update=":printPreviewPdf :agentInvoiceReportForm" listener="#{AgentInvoiceReportActionBean.handleClose}" />
+				<h:panelGroup id="pdfPanel">
+					<p:media height="450" id="pdfPlayer" player="pdf" value="#{AgentInvoiceReportActionBean.agentStream}" width="1000" cache="false"/>
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+		<!-- Agent Selection Form -->
+		<!-- Select Branch -->
+	</ui:define>
+</ui:composition>

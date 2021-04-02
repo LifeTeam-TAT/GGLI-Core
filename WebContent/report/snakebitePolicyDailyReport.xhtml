@@ -1,0 +1,149 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:cyc="http://www.cycdemo.com/java" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/print.cs" />
+		<h:form id="dailyReportForm">
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" showDetail="true" id="messages" />
+			</div>
+			<table cellspacing="5" width="100%">
+				<tr>
+					<td><h:outputText value="Snake Bite Daily Report" styleClass="table-title" id="title" /></td>
+				</tr>
+			</table>
+			<p:panel>
+				<p:panelGrid columns="3" id="SnakebitePanelGroup" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText value="Entity" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectEntityPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{SnakeBitePolicyDailyReportActionBean.selectEntity()}" id="selectEntityDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{SnakeBitePolicyDailyReportActionBean.returnEntity}" update="entity selectBranchPanelGrid salePontPanelGroup" />
+									</p:commandButton>
+									<p:inputText id="entity" readonly="true"
+										value="#{SnakeBitePolicyDailyReportActionBean.criteria.entity == null ? '--Select Entity--' : SnakeBitePolicyDailyReportActionBean.criteria.entity.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{SnakeBitePolicyDailyReportActionBean.removeEntity}" process="@this"
+										update="entity selectBranchPanelGrid salePontPanelGroup" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputLabel />
+						<h:outputLabel />
+						<h:outputLabel styleClass="input-label" value="Start Date" />
+						<p:calendar showOn="button" pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}"
+							value="#{SnakeBitePolicyDailyReportActionBean.criteria.startDate}" id="startDate" />
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="selectBranchPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{SnakeBitePolicyDailyReportActionBean.selectBranch()}" id="selectBranchDialogLink"
+										process="@this" disabled="#{SnakeBitePolicyDailyReportActionBean.criteria.entity==null?true:false}">
+										<p:ajax event="dialogReturn" listener="#{SnakeBitePolicyDailyReportActionBean.returnBranch}" update="branch salePontPanelGroup" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true"
+										value="#{SnakeBitePolicyDailyReportActionBean.criteria.branch == null ? '--Select Branch--' : SnakeBitePolicyDailyReportActionBean.criteria.branch.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{SnakeBitePolicyDailyReportActionBean.criteria.entity==null?true:false}" icon="fa fa-times"
+										action="#{SnakeBitePolicyDailyReportActionBean.clearBranch}" process="@this" update="branch salePontPanelGroup" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputLabel />
+						<h:outputLabel />
+						<h:outputLabel styleClass="input-label" value="End Date" />
+						<p:calendar showOn="button" pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}"
+							value="#{SnakeBitePolicyDailyReportActionBean.criteria.endDate}" id="endDate" />
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText styleClass="input-label" value="Sale Point" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{SnakeBitePolicyDailyReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+										process="@this" disabled="#{SnakeBitePolicyDailyReportActionBean.criteria.branch==null?true:false}">
+										<p:ajax event="dialogReturn" listener="#{SnakeBitePolicyDailyReportActionBean.returnSalePoint}" update="salePoint" />
+									</p:commandButton>
+									<p:inputText id="salePoint" readonly="true"
+										value="#{SnakeBitePolicyDailyReportActionBean.criteria.salePoint == null ? '' :SnakeBitePolicyDailyReportActionBean.criteria.salePoint.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{SnakeBitePolicyDailyReportActionBean.criteria.branch==null?true:false}" icon="fa fa-times"
+										action="#{SnakeBitePolicyDailyReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salePoint" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton value="Search" action="#{SnakeBitePolicyDailyReportActionBean.search}" update="dailyReportForm:reportTable" />
+				<p:commandButton action="#{SnakeBitePolicyDailyReportActionBean.init()}" update=":dailyReportForm" value="Reset" />
+			</h:panelGrid>
+			<h:panelGroup id="reportTable">
+				<p:dataTable value="#{SnakeBitePolicyDailyReportActionBean.snakeBitePolicyDailyReportList}" id="report" var="report" paginator="true" rows="20" style="width:100%;"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="30,50,80"
+					rowKey="index" rowIndexVar="rowIndex">
+					<f:facet name="header">
+						<p:commandLink oncomplete="PF('pdfPreviewDialog').show()" immediate="true" action="#{SnakeBitePolicyDailyReportActionBean.generateReport()}" update=":pdfPreviewForm">
+							<h:graphicImage url="#{ApplicationSetting.printIcon}" styleClass="#{ApplicationSetting.printStyleClass}" title="PDF Print" />
+						</p:commandLink>
+					</f:facet>
+					<p:column headerText="No." style="width:50px;">
+						<h:outputText value="#{rowIndex + 1}" />
+					</p:column>
+					<p:column headerText="Certificate No.">
+						<h:outputText value="#{report.snakeBitePolicyNo}" />
+					</p:column>
+					<p:column headerText="Customer Name">
+						<h:outputText value="#{report.customerName}" />
+					</p:column>
+					<p:column headerText="Registration No. (NRC)">
+						<h:outputText value="#{report.customerNrc}" />
+					</p:column>
+					<p:column headerText="Address">
+						<h:outputText value="#{report.customerAddress}" />
+					</p:column>
+					<p:column headerText="Beneficiary Name">
+						<h:outputText value="#{report.beneficialName}" />
+					</p:column>
+					<p:column headerText="Registration No. (NRC)">
+						<h:outputText value="#{report.beneficialNrc}" />
+					</p:column>
+					<p:column headerText="Address">
+						<h:outputText value="#{report.beneficialaddress}" />
+					</p:column>
+					<p:column headerText="Premium Income">
+						<h:outputText value="#{report.premium}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Commission">
+						<h:outputText value="#{report.commission}%" />
+					</p:column>
+					<p:column headerText="Net Premium">
+						<h:outputText value="#{report.netpremium}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Branch Name" style="width:120px;">
+						<h:outputText value="#{report.branchName}" />
+					</p:column>
+					<p:column headerText="Sale Point Name" style="width:120px;">
+						<h:outputText value="#{report.salePointName}" />
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+		</h:form>
+		<!-- PDF Preview Form -->
+		<h:form enctype="multipart/form-data" id="pdfPreviewForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview (PDF)" width="1070" height="505" hideEffect="fade" id="pdfPreviewDialog" resizable="false" showEffect="fade"
+				widgetVar="pdfPreviewDialog">
+				<p:media width="1050" height="500" player="pdf" value="#{SnakeBitePolicyDailyReportActionBean.stream}" cache="false" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

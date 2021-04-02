@@ -1,0 +1,235 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<h:form id="proposalList">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<h:outputText styleClass="table-title" value="Life Proposal Report" />
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<p:separator style="height:5px" />
+			<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="startDate" value="Start Date" />
+					<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{LifeProposalReportActionBean.criteria.startDate}" />
+					<h:outputText />
+					<h:outputText />
+					<h:outputText value="Customer" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="selectCustomerPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectCustomerPanelGrid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{LifeProposalReportActionBean.selectCustomer()}" id="selectCutomerDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{LifeProposalReportActionBean.returnCustomer}" update="customer" />
+								</p:commandButton>
+								<p:inputText id="customer" readonly="true" value="#{LifeProposalReportActionBean.criteria.customer == null ? '' : LifeProposalReportActionBean.criteria.customer.fullName}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{LifeProposalReportActionBean.criteria.setCustomer(null)}" process="@this" update="customer" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputText />
+					<h:outputText />
+					<h:outputText value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" disabled="#{!LifeProposalReportActionBean.accessBranches}"
+									actionListener="#{LifeProposalReportActionBean.selectEntity()}" id="entityDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{LifeProposalReportActionBean.returnEntity}" update=" entity branchPanelGroup salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true" value="#{LifeProposalReportActionBean.criteria.entity == null ? '' :LifeProposalReportActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{!LifeProposalReportActionBean.accessBranches}" action="#{LifeProposalReportActionBean.removeEntity}"
+									process="@this" update="entity branchPanelGroup salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="endDate" value="End Date" />
+					<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{LifeProposalReportActionBean.criteria.endDate}" />
+					<h:outputText />
+					<h:outputText />
+					<h:outputText value="Organization" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="selectOrganizationPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectagentPanelGrid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{LifeProposalReportActionBean.selectOrganization()}" id="selectAgentOrgLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{LifeProposalReportActionBean.returnOrganization}" update="organization" />
+								</p:commandButton>
+								<p:inputText id="organization" readonly="true"
+									value="#{LifeProposalReportActionBean.criteria.organization == null ? '' : LifeProposalReportActionBean.criteria.organization.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{LifeProposalReportActionBean.criteria.setOrganization(null)}" process="@this" update="organization" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputText />
+					<p:message for="branch" id="MsgBranch" display="text" />
+					<h:outputText styleClass="input-label " value="#{label['ADDNEWLIFEPROPOSAL_BRANCH_LABEL']}" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search"
+									disabled="#{!LifeProposalReportActionBean.accessBranches || LifeProposalReportActionBean.criteria.entity==null?true:false}"
+									actionListener="#{LifeProposalReportActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{LifeProposalReportActionBean.returnBranch}" update="branch salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true" value="#{LifeProposalReportActionBean.criteria.branch == null ? '' : LifeProposalReportActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times"
+									disabled="#{!LifeProposalReportActionBean.accessBranches || LifeProposalReportActionBean.criteria.entity==null?true:false}"
+									action="#{LifeProposalReportActionBean.removeBranch()}" process="@this" update="branch salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText styleClass="input-label" value="Product" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="product" value="#{LifeProposalReportActionBean.criteria.product}" autoWidth="false">
+						<f:selectItem itemLabel="-- Select Product --" noSelectionOption="true" />
+						<f:selectItems value="#{LifeProposalReportActionBean.productList}" var="product" itemLabel="#{product.name}" itemValue="#{product}" />
+					</p:selectOneMenu>
+					<h:outputText />
+					<h:outputText />
+					<h:outputText value="Agent" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="selectagentPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectagentPanelGrid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{LifeProposalReportActionBean.selectAgent()}" id="selectAgentDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{LifeProposalReportActionBean.returnAgent}" update="agent" />
+								</p:commandButton>
+								<p:inputText id="agent" readonly="true" value="#{LifeProposalReportActionBean.criteria.agent == null ? '' : LifeProposalReportActionBean.criteria.agent.fullName}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{LifeProposalReportActionBean.criteria.setAgent(null)}" process="@this" update="agent" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputText />
+					<h:outputText />
+					<h:outputText value="Sale Point " />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="selectSalePointPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{LifeProposalReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+									process="@this" disabled="#{LifeProposalReportActionBean.criteria.branch==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{LifeProposalReportActionBean.returnSalePoint}" update="salePoints" />
+								</p:commandButton>
+								<p:inputText id="salePoints" readonly="true" value="#{LifeProposalReportActionBean.criteria.salePoint == null ? '' : LifeProposalReportActionBean.criteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{LifeProposalReportActionBean.criteria.branch==null?true:false}"
+									action="#{LifeProposalReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salePoints" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton action="#{LifeProposalReportActionBean.filter}" update=":proposalList :proposalList:lifeProposalTable" value="Search" />
+				<p:commandButton action="#{LifeProposalReportActionBean.resetCriteria}" update=":proposalList" value="Reset" />
+			</h:panelGrid>
+			<!-- <table cellspacing="5" width="100%">
+				<tr>
+					
+					<td align="right">
+					<p:commandLink
+							action="#{LifeProposalReportActionBean.generateReport()}"
+							immediate="true" oncomplete="PF('pdfPreviewDialog').show()"
+							update=":proposalList :pdfPreviewForm">
+							<h:graphicImage
+								styleClass="#{ApplicationSetting.printStyleClass}"
+								title="PDF Print" url="#{ApplicationSetting.printIcon}" />
+						</p:commandLink>
+						 <h:commandLink
+							action="#{LifeProposalReportActionBean.exportExcel}"
+							immediate="true">
+							<p:graphicImage
+								styleClass="#{ApplicationSetting.printStyleClass}"
+								value="/images/excel.png" />
+						</h:commandLink></td>
+				</tr>
+			</table> -->
+			<table>
+				<tr>
+					<td><p:dataTable id="lifeProposalTable" lazy="true" paginator="true" paginatorPosition="bottom"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="10"
+							rowsPerPageTemplate="10,20, 30" value="#{LifeProposalReportActionBean.lazyModel}" var="lifeProposal" style="width:150%">
+							<f:facet name="header">
+								<p:commandLink action="#{LifeProposalReportActionBean.exportExcel}" immediate="true" ajax="false">
+									<p:graphicImage style="width: 30px; height: 30px;" styleClass="#{ApplicationSetting.excelStyleClass}" value="#{ApplicationSetting.excelIcon}" />
+								</p:commandLink>
+								<p:message for="lifeProposalTable" />
+							</f:facet>
+							<p:column headerText="No." styleClass="fixed-size" style="width:3%">
+								<h:outputText value="#{rowIndex + 1}" />
+							</p:column>
+							<p:column headerText="Proposal No." styleClass="fixed-size" style="width:10%">
+								<h:outputText value="#{lifeProposal.porposalNo}" />
+							</p:column>
+							<p:column headerText="Date of Proposed" styleClass="fixed-size" style="width:10%">
+								<h:outputText value="#{lifeProposal.inspectionDate}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Customer Name" style="width:10%">
+								<h:outputText value="#{lifeProposal.customerName}" />
+							</p:column>
+							<p:column headerText="Father Name" style="width:10%">
+								<h:outputText value="#{lifeProposal.fatherName}" />
+							</p:column>
+							<p:column headerText="Agent Name and Code No." styleClass="fixed-size" style="width:10%">
+								<h:outputText value="#{lifeProposal.agentNameAndCode}" />
+							</p:column>
+							<p:column headerText="Address &amp; Phone No." styleClass="fixed-size" style="width:10%">
+								<h:outputText value="#{lifeProposal.addressAndPhoneNo}" />
+							</p:column>
+							<p:column headerText="Sum Insured" style="width:10%;text-align:right;" styleClass="fixed-size">
+								<h:outputText value="#{lifeProposal.sumInsured}">
+									<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="One Year Premium" style="width:10%;text-align:right;" styleClass="fixed-size">
+								<h:outputText value="#{lifeProposal.oneYearPremium}">
+									<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Premium" style="width:10%;text-align:right;" styleClass="fixed-size">
+								<h:outputText value="#{lifeProposal.premium}">
+									<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="WorkFlow Task" style="width:5%">
+								<h:outputText value="#{lifeProposal.workflow}" />
+							</p:column>
+							<p:column headerText="ResponsiblePerson" style="width:10%">
+								<h:outputText value="#{lifeProposal.responsiblePerson}" />
+							</p:column>
+							<p:column headerText="Branch" style="width:10%" styleClass="fixed-size">
+								<h:outputText value="#{lifeProposal.branch}" />
+							</p:column>
+							<p:column headerText="Sale Point Code" style="width:5%">
+								<h:outputText value="#{lifeProposal.salePointCode}" />
+							</p:column>
+							<p:column headerText="Sale Point Name" style="width:10%" styleClass="fixed-size">
+								<h:outputText value="#{lifeProposal.salePointName}" />
+							</p:column>
+							<p:column headerText="Remarks" style="width:5%" styleClass="fixed-size">
+								<h:outputText value="#{lifeProposal.remark}" />
+							</p:column>
+						</p:dataTable></td>
+				</tr>
+			</table>
+		</h:form>
+		<!-- PDF Preview Form -->
+		<h:form enctype="multipart/form-data" id="pdfPreviewForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview (PDF)" width="1070" height="505" hideEffect="fade" id="pdfPreviewDialog" resizable="false" showEffect="fade"
+				widgetVar="pdfPreviewDialog">
+				<p:media width="1050" height="500" player="pdf" value="#{LifeProposalReportActionBean.stream}" cache="false" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

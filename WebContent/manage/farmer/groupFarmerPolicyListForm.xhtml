@@ -1,0 +1,128 @@
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Group Farmer Proposal Details" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form enctype="multipart/form-data" id="proposalDetailsForm">
+			<f:event listener="#{GroupFarmerPolicyIssueActionBean.checkMessage}" type="preRenderView" />
+			<p:growl id="messages" life="8000" globalOnly="true" showDetail="true" escape="false" />
+			<table>
+				<tr>
+					<td width="80px;"><h:outputText for="proposalNo" value="Proposal No." /></td>
+					<td><p:inputText id="proposalNo" style="width:205px;" value="#{GroupFarmerPolicyIssueActionBean.criteria.number}" /></td>
+					<td width="80px;"><h:outputLabel for="startDate" value="Start Date" /></td>
+					<td width="280px;"><p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{GroupFarmerPolicyIssueActionBean.criteria.startDate}" />
+					</td>
+					<td width="80px;"><h:outputLabel for="endDate" value="End Date" /></td>
+					<td width="280px;"><p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{GroupFarmerPolicyIssueActionBean.criteria.endDate}" /></td>
+					<td><p:commandButton action="#{GroupFarmerPolicyIssueActionBean.search()}" update=":proposalDetailsForm" value="Search" /></td>
+					<td><p:commandButton action="#{GroupFarmerPolicyIssueActionBean.resetCriteria()}" update=":proposalDetailsForm" value="Reset" style="margin-right:-20px;" /></td>
+				</tr>
+			</table>
+			<br />
+			<p:message for="groupFarmerProposalTable" display="text" />
+			<p:dataTable value="#{GroupFarmerPolicyIssueActionBean.groupFarmerProposalDTOList}" widgetVar="userTable" var="groupFarmerProposal" id="groupFarmerProposalTable"
+				paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index"
+				rows="10" rowsPerPageTemplate="5,10, 15" style="width:100%;">
+				<p:column style="width: 3%;" headerText="Detail">
+					<p:rowToggler />
+				</p:column>
+				<p:column headerText="ProposalNo" style="width: 10%;">
+					<h:outputText value="#{groupFarmerProposal.proposalNo}" />
+				</p:column>
+				<p:column headerText="Total Insured Person" style="width: 5%;text-align: center;">
+					<h:outputText value="#{groupFarmerProposal.noOfInsuredPerson}" />
+				</p:column>
+				<p:column headerText="Customer" style="width: 15%;text-align: center;">
+					<h:outputText value="#{groupFarmerProposal.organization.name}" />
+				</p:column>
+				<p:column headerText="Submitted Date" style="width: 10%;">
+					<h:outputText value="#{groupFarmerProposal.submittedDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Agent" style="width: 10%;">
+					<h:outputText value="#{groupFarmerProposal.agent.fullName}" />
+				</p:column>
+				<p:column headerText="Total SI" style="width: 5%;">
+					<h:outputText value="#{groupFarmerProposal.totalSI}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Total Premium" style="width: 5%;">
+					<h:outputText value="#{groupFarmerProposal.premium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Add New" style="width: 5%;"   >
+					<h:commandLink action="#{GroupFarmerPolicyIssueActionBean.addNewInsuredPerson(groupFarmerProposal)}" immediate="true" update="@form"
+						disabled="#{groupFarmerProposal.showIssueButton   or groupFarmerProposal.noOfInsuredPerson == groupFarmerProposal.lifeProposalList.size() ? 'true' : 'false'}">
+						<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+					</h:commandLink>
+				</p:column>
+				<p:rowExpansion>
+					<p:dataTable id="FarmerProposalTable" rowIndexVar="index" value="#{groupFarmerProposal.lifeProposalList}" var="lifeProposal">
+						<p:column headerText="No" style="width: 5%;">
+							<h:outputText value="#{index + 1}" />
+						</p:column>
+						<p:column headerText="Proposal No" style="width: 20%;">
+							<h:outputText value="#{lifeProposal.proposalNo}" />
+						</p:column>
+						<p:column headerText=" No.Of Insured Person" style="width: 10%;text-align: center;">
+							<h:outputText value="#{lifeProposal.proposalInsuredPersonList.size()}" />
+						</p:column>
+						<p:column headerText="Insured Person" style="width: 20%;">
+							<h:outputText value="#{lifeProposal.proposalInsuredPersonList.get(0).getFullName()}" />
+						</p:column>
+						<p:column headerText="Sale Person" style="width: 20%;">
+							<h:outputText value="#{lifeProposal.salePersonName}" />
+						</p:column>
+						<p:column headerText="Submitted Date" style="width: 10%;text-align: center;">
+							<h:outputText value="#{lifeProposal.submittedDate}">
+								<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="SumInsured" style="width: 10%;text-align: right;">
+							<h:outputText value="#{lifeProposal.sumInsured}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Premium" style="width:10%;text-align: right;">
+							<h:outputText value="#{lifeProposal.premium}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Edit" style="width:50px; text-align:center;">
+							<h:commandLink action="#{GroupFarmerPolicyIssueActionBean.prepareEditFarmerProposal(lifeProposal)}" id="editInsuredPersonInfoLink"
+								disabled="#{groupFarmerProposal.showIssueButton}" update="@form">
+								<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+							</h:commandLink>
+						</p:column>
+						<p:column headerText="Print" style="width: 5%;text-align: center;">
+							<p:commandLink action="#{GroupFarmerPolicyIssueActionBean.generatePolicyIssue(lifeProposal)}" immediate="true" disabled="#{!groupFarmerProposal.showIssueButton}"
+								oncomplete="PF('issuePolicyPDFDialogSingle').show()" update=":pdfForm:printPannel">
+								<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" url="#{ApplicationSetting.printIcon}" />
+							</p:commandLink>
+						</p:column>
+					</p:dataTable>
+					<br />
+					<p:commandButton value="Issue Policy" actionListener="#{GroupFarmerPolicyIssueActionBean.addNewFarmerPolicy(groupFarmerProposal)}" update="@form"
+						disabled="#{groupFarmerProposal.showIssueButton}" />
+					<p:spacer width="10" />
+					<p:commandButton value="Print review" action="#{GroupFarmerPolicyIssueActionBean.generateALLPolicyIssue(groupFarmerProposal)}" oncomplete="PF('issuePolicyPDFDialogSingle').show()"
+						update=":pdfForm:printPannel" disabled="#{!groupFarmerProposal.showIssueButton}" />
+				</p:rowExpansion>
+			</p:dataTable>
+		</h:form>
+		<h:form id="pdfForm" enctype="multipart/form-data">
+			<p:dialog appendTo="@(body)" dynamic="true" modal="true" widgetVar="issuePolicyPDFDialogSingle" resizable="false" id="issuePolicyPDFDialogSingle" width="1050" height="500">
+				<p:ajax event="close" update=":pdfForm :proposalDetailsForm" listener="#{GroupFarmerPolicyIssueActionBean.handleClose}" />
+				<p:outputPanel id="printPannel">
+					<p:media id="pdfPlayer" value="#{GroupFarmerPolicyIssueActionBean.reportStream}" player="pdf" width="1050" height="500" cache="false" />
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

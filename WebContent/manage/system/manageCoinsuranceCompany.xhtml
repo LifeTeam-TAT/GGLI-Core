@@ -1,0 +1,516 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Co-Insurance Company Management" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="coinsuranceCompanyEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" />
+			<div style="padding-left: 15px;">
+				<h:outputText rendered="#{ManageCoinsuranceCompanyActionBean.createNew}" style="padding-top:-10px;" styleClass="table-title" value="#{label['COINSURANCE_SETUP_ADDNEW_LABEL']}" />
+				<h:outputText rendered="#{!ManageCoinsuranceCompanyActionBean.createNew}" style="padding-top:-10px;" styleClass="table-title" value="Update Co-Insurance Company" />
+				<table>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td valign="top">
+										<table>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="nameId" />
+												</td>
+											</tr>
+											<tr>
+												<td valign="top">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="#{label['COINSURANCE_SETUP_NAME_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="nameId" required="true" style="width:250px;" value="#{ManageCoinsuranceCompanyActionBean.coinsuranceCompany.name}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="address" />
+												</td>
+											</tr>
+											<tr>
+												<td valign="top">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="#{label['COINSURANCE_SETUP_ADDRESS_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="address" required="true" style="width:250px;" value="#{ManageCoinsuranceCompanyActionBean.coinsuranceCompany.address.permanentAddress}">
+														<f:validateLength maximum="300" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="township" />
+												</td>
+											</tr>
+											<tr>
+												<td valign="top">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="#{label['COINSURANCE_SETUP_TOWNSHIP_LABEL']}" />
+												</td>
+												<td>
+													<h:panelGrid columns="3" id="townshipPanelGroup">
+														<p:inputText id="township" readonly="#{ManageCoinsuranceCompanyActionBean.coinsuranceCompany.address.township == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true"
+															style="width:250px;margin-left:-4px;"
+															value="#{ManageCoinsuranceCompanyActionBean.coinsuranceCompany.address.township == null ? '' : ManageCoinsuranceCompanyActionBean.coinsuranceCompany.address.township.name}" />
+														<p:commandLink actionListener="#{ManageCoinsuranceCompanyActionBean.selectTownship()}" id="selectTownshipDialogLink" immediate="true">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{ManageCoinsuranceCompanyActionBean.returnTownship}" update="townshipPanelGroup" />
+														</p:commandLink>
+													</h:panelGrid>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="phone" />
+												</td>
+											</tr>
+											<tr>
+												<td valign="top">
+													<h:outputText styleClass="input-label" value="#{label['COINSURANCE_SETUP_PHONE_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="phone" style="width:250px;" value="#{ManageCoinsuranceCompanyActionBean.coinsuranceCompany.contentInfo.phone}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+										</table>
+									</td>
+									<td valign="top">
+										<table>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="fax" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText styleClass="input-label" value="#{label['COINSURANCE_SETUP_FAX_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="fax" style="width:250px;" value="#{ManageCoinsuranceCompanyActionBean.coinsuranceCompany.contentInfo.fax}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="mobile" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText styleClass="input-label" value="#{label['COINSURANCE_SETUP_MOBILE_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="mobile" style="width:250px;" value="#{ManageCoinsuranceCompanyActionBean.coinsuranceCompany.contentInfo.mobile}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="email" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText styleClass="input-label" value="#{label['COINSURANCE_SETUP_EMAIL_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="email" style="width:250px;" value="#{ManageCoinsuranceCompanyActionBean.coinsuranceCompany.contentInfo.email}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="description" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText styleClass="input-label" value="#{label['COINSURANCE_SETUP_DESCRIPTION_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="description" style="width:250px;" value="#{ManageCoinsuranceCompanyActionBean.coinsuranceCompany.description}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<fieldset>
+								<h:panelGrid columns="3" id="selectPGroupList">
+									<p:commandLink id="selectPGroupList1" oncomplete="PF('if (args.validationFailed) {selectPGroupAndTShipDialog').hide()} else {selectPGroupAndTShipDialog.show()}"
+										update="coinsuranceCompanyEntryForm :coinsuranceCompanyTableForm :selectPGroupAndTShipForm">
+										<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+									</p:commandLink>
+								</h:panelGrid>
+								<legend>
+									<h:outputText rendered="TRUE" value="Product Group List" />
+								</legend>
+								<p:dataTable id="pGroupTable" paginator="false" rowKey="index" rows="10" style="width:100%;"
+									value="#{ManageCoinsuranceCompanyActionBean.coinsuranceCompany.coinsuredProductGroups}" var="coinsuredPGroup">
+									<p:column headerText="Product Group Name">
+										<h:outputText value="#{coinsuredPGroup.productGroup.name}" />
+									</p:column>
+									<p:column headerText="Percentage">
+										<h:outputText value="#{coinsuredPGroup.precentage}%" />
+									</p:column>
+									<p:column headerText="Commission">
+										<h:outputText value="#{coinsuredPGroup.commissionPercent}%" />
+									</p:column>
+									<p:column style="width:50px;">
+										<p:commandLink action="#{ManageCoinsuranceCompanyActionBean.prepareUpdateCoinsuranceProductGroup(coinsuredPGroup)}" oncomplete="PF('selectPGroupAndTShipDialogUpdate').show()"
+											update=":selectPGroupAndTShipDialogUpdateForm">
+											<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+										</p:commandLink>
+									</p:column>
+									<p:column style="width:50px;">
+										<p:commandLink action="#{ManageCoinsuranceCompanyActionBean.deleteCoinsuranceProductGroup(coinsuredPGroup)}" update="pGroupTable">
+											<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+										</p:commandLink>
+									</p:column>
+								</p:dataTable>
+							</fieldset>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p:commandButton action="#{ManageCoinsuranceCompanyActionBean.addNewCoinsuranceCompany}" id="addBtn" rendered="#{ManageCoinsuranceCompanyActionBean.createNew}"
+								style="width: 80px;" update="coinsuranceCompanyEntryForm :coinsuranceCompanyTableForm" value="#{label['COINSURANCE_SETUP_ADD']}" />
+							<p:commandButton action="#{ManageCoinsuranceCompanyActionBean.updateCoinsuranceCompany}" id="editBtn" oncomplete="PF('coinsuranceCompanyTable.filter();"
+								rendered="#{!ManageCoinsuranceCompanyActionBean.createNew}" update="coinsuranceCompanyEntryForm" value="#{label['COMMON_UPDATE_BTN']}" />
+						</td>
+					</tr>
+				</table>
+			</div>
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			<br />
+			<p:separator style="height:5px;" />
+		</h:form>
+		<h:form id="coinsuranceCompanyTableForm">
+			<h:commandLink action="#{ManageCoinsuranceCompanyActionBean.createNewCompany}">
+				<h:panelGrid columns="2">
+					<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+					<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+				</h:panelGrid>
+			</h:commandLink>
+			<p:outputPanel id="listPanel">
+				<table>
+					<tr>
+						<td>
+							<h:outputText value="Name" />
+						</td>
+						<td>
+							<p:inputText id="coinsuranceCompanyCriteria" style="height:20px;width: 200px;" value="#{ManageCoinsuranceCompanyActionBean.criteria}" />
+						</td>
+						<td>
+							<p:commandButton action="#{ManageCoinsuranceCompanyActionBean.searchCoinsuranceCompany}" id="searchCoinsuranceCompanyButtonBtn" update=":coinsuranceCompanyTableForm"
+								value="Search" />
+						</td>
+						<td>
+							<p:commandButton action="#{ManageCoinsuranceCompanyActionBean.init()}" id="resetCoinsuranceCompanyButtonBtn" update=":coinsuranceCompanyTableForm" value="Reset" />
+						</td>
+					</tr>
+				</table>
+				<p:dataTable id="coinsuranceCompanyTable" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+					rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageCoinsuranceCompanyActionBean.coinsuranceCompanies}" var="coinsuranceCompany"
+					widgetVar="coinsuranceCompanyTable">
+					<p:column filterBy="#{coinsuranceCompany.name}" filterMatchMode="contains" headerText="#{label['COINSURANCE_SETUP_NAME_LABEL']}">
+						<h:outputText value="#{coinsuranceCompany.name}" />
+					</p:column>
+					<p:column headerText="#{label['COINSURANCE_SETUP_ADDRESS_LABEL']}">
+						<h:outputText value="#{coinsuranceCompany.address.permanentAddress}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_AGENT_TOWNSHIP_LABEL']}">
+						<h:outputText value="#{coinsuranceCompany.address.township.name}" />
+					</p:column>
+					<p:column headerText="#{label['COINSURANCE_SETUP_PHONE_LABEL']}">
+						<h:outputText value="#{coinsuranceCompany.contentInfo.phone}" />
+					</p:column>
+					<p:column headerText="#{label['COINSURANCE_SETUP_FAX_LABEL']}">
+						<h:outputText value="#{coinsuranceCompany.contentInfo.fax}" />
+					</p:column>
+					<p:column headerText="#{label['COINSURANCE_SETUP_MOBILE_LABEL']}">
+						<h:outputText value="#{coinsuranceCompany.contentInfo.mobile}" />
+					</p:column>
+					<p:column headerText="#{label['COINSURANCE_SETUP_EMAIL_LABEL']}">
+						<h:outputText value="#{coinsuranceCompany.contentInfo.email}" />
+					</p:column>
+					<p:column headerText="ProductGroup List">
+						<h:outputText value="#{coinsuranceCompany.coinsuredProductGroups[0].productGroup.name}" />
+						<ui:repeat offset="1" value="#{coinsuranceCompany.coinsuredProductGroups}" var="coinsuredProductGroup">
+							<h:outputText value=",#{coinsuredProductGroup.productGroup.name}" />
+						</ui:repeat>
+					</p:column>
+					<p:column headerText="#{label['COINSURANCE_SETUP_DESCRIPTION_LABEL']}">
+						<h:outputText value="#{coinsuranceCompany.description}" />
+					</p:column>
+					<p:column style="width:50px;">
+						<p:commandLink action="#{ManageCoinsuranceCompanyActionBean.prepareUpdateCoinsuranceCompany(coinsuranceCompany)}" update=":coinsuranceCompanyEntryForm">
+							<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width:50px;">
+						<p:commandLink id="deleteGroupLink" oncomplete="PF('confirmationDialog').show()">
+							<f:setPropertyActionListener target="#{ManageCoinsuranceCompanyActionBean.coinsuranceCompany}" value="#{coinsuranceCompany}" />
+							<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		<h:form id="selectPGroupAndTShipForm">
+			<p:dialog header="Select product group and enter percentage." height="200" hideEffect="explode" id="selectPGroupAndTShipDialog" resizable="false" showEffect="explode"
+				widgetVar="selectPGroupAndTShipDialog" width="400">
+				<h:panelGroup id="selectPGroupAndTShipPanel">
+					<table>
+						<tr>
+							<td>
+								<div style="z-index: 100; position: fixed; margin-top: -15px; width: 370px;">
+									<p:messages globalOnly="true" id="messages1" />
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p:spacer height="40" />
+								<h:outputText id="mmm" value="" />
+							</td>
+							<td style="width: 115px;">
+								<p:message for="pGroup" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:panelGroup>
+									<h:outputText style="color:red;" value="*" />
+									<h:outputText styleClass="input-label" value="Product Group" />
+								</h:panelGroup>
+							</td>
+							<td>
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="pGroup" required="true" style="height:24px;width: 258px;"
+									value="#{ManageCoinsuranceCompanyActionBean.selectedProductGroup}">
+									<f:selectItem itemLabel="Select" />
+									<f:selectItems value="#{ManageCoinsuranceCompanyActionBean.productGroupList}" var="productGroup" itemLabel="#{productGroup.name}" itemValue="#{productGroup}" />
+								</p:selectOneMenu>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText value="" />
+							</td>
+							<td style="width: 115px;">
+								<p:message for="percentage" />
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 115px;">
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText styleClass="input-label" value="Percentage" />
+							</td>
+							<td>
+								<p:inputText id="percentage" required="true" style="width:250px;" value="#{ManageCoinsuranceCompanyActionBean.enteredPercent}">
+								</p:inputText>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText value="" />
+							</td>
+							<td style="width: 115px;">
+								<p:message for="commission" />
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 115px;">
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText styleClass="input-label" value="Commission" />
+							</td>
+							<td>
+								<p:inputText id="commission" required="true" style="width:250px;" value="#{ManageCoinsuranceCompanyActionBean.commission}">
+								</p:inputText>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p:spacer height="30" />
+								<p:commandButton actionListener="#{ManageCoinsuranceCompanyActionBean.addNewCoinsuredProductGroup}" id="addBtn1" oncomplete="PF('handleComplete(xhr, status, args)"
+									style="width: 80px;" update=":coinsuranceCompanyEntryForm:pGroupTable,messages1" value="#{label['COMMON_ADDNEW_BTN']}" />
+							</td>
+						</tr>
+					</table>
+				</h:panelGroup>
+				<h:outputScript id="handleCompleteScript" target="body">
+               /* <![CDATA[ */
+               function handleComplete(xhr, status, args) {
+                if(args && args.validName) {
+                selectPGroupAndTShipDialog').hide();
+                } else {
+                   /*selectPGroupAndTShipDialog.jq.effect("shake", {times:5},100);*/
+                }
+              }
+             /* ]]> */
+           </h:outputScript>
+			</p:dialog>
+		</h:form>
+		<h:form id="confiationForm">
+			<p:dialog header="#{label['MANAGE_COMPANY_DELETE_CONFIRM']}" height="100" hideEffect="explode" id="confirmationDialog" resizable="false" showEffect="explode"
+				widgetVar="confirmationDialog" width="250">
+				<h:panelGroup id="confirmationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" />
+							</td>
+						</tr>
+					</table>
+					<br />
+					<p:commandButton action="#{ManageCoinsuranceCompanyActionBean.deleteCoinsuranceCompany}" immediate="true"
+						oncomplete="PF('confirmationDialog').hide(); coinsuranceCompanyTable.filter()" update=":coinsuranceCompanyEntryForm " value="#{label['COMMON_YES_BTN']}" />
+					<p:commandButton immediate="true" oncomplete="PF('confirmationDialog').hide()" value="#{label['COMMON_NO_BTN']}" />
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+		<h:form id="selectPGroupAndTShipDialogUpdateForm">
+			<p:dialog header="Edit product group and percentage." height="200" hideEffect="explode" id="selectPGroupAndTShipDialogUpdate" resizable="false" showEffect="explode"
+				widgetVar="selectPGroupAndTShipDialogUpdate" width="400">
+				<h:panelGroup id="selectPGroupAndTShipPanelUpdate">
+					<table>
+						<tr>
+							<td>
+								<div style="z-index: 100; position: fixed; margin-top: -15px; width: 370px;">
+									<p:messages globalOnly="true" id="messages2" />
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p:spacer height="40" />
+								<h:outputText id="mmm" value="" />
+							</td>
+							<td style="width: 115px;">
+								<p:message for="pGroup1" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:panelGroup>
+									<h:outputText style="color:red;" value="*" />
+									<h:outputText styleClass="input-label" value="Product Group" />
+								</h:panelGroup>
+							</td>
+							<td>
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="pGroup1" required="true" style="height:24px;width: 258px;"
+									value="#{ManageCoinsuranceCompanyActionBean.selectedProductGroup}">
+									<f:selectItem itemLabel="Select" />
+									<f:selectItems value="#{ManageCoinsuranceCompanyActionBean.productGroupList}" var="productGroup" itemLabel="#{productGroup.name}" itemValue="#{productGroup}" />
+								</p:selectOneMenu>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText value="" />
+							</td>
+							<td style="width: 115px;">
+								<p:message for="percentage1" />
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 115px;">
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText styleClass="input-label" value="Percentage" />
+							</td>
+							<td>
+								<p:inputText id="percentage1" required="true" style="width:250px;" value="#{ManageCoinsuranceCompanyActionBean.enteredPercent}">
+								</p:inputText>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText value="" />
+							</td>
+							<td style="width: 115px;">
+								<p:message for="commission1" />
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 115px;">
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText styleClass="input-label" value="Commission" />
+							</td>
+							<td>
+								<p:inputText id="commission1" required="true" style="width:250px;" value="#{ManageCoinsuranceCompanyActionBean.commission}">
+								</p:inputText>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p:spacer height="30" />
+								<p:commandButton actionListener="#{ManageCoinsuranceCompanyActionBean.updateCoinsuredProductGroup}" id="addBtn2" oncomplete="PF('handleComplete1(xhr, status, args)"
+									style="width: 80px;" update=":coinsuranceCompanyEntryForm:pGroupTable,messages2" value="#{label['COMMON_ADDNEW_BTN']}" />
+							</td>
+						</tr>
+					</table>
+				</h:panelGroup>
+				<h:outputScript id="handleCompleteScript1" target="body">
+               /* <![CDATA[ */
+               function handleComplete1(xhr, status, args) {
+                if(args && args.validName) {
+                selectPGroupAndTShipDialogUpdate').hide();
+                } else {
+                   /*selectPGroupAndTShipDialog.jq.effect("shake", {times:5},100);*/
+                }
+              }
+             /* ]]> */
+           </h:outputScript>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

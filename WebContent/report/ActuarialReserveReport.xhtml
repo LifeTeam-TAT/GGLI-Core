@@ -1,0 +1,139 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Actuarial Reserve Report" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<h:form>
+			
+			<style>
+			.fixed-size {
+			table-layout: fixed;
+			word-break: break-all;
+			}
+		</style>
+			<p:panel>
+				<p:panelGrid columns="4" columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					
+					<h:outputText value="Start Year" />
+					<p:selectOneMenu value="#{ManageActuarialReserveReportActionBean.startYear}">
+						<f:selectItems value="#{ManageActuarialReserveReportActionBean.yearList}" var="year" itemLabel="#{year}" itemValue="#{year}" />
+					</p:selectOneMenu>
+					
+					<h:outputText value="End Year" />
+					<p:selectOneMenu value="#{ManageActuarialReserveReportActionBean.endYear}">
+						<f:selectItems value="#{ManageActuarialReserveReportActionBean.yearList}" var="year" itemLabel="#{year}" itemValue="#{year}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton value="Search" actionListener="#{ManageActuarialReserveReportActionBean.search}" update="reportTable"/>
+				<p:commandButton value="Reset" actionListener="#{ManageActuarialReserveReportActionBean.reset}" update="reportTable"/>
+			</h:panelGrid>
+			<br/>
+			<p:dataTable id="reportTable" widgetVar="reportTable" var="report" value="#{ManageActuarialReserveReportActionBean.reportList}" paginatorPosition="top"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}" paginator="true" rows="10"
+				rowIndexVar="index">
+				 <f:facet name="{Exporters}">
+		            <div style="float:right;">
+		                <h:commandLink>
+					        <p:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" value="/images/excel.png" />
+					        <p:dataExporter type="csv" target="reportTable" fileName="Acturaial Reserve Report"/>
+					    </h:commandLink>
+		            </div>
+		        </f:facet>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="No." />
+					</f:facet>
+					<h:outputText value="#{index+1}" />
+				</p:column>
+				<p:column  style="width:12%"  styleClass="fixed-size">
+					<f:facet name="header" >
+						<h:outputText value="Policy No"  />
+					</f:facet>
+					<h:outputText value="#{report.policyNo}" />	
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Issue Date" />
+					</f:facet>
+					<h:outputText value="#{report.issueDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:5%">
+					<f:facet name="header" >
+						<h:outputText value="Issue Age" />
+					</f:facet>
+					<h:outputText value="#{report.issueAge}" />
+				</p:column>
+				<p:column style="width:5%">
+					<f:facet name="header">
+						<h:outputText value="Sex" />
+					</f:facet>
+					<h:outputText value="#{report.gender.label eq 'Male'? 1:2}" />
+				</p:column>
+				<p:column style="width:5%">
+					<f:facet name="header">
+						<h:outputText value="Policy Term" />
+					</f:facet>
+					<h:outputText value="#{report.policyTerm}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Premium Mode" />
+					</f:facet>
+					<h:outputText value="#{report.premiumMode}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Next Premium DueDate" />
+					</f:facet>
+					<h:outputText value="#{report.activePolicyEndDate}">
+					   <f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column styleClass="fixed-size"  style="width:10%">
+					<f:facet name="header">
+						<h:outputText value="Gross Premium" />
+					</f:facet>
+					<h:outputText value="#{report.grossPremium}">
+					<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}"/>
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Sum Assured" />
+					</f:facet>
+					<h:outputText value="#{report.sumInured}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Premium Term" />
+					</f:facet>
+					<h:outputText value="#{report.policyTerm}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Interest Rate for Reserve" />
+					</f:facet>
+					<h:outputText value="0.065" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Elapsed Month" />
+					</f:facet>
+					<h:outputText value="0" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Elapsed Day" />
+					</f:facet>
+					<h:outputText value="0" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

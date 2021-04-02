@@ -1,0 +1,385 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="BancaLIC Management" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="bancaLICEntryForm">
+			<p:growl escape="false" globalOnly="true" life="5000" showDetail="true" />
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:message display="text" for="staffId" />
+						<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_STAFFID_LABEL']}" />
+						<p:inputText id="staffId" required="#{not empty param[isRequired.clientId]}" value="#{ManageBancaLICActionBean.bancaLIC.staff_Id}">
+							<f:validateLength maximum="100" />
+						</p:inputText>
+											
+						<p:outputLabel />
+						<p:message display="text" for="name" />
+						<h:outputText for="name" styleClass="input-label mandatory" value="#{label['MANAGE_BANK_NAME_LABEL']}" escape="false" />
+						<p:inputText id="name" required="#{not empty param[isRequired.clientId]}" value="#{ManageBancaLICActionBean.bancaLIC.name}">
+							<f:validateLength maximum="100" />
+						</p:inputText>
+											
+						<p:outputLabel />
+						<p:message for="gender" />
+						<h:outputText styleClass="input-label mandatory" value="Gender" />
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="gender" value="#{ManageBancaLICActionBean.bancaLIC.gender}">
+							<f:selectItem itemLabel=" -- Select Gender --" noSelectionOption="true" />
+							<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{ManageBancaLICActionBean.gender}" var="type" />
+						</p:selectOneMenu>
+						
+						<p:outputLabel />
+						<p:message for="dateOfBirth" display="text" />
+						<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_FAMILYINFO_DOB_LABLE']}" />
+						<p:inputMask id="dateOfBirth" placeholder="dd-mm-yyyy" required="#{not empty param[isRequired.clientId]}" mask="99-99-9999" value="#{ManageBancaLICActionBean.bancaLIC.dob}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</p:inputMask>
+						<p:outputLabel />
+						<p:message for="phone" display="text" />
+						<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_ORGANIZATION_PHONE_LABEL']}" />
+						<p:inputText id="phone" required="true" value="#{ManageBancaLICActionBean.bancaLIC.phone}" validatorMessage="Character does not allow and comma use when u adding one more">
+							<f:validateLength maximum="100" />
+							<f:validateRegex pattern="(\b\d[\d,-]*\b)?" />
+						</p:inputText>
+						<p:outputLabel />
+						<p:message for="viberPhone" display="text" />
+						<h:outputText styleClass="input-label" value="#{label['MANAGE_ORGANIZATION_VPHONE_LABEL']}" />
+						<p:inputText id="viberPhone" value="#{ManageBancaLICActionBean.bancaLIC.phone_viber}" validatorMessage="Character does not allow and comma use when u adding one more">
+							<f:validateLength maximum="100" />
+							<f:validateRegex pattern="(\b\d[\d,-]*\b)?" />
+						</p:inputText>
+						
+						
+					</p:panelGrid>
+						
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:message display="text" for="designation" />
+						<h:outputText for="designation" styleClass="input-label mandatory" value="#{label['MANAGE_Designation_LABEL']}" escape="false" />
+						<p:inputText id="designation" required="#{not empty param[isRequired.clientId]}" value="#{ManageBancaLICActionBean.bancaLIC.banca_designation}">
+							<f:validateLength maximum="100" />
+						</p:inputText>
+						
+						<p:outputLabel />
+						<p:message display="text" for="cadre" />
+						<h:outputText for="cadre" styleClass="input-label mandatory" value="#{label['MANAGE_CADRE_LABEL']}" escape="false" />
+						<p:inputText id="cadre" required="#{not empty param[isRequired.clientId]}" value="#{ManageBancaLICActionBean.bancaLIC.cadre}">
+							<f:validateLength maximum="100" />
+						</p:inputText>
+						
+						<p:outputLabel />
+						<p:message for="status" />
+						<h:outputText styleClass="input-label mandatory" value="Status" />
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="status" value="#{ManageBancaLICActionBean.bancaLIC.status}" disabled="#{ManageBancaLICActionBean.bancaLIC.status.name() == 'INACTIVE'}">
+							<f:selectItem itemLabel=" -- Select Status --" noSelectionOption="true" />
+							<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{ManageBancaLICActionBean.bancaStatus}" var="type" />
+						</p:selectOneMenu>
+						
+						<p:outputLabel />
+						<p:message for="licenseNo" display="text"/>
+						<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_BANCA_LIC_LICENSENO_LABEL']}" />
+						<p:inputText id="licenseNo" required="true" value="#{ManageBancaLICActionBean.bancaLIC.licenseNo}">
+							<p:ajax event="valueChange" update="licenseExpireDate"/>
+							<f:validateLength maximum="50" />
+						</p:inputText>
+						
+						<p:outputLabel />
+						<p:message for="licenseExpireDate" />
+						<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_BANCA_LIC_LICENSEEXPIREDATE_LABEL']}" />
+						<p:calendar id="licenseExpireDate" required="true" pattern="#{ApplicationSetting.dateFormat}" disabled="#{ManageBancaLICActionBean.bancaLIC.licenseNo == null ? true : false}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+							value="#{ManageBancaLICActionBean.bancaLIC.licenseExpireDate}" />
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						
+						<p:outputLabel />
+						<p:message for="gginlJoinDate" display="text"/>
+						<h:outputText styleClass="input-label mandatory" value="#{label['GGINL_JOIN_DATE_LBL']}" />
+						<p:calendar required="#{not empty param[isRequired.clientId]}" id="gginlJoinDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button"
+							timeZone="#{ApplicationSetting.timeZone}" value="#{ManageBancaLICActionBean.bancaLIC.gginl_joindate}" />
+						<p:outputLabel />
+						<p:message for="startDate" display="text"/>
+						<h:outputText styleClass="input-label mandatory" value="#{label['JOIN_START_DATE_LBL']}" />
+						<p:calendar required="#{not empty param[isRequired.clientId]}" id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button"
+							timeZone="#{ApplicationSetting.timeZone}" value="#{ManageBancaLICActionBean.bancaLIC.banca_joindate}" />
+						<p:outputLabel />
+						<p:message for="endDate" display="text"/>
+						<h:outputText value="#{label['JOIN_END_DATE_LBL']}" />
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button"
+							timeZone="#{ApplicationSetting.timeZone}" value="#{ManageBancaLICActionBean.bancaLIC.banca_enddate}" />
+						<p:outputLabel />
+						<p:message for="remark" display="text" />
+						<h:outputText styleClass="input-label " value="#{label['MANAGE_REMARK_LABEL']}" />
+						<p:inputTextarea autoResize="true" id="remark" rows="5" value="#{ManageBancaLICActionBean.bancaLIC.remark}">
+							<f:validateLength maximum="300" />
+						</p:inputTextarea>
+					</p:panelGrid>
+				</p:panelGrid>
+				
+				<p:outputPanel id="licBrmInfoRecord">
+				<p:message id="licBrmInfoRecordId" for="licBrmInfoRecord" display="text"/>
+					<p:panel header="LicBrmInfo" toggleable="true" collapsed="#{ManageBancaLICActionBean.licBrmInfoList.size() > 0 ? 'false' :'true' }">
+						<p:panel>
+							<p:panelGrid columns="4" columnClasses="ui-grid-col-3,ui-grid-col-3,ui-grid-col-4,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+									<p:outputLabel />
+									<p:message for="bancaBrm " display="text" />
+									<h:outputText styleClass="input-label mandatory" value="Banca Brm" />
+									<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGroup">
+										<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="entityPanelGroup">
+											<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+												<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ManageBancaLICActionBean.selectBancaBrm()}" id="selectBancaBrmDialogLink"
+													process="@this">
+													<p:ajax event="dialogReturn" listener="#{ManageBancaLICActionBean.returnBancaBrm}" update="bancaBrm " />
+												</p:commandButton>
+												<p:inputText id="bancaBrm"
+													readonly="#{not empty param[needRequired.clientId] and ManageBancaLICActionBean.licBrmInfo.bancaBrm == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+													required="#{not empty param[needRequired.clientId]}"
+													value="#{ManageBancaLICActionBean.licBrmInfo.bancaBrm == null ? '' : ManageBancaLICActionBean.licBrmInfo.bancaBrm.name}" />
+												<p:commandButton styleClass="red-button" icon="fa fa-times" process="@this" update="bancaBrm" />
+											</div>
+										</div>
+									</p:panelGrid>
+								</p:panelGrid>
+								<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+									<p:outputLabel />
+									<p:message for="dstartDate" display="text" />
+									<h:outputText styleClass="input-label mandatory" value="Start Date" />
+									<p:calendar required="#{not empty param[needRequired.clientId]}" id="dstartDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button"
+										timeZone="#{ApplicationSetting.timeZone}" value="#{ManageBancaLICActionBean.licBrmInfo.startDate}">
+									</p:calendar>
+								</p:panelGrid>
+								<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+									<h:outputText />
+									<p:message for="bancaStatus" />
+									<h:outputText styleClass="input-label mandatory" value="Status" />
+									<p:selectOneMenu required="#{not empty param[needRequired.clientId]}" converter="omnifaces.SelectItemsConverter" id="bancaStatus"
+										value="#{ManageBancaLICActionBean.licBrmInfo.status}">
+										<f:selectItem itemLabel=" -- Select Status --" noSelectionOption="true" />
+										<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{ManageBancaLICActionBean.bancaStatus}" var="type" />
+									</p:selectOneMenu>
+								</p:panelGrid>
+							</p:panelGrid>
+						</p:panel>
+						<h:panelGrid columns="2">
+							<p:commandButton binding="#{needRequired}" value="#{!ManageBancaLICActionBean.editBrmInfo ? label['COMMON_ADDNEW_BTN'] : label['COMMON_UPDATE_BTN']}"
+								actionListener="#{ManageBancaLICActionBean.saveLicBrmInfo}" update="licBrmInfoRecord" process="@form" />
+							<p:commandButton value="reset" actionListener="#{ManageBancaLICActionBean.resetlicBrmInfo}" update="licBrmInfoRecord, bancaLICEntryForm:licBrmInfoRecordId" />
+						</h:panelGrid>
+						<br />
+						<p:dataTable id="infoTable" value="#{ManageBancaLICActionBean.licBrmInfoList}" var="licBrminfo">
+							<p:column headerText="Banca Brm">
+								<h:outputText value="#{licBrminfo.bancaBrm.name}" />
+							</p:column>
+							<p:column headerText="Start Date">
+								<h:outputText value="#{licBrminfo.startDate}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="End Date">
+								<h:outputText value="#{licBrminfo.endDate}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Status">
+								<h:outputText value="#{licBrminfo.status}" />
+							</p:column>
+							<p:column style="width:4%;" headerText="Edit">
+								<p:commandButton styleClass="green-button" icon="fa fa-paint-brush" action="#{ManageBancaLICActionBean.prepareEditLicBrmInfo(licBrminfo)}" process="@this"
+									update="@form:licBrmInfoRecord" id="editlicBrmInfoRecordLink" disabled="#{licBrminfo.disable}">
+								</p:commandButton>
+							</p:column>
+							<p:column style="width:4%;" headerText="Delete">
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ManageBancaLICActionBean.removeLicBrmInfo(licBrminfo)}" id="removelicBrmInfoRecord"
+									update="@form:licBrmInfoRecord" disabled="#{licBrminfo.disable}" process="@this" >
+									<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</p:panel>
+				</p:outputPanel>
+				<br />
+				<p:outputPanel id="licBranchInfoRecord">
+				<p:message for="licBranchInfoRecord" display="text"/>
+					<p:panel header="LicBranch Info" toggleable="true" collapsed="#{ManageBancaLICActionBean.licBrmInfoList.size() > 0 ? 'false' :'true'}">
+						<p:panel>
+							<p:panelGrid columns="4" columnClasses="ui-grid-col-3,ui-grid-col-3,ui-grid-col-4,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								
+								<!-- <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+									<p:outputLabel />
+									<p:message for="bendDate" display="text" />
+									<h:outputText styleClass="input-label mandatory" value="End Date" />
+									<p:calendar required="#{not empty param[needBRequired.clientId]}" id="bendDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button"
+										timeZone="#{ApplicationSetting.timeZone}" value="#{ManageBancaLICActionBean.licBranchInfo.endDate}">
+									</p:calendar>
+								</p:panelGrid> -->
+								<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+									<p:outputLabel />
+									<p:message for="bancaBranch" display="text" />
+									<h:outputText styleClass="input-label mandatory" value="Banca Branch" />
+									<p:panelGrid styleClass="ui-panelgrid-blank" id="bancaBranchGroup">
+										<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="entityPanelGroup">
+											<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+												<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ManageBancaLICActionBean.selectBancaBranch()}" id="selectBancaBranchDialogLink"
+													process="@this">
+													<p:ajax event="dialogReturn" listener="#{ManageBancaLICActionBean.returnBancaBranch}" update="bancaBranch" />
+												</p:commandButton>
+												<p:inputText id="bancaBranch"
+													readonly="#{not empty param[needBRequired.clientId] and ManageBancaLICActionBean.licBranchInfo.bancaBranch == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+													required="#{not empty param[needBRequired.clientId]}"
+													value="#{ManageBancaLICActionBean.licBranchInfo.bancaBranch == null ? '' : ManageBancaLICActionBean.licBranchInfo.bancaBranch.name}" />
+												<p:commandButton styleClass="red-button" icon="fa fa-times" process="@this" update="bancaBranch" />
+											</div>
+										</div>
+									</p:panelGrid>
+								</p:panelGrid>
+								<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+									<p:outputLabel />
+									<p:message for="bstartDate" display="text" />
+									<h:outputText styleClass="input-label mandatory" value="Start Date" />
+									<p:calendar required="#{not empty param[needBRequired.clientId]}" id="bstartDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button"
+										timeZone="#{ApplicationSetting.timeZone}" value="#{ManageBancaLICActionBean.licBranchInfo.startDate}">
+									</p:calendar>
+								</p:panelGrid>
+								<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+									<h:outputText />
+									<p:message for="bStatus" />
+									<h:outputText styleClass="input-label mandatory" value="Status" />
+									<p:selectOneMenu required="#{not empty param[needBRequired.clientId]}" converter="omnifaces.SelectItemsConverter" id="bStatus"
+										value="#{ManageBancaLICActionBean.licBranchInfo.status}">
+										<f:selectItem itemLabel=" -- Select Status --" noSelectionOption="true" />
+										<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{ManageBancaLICActionBean.bancaStatus}" var="type" />
+									</p:selectOneMenu>
+								</p:panelGrid>
+							</p:panelGrid>
+						</p:panel>
+						<h:panelGrid columns="2">
+							<p:commandButton binding="#{needBRequired}" value="#{!ManageBancaLICActionBean.editlicBranchInfo ? label['COMMON_ADDNEW_BTN'] : label['COMMON_UPDATE_BTN']}"
+								actionListener="#{ManageBancaLICActionBean.saveLicBranchInfo}" update="licBranchInfoRecord" process="@form" />
+							<p:commandButton value="reset" actionListener="#{ManageBancaLICActionBean.resetLicBranchInfo}" update="licBranchInfoRecord" />
+						</h:panelGrid>
+						<br />
+						<p:dataTable id="licBranchinfoTable" value="#{ManageBancaLICActionBean.licBranchInfoList}" var="licBranchInfo">
+							<p:column headerText="Banca Branch">
+								<h:outputText value="#{licBranchInfo.bancaBranch.name}" />
+							</p:column>
+							<p:column headerText="Start Date">
+								<h:outputText value="#{licBranchInfo.startDate}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="End Date">
+								<h:outputText value="#{licBranchInfo.endDate}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Status">
+								<h:outputText value="#{licBranchInfo.status}" />
+							</p:column>
+							<p:column style="width:4%;" headerText="Edit">
+								<p:commandButton styleClass="green-button" icon="fa fa-paint-brush" action="#{ManageBancaLICActionBean.prepareEditLicBranchInfo(licBranchInfo)}" process="@this"
+									update="@form:licBranchInfoRecord" id="editlicLicBranchInfoRecordLink" disabled="#{licBranchInfo.disable}">
+								</p:commandButton>
+							</p:column>
+							<p:column style="width:4%;" headerText="Delete">
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ManageBancaLICActionBean.removeLicBranchInfo(licBranchInfo)}" id="removelicLicBranchInfoRecordLink"
+									update="@form:licBranchInfoRecord" disabled="#{licBranchInfo.disable}" process="@this">
+									<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</p:panel>
+				</p:outputPanel>
+			</p:panel>
+			<p:commandButton id="addBtn" binding="#{isRequired}" value="#{label['COMMON_ADDNEW_BTN']}" action="#{ManageBancaLICActionBean.addNewBancaLIC}"
+				rendered="#{ManageBancaLICActionBean.createNew}" oncomplete="PF('bancaLICTable').clearFilters();" update=":bancaLICEntryForm" style="width:65px;" />
+			<p:commandButton id="editBtn" value="#{label['COMMON_UPDATE_BTN']}" action="#{ManageBancaLICActionBean.updateBancaLIC}" rendered="#{!ManageBancaLICActionBean.createNew}"
+				oncomplete="PF('bancaLICTable').filter();" update="@form" style="width:70px;" />
+			<p:spacer width="15px;" />
+			<p:commandButton id="cancleButton" value="Cancel" immediate="true" process="@this" action="#{ManageBancaLICActionBean.createNewBancaLICInfo}" update=":bancaLICEntryForm"
+				style="width:70px;margin-left:-8px;" />
+			<h:outputText value="#{label['COMMON_MSG_MANDATORY_LABEL']}" style="color:red;" styleClass="input-label" />
+			<br />
+			<p:separator style="height:3px;" />
+			<h:panelGrid>
+				<p:commandLink action="#{ManageBancaLICActionBean.createNewBancaLICInfo}" process="@this" update=":bancaLICEntryForm ">
+					<h:panelGrid columns="2">
+						<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+						<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+					</h:panelGrid>
+				</p:commandLink>
+			</h:panelGrid>
+			<p:dataTable var="bancaLIC" value="#{ManageBancaLICActionBean.bancaLICInfoList}" id="bancaLICTable" paginator="true" rows="10" style="width:100%" widgetVar="bancaLICTable"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15"
+				rowKey="index" reflow="true" rowIndexVar="var" paginatorPosition="bottom">
+				<p:column headerText="No." width="2%">
+					<h:outputText value="#{var + 1}" />
+				</p:column>
+				<p:column filterBy="#{bancaLIC.staff_Id}" filterMatchMode="contains" headerText="#{label['MANAGE_STAFFID_LABEL']}" width="10%">
+					<h:outputText value="#{bancaLIC.staff_Id}" />
+				</p:column>
+				<p:column filterBy="#{bancaLIC.name}" filterMatchMode="contains" headerText="#{label['MANAGE_BANK_NAME_LABEL']}" width="10%">
+					<h:outputText value="#{bancaLIC.name}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_BANCA_GENDER_LABEL']}">
+					<h:outputText value="#{bancaLIC.gender}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_CUSTOMER_FAMILYINFO_DOB_LABLE']}">
+					<h:outputText value="#{bancaLIC.dob}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="#{label['MANAGE_ORGANIZATION_PHONE_LABEL']}">
+					<h:outputText value="#{bancaLIC.phone}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_ORGANIZATION_VPHONE_LABEL']}">
+					<h:outputText value="#{bancaLIC.phone_viber}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_CADRE_LABEL']}">
+					<h:outputText value="#{bancaLIC.cadre}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_Designation_LABEL']}">
+					<h:outputText value="#{bancaLIC.banca_designation}" />
+				</p:column>
+				<p:column headerText="#{label['GGINL_JOIN_DATE_LBL']}">
+					<h:outputText value="#{bancaLIC.gginl_joindate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="#{label['JOIN_START_DATE_LBL']}">
+					<h:outputText value="#{bancaLIC.banca_joindate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="#{label['JOIN_END_DATE_LBL']}">
+					<h:outputText value="#{bancaLIC.banca_enddate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="#{label['MANAGE_STATUS_LABEL']}">
+					<h:outputText value="#{bancaLIC.status}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_REMARK_LABEL']}">
+					<h:outputText value="#{bancaLIC.remark}" />
+				</p:column>
+				<p:column style="width:4%;" headerText="Edit">
+					<p:commandButton styleClass="green-button" icon="fa fa-paint-brush" process="@this" action="#{ManageBancaLICActionBean.prepareUpdateBancaLIC(bancaLIC)}"
+						update=":bancaLICEntryForm" />
+				</p:column>
+				<p:column style="width:4%;" headerText="Delete">
+					<p:commandButton styleClass="red-button" icon="fa fa-times" process="@this" action="#{ManageBancaLICActionBean.deleteBancaLIC(bancaLIC)}"
+						oncomplete="PF('bancaLICTable').filter();" update=":bancaLICEntryForm">
+						<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+		</p:confirmDialog>
+	</ui:define>
+</ui:composition>

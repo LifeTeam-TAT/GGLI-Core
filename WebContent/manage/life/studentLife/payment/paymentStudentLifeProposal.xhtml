@@ -1,0 +1,90 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{AddNewStudentLifePaymentActionBean.getPageHeader()}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="lifePaymentForm" style="margin-left:15px;" >
+			<p:growl escape="false" globalOnly="true" life="8000" showDetail="true" />
+			<p:panel>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-1,ui-grid-col-3" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText styleClass="input-label" value="Proposal No" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="detailProposal">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:inputText id="proposalNo"  style="width:320px;"  readonly="true" value="#{AddNewStudentLifePaymentActionBean.lifeProposal.proposalNo}" />
+								<p:commandButton actionListener="#{AddNewStudentLifePaymentActionBean.openTemplateDialog()}" immediate="true" styleClass="green-button" icon="fa fa-laptop" />
+							</div>
+						</div>
+					</p:panelGrid>
+		    
+					<h:outputText styleClass="input-label" value="Stamp Fees" />
+					<p:inputText id="stampFees" readonly="true"  value="#{AddNewStudentLifePaymentActionBean.payment.stampFees}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</p:inputText>
+				
+					<h:outputText styleClass="input-label" value="Additional Charges" />
+					<p:inputText id="svicCharges" readonly="true"  value="#{AddNewStudentLifePaymentActionBean.payment.servicesCharges}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</p:inputText>
+				
+				    <h:outputText styleClass="input-label" value="Premium" />
+                    <p:inputText id="premium" readonly="true"  value="#{AddNewStudentLifePaymentActionBean.payment.totalPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+			        </p:inputText>
+					 
+				    <h:outputText styleClass="input-label" value="Discount" />
+					<p:inputText id="discount" readonly="true"  value="#{AddNewStudentLifePaymentActionBean.payment.discountAmount}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</p:inputText>
+			
+					<h:outputText styleClass="input-label" value="Net Amount" />
+					
+					<p:inputText id="netAmount" readonly="true"  value="#{AddNewStudentLifePaymentActionBean.payment.totalAmount}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</p:inputText>
+					
+					<h:outputText styleClass="input-label" value="Payment Channel" />
+					<p:inputText id="paymentChannel" readonly="true" value="#{AddNewStudentLifePaymentActionBean.payment.paymentChannel.label}" />
+				
+					<h:outputText styleClass="input-label" value="Sale Point" />
+					<p:inputText id="salePoint" readonly="true" value="#{AddNewStudentLifePaymentActionBean.lifeProposal.salePoint.name}" />
+				
+				   
+					<h:outputText styleClass="input-label" value="Bank " style="width:250px;"  rendered="#{AddNewStudentLifePaymentActionBean.payment.paymentChannel == 'CHEQUE' ? true : false}"/>
+					<p:inputText id="bank" readonly="true"  value="#{AddNewStudentLifePaymentActionBean.payment.bank.name}" rendered="#{AddNewStudentLifePaymentActionBean.payment.paymentChannel == 'CHEQUE' ? true : false}" />
+				
+					<h:outputText styleClass="input-label" value="Cheque No" style="width:250px;" rendered="#{AddNewStudentLifePaymentActionBean.payment.paymentChannel == 'CHEQUE' ? true : false}" />
+					<p:inputText id="chequeNo" readonly="true"  value="#{AddNewStudentLifePaymentActionBean.payment.chequeNo}" rendered="#{AddNewStudentLifePaymentActionBean.payment.paymentChannel == 'CHEQUE' ? true : false}" />
+				
+					<h:outputText styleClass="input-label" value="Remark" />
+					<p:inputTextarea autoResize="true" id="remark" rows="5"  value="#{AddNewStudentLifePaymentActionBean.remark}">
+						<f:validateLength maximum="700" />
+					</p:inputTextarea>
+	
+					<h:outputText value="" />
+					<p:message for="responsiblePerson" />
+					<h:outputText styleClass="input-label mandatory" value="Operation Dept" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="responsiblePersonPanel">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewStudentLifePaymentActionBean.selectUser()}" id="selectUserDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{AddNewStudentLifePaymentActionBean.returnUser}" update="responsiblePerson" />
+								</p:commandButton>
+								<p:inputText id="responsiblePerson" readonly="#{AddNewStudentLifePaymentActionBean.responsiblePerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true"
+									value="#{AddNewStudentLifePaymentActionBean.responsiblePerson == null ? '':AddNewStudentLifePaymentActionBean.responsiblePerson.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewStudentLifePaymentActionBean.setResponsiblePerson(null)}" process="@this" update="responsiblePerson" />
+							</div>
+						</div>
+					</p:panelGrid>
+					
+				</p:panelGrid>
+			</p:panel>
+			<br/>
+			<p:commandButton style="width: 80px;" action="#{AddNewStudentLifePaymentActionBean.paymentLifeProposal()}" id="addBtn" update=":lifePaymentForm" value="Confirm" />
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" action="dashboard" id="cancelBtn" immediate="true" value="Cancel" />
+		</h:form>
+		<!--  Responsible Person Dialog -->
+	</ui:define>
+</ui:composition>

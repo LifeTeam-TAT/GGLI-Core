@@ -1,0 +1,97 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:param name="header" value="GroupLife Renewal Policy Issue" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:outputScript>
+			function clickIncreasePrintCountBtnSingle(){
+				document.getElementById("issuePolicyPrintForm:increasePrintCountBtnSingle").click();
+			}
+			function clickIncreasePrintCountBtn(){
+				document.getElementById("issuePolicyPrintForm:increasePrintCountBtn").click();
+			}
+		</h:outputScript>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<h:form id="lifePolicyIssueForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" escape="false"/>
+			<p:panel>
+				<table>
+					<tr>
+						<td width="130px;">
+							<h:outputText value="Proposal No" styleClass="input-label" />
+						</td>
+						<td>
+							<h:panelGrid columns="2">
+								<p:inputText value="#{RenewalGroupLifeIssueActionBean.lifeProposal.proposalNo}" style="width:250px; margin-left:-2px;" id="proposalNo" readonly="true" />
+								<p:commandLink id="detailsProposal" oncomplete="PF('lifeProposalDetailsDialog').show()" immediate="true">
+									<h:graphicImage url="#{ApplicationSetting.detailIcon}" styleClass="#{ApplicationSetting.detailStyleClass}" />
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<h:panelGroup id="policyTablePanel">
+								<p:dataTable value="#{RenewalGroupLifeIssueActionBean.lifePolicyList}" var="lifePolicy" id="lifePolicyTable" style="width:100%" rowIndexVar="index">
+									<p:column headerText="Policy No">
+										<h:outputText value="#{lifePolicy.policyNo}" />
+									</p:column>
+									<p:column headerText="Premium">
+										<h:outputText value="#{lifePolicy.totalPremium}">
+											<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Sales Man">
+										<h:outputText value="#{lifePolicy.saleMan.fullName}" />
+									</p:column>
+									<p:column headerText="Branch">
+										<h:outputText value="#{lifePolicy.branch == null ? '-' : lifePolicy.branch.name}" />
+									</p:column>
+									<p:column headerText="Agent">
+										<h:outputText value="#{lifePolicy.agent == null ? '-' : lifePolicy.agent.fullName}" />
+									</p:column>
+									<p:column headerText="No. of InsuredPerson">
+										<h:outputText value="#{lifePolicy.policyInsuredPersonList.size()}" />
+									</p:column>
+									<p:column headerText="Issue Status">
+										<h:outputText value="#{RenewalGroupLifeIssueActionBean.lifeProposal.complete ? 'Yes' : 'No'}" />
+									</p:column>
+									<p:column headerText="Print">
+										<p:commandButton id="pdfSingleBtn" value="Print Preview" oncomplete="PF('issuePolicyPDFDialogSingle').show()" action="#{RenewalGroupLifeIssueActionBean.generateReport(lifePolicy)}"
+										update=":pdfPrintForm" icon="ui-icon-print" style="height: 24px;" />
+									</p:column>
+								</p:dataTable>
+							</h:panelGroup>
+						</td>
+					</tr>
+				</table>
+			</p:panel>
+			<p:commandButton style="width: 80px;" id="issueBtn" value="Apply" disabled="#{RenewalGroupLifeIssueActionBean.disableIssueBtn}" action="#{RenewalGroupLifeIssueActionBean.issuePolicy}"
+				update=":lifePolicyIssueForm" />
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" id="cancelBtn" value="Back" action="dashboard" immediate="true" />
+		</h:form>
+		<h:form id="lifeProposalDetailsForm">
+			<p:dialog header="Life Proposal Details" widgetVar="lifeProposalDetailsDialog" resizable="false" width="1200" height="550" showEffect="explode" hideEffect="explode"
+				id="lifeProposalDetailsDialog" appendTo="@(body)">
+				<ui:include src="/manage/life/lifeProposalInfoTemplate.xhtml">
+					<ui:param name="lifePolicySummary" value="#{RenewalGroupLifeIssueActionBean.lifePolicySummary}" />
+					<ui:param name="isEndorse" value="#{RenewalGroupLifeIssueActionBean.isEndorse(lifeproposal)}" />
+					<ui:param name="lifePolicyList" value="#{RenewalGroupLifeIssueActionBean.lifePolicyList}" />
+					<ui:param name="lifePolicyHistoryList" value="#{RenewalGroupLifeIssueActionBean.lifePolicyHistoryList}" />
+					<ui:param name="lifeProposal" value="#{RenewalGroupLifeIssueActionBean.lifeProposal}" />
+					<ui:param name="showPolicy" value="#{true}" />
+					<ui:param name="showPolicyHistory" value="#{true}" />
+					<ui:param name="workFlowList" value="#{RenewalGroupLifeIssueActionBean.workFlowList}" />
+				</ui:include>
+			</p:dialog>
+		</h:form>
+		<h:form id="pdfPrintForm" enctype="multipart/form-data">
+			<p:dialog widgetVar="issuePolicyPDFDialogSingle" resizable="false" id="issuePolicyPDFDialogSingle" width="1070" height="505" appendTo="@(body)" dynamic="true">
+				<p:ajax event="close" update=":pdfPrintForm :lifePolicyIssueForm" listener="#{RenewalGroupLifeIssueActionBean.handleClose}" />
+				<p:media id="pdfPlayer" value="#{RenewalGroupLifeIssueActionBean.reportStream}" player="pdf" width="1050" height="500" cache="false"/>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

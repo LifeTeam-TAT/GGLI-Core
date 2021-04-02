@@ -1,0 +1,86 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:cyc="http://www.cycdemo.com/java"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Person Travel Porposal Confirmation" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="travelProposalConfirmForm">
+			<p:panel>
+				<table>
+					<tr>
+						<td style="width: 130px;">
+							<h:outputText styleClass="input-label" value="Proposal No" />
+						</td>
+						<td>
+							<h:panelGrid columns="2">
+								<p:inputText id="proposalNo" readonly="true" style="width:250px; margin-left:-2px;" value="#{PersonTravelConfirmationActionBean.personTravelProposal.proposalNo}" />
+								<p:commandLink id="detailsProposal" immediate="true" oncomplete="PF('travelProposalDetailsDialog').show()">
+									<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value="" />
+						</td>
+						<td>
+							<p:message for="remark" />
+						</td>
+					</tr>
+					<tr>
+						<td valign="top">
+							<h:outputText styleClass="input-label" value="Remark" />
+						</td>
+						<td valign="top">
+							<p:inputTextarea autoResize="true" id="remark" rows="7" style="width:400px;" value="#{PersonTravelConfirmationActionBean.remark}">
+								<f:validateLength maximum="8000" />
+							</p:inputTextarea>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value="" />
+						</td>
+						<td style="width: 115px;">
+							<p:message for="responsiblePerson" />
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 115px;">
+							<h:outputText style="color:red;" value="*" />
+							<h:outputText styleClass="input-label" value="Responsible Person" />
+						</td>
+						<td>
+							<h:panelGrid columns="3" id="responsiblePersonPanel">
+								<p:inputText id="responsiblePerson" readonly="#{PersonTravelConfirmationActionBean.responsiblePerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true"
+									style="width:250px;margin-left:-4px;" value="#{PersonTravelConfirmationActionBean.responsiblePerson.name == null ? '' : PersonTravelConfirmationActionBean.responsiblePerson.name}" />
+								<p:commandLink actionListener="#{PersonTravelConfirmationActionBean.selectUser()}" id="selectUserDialogLink" immediate="true">
+									<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+									<p:ajax event="dialogReturn" listener="#{PersonTravelConfirmationActionBean.returnUser}" update="responsiblePersonPanel" />
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+				</table>
+			</p:panel>
+			<p:commandButton style="width: 80px;" action="#{PersonTravelConfirmationActionBean.confirmPersonTravel()}" id="confirmBtn" value="Confirm" update=":travelProposalConfirmForm" />
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" action="#{PersonTravelConfirmationActionBean.editPersonTravel()}" id="editBtn" value="Edit" update=":travelProposalConfirmForm" process="@this"/>
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" action="#{PersonTravelConfirmationActionBean.denyPersonTravel()}" id="denyBtn" value="Deny" update=":travelProposalConfirmForm"/>
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" action="dashboard" id="cancelBtn" immediate="true" value="Cancel" />
+		</h:form>
+		<h:form id="travelProposalDetailsForm">
+			<p:dialog appendTo="@(body)" header="Travel Proposal Details" height="500" hideEffect="explode" id="travelProposalDetailsDialog" resizable="false" showEffect="explode"
+				widgetVar="travelProposalDetailsDialog" width="1000">
+				<ui:include src="/manage/travel/personTravel/personTravelDetailTemplate.xhtml">
+					<ui:param name="personTravelProposal" value="#{PersonTravelConfirmationActionBean.personTravelProposal}" />
+					<ui:param name="bancaassuranceProposal" value="#{PersonTravelConfirmationActionBean.bancaassuranceProposal}" />
+				</ui:include>
+			</p:dialog>
+		</h:form>
+		
+	</ui:define>
+</ui:composition>

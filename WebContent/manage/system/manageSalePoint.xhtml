@@ -1,0 +1,160 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['MANAGE_SALEPOINT_TITLE']}"/>
+	<ui:param name="headerRendered" value="true"/>
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="salePointEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true"/>
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel/>
+						<p:message for="name" display="text"/>
+						<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_COUNTRY_NAME_LABEL']}"/>
+						<p:inputText id="name" required="true" value="#{ManageSalePointActionBean.salePoint.name}">
+							<f:validateLength maximum="50"/>
+						</p:inputText>
+						
+						<p:outputLabel/>
+						<p:message for="phone" display="text"/>
+						<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_ORGANIZATION_PHONE_LABEL']}" />
+		  				<p:inputText id="phone" required="true" value="#{ManageSalePointActionBean.salePoint.phone}" validatorMessage="Character does not allow and comma use when u adding one more.">
+							<f:validateRegex pattern="\b\d[\d,-]*\b" />
+						</p:inputText>
+						
+						<p:outputLabel/>
+						<p:message for="email" display="text"/>
+						<h:outputText styleClass="input-label" value="#{label['MANAGE_ORGANIZATION_EMAIL_LABEL']}" />
+						<p:inputText id="email" value="#{ManageSalePointActionBean.salePoint.email}" validatorMessage="Invalid email format">
+							<f:validateLength maximum="200" />
+							<f:validateRegex pattern="([\w\.-]*[a-zA-Z0-9_]@[\w]*.com)?" />
+						</p:inputText>
+						
+						<p:outputLabel/>
+					  			<p:message for="branch" id="MsgBranch" display="text" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['ADDNEWLIFEPROPOSAL_BRANCH_LABEL']}" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="branchPanelGroup">
+									<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="branchPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ManageSalePointActionBean.selectBranch()}" id="selectBranchDialogLink"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{ManageSalePointActionBean.returnBranch}" update="branch" />
+											</p:commandButton>
+											<p:inputText id="branch" readonly="#{ManageSalePointActionBean.salePoint.branch == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true"
+												value="#{ManageSalePointActionBean.salePoint.branch == null ? '' : ManageSalePointActionBean.salePoint.branch.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ManageSalePointActionBean.removeBranch()}" process="@this" update="branch" />
+									</div>
+								</div>
+							</p:panelGrid>
+							
+					<p:outputLabel/>
+					<p:message for="status" display="text"/>
+					<h:outputText value="Status"/>
+					<p:selectBooleanCheckbox id="status" required="true" value="#{ManageSalePointActionBean.salePoint.status}" />
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						
+						
+						<p:outputLabel/>
+						<p:message for="township" display="text"/>
+		                <h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_AGENT_TOWNSHIP_LABEL']}"/>
+		                <p:panelGrid styleClass="ui-panelgrid-blank" id="townshipPanelGroup">
+							<div style="margin-top:-5px; margin-left:-5px;" class="ui-g ui-fluid" id="townshipPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ManageSalePointActionBean.selectTownship()}" id="selectTownshipDialogLink" process="@this">
+								       <p:ajax event="dialogReturn" listener="#{ManageSalePointActionBean.returnTownship}" update="township"/>
+								    </p:commandButton>
+								  	<p:inputText id="township" readonly="#{ManageSalePointActionBean.salePoint.township == null? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true" value="#{ManageSalePointActionBean.salePoint.township == null ? '' : ManageSalePointActionBean.salePoint.township.name}"/>
+								    <p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ManageSalePointActionBean.salePoint.setTownship(null)}" process="@this" update="township"/>
+								</div>
+							</div>
+						</p:panelGrid>
+					
+						<p:outputLabel/>
+						<p:message for="address" display="text"/>
+						<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_BRANCH_ADDRESS_LABEL']}"/>
+						<p:inputTextarea autoResize="true" id="address" required="true" rows="5" value="#{ManageSalePointActionBean.salePoint.address}">
+		                   <f:validateLength maximum="300"/>
+		                </p:inputTextarea>
+						
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel/>
+						<p:message for="salePointCode" display="text"/>
+						<h:outputText styleClass="input-label mandatory" value="Code No." />
+						<p:inputText id="salePointCode" required="true" value="#{ManageSalePointActionBean.salePoint.salePointCode}">
+							<f:validateLength maximum="200" />
+						</p:inputText>
+						
+						<p:outputLabel/>
+						<p:message for="description" display="text"/>
+						<h:outputText styleClass="input-label" value="#{label['MANAGE_COUNTRY_DESCRIPTION_LABEL']}"/>
+						<p:inputTextarea autoResize="true" id="description" rows="5" value="#{ManageSalePointActionBean.salePoint.description}">
+							<f:validateLength maximum="300"/>
+						</p:inputTextarea>
+						
+							
+						
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:commandButton action="#{ManageSalePointActionBean.addNewSalePoint}" id="addBtn"  oncomplete="PF('salePointTable').filter();" rendered="#{ManageSalePointActionBean.createNew}" style="width: 80px;" update=":salePointTableForm :salePointEntryForm" value="#{label['COMMON_ADDNEW_BTN']}"/>
+				<p:commandButton action="#{ManageSalePointActionBean.updateSalePoint}" id="editBtn" oncomplete="PF('salePointTable').filter();" style="width: 80px;" rendered="#{!ManageSalePointActionBean.createNew}" update="salePointEntryForm" value="#{label['COMMON_UPDATE_BTN']}"/>
+				<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}"/>
+			</h:panelGrid>
+			<br/>
+		</h:form>
+		<h:form id="salePointTableForm">
+		<h:panelGrid columns="1">
+			<h:commandLink action="#{ManageSalePointActionBean.createNewSalePoint}">
+				<h:panelGrid columns="2">
+					<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}"/>
+					<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}"/>
+				</h:panelGrid>
+			</h:commandLink>
+		</h:panelGrid>
+			<p:outputPanel id="listPanel">
+				<p:dataTable id="salePointTable" reflow="true" rowIndexVar="index" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10" rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageSalePointActionBean.salePointList}" var="salePoint" widgetVar="salePointTable">
+					<p:column headerText="No." style="width:4%;">
+					   <h:outputText value="#{index + 1}"/>
+					</p:column>
+					<p:column filterBy="#{salePoint.name}"  filterMatchMode="contains" headerText="#{label['MANAGE_COUNTRY_NAME_LABEL']}">
+						<h:outputText value="#{salePoint.name}"/>
+					</p:column>
+					<p:column  headerText="#{label['MANAGE_COUNTRY_DESCRIPTION_LABEL']}" filterBy="#{salePoint.description}"  filterMatchMode="contains">
+						<h:outputText value="#{salePoint.description}"/>
+					</p:column>
+					<p:column headerText="Code No."  filterBy="#{salePoint.salePointCode}" filterMatchMode="contains">
+						<h:outputText value="#{salePoint.salePointCode}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_ORGANIZATION_PHONE_LABEL']}"  filterBy="#{salePoint.phone}"  filterMatchMode="contains">
+						<h:outputText value="#{salePoint.phone}" />
+					</p:column>
+					<p:column headerText="Branch"  filterBy="#{salePoint.branch.name}"  filterMatchMode="contains">
+						<h:outputText value="#{salePoint.branch.name}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_BRANCH_ADDRESS_LABEL']}" >
+						<h:outputText value="#{salePoint.address}, #{salePoint.township.fullTownShip}"/>
+					</p:column>
+					<p:column headerText="Status" >
+						<h:outputText value="#{salePoint.status}" />
+					</p:column>
+					<p:column style="width:4%;">
+					   <p:commandButton styleClass="green-button" icon="fa fa-paint-brush" action="#{ManageSalePointActionBean.prepareUpdateSalePoint(salePoint)}" update=":salePointEntryForm"/>
+					</p:column>
+					<p:column style="width:4%;">
+					    <p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ManageSalePointActionBean.deleteSalePoint(salePoint)}" oncomplete="PF('salePointTable').filter();" update=":salePointTableForm :salePointEntryForm">
+					    	<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+					    </p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		 	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+				<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+		</p:confirmDialog>
+	</ui:define>
+</ui:composition>

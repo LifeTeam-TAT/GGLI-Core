@@ -1,0 +1,127 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Travel Proposal Enquiry" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="travelProposalEquiryForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="startDate" value="Start Date" />
+						<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{TravelProposalEnquiryActionBean.criteria.startDate}" />
+						<h:outputText for="proposalNo" value="Proposal No." />
+						<p:inputText id="proposalNo" value="#{TravelProposalEnquiryActionBean.criteria.number}" />
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="endDate" value="End Date" />
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{TravelProposalEnquiryActionBean.criteria.endDate}" />
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText styleClass="input-label" value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectBranchPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectBranchPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" disabled="#{!TravelProposalEnquiryActionBean.accessBranches}" icon="fa fa-search" actionListener="#{TravelProposalEnquiryActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{TravelProposalEnquiryActionBean.returnBranch}" update="branch" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true" value="#{TravelProposalEnquiryActionBean.criteria.branch == null ? 'ALL' : TravelProposalEnquiryActionBean.criteria.branch.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{!TravelProposalEnquiryActionBean.accessBranches}" icon="fa fa-times" action="#{TravelProposalEnquiryActionBean.criteria.setBranch(null)}" process="@this" update="branch" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton style="width:80px;" action="#{TravelProposalEnquiryActionBean.findTrabelProposalListByEnquiryCriteria}" update=":travelProposalEquiryForm" value="Search" />
+				<p:commandButton style="width:80px;" action="#{TravelProposalEnquiryActionBean.resetCriteria}" update=":travelProposalEquiryForm" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="TravelProposalTable" paginator="true" styleClass="fixed-size"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+				rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{TravelProposalEnquiryActionBean.travelProposalList}" var="travelProposal">
+				<p:column headerText="Proposal No." style="width:200px;">
+					<h:outputText value="#{travelProposal.proposalNo}" />
+				</p:column>
+				<p:column headerText="Branch" style="width:110px;text-align:center;">
+					<h:outputText value="#{travelProposal.branch.name}" />
+				</p:column>
+				<p:column headerText="Number of Passenger" style="width:150px;text-align:center;">
+					<h:outputText value="#{travelProposal.totalPassenger}" />
+				</p:column>
+				<p:column headerText="Number of Unit" style="width:140px;text-align:center;">
+					<h:outputText value="#{travelProposal.totalUnit}" />
+				</p:column>
+				<p:column headerText="Total Premium" style="width:140px;text-align:center;">
+					<h:outputText value="#{travelProposal.totalNetPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Submitted Date" style="width:130px;text-align:center;">
+					<h:outputText pattern="#{ApplicationSetting.dateFormat}" value="#{travelProposal.submittedDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="text-align:center;" width="5%" headerText="Detail">
+					<p:commandLink action="#{TravelProposalEnquiryActionBean.ShowDetailTravelProposal(travelProposal)}" id="detailsProposal" immediate="true"
+						oncomplete="PF('travelProposalDetailsDialog').show()" update=":travelProposalDetailsForm:detailPannel">
+						<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="text-align:center;" width="5%" headerText="Edit">
+					<p:commandLink action="#{TravelProposalEnquiryActionBean.editTravelProposal(travelProposal)}" update=":informationForm">
+						<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="text-align:center;" width="5%">
+					<f:facet name="header">
+						<h:outputLabel style="white-space:pre;" value="Cash&#10;Receipt" />
+					</f:facet>
+					<p:commandLink action="#{TravelProposalEnquiryActionBean.generateCashReceipt(travelProposal)}" id="printCashReceiptDialogLink" immediate="true"
+						update=":pdfPrintForm:printPannel">
+						<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" url="#{ApplicationSetting.printIcon}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<h:form id="travelProposalDetailsForm">
+			<p:dialog appendTo="@(body)" header="Travel Proposal Details" height="550" hideEffect="explode" id="travelProposalDetailsDialog" resizable="false" showEffect="explode"
+				widgetVar="travelProposalDetailsDialog" width="1025">
+				<p:outputPanel id="detailPannel">
+					<ui:include src="/manage/travel/expressDetailInfo.xhtml">
+						<ui:param name="travelProposal" value="#{TravelProposalEnquiryActionBean.travelProposal}" />
+					</ui:include>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+		<h:form enctype="multipart/form-data" id="pdfPrintForm">
+			<p:dialog appendTo="@(body)" dynamic="true" width="1070" height="505" id="issuePolicyPDFDialogSingle" resizable="false" widgetVar="issuePolicyPDFDialogSingle">
+				<p:ajax event="close" update=":pdfPrintForm :travelProposalEquiryForm" listener="#{TravelProposalEnquiryActionBean.handleClose}" />
+				<p:outputPanel id="printPannel">
+					<p:media width="1050" height="500" id="pdfPlayer" player="pdf" value="#{TravelProposalEnquiryActionBean.reportStream}"  cache="false"/>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+		<h:form id="informationForm">
+			<p:dialog header="Proposal Information" height="100" hideEffect="explode" id="informationDialog" resizable="false" showEffect="explode" widgetVar="informationDialog" width="250">
+				<h:panelGroup id="informationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="#{TravelProposalEnquiryActionBean.message}" />
+							</td>
+						</tr>
+					</table>
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

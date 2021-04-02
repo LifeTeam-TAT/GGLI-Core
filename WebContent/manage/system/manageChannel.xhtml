@@ -1,0 +1,70 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Channel Management" />
+	<ui:param name="headerRendered" value="true" />
+	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+	<ui:define name="content">
+		<h:form id="channelEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" />
+			<p:panelGrid style="margin:10px;" columns="2" columnClasses="ui-grid-col-2,ui-grid-col-3" layout="grid" styleClass="ui-fluid">
+				<h:outputText value="" />
+				<p:message for="name" display="text"/>
+				<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_BANK_NAME_LABEL']}" />
+				<p:inputText id="name" required="true" style="width:250px;" value="#{ManageChannelActionBean.channel.name}">
+					<f:validateLength maximum="50" />
+				</p:inputText>
+				<h:outputText value="" />
+				<p:message for="description" />
+				<h:outputText styleClass="input-label" value="#{label['MANAGE_BANK_DESCRIPTION_LABEL']}" />
+				<p:inputTextarea autoResize="true" id="description" rows="5" style="width:250px;" value="#{ManageChannelActionBean.channel.description}">
+					<f:validateLength maximum="300" />
+				</p:inputTextarea>
+			</p:panelGrid>
+			<p:commandButton action="#{ManageChannelActionBean.addNewChannel}" id="addBtn" rendered="#{ManageChannelActionBean.createNew}" style="width: 80px;"
+				update=":channelEntryForm :channelTableForm" value="#{label['COMMON_ADDNEW_BTN']}" oncomplete="PF('channelTable').filter();" />
+			<p:commandButton action="#{ManageChannelActionBean.updateChannel}" id="editBtn" rendered="#{!ManageChannelActionBean.createNew}" update=":channelEntryForm :channelTableForm"
+				value="#{label['COMMON_UPDATE_BTN']}" oncomplete="PF('channelTable').filter();" />
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			<br />
+			<p:separator style="height:5px" />
+		</h:form>
+		<h:form id="channelTableForm">
+			<h:panelGrid>
+			<h:commandLink action="#{ManageChannelActionBean.createNewChannelInfo}">
+				<h:panelGrid columns="2">
+					<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+					<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+				</h:panelGrid>
+			</h:commandLink>
+			</h:panelGrid>
+			<p:outputPanel id="listPanel">
+				<p:dataTable id="channelTable" paginator="true" widgetVar="channelTable"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rows="10"
+					rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageChannelActionBean.channelInfoList}" var="channel"
+					filteredValue="#{ManageChannelActionBean.filterChannelInfoList}">
+					<p:column filterBy="#{channel.name}" filterMatchMode="contains" headerText="#{label['MANAGE_BANK_NAME_LABEL']}">
+						<h:outputText value="#{channel.name}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_BANK_DESCRIPTION_LABEL']}">
+						<h:outputText value="#{channel.description}" />
+					</p:column>
+					<p:column style="width:50px;" headerText="Edit">
+						<p:commandButton styleClass="green-button" icon="fa fa-paint-brush" action="#{ManageChannelActionBean.prepareUpdateChannel(channel)}"
+							update=":channelTableForm :channelEntryForm" />
+					</p:column>
+					<p:column style="width:4%;" headerText="Delete">
+						<p:commandButton styleClass="red-button" icon="fa fa-times" oncomplete="PF('channelTable').filter();" action="#{ManageChannelActionBean.deleteChannel(channel)}"
+							update=":channelTableForm :channelEntryForm">
+							<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+		</p:confirmDialog>
+	</ui:define>
+</ui:composition>

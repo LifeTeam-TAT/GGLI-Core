@@ -1,0 +1,143 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<h:form id="statusList">
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<table cellspacing="5" width="100%">
+				<tr>
+					<td><h:outputText styleClass="table-title" value="Life Policy Status Report" /></td>
+					<td align="right"><h:commandLink action="#{LifeClaimStatusReportActionBean.exportExcel()}" immediate="true">
+							<p:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" value="/images/excel.png" />
+						</h:commandLink></td>
+				</tr>
+			</table>
+			<p:panel>
+				<p:panelGrid columns="3" id="lifeclaimPanelGroup" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="startDate" value="Start Date" />
+						<p:calendar id="startDate" pattern="dd-MM-yyyy" showOn="button" value="#{LifeClaimStatusReportActionBean.criteria.startDate}" />
+						<h:outputLabel />
+						<h:outputLabel />
+						<h:outputText value="Entity" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="selectBranchPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" disabled="#{!LifeClaimStatusReportActionBean.accessBranches}"
+										actionListener="#{LifeClaimStatusReportActionBean.selectEntity()}" id="selectEntityDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{LifeClaimStatusReportActionBean.returnEntity}" update="entity branchPanelGroup salePontPanelGroup" />
+									</p:commandButton>
+									<p:inputText id="entity" readonly="true"
+										value="#{LifeClaimStatusReportActionBean.criteria.entity == null ? '--Select Entity--' : LifeClaimStatusReportActionBean.criteria.entity.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{!LifeClaimStatusReportActionBean.accessBranches}"
+										action="#{LifeClaimStatusReportActionBean.removeEntity}" process="@this" update="entity branchPanelGroup salePontPanelGroup" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="endDate" value="End Date" />
+						<p:calendar id="endDate" pattern="dd-MM-yyyy" showOn="button" value="#{LifeClaimStatusReportActionBean.criteria.endDate}" />
+						<h:outputLabel />
+						<h:outputLabel />
+						<h:outputText styleClass="input-label" value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{LifeClaimStatusReportActionBean.selectBranch()}" id="selectBranchDialogLink"
+										process="@this" disabled="#{!LifeClaimStatusReportActionBean.accessBranches || LifeClaimStatusReportActionBean.criteria.entity==null?true:false}">
+										<p:ajax event="dialogReturn" listener="#{LifeClaimStatusReportActionBean.returnBranch}" update="branch salePontPanelGroup" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true" value="#{LifeClaimStatusReportActionBean.criteria.branch == null ? '' : LifeClaimStatusReportActionBean.criteria.branch.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{!LifeClaimStatusReportActionBean.accessBranches || LifeClaimStatusReportActionBean.criteria.entity==null?true:false}"
+										icon="fa fa-times" action="#{LifeClaimStatusReportActionBean.removeBranch()}" process="@this" update="branch salePontPanelGroup" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:panelGroup>
+							<h:outputText styleClass="input-label" value="Status Type" />
+						</h:panelGroup>
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="policyStatus" value="#{LifeClaimStatusReportActionBean.criteria.policyStatus}">
+							<f:selectItem itemLabel="Selected Status Type" />
+							<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{LifeClaimStatusReportActionBean.policyStatusList}" var="type" />
+						</p:selectOneMenu>
+						<h:outputLabel />
+						<h:outputLabel />
+						<h:outputText styleClass="input-label" value="Sale Point" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{LifeClaimStatusReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+										process="@this" disabled="#{LifeClaimStatusReportActionBean.criteria.branch==null?true:false}">
+										<p:ajax event="dialogReturn" listener="#{LifeClaimStatusReportActionBean.returnSalePoint}" update="salePoint" />
+									</p:commandButton>
+									<p:inputText id="salePoint" readonly="true"
+										value="#{LifeClaimStatusReportActionBean.criteria.salePoint == null ? '' :LifeClaimStatusReportActionBean.criteria.salePoint.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{LifeClaimStatusReportActionBean.criteria.branch==null?true:false}" icon="fa fa-times"
+										action="#{LifeClaimStatusReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salePoint" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton action="#{LifeClaimStatusReportActionBean.filter}" update=":statusList" value="Search" />
+				<p:commandButton action="#{LifeClaimStatusReportActionBean.resetCriteria}" update=":statusList" value="Reset" />
+			</h:panelGrid>
+			<h:panelGroup id="statusTablePanel">
+				<p:dataTable id="statusTable" lazy="true" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="10"
+					rowsPerPageTemplate="10,20, 30" value="#{LifeClaimStatusReportActionBean.lazyModel}" var="lifeStatus">
+					<p:column headerText="No." style="width:50px;">
+						<h:outputText value="#{rowIndex + 1}" />
+					</p:column>
+					<p:column headerText="Policy No." style="width:180px;">
+						<h:outputText value="#{lifeStatus.policyNo}" />
+					</p:column>
+					<p:column headerText="Customer Name" style="width:250px;">
+						<h:outputText value="#{lifeStatus.customerName}" />
+					</p:column>
+					<p:column headerText="Age" style="text-align:right;width:50px;">
+						<h:outputText value="#{lifeStatus.age}" />
+					</p:column>
+					<p:column headerText="Address" style="width:250px;">
+						<h:outputText value="#{lifeStatus.address}" />
+					</p:column>
+					<p:column headerText="Agent Name" style="width:250px;">
+						<h:outputText value="#{lifeStatus.agentName}" />
+					</p:column>
+					<p:column headerText="Payment Type " style="text-align:right;width:100px;">
+						<h:outputText value="#{lifeStatus.paymentType}">
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Policy Period" style="text-align:right;width:50px;">
+						<h:outputText value="#{lifeStatus.policyPeriod}">
+						</h:outputText>
+					</p:column>
+					<p:column headerText="SumInsured" style="text-align:right;width:100px;">
+						<h:outputText value="#{lifeStatus.sumInsured}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Amount" style="text-align:right;width:100px;">
+						<h:outputText value="#{lifeStatus.amount}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Policy Status" style="text-align:right;width:100px;">
+						<h:outputText value="#{lifeStatus.policyStatus}">
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,412 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml" xmlns:jsf="http://xmlns.jcp.org/jsf">
+	<ui:param name="header" value="#{label['MANAGE_SALEMAN_TITLE']}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="saleManEntryForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<p:growl globalOnly="true" id="messages" showDetail="true" />
+			<div style="padding-left: 15px;">
+				<table>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td valign="top">
+										<table>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="intialId" display="text"/></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText style="color:red;" value="#{label['STAR_SIGN_LABEL']}" /> <h:outputText styleClass="input-label"
+														value="#{label['MANAGE_SALEMAN_INTIALID_LABEL']}" /></td>
+												<td><p:inputText id="intialId" required="true" style="width:250px;" value="#{ManageSaleManActionBean.saleMan.initialId}">
+														<f:validateLength maximum="50" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="firstName" display="text"/></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText style="color:red;" value="#{label['STAR_SIGN_LABEL']}" /> <h:outputText styleClass="input-label"
+														value="#{label['MANAGE_SALEMAN_FIRSTNAME_LABEL']}" /></td>
+												<td><p:inputText id="firstName" required="true" style="width:250px;" value="#{ManageSaleManActionBean.saleMan.name.firstName}">
+														<f:validateLength maximum="50" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="middleName" /></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label" value="#{label['MANAGE_SALEMAN_MIDDLENAME_LABEL']}" /></td>
+												<td><p:inputText id="middleName" style="width:250px;" value="#{ManageSaleManActionBean.saleMan.name.middleName}">
+														<f:validateLength maximum="50" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="lastName" /></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label" value="#{label['MANAGE_SALEMAN_LAST_NAME_LABEL']}" /></td>
+												<td><p:inputText id="lastName" style="width:250px;" value="#{ManageSaleManActionBean.saleMan.name.lastName}">
+														<f:validateLength maximum="50" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="codeNo" /></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label" value="#{label['MANAGE_SALEMAN_CODENO_LABEL']}" /></td>
+												<td><p:inputText id="codeNo" style="width:250px;" value="#{ManageSaleManActionBean.saleMan.codeNo}">
+														<f:validateLength maximum="50" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="licenseNo" /></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label" value="#{label['MANAGE_SALEMAN_LICENSENO_LABEL']}" /></td>
+												<td><p:inputText id="licenseNo" style="width:250px;" value="#{ManageSaleManActionBean.saleMan.licenseNo}">
+														<f:validateLength maximum="50" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="idType" display="text"/></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText style="color:red;" value="#{label['STAR_SIGN_LABEL']}" /> <h:outputText styleClass="input-label"
+														value="#{label['MANAGE_SALEMAN_IDTYPE_LABEL']}" /></td>
+												<td><p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="idType" style="height:24px;width: 258px;" value="#{ManageSaleManActionBean.saleMan.idType}">
+														<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{ManageSaleManActionBean.IdTypeSelectItemList()}" var="type" />
+														<p:ajax event="change" update="insuredPersonIdNoPanelGrid customerIdNoPanelGrid" listener="#{ManageSaleManActionBean.changeInsuredPersonIdType}" />
+													</p:selectOneMenu></td>
+											</tr>
+											<tr>
+												<td></td>
+												<td><h:panelGrid columns="5" id="insuredPersonIdNoPanelGrid">
+														<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuredPersonstateCode"
+															rendered="#{ManageSaleManActionBean.saleMan.idType ne 'STILL_APPLYING' and ManageSaleManActionBean.saleMan.idType ne 'FRCNO' and
+												ManageSaleManActionBean.saleMan.idType ne 'PASSPORTNO'}"
+															required="true" style="width:55px;" value="#{ManageSaleManActionBean.saleMan.provinceCode}">
+															<f:selectItem itemLabel="---" noSelectionOption="true" />
+															<f:selectItems var="stateCode" itemLabel="#{stateCode.codeNo}" itemValue="#{stateCode.codeNo}" value="#{ManageSaleManActionBean.stateCodeList}" />
+															<p:ajax event="valueChange" listener="#{ManageSaleManActionBean.changeStateCode}" update="insuredPersontownshipCode" />
+														</p:selectOneMenu>
+														<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuredPersontownshipCode" value="#{ManageSaleManActionBean.saleMan.townshipCode}"
+															rendered="#{ManageSaleManActionBean.saleMan.idType ne 'STILL_APPLYING' and ManageSaleManActionBean.saleMan.idType ne 'FRCNO' and
+												ManageSaleManActionBean.saleMan.idType ne 'PASSPORTNO'}"
+															required="true" style="width:100px;">
+															<f:selectItem itemLabel="---" noSelectionOption="true" />
+															<f:selectItems var="townshipCode" itemLabel="#{townshipCode.townshipcodeno}" itemValue="#{townshipCode.townshipcodeno}"
+																value="#{ManageSaleManActionBean.townshipCodeList}" />
+														</p:selectOneMenu>
+														<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuredPersonidConditionType" value="#{ManageSaleManActionBean.saleMan.idConditionType}"
+															style="width:50px;"
+															rendered="#{ManageSaleManActionBean.saleMan.idType ne 'STILL_APPLYING' and ManageSaleManActionBean.saleMan.idType ne 'FRCNO' and
+												ManageSaleManActionBean.saleMan.idType ne 'PASSPORTNO'}">
+															<f:selectItems itemLabel="#{type.label}" itemValue="#{type.label}" value="#{ManageSaleManActionBean.idConditionType}" var="type" />
+														</p:selectOneMenu>
+														<p:inputText id="idNo" value="#{ManageSaleManActionBean.saleMan.idNo}" required="true" rendered="#{ManageSaleManActionBean.saleMan.idType eq 'NRCNO'}" maxlength="7"
+															onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" style="#{ManageSaleManActionBean.saleMan.idType eq 'NRCNO' ?'width:100px':'width:320px'};">
+															<f:validateLength maximum="7" minimum="6" />
+														</p:inputText>
+													</h:panelGrid></td>
+											</tr>
+											<tr>
+												<td />
+												<td><p:message for="customerRegIdNo" display="text" /></td>
+											</tr>
+											<tr>
+												<td><h:outputText /></td>
+												<td><h:panelGrid columns="1" id="customerIdNoPanelGrid" width="100%">
+														<p:inputText id="customerRegIdNo"
+															rendered="#{(ManageSaleManActionBean.saleMan.idType eq 'FRCNO' or ManageSaleManActionBean.saleMan.idType eq 'PASSPORTNO' ) and ManageSaleManActionBean.saleMan.idType ne null}"
+															value="#{ManageSaleManActionBean.saleMan.idNo}" required="true" maxlength="30" style="width:250px;" />
+													</h:panelGrid></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="entity" display="text"/></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label mandatory" value="Entity" /></td>
+												<td><p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGroup">
+														<div style="width: 274px; margin-top: -5px; margin-left: -8px;" class="ui-g ui-fluid" id="entityPanelGroup">
+															<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+																<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ManageSaleManActionBean.selectEntity()}" id="selectEnitysDialogLink"
+																	process="@this">
+																	<p:ajax event="dialogReturn" listener="#{ManageSaleManActionBean.returnEntity}" update="entity branchPanelGroup salePontPanelGroup" />
+																</p:commandButton>
+																<p:inputText id="entity" required="true" readonly="#{ManageSaleManActionBean.saleMan.entity == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+																	value="#{ManageSaleManActionBean.saleMan.entity  == null ? '' : ManageSaleManActionBean.saleMan.entity.name}" />
+																<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ManageSaleManActionBean.removeEntity()}" process="@this"
+																	update="entity branchPanelGroup salePontPanelGroup" />
+															</div>
+														</div>
+													</p:panelGrid></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="branch" display="text"/></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label mandatory" value="Branch" /></td>
+												<td><p:panelGrid styleClass="ui-panelgrid-blank">
+														<div style="width: 274px; margin-top: -5px; margin-left: -8px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+															<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+																<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ManageSaleManActionBean.selectBranch()}" id="selectBranchDialogLink"
+																	process="@this" disabled="#{ManageSaleManActionBean.saleMan.entity == null?true:false}">
+																	<p:ajax event="dialogReturn" listener="#{ManageSaleManActionBean.returnBranch}" update="branch salePontPanelGroup" />
+																</p:commandButton>
+																<p:inputText id="branch" required="true" readonly="#{ManageSaleManActionBean.saleMan.branch == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+																	value="#{ManageSaleManActionBean.saleMan.branch == null ? '' : ManageSaleManActionBean.saleMan.branch.name}" />
+																<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ManageSaleManActionBean.removeBranch()}" process="@this" update="branch salePontPanelGroup" />
+															</div>
+														</div>
+													</p:panelGrid></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="salePoint" display="text"/></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label mandatory" value="Sale Point" /></td>
+												<td><p:panelGrid styleClass="ui-panelgrid-blank">
+														<div style="width: 274px; margin-top: -5px; margin-left: -8px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+															<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+																<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ManageSaleManActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+																	process="@this" disabled="#{ManageSaleManActionBean.saleMan.branch==null?true:false}">
+																	<p:ajax event="dialogReturn" listener="#{ManageSaleManActionBean.returnSalePoint}" update="salePoint" />
+																</p:commandButton>
+																<p:inputText id="salePoint" required="true" readonly="#{ManageSaleManActionBean.saleMan.salePoint == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+																	value="#{ManageSaleManActionBean.saleMan.salePoint == null ? '' : ManageSaleManActionBean.saleMan.salePoint.name}" />
+																<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ManageSaleManActionBean.saleMan.setSalePoint(null)}" process="@this" update="salePoint" />
+															</div>
+														</div>
+													</p:panelGrid></td>
+											</tr>
+										</table>
+									</td>
+									<td valign="top">
+										<table>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="dateOfBirth" display="text"/></td>
+											</tr>
+											<tr>
+												<td valign="top"><h:outputText styleClass="input-label" value="#{label['MANAGE_SALEMAN_DOB_LABEL']}" /></td>
+												<td><p:inputMask id="dateOfBirth" mask="99-99-9999" style="width:250px;" value="#{ManageSaleManActionBean.saleMan.dateOfBirth}">
+														<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+													</p:inputMask></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="phone_voice" display="text"/></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText style="color:red;" value="#{label['STAR_SIGN_LABEL']}" /> <h:outputText styleClass="input-label"
+														value="#{label['MANAGE_SALEMAN_PHONE1_LABEL']}" /></td>
+												<td><p:inputText id="phone_voice" required="true" style="width:250px;" value="#{ManageSaleManActionBean.saleMan.contentInfo.phone}"
+														validatorMessage="Character does not allow and comma use when u adding one more.">
+														<f:validateLength maximum="50" />
+														<f:validateRegex pattern="(\b\d[\d,-]*\b)?" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="phone_sms" display="text"/></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText style="color:red;" value="#{label['STAR_SIGN_LABEL']}" /> <h:outputText styleClass="input-label"
+														value="#{label['MANAGE_SALEMAN_PHONE2_LABEL']}" /></td>
+												<td><p:inputText id="phone_sms" required="true" style="width:250px;" value="#{ManageSaleManActionBean.saleMan.contentInfo.mobile}"
+														validatorMessage="Character does not allow and comma use when u adding one more.">
+														<f:validateLength maximum="50" />
+														<f:validateRegex pattern="(\b\d[\d,-]*\b)?" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="phone_viber" display="text"/></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label" value="#{label['MANAGE_SALEMAN_PHONE3_LABEL']}" /></td>
+												<td><p:inputText id="phone_viber" style="width:250px;" value="#{ManageSaleManActionBean.saleMan.viberContent.viberPhone}"
+														validatorMessage="Character does not allow and comma use when u adding one more.">
+														<f:validateLength maximum="50" />
+														<f:validateRegex pattern="(\b\d[\d,-]*\b)?" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="fax" display="text"/></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label" value="#{label['MANAGE_SALEMAN_FAX_LABEL']}" /></td>
+												<td><p:inputText id="fax" style="width:250px;" value="#{ManageSaleManActionBean.saleMan.contentInfo.fax}"
+														validatorMessage="Character does not allow and comma use when u adding one more.">
+														<f:validateLength maximum="50" />
+														<f:validateRegex pattern="(\b\d[\d,-]*\b)?" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="email" display="text"/></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label" value="#{label['MANAGE_SALEMAN_EMAIL_LABEL']}" /></td>
+												<td><p:inputText id="email" style="width:250px;" value="#{ManageSaleManActionBean.saleMan.contentInfo.email}" validatorMessage="email is invalid format">
+														<f:validateRegex pattern="([\w\.-]*[a-zA-Z0-9_]@[\w]*.com)?" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="address" display="text"/></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText style="color:red;" value="#{label['STAR_SIGN_LABEL']}" /> <h:outputText styleClass="input-label"
+														value="#{label['MANAGE_SALEMAN_ADDRESS_LABEL']}" /></td>
+												<td><p:inputText id="address" required="true" style="width:250px;" value="#{ManageSaleManActionBean.saleMan.address.permanentAddress}">
+														<f:validateLength maximum="50" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="township" display="text"/></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_SALEMAN_TOWNSHIP_LABEL']}" /></td>
+												<td><p:panelGrid styleClass="ui-panelgrid-blank" id="townshipPanelGroup">
+														<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="townshipPanelGroup">
+															<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+																<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ManageSaleManActionBean.selectTownship()}" id="selectTownshipDialogLink"
+																	process="@this">
+																	<p:ajax event="dialogReturn" listener="#{ManageSaleManActionBean.returnTownship}" update="township" />
+																</p:commandButton>
+																<p:inputText id="township" readonly="#{ManageSaleManActionBean.saleMan.address.township == null? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true"
+																	value="#{ManageSaleManActionBean.saleMan.address.township == null ? '' : ManageSaleManActionBean.saleMan.address.township.name}" />
+																<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ManageSaleManActionBean.removeTownship()}" process="@this" update="township" />
+															</div>
+														</div>
+													</p:panelGrid></td>
+											</tr>
+											<tr>
+												<td />
+												<td><p:message for="status" display="text" /></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="Status" /></td>
+												<td><p:selectBooleanCheckbox id="status" required="true" value="#{ManageSaleManActionBean.saleMan.status}" /></td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td><p:commandButton action="#{ManageSaleManActionBean.addNewSaleMan}" id="addBtn" rendered="#{ManageSaleManActionBean.createNew}" style="width: 80px;"
+								update=":saleManEntryForm :saleManTableForm" value="#{label['COMMON_ADDNEW_BTN']}" oncomplete="PF('saleManTable').filter();" /> <p:commandButton
+								action="#{ManageSaleManActionBean.updateSaleMan}" id="editBtn" oncomplete="PF('saleManTable').filter();" rendered="#{!ManageSaleManActionBean.createNew}"
+								update=":saleManEntryForm :saleManTableForm" value="#{label['COMMON_UPDATE_BTN']}" /></td>
+					</tr>
+				</table>
+			</div>
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			<br />
+			<p:separator style="height:5px;" />
+		</h:form>
+		<h:form id="saleManTableForm">
+			<h:commandLink action="#{ManageSaleManActionBean.createNewSaleMan}">
+				<h:panelGrid columns="2">
+					<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+					<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+				</h:panelGrid>
+			</h:commandLink>
+			<p:outputPanel id="listPanel">
+				<table>
+					<tr>
+						<td><p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="selectCustomerCriteria" value="#{ManageSaleManActionBean.selectedCriteria}">
+								<f:selectItem itemLabel="Select Criteria" />
+								<f:selectItems value="#{ManageSaleManActionBean.saleManCriteriaItemList}" var="criteriaItem" />
+							</p:selectOneMenu></td>
+						<td><p:inputText id="customerCriteria" style="height:20px;width: 200px;" value="#{ManageSaleManActionBean.saleManCriteria.criteriaValue}" /></td>
+						<td><p:commandButton action="#{ManageSaleManActionBean.search}" id="searchButtonBtn" update="saleManTable" value="Search" oncomplete="PF('saleManTable').filter();" /></td>
+						<td><p:commandButton action="#{ManageSaleManActionBean.init()}" id="resetButtonBtn" update="saleManTable" value="Reset" /></td>
+					</tr>
+				</table>
+				<p:dataTable id="saleManTable" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+					rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageSaleManActionBean.saleManList}" var="saleMan" widgetVar="saleManTable">
+					<p:column filterBy="#{saleMan.fullName}" filterMatchMode="contains" headerText="Name" style="width:120px;">
+						<h:outputText value="#{saleMan.fullName}" />
+					</p:column>
+					<p:column filterBy="#{saleMan.codeNo}" style="width:6%" filterMatchMode="contains" headerText="CodeNo">
+						<h:outputText value="#{saleMan.codeNo}" />
+					</p:column>
+					<p:column headerText="IDNo" style="width:10%" styleClass="fixed-size">
+						<h:outputText value="#{saleMan.idNo==null?saleMan.idType:saleMan.idNo}" />
+					</p:column>
+					<p:column filterBy="#{saleMan.licenseNo}" filterMatchMode="contains" headerText="LicenseNo">
+						<h:outputText value="#{saleMan.licenseNo}" />
+					</p:column>
+					<p:column headerText="DateOfBirth" style="width:7%">
+						<h:outputText value="#{saleMan.dateOfBirth}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Entity" style="width:10%">
+						<h:outputText value="#{saleMan.entity.name}" />
+					</p:column>
+					<p:column headerText="Branch" style="width:10%">
+						<h:outputText value="#{saleMan.branch.name}" />
+					</p:column>
+					<p:column headerText="SalePoint" style="width:10%">
+						<h:outputText value="#{saleMan.salePoint.name}" />
+					</p:column>
+					<p:column headerText="Address" style="width:10%">
+						<h:outputText value="#{saleMan.address.permanentAddress}" />
+					</p:column>
+					<p:column headerText="Phone" style="width:10%" styleClass="fixed-size">
+						<h:outputText value="#{saleMan.contentInfo.phone}" />
+					</p:column>
+					<p:column headerText="Email" style="width:10%" styleClass="fixed-size">
+						<h:outputText value="#{saleMan.contentInfo.email}" />
+					</p:column>
+					<p:column headerText="Status" style="width:6%" styleClass="fixed-size">
+						<h:outputText value="#{saleMan.status}" />
+					</p:column>
+					<p:column style="width:4%;" headerText="Edit">
+						<p:commandLink action="#{ManageSaleManActionBean.prepareUpdateSaleMan(saleMan)}" update=":saleManEntryForm">
+							<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width:4%;" headerText="Delete">
+						<p:commandLink id="deleteGroupLink" oncomplete="PF('saleManTable').filter()" action="#{ManageSaleManActionBean.deleteSaleMan(saleMan)}"
+							update=":saleManEntryForm :saleManTableForm">
+							<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+							<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+		</p:confirmDialog>
+	</ui:define>
+</ui:composition>

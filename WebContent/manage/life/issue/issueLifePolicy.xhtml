@@ -1,0 +1,261 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:param name="header" value="#{LifePolicyIssueActionBean.getPageHeader()}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:outputScript>
+			function clickIncreasePrintCountBtnSingle(){
+				document.getElementById("issuePolicyPrintForm:increasePrintCountBtnSingle").click();
+			}
+			function clickIncreasePrintCountBtn(){
+				document.getElementById("issuePolicyPrintForm:increasePrintCountBtn").click();
+			}
+		</h:outputScript>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<h:form id="lifePolicyIssueForm">
+			<p:growl escape="false" globalOnly="true" life="8000" showDetail="true" />
+			<p:panel>
+				<table width="100%">
+					<tr>
+						<td width="80px;">
+							<h:outputText value="Proposal No" styleClass="input-label" />
+						</td>
+						<td>
+							<h:panelGrid columns="2">
+								<p:inputText value="#{LifePolicyIssueActionBean.lifeProposal.proposalNo}" style="width:250px; margin-left: -4px;" id="proposalNo" readonly="true" />
+								<p:commandLink id="detailsProposal" oncomplete="PF('lifeProposalDetailsDialog').show()" immediate="true">
+									<h:graphicImage url="#{ApplicationSetting.detailIcon}" styleClass="#{ApplicationSetting.detailStyleClass}" />
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<h:panelGroup id="policyTablePanel">
+								<p:dataTable value="#{LifePolicyIssueActionBean.lifePolicyList}" var="lifePolicy" id="lifePolicyTable" style="width:100%" rowIndexVar="index">
+									<p:column headerText="Policy No">
+										<h:outputText value="#{lifePolicy.policyNo}" />
+									</p:column>
+									<p:column headerText="Premium">
+										<h:outputText style="float: right;" value="#{lifePolicy.totalPremium}">
+											<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Sales Man">
+										<h:outputText value="#{lifePolicy.saleMan.fullName}" />
+									</p:column>
+									<p:column headerText="Branch">
+										<h:outputText value="#{lifePolicy.branch == null ? '-' : lifePolicy.branch.name}" />
+									</p:column>
+									<p:column headerText="Agent">
+										<h:outputText value="#{lifePolicy.agent == null ? '-' : lifePolicy.agent.fullName}" />
+									</p:column>
+									<p:column headerText="No. of InsuredPerson">
+										<h:outputText value="#{lifePolicy.policyInsuredPersonList.size()}" />
+									</p:column>
+									<p:column headerText="Issue Status">
+										<h:outputText value="#{LifePolicyIssueActionBean.lifeProposal.complete ? 'Yes' : 'No'}" />
+									</p:column>
+									<p:column headerText="Print" style="text-align: center;">
+										<p:commandButton id="pdfSingleBtn" value="Print Preview" oncomplete="PF('pdfDialog').show()" action="#{LifePolicyIssueActionBean.generateReport(lifePolicy)}"
+											rendered="#{!isEndorsement}"  update=":pdfPrintForm" icon="ui-icon-print" style="height: 24px;" disabled="#{!LifePolicyIssueActionBean.disableIssueBtn}" />
+										<p:commandButton id="endorsementSetUpEntry" value="SetUp Entry" oncomplete="PF('endorsementSetUpEntryDialog').show()"
+											action="#{LifePolicyIssueActionBean.preparePolicyIssue(lifePolicy)}" update=":endorsementSetUpEntryForm:endorsementSetUpEntryPanel"
+											rendered="#{isEndorsement}" icon="ui-icon-print" style="height: 24px;" />
+										<p:commandButton id="endorsementSetUpEntryPrint" value="Print" oncomplete="PF('pdfDialog').show()"
+											action="#{LifePolicyIssueActionBean.generatePrintSetUpLifePolicy(lifePolicy)}" update=":pdfPrintForm"
+											rendered="#{isEndorsement}" disabled="#{LifePolicyIssueActionBean.disableSetUPBtn}" icon="ui-icon-print"
+											style="height: 24px;" />
+									</p:column>
+								</p:dataTable>
+							</h:panelGroup>
+						</td>
+					</tr>
+				</table>
+			</p:panel>
+			<p:commandButton style="width: 80px;" id="issueBtn" value="Apply" disabled="#{LifePolicyIssueActionBean.disableIssueBtn}" action="#{LifePolicyIssueActionBean.issuePolicy}" update=":lifePolicyIssueForm" />
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" id="cancelBtn" value="Back" action="dashboard" immediate="true" />
+		</h:form>
+		<h:form id="lifeProposalDetailsForm">
+			<p:dialog header="Life Proposal Details" widgetVar="lifeProposalDetailsDialog" resizable="false" width="1200" height="550" showEffect="explode" hideEffect="explode"
+				id="lifeProposalDetailsDialog" appendTo="@(body)">
+				<ui:include src="/manage/life/lifeProposalInfoTemplate.xhtml">
+					<ui:param name="lifePolicySummary" value="#{LifePolicyIssueActionBean.lifePolicySummary}" />
+					<ui:param name="isEndorse" value="#{LifePolicyIssueActionBean.isEndorse(lifeproposal)}" />
+					<ui:param name="lifePolicyList" value="#{LifePolicyIssueActionBean.lifePolicyList}" />
+					<ui:param name="lifePolicyHistoryList" value="#{LifePolicyIssueActionBean.lifePolicyHistoryList}" />
+					<ui:param name="endorseInfo" value="#{LifePolicyIssueActionBean.lifeEndorseInfo}" />
+					<ui:param name="lifeProposal" value="#{LifePolicyIssueActionBean.lifeProposal}" />
+					<ui:param name="bancaassuranceProposal" value="#{LifePolicyIssueActionBean.bancaassuranceProposal}" />
+					<ui:param name="keyfactor" value="#{LifePolicyIssueActionBean.keyFactor}" />
+					<ui:param name="isSimpleLife" value="#{LifePolicyIssueActionBean.isSimpleLife}" />
+					<ui:param name="showPolicy" value="#{true}" />
+					<ui:param name="showPolicyHistory" value="#{true}" />
+					<ui:param name="workFlowList" value="#{LifePolicyIssueActionBean.workFlowList}" />
+				</ui:include>
+			</p:dialog>
+		</h:form>
+		<h:form id="pdfPrintForm" enctype="multipart/form-data">
+			<p:dialog widgetVar="pdfDialog" resizable="false" id="pdfDialog" width="1070" height="505" appendTo="@(body)" dynamic="true">
+				<p:ajax event="close" update=":pdfPrintForm" listener="#{LifePolicyIssueActionBean.handleClose}" />
+				<p:media id="pdfPlayer" value="#{LifePolicyIssueActionBean.reportStream}" player="pdf" width="1050" height="500" cache="false"/>
+			</p:dialog>
+		</h:form>
+		<h:form id="endorsementSetUpEntryForm">
+			<!-- Start Endorsement SetUp Entry-->
+			<p:dialog widgetVar="endorsementSetUpEntryDialog" resizable="false" id="endorsementSetUpEntryDialog" width="900" height="350">
+				<h:panelGroup id="endorsementSetUpEntryPanel">
+					<table style="border: 0px solid #000000; border-collapse: collapse;" width="848" cellpadding="5" align="center">
+						<tr>
+							<td colspan="2" align="center">
+								<font style="font-size: 14pt; font-weight: bold;">#{label['LIFEENDORSEMENT_ISSUE_TABLE_HEADER_01']}</font>
+							</td>
+						</tr>
+						<tr height="25" valign="middle">
+							<td colspan="2" align="right">
+								<table>
+									<tr>
+										<td style="border-bottom: none; border-top: none; border-right: none;">
+											<font style="font-size: 12pt; font-weight: bold;">#{label['POLICY_ISSUE_LABEL_1']}</font>
+										</td>
+										<td style="border-bottom: none; border-top: none; border-left: none;">
+											<font style="font-size: 12pt;">#{LifePolicyIssueActionBean.lifeProposal.proposalNo}</font>
+										</td>
+									</tr>
+									<tr>
+										<td style="border-bottom: none; border-top: none; border-right: none;">
+											<font style="font-size: 12pt; font-weight: bold;">#{label['POLICY_ISSUE_LABEL_2']}</font>
+										</td>
+										<td style="border-bottom: none; border-top: none; border-left: none;">
+											<font style="font-size: 12pt;">
+												<h:outputText value="#{LifePolicyIssueActionBean.todaydate}">
+													<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+												</h:outputText>
+											</font>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr height="25" valign="top">
+							<td style="border-bottom: none; border-top: none; border-right: none;">
+								<font style="font-size: 12pt; font-weight: bold;">#{label['POLICY_ISSUE_LABEL_3']}</font>
+							</td>
+							<td style="border-bottom: none; border-top: none; border-left: none;"></td>
+						</tr>
+						<tr height="50" valign="top">
+							<td style="border-bottom: none; border-top: none; border-right: none;">
+								<font style="font-size: 12pt; font-weight: bold;">#{label['POLICY_ISSUE_LABEL_4']}</font>
+							</td>
+							<td style="border-bottom: none; border-top: none; border-left: none;">
+								<font style="font-size: 10pt;">
+									<p:inputTextarea autoResize="true" rows="8" cols="70" value="#{LifePolicyIssueActionBean.endorsementLifePolicyPrint.extraRegulation}" id="extraRegulation" />
+								</font>
+							</td>
+						</tr>
+						<tr height="25" valign="middle">
+							<td style="border-bottom: none; border-top: none; border-right: none;">
+								<font style="font-size: 12pt; font-weight: bold;">#{label['POLICY_ISSUE_LABEL_5']}</font>
+							</td>
+							<td style="border-bottom: none; border-top: none; border-left: none;">
+								<font style="font-size: 12pt;">
+									<h:outputText value="#{LifePolicyIssueActionBean.lifePolicyHistory.commenmanceDate}">
+										<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+									</h:outputText>
+								</font>
+							</td>
+						</tr>
+						<tr height="25" valign="middle">
+							<td style="border-bottom: none; border-top: none; border-right: none;">
+								<font style="font-size: 12pt; font-weight: bold;">#{label['POLICY_ISSUE_LABEL_6']}</font>
+							</td>
+							<td style="border-bottom: none; border-top: none; border-left: none;">
+								<font style="font-size: 12pt;">#{LifePolicyIssueActionBean.lifePolicyHistory.policyNo}</font>
+							</td>
+						</tr>
+						<tr height="25" valign="middle">
+							<td colspan="2" style="border-bottom: none; border-top: none; border-right: none;">
+								<font style="font-size: 12pt; font-weight: bold;">#{label['POLICY_ISSUE_LABEL_7']}</font>
+							</td>
+						</tr>
+						<tr height="25" valign="middle">
+							<td style="border-bottom: none; border-top: none; border-right: none;">
+								<font style="font-size: 12pt; font-weight: bold;">#{label['POLICY_ISSUE_LABEL_8']}</font>
+							</td>
+							<td style="border-bottom: none; border-top: none; border-left: none;">
+								<font style="font-size: 12pt;">#{LifePolicyIssueActionBean.lifePolicyHistory.customerName}</font>
+							</td>
+						</tr>
+						<tr height="25" valign="middle">
+							<td style="border-bottom: none; border-top: none; border-right: none;">
+								<font style="font-size: 12pt; font-weight: bold;">#{label['POLICY_ISSUE_LABEL_9']}</font>
+							</td>
+							<td style="border-bottom: none; border-top: none; border-left: none;">
+								<font style="font-size: 12pt;">#{LifePolicyIssueActionBean.lifePolicyHistory.customerAddress}</font>
+							</td>
+						</tr>
+						<tr height="100" valign="top">
+							<td style="border-bottom: none; border-top: none; border-right: none; font-size: 12pt; font-weight: bold;">#{label['POLICY_ISSUE_LABEL_10']}&#160;
+								#{label['LIFEENDORSEMENT_ISSUE_LABEL_01']}&#8195; #{label['LIFEENDORSEMENT_ISSUE_LABEL_01']}</td>
+							<td style="border-bottom: none; border-top: none; border-left: none; font-size: 12px;">
+								<font style="font-size: 11pt;">
+									#{LifePolicyIssueActionBean.lifeProposal.customerName}&#160; #{label['LIFEENDORSEMENT_ISSUE_LABEL_02']}&#160;
+									<h:outputText value="#{LifePolicyIssueActionBean.lifeProposal.submittedDate}">
+										<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+									</h:outputText>
+									&#160; #{label['LIFEENDORSEMENT_ISSUE_LABEL_03']} &#160;#{label['LIFEENDORSEMENT_ISSUE_LABEL_04']}&#160; #{LifePolicyIssueActionBean.lifeProposal.proposalNo}&#160;
+									#{label['LIFEENDORSEMENT_ISSUE_LABEL_05']}&#160;
+									<p:message for="endorseChange" />
+									<p:inputTextarea rows="1" value="#{LifePolicyIssueActionBean.endorsementLifePolicyPrint.endorseChange}" id="endorseChange" style="width:50%; hight:10%;" />
+									#{label['LIFEENDORSEMENT_ISSUE_LABEL_06']}&#160; #{LifePolicyIssueActionBean.lifeProposal.lifePolicy.policyNo}&#160; #{label['LIFEENDORSEMENT_ISSUE_LABEL_07']}
+									<p:message for="endorseChangeDetail" />
+									<p:inputTextarea rows="1" value="#{LifePolicyIssueActionBean.endorsementLifePolicyPrint.endorseChangeDetail}" id="endorseChangeDetail" style="width:50%; hight:10%;" />
+									#{label['LIFEENDORSEMENT_ISSUE_LABEL_10']}
+									<h:outputText value="#{LifePolicyIssueActionBean.todaydate}">
+										<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+									</h:outputText>
+									#{label['LIFEENDORSEMENT_ISSUE_LABEL_09']}
+								</font>
+							</td>
+						</tr>
+						<tr height="25" valign="middle">
+							<td style="border-bottom: none; border-top: none; border-right: none;" valign="top">
+								<font style="font-size: 12pt; font-weight: bold;">#{label['POLICY_ISSUE_LABEL_3']}</font>
+							</td>
+							<td style="border-bottom: none; border-top: none; border-left: none;" valign="top">
+								<font style="font-size: 11pt;">
+									<h:outputText value="#{LifePolicyIssueActionBean.endorseChangeDescriptionForPublic()}" escape="false" />
+								</font>
+							</td>
+						</tr>
+						<tr height="100" valign="top">
+							<td></td>
+							<td style="border-bottom: none; border-top: none; border-left: none;" valign="top">
+								<font style="font-size: 10pt;">
+									<p:inputTextarea autoResize="true" rows="8" cols="70" value="#{LifePolicyIssueActionBean.endorsementLifePolicyPrint.endorsementDescription}" id="endorsementDescription" />
+								</font>
+							</td>
+						</tr>
+						<tr height="20"></tr>
+						<tr height="25" valign="right">
+							<td colspan="2" align="right" style="border-bottom: none; border-top: none; border-right: none;">
+								<font style="font-size: 12pt; font-weight: bold;">#{label['POLICY_ISSUE_LABEL_18']}</font>
+							</td>
+						</tr>
+					</table>
+					<table>
+						<tr height="25" valign="left">
+							<p:commandButton value="Apply" action="#{LifePolicyIssueActionBean.saveEndorsementPolicyPrint}"
+								update=":endorsementSetUpEntryForm:endorsementSetUpEntryPanel :lifePolicyIssueForm" />
+							<p:commandButton value="Cancel" oncomplete="PF('endorsementSetUpEntryDialog').hide()" />
+						</tr>
+					</table>
+				</h:panelGroup>
+				<br />
+			</p:dialog>
+			<!-- End Endorsement SetUp Entry-->
+		</h:form>
+	</ui:define>
+</ui:composition>

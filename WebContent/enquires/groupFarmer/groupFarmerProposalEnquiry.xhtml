@@ -1,0 +1,177 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Group Farmer Proposal Enquiry" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="groupFarmerEnquiryForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+
+</style>
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="startDate" value="Start Date" />
+						<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{GroupFarmerEnquiryActionBean.criteria.startDate}" />
+						<h:outputText styleClass="input-label" value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectBranchPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectBranchPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" disabled="#{!GroupFarmerEnquiryActionBean.accessBranches}" icon="fa fa-search"
+										actionListener="#{GroupFarmerEnquiryActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{GroupFarmerEnquiryActionBean.returnBranch}" update="branch" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true" value="#{GroupFarmerEnquiryActionBean.criteria.branch == null ? 'ALL' : GroupFarmerEnquiryActionBean.criteria.branch.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{!GroupFarmerEnquiryActionBean.accessBranches}" icon="fa fa-times"
+										action="#{GroupFarmerEnquiryActionBean.criteria.setBranch(null)}" process="@this" update="branch" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="endDate" value="End Date" />
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{GroupFarmerEnquiryActionBean.criteria.endDate}" />
+						<h:outputText for="proposalNo" value="Proposal No." />
+						<p:inputText id="proposalNo" value="#{GroupFarmerEnquiryActionBean.criteria.number}" />
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton style="width:80px;" action="#{GroupFarmerEnquiryActionBean.search()}" update=":groupFarmerEnquiryForm" value="Search" />
+				<p:commandButton style="width:80px;" action="#{GroupFarmerEnquiryActionBean.resetCriteria}" update=":groupFarmerEnquiryForm" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="proposalTable" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+				rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{GroupFarmerEnquiryActionBean.groupFarmerProposalDTOList}" var="proposal">
+				<p:column style="width: 5%;" headerText="Detail">
+					<p:rowToggler />
+				</p:column>
+				<p:column headerText="Proposal No." style="width:14%;" styleClass="fixed-size">
+					<h:outputText value="#{proposal.proposalNo}" />
+				</p:column>
+				<p:column headerText="Branch" style="width:9%;">
+					<h:outputText value="#{proposal.branch.name}" />
+				</p:column>
+				<p:column headerText="Number of Inusured Person" style="width:8%;">
+					<h:outputText value="#{proposal.noOfInsuredPerson}" />
+				</p:column>
+				<p:column headerText="Customer" style="width:12%;">
+					<h:outputText value="#{proposal.organization.name}" />
+				</p:column>
+				<p:column headerText="Sale Man" style="width:11%;">
+					<h:outputText value="#{proposal.salePersonName}" />
+				</p:column>
+				<p:column headerText="Total SumInsured" style="width:10%;" styleClass="fixed-size">
+					<h:outputText value="#{proposal.totalSI}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Total Premium" style="width:9%;" styleClass="fixed-size">
+					<h:outputText value="#{proposal.premium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Submitted Date" style="width:10%;" styleClass="fixed-size">
+					<h:outputText pattern="#{ApplicationSetting.dateFormat}" value="#{proposal.submittedDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:5%;text-align:center;" headerText="Detail" styleClass="fixed-size">
+					<p:commandLink action="#{GroupFarmerEnquiryActionBean.showDetailProposal(proposal)}" id="detailsProposal" immediate="true" oncomplete="PF('proposalDetailsDialog').show()"
+						update=":proposalDetailsForm:detailPannel">
+						<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="width:4%;text-align:center;" headerText="Edit" styleClass="fixed-size">
+					<p:commandLink action="#{GroupFarmerEnquiryActionBean.editproposal(proposal)}" update=":informationForm">
+						<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="width:5%;text-align:center;" headerText="Cash Receipt">
+					<p:commandLink action="#{GroupFarmerEnquiryActionBean.generateCashReceipt(proposal)}" id="printCashReceiptDialogLink" immediate="true" update=":pdfPrintForm:printPannel"
+						oncomplete="PF('issuePolicyPDFDialogSingle').show()">
+						<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" url="#{ApplicationSetting.printIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:rowExpansion>
+					<p:dataTable id="FarmerProposalTable" rowIndexVar="index" value="#{proposal.lifeProposalList}" var="lifeProposal">
+						<p:column headerText="No" style="width: 3%;" styleClass="fixed-size">
+							<h:outputText value="#{index + 1}" />
+						</p:column>
+						<p:column headerText="Proposal No" style="width:15%;" styleClass="fixed-size">
+							<h:outputText value="#{lifeProposal.proposalNo}" />
+						</p:column>
+						<p:column headerText=" No.Of Insured Person" styleClass="fixed-size" style="width: 8%;text-align: center;">
+							<h:outputText value="#{lifeProposal.proposalInsuredPersonList.size()}" />
+						</p:column>
+						<p:column headerText="Insured Person" style="width: 15%;text-align: center;" styleClass="fixed-size">
+							<h:outputText value="#{lifeProposal.proposalInsuredPersonList.get(0).getFullName()}" />
+						</p:column>
+						<p:column headerText="Sale Person" style="width: 15%;" styleClass="fixed-size">
+							<h:outputText value="#{lifeProposal.salePersonName}" />
+						</p:column>
+						<p:column headerText="Submitted Date" style="width: 12%;" styleClass="fixed-size">
+							<h:outputText value="#{lifeProposal.submittedDate}">
+								<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="SumInsured" style="width: 14%;" styleClass="fixed-size">
+							<h:outputText value="#{lifeProposal.sumInsured}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Premium" style="width: 14%;" styleClass="fixed-size">
+							<h:outputText value="#{lifeProposal.premium}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</h:outputText>
+						</p:column>
+						<p:column style="width: 4%;text-align: center;" headerText="Policy Issue">
+							<p:commandLink action="#{GroupFarmerEnquiryActionBean.generateFarmerPolicIssue(lifeProposal)}" immediate="true" update=":informationForm">
+								<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" url="#{ApplicationSetting.printIcon}" />
+							</p:commandLink>
+						</p:column>
+					</p:dataTable>
+					<br />
+					<p:commandButton value="Print review" action="#{GroupFarmerEnquiryActionBean.generateALLPolicyIssue(proposal)}" update=":informationForm" />
+				</p:rowExpansion>
+			</p:dataTable>
+		</h:form>
+		<h:form id="proposalDetailsForm">
+			<p:dialog appendTo="@(body)" header="Group Farmer Proposal Details" height="550" hideEffect="explode" id="proposalDetailsDialog" resizable="false" showEffect="explode"
+				widgetVar="proposalDetailsDialog" width="1025">
+				<p:outputPanel id="detailPannel">
+					<ui:include src="/manage/farmer/groupFarmerProposalDetailInfo.xhtml">
+						<ui:param name="groupFarmerProposal" value="#{GroupFarmerEnquiryActionBean.groupFarmerProposal}" />
+					</ui:include>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+		<h:form enctype="multipart/form-data" id="pdfPrintForm">
+			<p:dialog appendTo="@(body)" dynamic="true" width="1070" height="505" id="issuePolicyPDFDialogSingle" resizable="false" widgetVar="issuePolicyPDFDialogSingle">
+				<p:ajax event="close" update=":pdfPrintForm :groupFarmerEnquiryForm" listener="#{GroupFarmerEnquiryActionBean.handleClose}" />
+				<p:outputPanel id="printPannel">
+					<p:media width="1050" height="500" id="pdfPlayer" player="pdf" value="#{GroupFarmerEnquiryActionBean.reportStream}"  cache="false"/>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+		<h:form id="informationForm">
+			<p:dialog header="Proposal Information" height="100" hideEffect="explode" id="informationDialog" resizable="false" showEffect="explode" widgetVar="informationDialog" width="250">
+				<h:panelGroup id="informationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="#{GroupFarmerEnquiryActionBean.message}" />
+							</td>
+						</tr>
+					</table>
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,118 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/adminLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="motorPremiumRateEntryForm">
+			<table width="100%">
+				<tr>
+					<td>
+						<h:outputText styleClass="table-title" value="#{label['MANAGE_PRODUCT_PRMRATECONFIG_TITLE']}" />
+						<h:outputText styleClass="table-title" value=" of #{ManageProductPrmRateConfigActionBean.product.name}" />
+					</td>
+					<td align="center" width="70%">
+						<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+							<p:messages globalOnly="true" id="messages" showDetail="true" />
+						</div>
+					</td>
+				</tr>
+			</table>
+			<p:separator style="height:5px" />
+			<div style="padding-left: 15px;">
+				<h:outputText rendered="#{ManageProductPrmRateConfigActionBean.createNew}" style="padding-top:-10px;" styleClass="table-title"
+					value="#{label['MANAGE_PRODUCT_PRMRATECONFIG_ADDNEW_LABEL']}" />
+				<h:outputText rendered="#{!ManageProductPrmRateConfigActionBean.createNew}" style="padding-top:-10px;" styleClass="table-title"
+					value="#{label['MANAGE_PRODUCT_PRMRATECONFIG_EDIT_LABEL']}" />
+				<table width="100%">
+					<ui:repeat value="#{ManageProductPrmRateConfigActionBean.productPrmRateKeyFactorDTOList}" var="prmRateKeyFactor">
+						<tr>
+							<td style="width: 115px;">
+								<h:outputText value="#{prmRateKeyFactor.keyFactor.value}" />
+							</td>
+							<td>
+								<h:panelGrid columns="2">
+									<p:inputText rendered="#{prmRateKeyFactor.keyFactor.keyFactorType == 'FIXED'}" required="true" value="#{prmRateKeyFactor.value}" />
+									<p:inputText rendered="#{prmRateKeyFactor.keyFactor.keyFactorType == 'FROM_TO'}" required="true" value="#{prmRateKeyFactor.from}" />
+									<p:inputText rendered="#{prmRateKeyFactor.keyFactor.keyFactorType == 'FROM_TO'}" required="true" value="#{prmRateKeyFactor.to}" />
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="referenceValue" rendered="#{prmRateKeyFactor.keyFactor.keyFactorType == 'REFERENCE'}" required="true"
+										style="width:258px;" value="#{prmRateKeyFactor.value}">
+										<f:selectItems value="#{ManageProductPrmRateConfigActionBean.getKFRefValueList(prmRateKeyFactor, prmRateKeyFactor.keyFactor.value)}" />
+									</p:selectOneMenu>
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="enumValue" rendered="#{prmRateKeyFactor.keyFactor.keyFactorType == 'ENUM'}" required="true"
+										style="width:258px;" value="#{prmRateKeyFactor.value}">
+										<f:selectItem itemLabel="Male" itemValue="MALE"/>
+										<f:selectItem itemLabel="Female" itemValue="FEMALE"/>
+									</p:selectOneMenu>
+								</h:panelGrid>
+							</td>
+						</tr>
+					</ui:repeat>
+					<tr>
+						<td>
+							<h:outputText value="Sum Insured Type" rendered="#{ManageProductPrmRateConfigActionBean.shortTermSinglePremiumCreditLife}" />
+						</td>
+						<td>
+							<p:selectOneMenu rendered="#{ManageProductPrmRateConfigActionBean.shortTermSinglePremiumCreditLife}" required="true" converter="omnifaces.SelectItemsConverter"
+									id="sumInsuredType" value="#{ManageProductPrmRateConfigActionBean.productPremiumRateDTO.sumInsuredType}">
+									<f:selectItem itemLabel=" -- Select SumInsuredType --" noSelectionOption="true" />
+									<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{ManageProductPrmRateConfigActionBean.sumInsuredType}" var="type" />
+							</p:selectOneMenu> 	
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value="#{label['MANAGE_PRODUCT_PRMRATECONFIG_PREMIUMRATE_LABEL']}" />
+						</td>
+						<td>
+							<p:inputText style="margin-left: 4px;" value="#{ManageProductPrmRateConfigActionBean.productPremiumRateDTO.premiumRate}" />
+						</td>
+					</tr>
+					<tr height="5"/>
+					<tr>
+						<td align="left" colspan="2">
+							<p:commandButton style="width: 80px;" action="#{ManageProductPrmRateConfigActionBean.addNewProductPremiumRate}" rendered="#{ManageProductPrmRateConfigActionBean.createNew}"
+								update=":motorPremiumRateEntryForm :motorPremiumRateTableForm" value="#{label['COMMON_ADDNEW_BTN']}" />
+							<p:commandButton style="width: 80px;" action="#{ManageProductPrmRateConfigActionBean.updateProductPremiumRate}" rendered="#{!ManageProductPrmRateConfigActionBean.createNew}"
+								update=":motorPremiumRateEntryForm :motorPremiumRateTableForm" value="#{label['COMMON_UPDATE_BTN']}" />
+							<p:spacer width="5"/>
+							<p:commandButton style="width: 80px;" action="back" value=" Back " />
+						</td>
+					</tr>
+				</table>
+			</div>
+			<p:separator style="height:5px;" />
+		</h:form>
+		<h:form id="motorPremiumRateTableForm">
+			<table width="100%">
+				<tr>
+					<td>
+						<p:dataTable binding="#{ManageProductPrmRateConfigActionBean.dataTable}" id="motorPremiumRateTable" />
+					</td>
+				</tr>
+			</table>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<h:form id="confiationForm">
+			<p:dialog header="#{label['MANAGE_MOTORPREMIUMRATECONFIG_DELETE_CONFIRM']}" height="100" hideEffect="explode" id="confirmationDialog" resizable="false" showEffect="explode"
+				widgetVar="confirmationDialog" width="250">
+				<h:panelGroup id="confirmationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" />
+							</td>
+						</tr>
+					</table>
+					<br />
+					<p:commandButton action="#{ManageProductPrmRateConfigActionBean.deleteProductPremiumRate}" immediate="true" oncomplete="PF('confirmationDialog').hide()"
+						update=":motorPremiumRateTableForm" value="#{label['COMMON_YES_BTN']}" />
+					<p:commandButton immediate="true" oncomplete="PF('confirmationDialog').hide()" value="#{label['COMMON_NO_BTN']}" />
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,174 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Single Premium Endowment Life Approve" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="studentlifeApprovalForm">
+			<p:panel>
+			    <h:panelGrid columns="2" columnClasses="ui-grid-col-1,ui-grid-col-11" layout="grid" >
+					<h:outputText styleClass="input-label" value="Proposal No" />
+					<h:panelGrid columns="2">
+						<p:inputText id="proposalNo" readonly="true" style="width:250px; margin-left:-4px;" value="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.lifeProposal.proposalNo}"/>
+						<p:commandLink id="detailsProposal" immediate="true" oncomplete="PF('lifeProposalDetailsDialog').show()">
+							<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}"/>
+						</p:commandLink>
+					</h:panelGrid>
+					<p:outputLabel/>
+					<p:dataTable id="insuredpersonInfoTable" value="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.lifeProposal.proposalInsuredPersonList}" var="insuredpersonInfo" rowIndexVar="index" 
+						style="margin: 0px 0px 5px 0px;">
+						<p:column headerText="Insured Person">
+							<h:outputText value="#{insuredpersonInfo.fullName}" />
+						</p:column>
+						<p:column headerText="Date Of Birth">
+							<h:outputText value="#{insuredpersonInfo.dateOfBirth}">
+								<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Age (Next Year)">
+							<h:outputText value="#{insuredpersonInfo.ageForNextYear} - Year" />
+						</p:column>
+						<p:column headerText="Insured Term">
+							<h:outputText value="#{insuredpersonInfo.periodYears} - Year" />
+						</p:column>
+						
+					          <p:column headerText="Premium">
+									<h:outputText value="#{insuredpersonInfo.proposedPremium}">
+										<f:convertNumber pattern="#{ApplicationSetting.numberFormat}" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Basic Term Premium">
+									<h:outputText value="#{insuredpersonInfo.basicTermPremium}">
+										<f:convertNumber pattern="#{ApplicationSetting.numberFormat}" />
+									</h:outputText>
+								</p:column>
+								
+						<p:column headerText="Sum Insured">
+							<h:outputText value="#{insuredpersonInfo.proposedSumInsured}">
+								<f:convertNumber pattern="#{ApplicationSetting.numberFormat}" />
+							</h:outputText>
+						</p:column>
+					              <p:column headerText="Approved Sum Insured">
+									<h:outputText value="#{insuredpersonInfo.approvedSumInsured}">
+										<f:convertNumber pattern="#{ApplicationSetting.numberFormat}" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Medical Checkup Again">
+									<h:outputText value="#{insuredpersonInfo.needMedicalCheckup? 'Yes'  : 'No'}" />
+								</p:column>
+								<p:column headerText="Reject Reason">
+									<h:outputText value="#{insuredpersonInfo.rejectReason}" />
+								</p:column>
+								<p:column headerText="Status">
+									<h:outputText value="#{insuredpersonInfo.endorsementStatus}">
+									</h:outputText>
+								</p:column>
+					</p:dataTable>
+			        <h:outputText styleClass="input-label" value="Remark" />
+					<p:inputTextarea autoResize="true" id="remark" rows="7" style="width:350px;margin: 5px 0px 0px 0px;" value="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.remark}">
+						<f:validateLength maximum="8000" />
+					</p:inputTextarea>
+					<h:outputText value="" />
+					<p:message for="responsiblePerson" style="width: 350px !important" display="text"/>
+					<h:outputText styleClass="input-label mandatory" value="Informer" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin-top: -5px; margin-left: -5px;width: 370px" class="ui-g ui-fluid" id="responsiblePersonPanel">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.selectUser()}" id="selectUserDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.returnUser}" update="responsiblePerson" />
+								</p:commandButton>
+								<p:inputText id="responsiblePerson" readonly="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.responsiblePerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true"
+									value="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.responsiblePerson == null ? '':AddNewSinglePremiumEndowmentLifeApprovalActionBean.responsiblePerson.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.setResponsiblePerson(null)}" process="@this" update="responsiblePerson" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</h:panelGrid>
+			</p:panel>
+			<br/>
+			<h:panelGrid columns="3">
+				<p:commandButton rendered="#{!AddNewSinglePremiumEndowmentLifeApprovalActionBean.approved}" action="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.redriectLifeApproval()}" id="redirectBtn" update=":studentlifeApprovalForm"
+					value="Recommend" />
+				<p:commandButton rendered="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.approved}" style="width: 80px;"  action="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.prepareApproveLifeProposal()}" id="approveBtn"  update=":studentlifeApprovalForm :lifeApproveDialogForm" 
+				  value="Approve" />
+				<p:commandButton rendered="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.approved}" style="width: 80px;"  action="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.prepareRejectLifeProposal()}" id="rejectBtn" 
+					update=":studentlifeApprovalForm" value="Reject" />
+				<p:commandButton style="width: 80px;" action="dashboard" id="cancelBtn" immediate="true" value="Cancel" />
+			</h:panelGrid>
+			
+		</h:form>
+		<!-- Confirmation Dialog -->
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" closable="false" message="Are you sure to approve?" widgetVar="approveConfirmDialog" >
+				<h:form id="lifeApproveDialogForm">
+				<p:commandButton value="Yes"  action="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.approveLifeProposal()}"   styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:spacer width="30px;" />
+				<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			     </h:form>
+			</p:confirmDialog>
+			
+		<p:dialog header="Reject Info" hideEffect="explode"  resizable="false" showEffect="explode" widgetVar="lifeRejectDialog">
+			<h:form id="lifeRejectDialogForm">
+				<p:panelGrid columns="2" style="width:500px;" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText value="" />
+					<p:message for="sumInsu" />
+					<h:outputText styleClass="input-label" value="Approved Sum Insured" />
+					<p:inputNumber id="sumInsu" value="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.approvedSumInsured}"/>
+					<h:outputText styleClass="input-label" value="Is it need to do medical checkup again?" />
+					<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="needSurvey" style="width:130px;"
+						value="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.needMedicalCheckup}">
+						<f:selectItem itemLabel="#{label['BOOLEAN_YES_LABEL']}" itemValue="true" />
+						<f:selectItem itemLabel="#{label['BOOLEAN_NO_LABEL']}" itemValue="false" />
+					</p:selectOneRadio>
+					<h:outputText value="" />
+					<p:message for="rejectReason" />
+					<h:outputText styleClass="input-label mandatory" value="Reject Reason" />
+					<p:inputTextarea autoResize="true" id="rejectReason" required="true" rows="7" value="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.rejectReason}">
+						<f:validateLength maximum="250" />
+					</p:inputTextarea>
+				</p:panelGrid>
+				<p:commandButton action="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.rejectLifeProposal()}" update="lifeRejectDialogForm" value="OK" />
+			</h:form>
+		</p:dialog>
+		
+		<ui:repeat var="var" value="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.lifeProposal.proposalInsuredPersonList}" >
+		<p:dialog   appendTo="@(body)" header="Insurance company history records Detail" widgetVar="historyRecordDialog" width="800" resizable="false" showEffect="explode" hideEffect="explode" id="historyRecordDialog">
+			<p:dataTable value="#{var.insuranceHistoryRecord}" var="insuranceHistoryRecord" id="HistoryRecordTable" style="width:100%">
+				<p:column headerText="Policy No">
+					<h:outputText value="#{insuranceHistoryRecord.policyNo}" />
+				</p:column>
+				<p:column headerText="Sum Insured">
+				<h:outputText value="#{insuranceHistoryRecord.sIAmount}">
+					   <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+			  	</h:outputText>
+				</p:column>
+				<p:column headerText="Policy Date">
+					<h:outputText value="#{insuranceHistoryRecord.policyDate}">
+					  <f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Product">
+					<h:outputText value="#{insuranceHistoryRecord.product.name}" />
+				</p:column>
+				<p:column headerText="Company">
+					<h:outputText value="#{insuranceHistoryRecord.company.name}" />
+				</p:column>
+				<p:column headerText="Insured Term">
+					<h:outputText value="#{insuranceHistoryRecord.periodOfInsurance}" />
+				</p:column>
+				<p:column headerText="Active">
+					<h:outputText value="#{insuranceHistoryRecord.active ? 'Yes' : 'No' }" />
+				</p:column>
+			</p:dataTable>
+		</p:dialog>
+	</ui:repeat>
+			<p:dialog appendTo="@(body)" dynamic="true" modal="true" header="Life Proposal Details" height="550" hideEffect="explode" id="lifeProposalDetailsDialog" resizable="false" showEffect="explode" widgetVar="lifeProposalDetailsDialog" width="1200">
+			<h:form id="lifeProposalDetailsForm">
+				<ui:include src="/manage/life/lifeProposalInfoTemplate.xhtml">
+					<ui:param name="lifeProposal" value="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.lifeProposal}"/>
+					<ui:param name="showPolicy" value="#{false}"/>
+					<ui:param name="workFlowList" value="#{AddNewSinglePremiumEndowmentLifeApprovalActionBean.workFlowList}"/>
+				</ui:include>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

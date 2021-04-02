@@ -1,0 +1,336 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Survey Question Management" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="surveyQuestionEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" />
+			<div style="padding-left: 15px;">
+				<table>
+					<tr>
+						<td>
+							<table>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 115px;">
+										<p:message for="inputType" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;">
+										<h:outputText value="Input Type" styleClass="input-label" />
+									</td>
+									<td>
+										<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="inputType" style="height:24px;width: 180px;"
+											value="#{ManageSurveyQuestionActionBean.surveyQuestion.inputType}">
+											<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{ManageSurveyQuestionActionBean.inputTypeList}" var="type" />
+											<p:ajax listener="#{ManageSurveyQuestionActionBean.valueChangeEvent()}" update=":surveyQuestionEntryForm" />
+										</p:selectOneMenu>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 115px;">
+										<p:message for="description" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;" valign="top">
+										<h:outputText value="*" style="color:red;" />
+										<h:outputText value="Description" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputTextarea value="#{ManageSurveyQuestionActionBean.surveyQuestion.description}" style="width:400px;" required="true" id="description" rows="5" autoResize="true">
+<!-- 											<p:ajax update=":surveyQuestionEntryForm:description" /> -->
+											<!-- <f:validateLength maximum="300" /> -->
+										</p:inputTextarea>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:panelGroup rendered="#{ManageSurveyQuestionActionBean.boolenInput}" id="booleanPanel">
+								<fieldset>
+									<legend>
+										<h:outputText styleClass="input-label" value="BooleanLable" />
+									</legend>
+									<table>
+										<tr>
+											<td>
+												<h:outputText value="" />
+											</td>
+											<td style="width: 115px;">
+												<p:message for="trueLable" />
+											</td>
+										</tr>
+										<tr>
+											<td style="width: 100px;" valign="top">
+												<h:outputText value="True" styleClass="input-label" />
+											</td>
+											<td>
+												<p:inputText value="#{ManageSurveyQuestionActionBean.surveyQuestion.tureLabel}" required="true" style="width:200px;" id="trueLable">
+													<f:validateLength maximum="50" />
+												</p:inputText>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText value="" />
+											</td>
+											<td style="width: 115px;">
+												<p:message for="falseLabel" />
+											</td>
+										</tr>
+										<tr>
+											<td style="width: 100px;" valign="top">
+												<h:outputText value="False" styleClass="input-label" />
+											</td>
+											<td>
+												<p:inputText value="#{ManageSurveyQuestionActionBean.surveyQuestion.falseLabel}" required="true" style="width:200px;" id="falseLabel">
+													<f:validateLength maximum="50" />
+												</p:inputText>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</h:panelGroup>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:panelGroup rendered="#{ManageSurveyQuestionActionBean.numberInput}" id="textPanel">
+								<fieldset>
+									<legend>
+										<h:outputText styleClass="input-label" value="Lable" />
+									</legend>
+									<table>
+										<tr>
+											<td>
+												<h:outputText value="" />
+											</td>
+											<td style="width: 115px;">
+												<p:message for="frontLabel" />
+											</td>
+										</tr>
+										<tr>
+											<td style="width: 100px;" valign="top">
+												<h:outputText value="Front" styleClass="input-label" />
+											</td>
+											<td>
+												<p:inputText value="#{ManageSurveyQuestionActionBean.surveyQuestion.frontLabel}" style="width:200px;" id="frontLabel">
+													<f:validateLength maximum="50" />
+												</p:inputText>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText value="" />
+											</td>
+											<td style="width: 115px;">
+												<p:message for="behindLabel" />
+											</td>
+										</tr>
+										<tr>
+											<td style="width: 100px;" valign="top">
+												<h:outputText value="Behind" styleClass="input-label" />
+											</td>
+											<td>
+												<p:inputText value="#{ManageSurveyQuestionActionBean.surveyQuestion.behindLabel}" style="width:200px;" id="behindLabel">
+													<f:validateLength maximum="50" />
+												</p:inputText>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</h:panelGroup>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p:message for="resourceQuestionList" />
+							<h:panelGroup rendered="#{ManageSurveyQuestionActionBean.selectionInput}" id="resourceQuestionList">
+								<fieldset style="width: 280px;">
+									<legend>
+										<h:outputText styleClass="input-label" value="Resource" />
+									</legend>
+									<table>
+										<tr>
+											<td>
+												<h:outputText value="" />
+											</td>
+											<td style="width: 115px;">
+												<p:message for="resourceName" />
+											</td>
+										</tr>
+										<tr>
+											<td style="width: 100px;" valign="top">
+												<h:outputText value="*" style="color:red;" />
+												<h:outputText value="Resource" styleClass="input-label" />
+											</td>
+											<td align="left">
+												<p:inputText value="#{ManageSurveyQuestionActionBean.resourceQuestion.name}" style="width:300px;" id="resourceName">
+													<f:validateLength maximum="100" />
+												</p:inputText>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<p:commandButton id="addBtn" value="Add" style="width: 80px;" action="#{ManageSurveyQuestionActionBean.addNewResourceQuestion()}" update="resourceQuestionList"
+													process="resourceQuestionList" rendered="#{ManageSurveyQuestionActionBean.createNewResourceQuestion}" />
+												<p:commandButton id="updateBtn" value="Update" style="width: 80px;" action="#{ManageSurveyQuestionActionBean.updateResourceQuestion()}" update="resourceQuestionList"
+													process="resourceQuestionList" rendered="#{!ManageSurveyQuestionActionBean.createNewResourceQuestion}" />
+											</td>
+										</tr>
+									</table>
+									<p:separator />
+									<table>
+										<tr>
+											<td>
+												<p:commandLink action="#{ManageSurveyQuestionActionBean.createNewResourceQuestion}" update=":surveyQuestionEntryForm">
+													<h:panelGrid columns="2">
+														<h:graphicImage value="#{ApplicationSetting.addIcon}" styleClass="#{ApplicationSetting.addStyleClass}" />
+														<h:outputText value="#{label['COMMON_ADDNEW_LINK']}" styleClass="command-link" />
+													</h:panelGrid>
+												</p:commandLink>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<p:dataTable var="resQuestion" value="#{ManageSurveyQuestionActionBean.surveyQuestion.resourceQuestionList}" id="resourceTable" paginator="true" rows="10"
+													style="width:500px;" widgetVar="resourceTable"
+													paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+													rowsPerPageTemplate="5,10, 15" rowKey="index">
+													<p:column headerText="Resource">
+														<h:outputText value="#{resQuestion.name}" />
+													</p:column>
+													<p:column style="width:50px;">
+														<p:commandLink actionListener="#{ManageSurveyQuestionActionBean.prepareUpdateResourceQuestion(resQuestion)}" process="@this"
+															update=":surveyQuestionEntryForm:resourceQuestionList">
+															<p:graphicImage value="#{ApplicationSetting.editIcon}" styleClass="#{ApplicationSetting.editStyleClass}" />
+														</p:commandLink>
+													</p:column>
+													<p:column style="width:50px;">
+														<p:commandLink action="#{ManageSurveyQuestionActionBean.deleteResourceQuestion(resQuestion)}" immediate="true" process="@this"
+															update=":surveyQuestionEntryForm:resourceQuestionList">
+															<p:graphicImage value="#{ApplicationSetting.deleteIcon}" styleClass="#{ApplicationSetting.deleteStyleClass}" />
+														</p:commandLink>
+													</p:column>
+												</p:dataTable>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</h:panelGroup>
+							<br />
+							<h:panelGrid>
+								<p:commandButton id="addQuestionBtn" value="#{label['COMMON_ADDNEW_BTN']}" action="#{ManageSurveyQuestionActionBean.addNewSurveyQuestion()}"
+									rendered="#{ManageSurveyQuestionActionBean.createNewSurveyQuestion}" update=":surveyQuestionEntryForm" style="width: 80px;" />
+								<p:commandButton id="editQuestionBtn" value="#{label['COMMON_UPDATE_BTN']}" action="#{ManageSurveyQuestionActionBean.updateSurveyQuestion()}"
+									rendered="#{!ManageSurveyQuestionActionBean.createNewSurveyQuestion}" update=":surveyQuestionEntryForm" />
+							</h:panelGrid>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<p:separator style="height:5px" />
+			<h:panelGrid columns="1">
+				<h:commandLink action="#{ManageSurveyQuestionActionBean.createSurveyQuestion}">
+					<p:ajax update="surveyQuestionEntryForm"/>
+					<h:panelGrid columns="2">
+						<h:graphicImage value="#{ApplicationSetting.addIcon}" styleClass="#{ApplicationSetting.addStyleClass}" />
+						<h:outputText value="#{label['COMMON_ADDNEW_LINK']}" styleClass="command-link" />
+					</h:panelGrid>
+				</h:commandLink>
+			</h:panelGrid>
+			<p:outputPanel id="surveyQuestionPanel">
+				<p:dataTable var="surQuestion" value="#{ManageSurveyQuestionActionBean.surveyQuestionList}" id="surQuestionTable" paginator="true" rows="5" style="width:100%;"
+					widgetVar="surQuestionTable" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10, 15" rowIndexVar="indexVar" rowKey="index">
+					<p:column headerText="No" width="4%">
+						<h:outputText value="#{indexVar + 1}" />
+					</p:column>
+					<p:column headerText="Description">
+						<h:outputText value="#{surQuestion.description}" escape="false" styleClass="myanmar-label" />
+					</p:column>
+					<p:column headerText="Answer" style="width:300px;">
+						<h:panelGroup rendered="#{surQuestion.inputType eq 'NONE'}">
+							<h:outputText value="" />
+						</h:panelGroup>
+						<h:panelGroup rendered="#{surQuestion.inputType eq 'TEXT' || surQuestion.inputType eq 'NUMBER'}">
+							<h:outputText value="#{surQuestion.frontLabel}" styleClass="myanmar-label" />
+							<p:inputText value="" readonly="true" />
+							<h:outputText value=" #{surQuestion.behindLabel}" styleClass="myanmar-label" />
+						</h:panelGroup>
+						<h:panelGroup rendered="#{surQuestion.inputType eq 'BOOLEAN'}">
+							<p:selectOneRadio converter="omnifaces.SelectItemsIndexConverter" styleClass="myanmar-label">
+								<f:selectItem itemLabel="#{surQuestion.tureLabel}" />
+								<f:selectItem itemLabel="#{surQuestion.falseLabel}" />
+							</p:selectOneRadio>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{surQuestion.inputType eq 'DATE'}">
+							<p:calendar mask="dd/MM/yyyy" showOn="button" readonly="true" style="width: 400px;" />
+						</h:panelGroup>
+						<h:panelGroup rendered="#{surQuestion.inputType eq 'SELECT_MANY_CHECKBOX'}">
+							<p:selectManyCheckbox layout="pageDirection" styleClass="myanmar-label">
+								<f:selectItems itemLabel="#{type.name}" value="#{surQuestion.resourceQuestionList}" var="type" />
+							</p:selectManyCheckbox>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{surQuestion.inputType eq 'SELECT_ONE_RADIO'}">
+							<p:selectOneRadio styleClass="myanmar-label">
+								<f:selectItems itemLabel="#{type.name}" value="#{surQuestion.resourceQuestionList}" var="type" />
+							</p:selectOneRadio>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{surQuestion.inputType eq 'SELECT_ONE_MENU'}">
+							<p:selectOneMenu styleClass="myanmar-label">
+								<f:selectItems itemLabel="#{type.name}" value="#{surQuestion.resourceQuestionList}" var="type" />
+							</p:selectOneMenu>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{surQuestion.inputType eq 'SELECT_MANY_MENU'}">
+							<p:selectManyMenu styleClass="myanmar-label">
+								<f:selectItems itemLabel="#{type.name}" value="#{surQuestion.resourceQuestionList}" var="type" />
+							</p:selectManyMenu>
+						</h:panelGroup>
+					</p:column>
+					<p:column style="width:50px;" headerText="Edit">
+						<p:commandLink action="#{ManageSurveyQuestionActionBean.prepareUpdateSurveyQuestion(surQuestion)}" process="@this" update=":surveyQuestionEntryForm">
+							<p:graphicImage value="#{ApplicationSetting.editIcon}" styleClass="#{ApplicationSetting.editStyleClass}" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width:50px;" headerText="Delete">
+						<p:commandLink oncomplete="PF('confirmationDialog').show()" id="deleteGroupLink" immediate="true" action="#{ManageSurveyQuestionActionBean.loadTempSurveyQuestion(surQuestion)}">
+							<p:graphicImage value="#{ApplicationSetting.deleteIcon}" styleClass="#{ApplicationSetting.deleteStyleClass}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<h:form id="confiationForm">
+			<p:dialog header="#{label['MANAGE_FLOOR_DELETE_CONFIRM']}" widgetVar="confirmationDialog" resizable="false" width="250" height="100" showEffect="explode" hideEffect="explode"
+				id="confirmationDialog">
+				<h:panelGroup id="confirmationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage url="/images/warning.png" style="width:30px;height:30px;" />
+							</td>
+							<td valign="middle">
+								<h:outputText value="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" style="padding-top:-10px;text-decoration: none;font-size: 12px;" />
+							</td>
+						</tr>
+					</table>
+					<br />
+					<p:commandButton value="#{label['COMMON_YES_BTN']}" action="#{ManageSurveyQuestionActionBean.deleteSurveyQuestion()}" update=":surveyQuestionEntryForm"
+						oncomplete="PF('confirmationDialog').hide();" immediate="true" />
+					<p:commandButton value="#{label['COMMON_NO_BTN']}" oncomplete="PF('confirmationDialog').hide()" immediate="true" />
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

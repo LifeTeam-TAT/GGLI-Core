@@ -1,0 +1,280 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="uploadRootPath" value="/image" />
+	<ui:param name="header" value="Add New Group Farmer Proposal" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form enctype="multipart/form-data" id="groupFarmerProposalEntryForm">
+		<p:panel >
+   
+	<table style="width: 80%;">
+	<tr>
+	  <td />
+       <td>
+	     <p:message for="organization" display="text" />
+       </td>
+       <td />
+		<td>
+         	<p:message for="startDate" display="text" />
+		</td>
+    </tr>
+    
+     <tr>
+        <td>
+		<h:outputText style="color: red;" value="*" />
+		<h:outputText value="Organization" />
+	    </td>
+	
+		 <td>
+	  		 <h:panelGrid columns="3" id="customerPanelGroup">
+	  		 		<p:inputText id="organization" required="true" style="width:250px;margin-left:-4px;"
+						readonly="#{EditGroupFarmerProposalActionBean.groupFarmerProposal.organization == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" 
+						value="#{EditGroupFarmerProposalActionBean.groupFarmerProposal.organization == null ? '' : EditGroupFarmerProposalActionBean.groupFarmerProposal.organization.name}"   />
+	  		 	    <p:commandLink actionListener="#{EditGroupFarmerProposalActionBean.selectOrganization()}" id="selectOrganizationDialogLink" immediate="true">
+						<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+						<p:ajax event="dialogReturn" listener="#{EditGroupFarmerProposalActionBean.returnOrganization}" update="customerPanelGroup" />
+				   </p:commandLink>
+	   		</h:panelGrid>
+	   	</td>
+	   	
+	   	<td>
+		   <h:outputText style="color:red;" value="*" />
+		   <h:outputText value="Start Date " />
+		</td>
+		
+		<td>
+			<p:calendar  value="#{EditGroupFarmerProposalActionBean.groupFarmerProposal.submittedDate}" pattern="#{ApplicationSetting.dateFormat}" showOn="button" size="30"
+			 timeZone="#{ApplicationSetting.timeZone}" id="startDate" required="true"/>
+		</td>
+	 </tr>
+	
+     <tr>
+        <td />
+        <td>
+	    	 <p:message for="noOfIns" display="text" />
+        </td>
+        <td />
+        <td>
+      		 <p:message for="totalSI" display="text" /> 
+    	</td>
+  	</tr>
+  
+  	<tr>
+   	 <td>
+      <h:outputText style="color:red;" value="*" />
+	  <h:outputText value="No Of InsuredPerson " />
+   	 </td>
+    <td>
+      <p:inputText  id="noOfIns" value="#{EditGroupFarmerProposalActionBean.groupFarmerProposal.noOfInsuredPerson}" style="width:250px;margin-left:-3px;" required="true"  />
+    </td>
+    <td>
+      <h:outputText style="color:red;" value="*" />
+	  <h:outputText value="Total SI" />
+    </td>
+    <td>
+      <p:inputText value="#{EditGroupFarmerProposalActionBean.groupFarmerProposal.totalSI}" 
+      style="width:250px;margin-left:-3px;"  id="totalSI" required="true">
+          <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+       </p:inputText>
+    </td>
+  </tr>
+  <tr>
+      <td />
+      <td>
+	     <p:message for="paymentType" display="text" />
+     </td>
+     <td />
+     <td>
+       <p:message for="salePoint" display="text" /> 
+     </td>
+  </tr>
+  <tr>
+	<td>
+		<h:outputText style="color: red;" value="*" />
+		<h:outputText value="#{label['ADDNEWLIFEROPOSAL_PAYMENTTYPE_LABEL']}" />
+	</td>
+    <td>
+	  <h:panelGrid columns="3" id="paymentTypePanelGroup">
+	  <p:inputText id="paymentType" value="#{EditGroupFarmerProposalActionBean.groupFarmerProposal.paymentType == null ? '' : EditGroupFarmerProposalActionBean.groupFarmerProposal.paymentType.description}"  style="width:250px;margin-left:-4px;margin-right: 3px;"
+	   readonly="#{EditGroupFarmerProposalActionBean.groupFarmerProposal.paymentType == null ? facesContext.currentPhaseId.ordinal eq 6 : true }" required="true" />
+	 <p:commandLink id="selectPaymentTypeDialogLink" actionListener="#{EditGroupFarmerProposalActionBean.selectPaymentType()}" immediate="true" >
+	     <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+			<p:ajax event="dialogReturn" listener="#{EditGroupFarmerProposalActionBean.returnPaymentType}" update="paymentTypePanelGroup" />
+	</p:commandLink>
+	</h:panelGrid>
+  </td>
+	
+		<td>
+			<h:outputText style="color:red;" value="*" />
+			<h:outputText styleClass="input-label" value="Sale Point" />
+		</td>
+		<td>
+			<h:panelGrid columns="3" id="salePontPanelGroup">
+				<p:inputText id="salePoint" style="width:250px;margin-left:-4px;margin-right: 3px;" readonly="#{EditGroupFarmerProposalActionBean.groupFarmerProposal.salePoint ==null ? facesContext.currentPhaseId.ordinal eq 6 : true }" required="true"
+					value="#{EditGroupFarmerProposalActionBean.groupFarmerProposal.salePoint == null ? '' : EditGroupFarmerProposalActionBean.groupFarmerProposal.salePoint.name}" />
+				<p:commandLink actionListener="#{EditGroupFarmerProposalActionBean.selectSalePoint()}" id="selectSalePointDialogLink" immediate="true">
+					<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+					<p:ajax event="dialogReturn" listener="#{EditGroupFarmerProposalActionBean.returnSalePoint}" update="salePontPanelGroup" />
+				</p:commandLink>
+			</h:panelGrid>
+		</td>
+		</tr>
+			<tr>
+				<td />
+				<td><p:message for="entity" /></td>
+				</tr>
+				<td><h:outputText style="color:red;" value="*" /> 
+				    <h:outputText styleClass="input-label" value="Entity" />
+				</td>
+					<td>
+						<h:panelGrid columns="3" id="entityPanelGroup">
+							<p:inputText id="entity" required="true"
+									readonly="#{EditGroupFarmerProposalActionBean.entitys== null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+									style="width:250px;margin-left:-4px;"
+									value="#{EditGroupFarmerProposalActionBean.entitys == null ? '' : EditGroupFarmerProposalActionBean.entitys.name}" />
+								<p:commandLink
+									actionListener="#{EditGroupFarmerProposalActionBean.selectEntity()}"
+									id="selectEntityDialogLink" immediate="true">
+									<h:graphicImage
+										styleClass="#{ApplicationSetting.searchStyleClass}"
+										url="#{ApplicationSetting.searchIcon}" />
+									<p:ajax event="dialogReturn" listener="#{EditGroupFarmerProposalActionBean.returnEntity}"
+										update="entity branch salePoint" />
+								</p:commandLink>
+							</h:panelGrid></td>
+		<tr>
+		<td />
+		<td>
+			<p:message for="branch" />
+		</td>
+</tr>
+		<tr>
+			<td>
+				<h:outputText style="color:red;" value="*" />
+				<h:outputText styleClass="input-label" value="#{label['ADDNEWLIFEPROPOSAL_BRANCH_LABEL']}" />
+			</td>
+			<td>
+				<h:panelGrid columns="3" id="branchPanelGroup">
+					<p:inputText id="branch" required="true"
+						readonly="#{EditGroupFarmerProposalActionBean.groupFarmerProposal.branch == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" style="width:250px;margin-left:-4px;"
+						value="#{EditGroupFarmerProposalActionBean.groupFarmerProposal.branch == null ? '' : EditGroupFarmerProposalActionBean.groupFarmerProposal.branch.name}" />
+					<p:commandLink actionListener="#{EditGroupFarmerProposalActionBean.selectBranchByEntity()}" id="selectBranchDialogLink"
+						immediate="true">
+						<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+						<p:ajax event="dialogReturn" listener="#{EditGroupFarmerProposalActionBean.returnBranch}" update="branch salePoint" />
+					</p:commandLink>
+				</h:panelGrid>
+			</td>
+			
+			 <td>
+		<h:outputText style="color:red;" value="*" />
+		<h:outputText value="#{label['SALEPERSON_LABEL']}" />
+	</td>
+	<td>
+		<p:selectOneRadio id="salePerson" value="#{EditGroupFarmerProposalActionBean.userType}" converter="omnifaces.SelectItemsConverter"  style="width: 280px;" required="true">
+			<f:selectItem itemLabel="Agent" itemValue="AGENT" />
+			<f:selectItem itemLabel="Saleman" itemValue="SALEMAN" />
+			<f:selectItem itemLabel="Referral" itemValue="REFERRAL" />
+			<p:ajax event="valueChange" listener="#{EditGroupFarmerProposalActionBean.changeSaleEvent}" update=":groupFarmerProposalEntryForm:salePersonPanelGroup" />
+		</p:selectOneRadio>
+		<p:message for="userType" id="MsgUserType" display="text" />
+	</td>
+			</tr>
+
+<tr/>
+
+<tr>
+  <td/>   
+  <td/>
+  <td/>
+ 
+   <td>
+		<h:panelGrid columns="3" id="salePersonPanelGroup">
+			<p:inputText id="userType" readonly="#{EditGroupFarmerProposalActionBean.groupFarmerProposal.salePersonName == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+				required="true" style="width:250px;margin-left:-4px;" value="#{EditGroupFarmerProposalActionBean.groupFarmerProposal.salePersonName}" />
+			<p:watermark for="userType" value="Select Sale Person" />
+			<p:commandLink id="selectAgentDialogLink"  actionListener="#{EditGroupFarmerProposalActionBean.selectAgent()}" immediate="true" rendered="#{EditGroupFarmerProposalActionBean.userType eq 'AGENT'}">
+				<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+				<p:ajax event="dialogReturn"  listener="#{EditGroupFarmerProposalActionBean.returnAgent}" update="salePersonPanelGroup MsgUserType" />
+			</p:commandLink>
+			<p:commandLink  id="selectSaleManDialogLink"  actionListener="#{EditGroupFarmerProposalActionBean.selectSaleMan()}" immediate="true" rendered="#{EditGroupFarmerProposalActionBean.userType eq 'SALEMAN'}" >
+				<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+				<p:ajax event="dialogReturn"  listener="#{EditGroupFarmerProposalActionBean.returnSaleMan}" update="salePersonPanelGroup MsgUserType"/>
+			</p:commandLink>
+			<p:commandLink  id="selectReferralDialogLink" actionListener="#{EditGroupFarmerProposalActionBean.selectReferral()}"  immediate="true" rendered="#{EditGroupFarmerProposalActionBean.userType eq 'REFERRAL'}">
+				<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+				<p:ajax event="dialogReturn" listener="#{EditGroupFarmerProposalActionBean.returnReferral}" update="salePersonPanelGroup MsgUserType" />
+		</p:commandLink>
+		</h:panelGrid>
+ </td>					
+</tr>
+
+
+</table>
+
+<table>
+<tr>
+  <td />
+  <tr>
+  <td colspan="2">
+    <fieldset>
+             <legend>
+                <h:outputText styleClass="input-label" value="Proposal Attchment" />
+             </legend>
+           <table>
+                    <tr>
+                         <td valign="top">
+                            <p:fileUpload allowTypes="/(\.|\/)(gif|jpe?g|png)$/" fileUploadListener="#{EditGroupFarmerProposalActionBean.handleProposalAttachment}"
+                               mode="advanced" multiple="true" sizeLimit="3000000" update="proposalImageGrid" />
+                         </td>
+                    </tr>
+               <tr>
+	        		 <td valign="top">
+             			   <p:dataGrid columns="8" id="proposalImageGrid" paginator="true"
+              					 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+              					 rows="16" var="image" value="#{EditGroupFarmerProposalActionBean.proposalUploadedFileList}">
+              				 <p:graphicImage style="width:120px;height:120px;" value="#{uploadRootPath}#{image}" />
+              				 <br />
+               				<p:commandLink  action="#{EditGroupFarmerProposalActionBean.removeProposalUploadedFile(image)}" immediate="true" update="proposalImageGrid">
+                 			 <p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+               				</p:commandLink>
+            			</p:dataGrid>
+        		 </td>
+            </tr>
+      </table>
+   </fieldset>
+  </td>
+</tr>
+   <td/>
+   <td>
+	<p:message for="responsiblePerson" display="text" />
+   </td>
+</tr>
+<tr>
+	<td>
+		<h:outputText style="color:red;" value="*" />
+		<h:outputText styleClass="input-label" value="Responsible Person" />
+   </td>
+	<td>
+		<h:panelGrid columns="3" id="responsiblePersonPanel">
+		<p:inputText id="responsiblePerson"  value="#{EditGroupFarmerProposalActionBean.responsiblePerson == null ? '' : EditGroupFarmerProposalActionBean.responsiblePerson.name}" readonly="#{EditGroupFarmerProposalActionBean.responsiblePerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" style="width:250px;margin-left:-4px;" required="true" />
+		   <p:commandLink id="selectUserDialogLink"  actionListener="#{EditGroupFarmerProposalActionBean.selectUser()}" immediate="true">
+				<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+				<p:ajax event="dialogReturn" listener="#{EditGroupFarmerProposalActionBean.returnUser}" update="responsiblePersonPanel" />
+		  </p:commandLink>
+		</h:panelGrid>
+	</td>
+</tr>
+
+</table>
+<br/>
+<p:commandButton value="Submit" action="#{EditGroupFarmerProposalActionBean.updateGroupFarmerProposal()}" update="@form"></p:commandButton>
+  <p:spacer width="10" />
+<p:commandButton value="Reset" actionListener="#{EditGroupFarmerProposalActionBean.createNewGroupFarmerProposal()}" update="@form"></p:commandButton>
+</p:panel>
+		
+			
+</h:form>
+	</ui:define>
+</ui:composition>

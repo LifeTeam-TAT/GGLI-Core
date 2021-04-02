@@ -1,0 +1,253 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:cyc="http://www.cycdemo.com/java"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:param name="header" value="Personal Accidence Proposal Report" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="personalAcdntProposalListForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<p:messages globalOnly="true" id="messages" showDetail="true" />
+			<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="startDate" value="Start Date" />
+					<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{PersonalAccidentProposalReportActionBean.criteria.startDate}"
+						timeZone="#{ApplicationSetting.timeZone}" />
+					<p:outputLabel />
+					<p:outputLabel />
+					<h:outputText styleClass="input-label" value="Organization" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="selectOrgPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{PersonalAccidentProposalReportActionBean.selectOrganization()}" process="@this">
+									<p:ajax event="dialogReturn" listener="#{PersonalAccidentProposalReportActionBean.returnOrganization}" update="organization" />
+								</p:commandButton>
+								<p:inputText id="organization" readonly="true"
+									value="#{PersonalAccidentProposalReportActionBean.criteria.organization == null ? '' : PersonalAccidentProposalReportActionBean.criteria.organization.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{PersonalAccidentProposalReportActionBean.criteria.setOrganization(null)}" process="@this"
+									update="organization" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<p:outputLabel />
+					<p:outputLabel />
+					<h:outputText value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" disabled="#{!PersonalAccidentProposalReportActionBean.accessBranches}"
+									actionListener="#{PersonalAccidentProposalReportActionBean.selectEntity()}" id="entityDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{PersonalAccidentProposalReportActionBean.returnEntity}" update="entity branchPanelGroup salePanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true"
+									value="#{PersonalAccidentProposalReportActionBean.criteria.entity == null ? '' : PersonalAccidentProposalReportActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{!PersonalAccidentProposalReportActionBean.accessBranches}"
+									action="#{PersonalAccidentProposalReportActionBean.setEntityNull() }" process="@this" update="entity branchPanelGroup salePanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="endDate" value="End Date" />
+					<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{PersonalAccidentProposalReportActionBean.criteria.endDate}" />
+					<p:outputLabel />
+					<p:outputLabel />
+					<h:outputText value="Agent" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="selectagentPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectagentPanelGrid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{PersonalAccidentProposalReportActionBean.selectAgent()}" id="selectAgentDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{PersonalAccidentProposalReportActionBean.returnAgent}" update="agent" />
+								</p:commandButton>
+								<p:inputText id="agent" readonly="true"
+									value="#{PersonalAccidentProposalReportActionBean.criteria.agent == null ? '' : PersonalAccidentProposalReportActionBean.criteria.agent.fullName}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{PersonalAccidentProposalReportActionBean.criteria.setAgent(null)}" process="@this" update="agent" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<!-- Branch -->
+					<p:outputLabel />
+					<p:message for="branch" id="MsgBranch" display="text" />
+					<h:outputText styleClass="input-label" value="Branch" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search"
+									disabled="#{!PersonalAccidentProposalReportActionBean.accessBranches || PersonalAccidentProposalReportActionBean.criteria.entity==null?true:false}"
+									actionListener="#{PersonalAccidentProposalReportActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{PersonalAccidentProposalReportActionBean.returnBranch}" update="branch salePanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true"
+									value="#{PersonalAccidentProposalReportActionBean.criteria.branch == null ? '' : PersonalAccidentProposalReportActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times"
+									disabled="#{!PersonalAccidentProposalReportActionBean.accessBranches || PersonalAccidentProposalReportActionBean.criteria.entity==null?true:false}"
+									action="#{PersonalAccidentProposalReportActionBean.setBranchNull}" process="@this" update="branch salePanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText styleClass="input-label" value="Product" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="selectProductPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{PersonalAccidentProposalReportActionBean.selectProduct()}" process="@this">
+									<p:ajax event="dialogReturn" listener="#{PersonalAccidentProposalReportActionBean.returnProduct}" update="product" />
+								</p:commandButton>
+								<p:inputText id="product" readonly="true"
+									value="#{PersonalAccidentProposalReportActionBean.criteria.product == null ? '' : PersonalAccidentProposalReportActionBean.criteria.product.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{PersonalAccidentProposalReportActionBean.criteria.setProduct(null)}" process="@this" update="product" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<p:outputLabel />
+					<p:outputLabel />
+					<h:outputText styleClass="input-label" value="Customer" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="selectCustomerPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{PersonalAccidentProposalReportActionBean.selectCustomer()}" process="@this">
+									<p:ajax event="dialogReturn" listener="#{PersonalAccidentProposalReportActionBean.returnCustomer}" update="customer" />
+								</p:commandButton>
+								<p:inputText id="customer" readonly="true"
+									value="#{PersonalAccidentProposalReportActionBean.criteria.customer == null ? '' : PersonalAccidentProposalReportActionBean.criteria.customer.fullName}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{PersonalAccidentProposalReportActionBean.criteria.setCustomer(null)}" process="@this"
+									update="customer" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<!-- SalePoint -->
+					<p:outputLabel />
+					<p:message for="salePoint" />
+					<h:outputText styleClass="input-label" value="Sale Point" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{PersonalAccidentProposalReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+									process="@this" disabled="#{PersonalAccidentProposalReportActionBean.criteria.branch==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{PersonalAccidentProposalReportActionBean.returnSalePoint}" update="salePoint" />
+								</p:commandButton>
+								<p:inputText id="salePoint" readonly="true"
+									value="#{PersonalAccidentProposalReportActionBean.criteria.salePoint == null ? '' : PersonalAccidentProposalReportActionBean.criteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{PersonalAccidentProposalReportActionBean.criteria.branch==null?true:false}" icon="fa fa-times"
+									action="#{PersonalAccidentProposalReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salePoint" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton action="#{PersonalAccidentProposalReportActionBean.filter}" update="@form" value="Search" />
+				<p:commandButton action="#{PersonalAccidentProposalReportActionBean.resetCriteria}" update=":personalAcdntProposalListForm" immediate="true" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="personalAcdtProposalListTable" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex"
+				rowKey="index" rows="10" rowsPerPageTemplate="5,10,15" style="width:100%;" value="#{PersonalAccidentProposalReportActionBean.proposalReportList}" var="report">
+				<f:facet name="header">
+					<p:commandLink action="#{PersonalAccidentProposalReportActionBean.generateReport()}" immediate="true" oncomplete="PF('pdfPreviewDialog').show()"
+						update=":personalAcdntProposalListForm :pdfPreviewForm">
+						<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" title="PDF Print" url="#{ApplicationSetting.printIcon}" />
+					</p:commandLink>
+					<p:spacer width="10px" />
+					<p:commandLink action="#{PersonalAccidentProposalReportActionBean.exportExcel}" immediate="true" ajax="false">
+						<p:graphicImage style="width: 30px; height: 30px;" styleClass="#{ApplicationSetting.excelStyleClass}" value="#{ApplicationSetting.excelIcon}" />
+					</p:commandLink>
+					<p:messages for="personalAcdtProposalListTable" />
+				</f:facet>
+				<p:columnGroup type="header">
+					<p:row>
+						<p:column colspan="1" headerText="No." rowspan="2" style="width:3%;" />
+						<p:column colspan="1" headerText="Proposal No." rowspan="2" style="width:10%;" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Insured Person Name" rowspan="2" style="width:10%;" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Address" style="width:10%;" rowspan="2" />
+						<p:column colspan="1" headerText="Age And Date of Birth" rowspan="2" style="width:8%;" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Marital Status" rowspan="2" style="width:5%;" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Occupation" rowspan="2" style="width:7%;" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Agent Name And Code" rowspan="2" style="width:7%;" styleClass="fixed-size" />
+						<p:column colspan="2" headerText="Proposal Period" style="width:12%;" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Sum Insured" rowspan="2" style="width:10%;" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Branch Name" rowspan="2" style="width:10%;" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Sale Point" rowspan="2" style="width:10%;" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Premium" rowspan="2" style="width:10%;" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Cash Receipt No. And Date" rowspan="2" style="width:10%;" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Remark" rowspan="2" style="width:5%;" styleClass="fixed-size" />
+					</p:row>
+					<p:row>
+						<p:column headerText="Start Date" styleClass="fixed-size" />
+						<p:column headerText="End Date" styleClass="fixed-size" />
+					</p:row>
+				</p:columnGroup>
+				<p:column>
+					<h:outputText value="#{rowIndex + 1}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.proposalNo}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.insuredPersonName}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.addressAndPhoneNo}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.ageAndDateOfBirth}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.maritalStatus.label}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.occupation}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.agentNameAndAgentCode}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.activedProposalStartDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.activedProposalEndDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<!-- 					<p:column headerText="Branch Name" style="width:10%">
+					<h:outputText value="#{report.branchName}" />
+				</p:column>
+				<p:column headerText="Sale Point Name" style="width:10%">
+					<h:outputText value="#{report.salePointName}" />
+				</p:column> -->
+				<p:column>
+					<h:outputText value="#{report.sumInsured}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.premium}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.cashReceiptNoAndPaymentDate}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.remark}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<!-- PDF Preview Form -->
+		<h:form enctype="multipart/form-data" id="pdfPreviewForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview (PDF)" width="1070" height="505" hideEffect="fade" id="pdfPreviewDialog" resizable="false" showEffect="fade"
+				widgetVar="pdfPreviewDialog">
+				<p:media width="1050" height="500" player="pdf" value="#{PersonalAccidentProposalReportActionBean.stream}" cache="false" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="motorProposalReport" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="814" leftMargin="14" rightMargin="14" topMargin="20" bottomMargin="20" resourceBundle="LANGUAGE_en" uuid="0b0dd665-4a08-4b9f-a6ed-b143e1afc1dd">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_one">
+		<box>
+			<topPen lineWidth="0.0"/>
+			<bottomPen lineWidth="0.0"/>
+		</box>
+	</style>
+	<style name="table_two">
+		<box>
+			<topPen lineWidth="0.0"/>
+			<leftPen lineWidth="0.0"/>
+			<bottomPen lineWidth="0.0"/>
+		</box>
+	</style>
+	<style name="header_one" forecolor="#000000" backcolor="#FFFFFF" fill="Solid" hAlign="Center" vAlign="Middle" isBlankWhenNull="true" fontName="Zawgyi-One" fontSize="16" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<box leftPadding="0">
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineColor="#FFFFFF"/>
+			<leftPen lineColor="#FFFFFF"/>
+			<bottomPen lineColor="#FFFFFF"/>
+			<rightPen lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="header_two" forecolor="#000000" backcolor="#FFFFFF" fill="Solid" hAlign="Center" vAlign="Middle" fontName="Zawgyi-One" fontSize="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<box leftPadding="0">
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineColor="#FFFFFF"/>
+			<leftPen lineColor="#FFFFFF"/>
+			<bottomPen lineColor="#FFFFFF"/>
+			<rightPen lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="header_three" mode="Opaque" forecolor="#000000" backcolor="#CCCCCC" fill="Solid" hAlign="Center" vAlign="Middle" fontName="Zawgyi-One" fontSize="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<box leftPadding="0">
+			<pen lineWidth="0.0" lineColor="#000000"/>
+			<topPen lineWidth="0.0"/>
+			<leftPen lineWidth="0.0"/>
+			<bottomPen lineWidth="0.0"/>
+			<rightPen lineWidth="0.0"/>
+		</box>
+	</style>
+	<style name="default" isDefault="true" mode="Opaque" forecolor="#000000" backcolor="#FFFFFF" fill="Solid" hAlign="Center" vAlign="Middle" fontName="Zawgyi-One" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<box leftPadding="0">
+			<pen lineWidth="0.0" lineColor="#000000"/>
+			<topPen lineWidth="0.0"/>
+			<leftPen lineWidth="0.0"/>
+			<bottomPen lineWidth="0.0"/>
+			<rightPen lineWidth="0.0"/>
+		</box>
+	</style>
+	<subDataset name="dsMotorProposalReport" whenResourceMissingType="Empty" uuid="b9b4dad1-5177-4065-bb21-da6041eb63cf">
+		<field name="proposalDate" class="java.util.Date"/>
+		<field name="porposalNo" class="java.lang.String"/>
+		<field name="customerName" class="java.lang.String"/>
+		<field name="customerAddress" class="java.lang.String"/>
+		<field name="inspectionDate" class="java.util.Date"/>
+		<field name="surveyTeam" class="java.lang.String"/>
+		<field name="sumInsured" class="java.lang.Double"/>
+		<field name="addOnPremium" class="java.lang.Double"/>
+		<field name="basicPremium" class="java.lang.Double"/>
+		<field name="totalPremium" class="java.lang.Double"/>
+		<field name="ncbPremium" class="java.lang.Double"/>
+		<field name="penaltyPremium" class="java.lang.Double"/>
+		<field name="agentName" class="java.lang.String"/>
+		<field name="remark" class="java.lang.String"/>
+		<field name="branch" class="java.lang.String"/>
+		<field name="regNo" class="java.lang.String"/>
+		<variable name="subtotalsi" class="java.lang.Double" resetType="Group" resetGroup="branchNameGroup" calculation="Sum">
+			<variableExpression><![CDATA[$F{sumInsured}]]></variableExpression>
+		</variable>
+		<variable name="subtotalpremim" class="java.lang.Double" resetType="Group" resetGroup="branchNameGroup" calculation="Sum">
+			<variableExpression><![CDATA[$F{totalPremium}]]></variableExpression>
+		</variable>
+		<group name="branchNameGroup">
+			<groupExpression><![CDATA[$F{branch}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="TableDataSource" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="totalPremium" class="java.lang.Double"/>
+	<parameter name="totalSI" class="java.lang.Double"/>
+	<parameter name="branch" class="java.lang.String"/>
+	<title>
+		<band height="69" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="1" width="812" height="25" uuid="9874c062-3d52-4362-a3cb-1146e6d9403f"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{GRAND_GUARDIAN_LABEL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="27" width="812" height="26" uuid="099684aa-edf3-459f-b863-000702813bc2"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Motor Renewal Proposal Report ("+ $P{branch} +" )"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="112" splitType="Stretch">
+			<componentElement>
+				<reportElement key="table 1" style="table_one" x="0" y="0" width="814" height="79" uuid="70f9f01f-2c92-46ac-bd0f-4742fd803920"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="dsMotorProposalReport" uuid="6c48b1b2-92f4-4d84-8b40-16570d97de10">
+						<dataSourceExpression><![CDATA[$P{TableDataSource}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="20" uuid="5b1f5869-190e-48ca-91c8-a479b378d42a">
+						<jr:groupFooter groupName="branchNameGroup">
+							<jr:cell height="30" rowSpan="1">
+								<box>
+									<topPen lineWidth="1.0"/>
+									<leftPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+								</box>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="header_three" height="50" rowSpan="1">
+							<box>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="20" height="50" backcolor="#DBE6F1" uuid="f5993bc4-171d-43f5-ad99-bae04800070c"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One" size="8" isBold="true" pdfEncoding="Cp1252"/>
+								</textElement>
+								<text><![CDATA[No.]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="48" rowSpan="1">
+							<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="4" width="20" height="40" uuid="289d4454-239d-4b6c-8e12-a25497860df9"/>
+								<textElement textAlignment="Left" verticalAlignment="Top">
+									<font fontName="Zawgyi-One" size="8" pdfEncoding="Cp1252"/>
+									<paragraph leftIndent="2"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="47" uuid="a9a695f0-b552-4dfb-bff8-4022949495f1">
+						<jr:groupFooter groupName="branchNameGroup">
+							<jr:cell height="30" rowSpan="1">
+								<box>
+									<topPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+								</box>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="header_three" height="50" rowSpan="1">
+							<box>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="47" height="50" backcolor="#DBE6F1" uuid="de64252c-a410-4874-9eaa-97cb035bb73d"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One" size="8" isBold="true" pdfEncoding="Cp1252"/>
+								</textElement>
+								<text><![CDATA[Date of Proposal]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="48" rowSpan="1">
+							<textField isStretchWithOverflow="true" pattern="dd-MM-yyyy" isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="4" width="47" height="40" uuid="13775e09-6d8c-4ecc-9151-9f16cd0c4dc4"/>
+								<textElement textAlignment="Left" verticalAlignment="Top">
+									<font fontName="Zawgyi-One" size="8" pdfEncoding="Cp1252"/>
+									<paragraph leftIndent="2"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{proposalDate}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="49" uuid="9fcf930c-7976-4970-a622-33f8e9877346">
+						<jr:groupFooter groupName="branchNameGroup">
+							<jr:cell height="30" rowSpan="1">
+								<box>
+									<topPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+								</box>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="header_three" height="50" rowSpan="1">
+							<box>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="49" height="50" backcolor="#DBE6F1" uuid="d5659a4a-944c-4ac0-865b-8097dfd08678"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One" size="8" isBold="true" pdfEncoding="Cp1252"/>
+								</textElement>
+								<text><![CDATA[Reg  No.]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="48" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="4" width="49" height="44" uuid="a8ee709b-96ec-48db-be71-e43dc2670460"/>
+								<textFieldExpression><![CDATA[$F{regNo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="46" uuid="2211228a-3ae0-46f0-b329-525763622025">
+						<jr:groupFooter groupName="branchNameGroup">
+							<jr:cell height="30" rowSpan="1">
+								<box>
+									<topPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+								</box>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="header_three" height="50" rowSpan="1">
+							<box>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="46" height="50" backcolor="#DBE6F1" uuid="915399c9-f9d3-4dad-8538-e8d57f64adeb"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One" size="8" isBold="true" pdfEncoding="Cp1252"/>
+								</textElement>
+								<text><![CDATA[Name]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="48" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="4" width="46" height="40" uuid="ec96eaa5-946d-4f57-a690-849f89f9e039"/>
+								<textElement textAlignment="Left" verticalAlignment="Top">
+									<font fontName="Zawgyi-One" size="8" pdfEncoding="Cp1252"/>
+									<paragraph leftIndent="2"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{customerName}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="64" uuid="c18ceb8d-c3ee-476e-9c52-f51a1aa73434">
+						<jr:groupFooter groupName="branchNameGroup">
+							<jr:cell height="30" rowSpan="1">
+								<box>
+									<topPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+								</box>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="header_three" height="50" rowSpan="1">
+							<box>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="64" height="50" backcolor="#DBE6F1" uuid="769d37f4-143d-4508-a05b-13338c1b04f6"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One" size="8" isBold="true" pdfEncoding="Cp1252"/>
+								</textElement>
+								<text><![CDATA[Address]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="48" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="4" width="64" height="40" uuid="0d0781b5-929f-4fb0-b3c8-868793d33388"/>
+								<textElement textAlignment="Left" verticalAlignment="Top">
+									<font fontName="Zawgyi-One" size="8" pdfEncoding="Cp1252"/>
+									<paragraph leftIndent="2"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{customerAddress}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="92cd8813-ceae-4e3a-8ad4-b7ff342e2644">
+						<jr:groupFooter groupName="branchNameGroup">
+							<jr:cell height="30" rowSpan="1">
+								<box>
+									<topPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+								</box>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="header_three" height="50" rowSpan="1">
+							<box>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="50" height="50" forecolor="#000000" backcolor="#DBE6F1" uuid="9ac85bd6-f7e6-4805-aa58-ead68652cbe2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One" size="8" isBold="true" pdfEncoding="Cp1252"/>
+								</textElement>
+								<text><![CDATA[Date of Inspec-tion]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="48" rowSpan="1">
+							<textField isStretchWithOverflow="true" pattern="dd-MM-yyyy" isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="4" width="50" height="40" uuid="61fccb16-2b99-4828-b510-33524de6235c"/>
+								<textElement textAlignment="Left" verticalAlignment="Top">
+									<font fontName="Zawgyi-One" size="8" pdfEncoding="Cp1252"/>
+									<paragraph leftIndent="2"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{inspectionDate}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="39" uuid="b981a1c1-6d5b-4ba0-b5ab-0bfcdea37959">
+						<jr:groupFooter groupName="branchNameGroup">
+							<jr:cell height="30" rowSpan="1">
+								<box>
+									<topPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+								</box>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="header_three" height="50" rowSpan="1">
+							<box>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="39" height="50" backcolor="#DBE6F1" uuid="24b7bda4-fc9e-4534-a043-e4f60ee832ea"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One" size="8" isBold="true" pdfEncoding="Cp1252"/>
+								</textElement>
+								<text><![CDATA[Survey Team]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="48" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="4" width="39" height="40" uuid="038f8b11-8785-413d-8915-ca517a8ab5cf"/>
+								<textElement textAlignment="Left" verticalAlignment="Top">
+									<font fontName="Zawgyi-One" size="8" pdfEncoding="Cp1252"/>
+									<paragraph leftIndent="2"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{surveyTeam}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="41" uuid="74d8d4dd-b226-4a54-89d3-89946715766d">
+						<jr:groupFooter groupName="branchNameGroup">
+							<jr:cell height="30" rowSpan="1">
+								<box>
+									<topPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+									<rightPen lineWidth="1.0"/>
+								</box>
+								<staticText>
+									<reportElement x="0" y="0" width="41" height="30" uuid="612bf714-c49a-46ce-bd2f-6ec806054f64"/>
+									<textElement textAlignment="Right">
+										<font size="8"/>
+										<paragraph rightIndent="2"/>
+									</textElement>
+									<text><![CDATA[Sub Total]]></text>
+								</staticText>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="header_three" height="50" rowSpan="1">
+							<box>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="41" height="50" backcolor="#DBE6F1" uuid="415e6cb0-6563-4df4-91e2-43fad7da8d3f"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One" size="8" isBold="true" pdfEncoding="Cp1252"/>
+								</textElement>
+								<text><![CDATA[Agent Name]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="48" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="4" width="41" height="40" uuid="8fff9963-2f58-47e3-90a0-258f1db8c1db"/>
+								<textElement textAlignment="Left" verticalAlignment="Top">
+									<font fontName="Zawgyi-One" size="8" pdfEncoding="Cp1252"/>
+									<paragraph leftIndent="2"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{agentName}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="70" uuid="27790a79-adf4-443d-a6f8-5ab9d7aac4ff">
+						<jr:groupFooter groupName="branchNameGroup">
+							<jr:cell height="30" rowSpan="1">
+								<box>
+									<topPen lineWidth="1.0"/>
+									<leftPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+									<rightPen lineWidth="1.0"/>
+								</box>
+								<textField>
+									<reportElement x="0" y="0" width="70" height="30" uuid="56238ded-8781-430c-bd1c-38366084ec3a"/>
+									<textElement textAlignment="Right">
+										<font size="8"/>
+										<paragraph rightIndent="2"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{subtotalsi}]]></textFieldExpression>
+									<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+								</textField>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="header_three" height="50" rowSpan="1">
+							<box>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="70" height="50" backcolor="#DBE6F1" uuid="9a950c64-f8c2-42ee-968e-36982b92fc6f"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Zawgyi-One" size="8" isBold="true" pdfEncoding="Cp1252"/>
+								</textElement>
+								<text><![CDATA[SumInsured]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="48" rowSpan="1">
+							<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="4" width="70" height="40" uuid="9b057476-dbc7-454b-984a-4c6291efad2f"/>
+								<textElement textAlignment="Right" verticalAlignment="Top">
+									<font fontName="Zawgyi-One" size="8" pdfEncoding="Cp1252"/>
+									<paragraph rightIndent="2"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{sumInsured}]]></textFieldExpression>
+								<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60" uuid="53a6331f-705a-4490-baec-a5e6c34e9bbb">
+						<jr:groupFooter groupName="branchNameGroup">
+							<jr:cell height="30" rowSpan="1">
+								<box>
+									<topPen lineWidth="1.0"/>
+									<leftPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+									<rightPen lineWidth="1.0"/>
+								</box>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="header_three" height="50" rowSpan="1">
+							<box>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="60" height="50" backcolor="#DBE6F1" uuid="bbf076f5-bb9c-4288-96b4-50e187c69c46"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One" size="8" isBold="true" pdfEncoding="Cp1252"/>
+								</textElement>
+								<text><![CDATA[Basic Premium]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="48" rowSpan="1">
+							<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="4" width="60" height="40" uuid="4bd37604-273c-477c-a164-108bf7ed9c06"/>
+								<textElement textAlignment="Right" verticalAlignment="Top">
+									<font fontName="Zawgyi-One" size="8" pdfEncoding="Cp1252"/>
+									<paragraph rightIndent="2"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{basicPremium}]]></textFieldExpression>
+								<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60" uuid="12b9c4b7-c6aa-4b04-80be-597c2483f043">
+						<jr:groupFooter groupName="branchNameGroup">
+							<jr:cell height="30" rowSpan="1">
+								<box>
+									<topPen lineWidth="1.0"/>
+									<leftPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+									<rightPen lineWidth="1.0"/>
+								</box>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="header_three" height="50" rowSpan="1">
+							<box>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="60" height="50" backcolor="#DBE6F1" uuid="f1865121-f485-4332-ad76-cfe20155da2e"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One" size="8" isBold="true" pdfEncoding="Cp1252"/>
+								</textElement>
+								<text><![CDATA[Additional Premium]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="48" rowSpan="1">
+							<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="4" width="60" height="40" uuid="ea357514-529d-414a-a4b7-e69eca415e1e"/>
+								<textElement textAlignment="Right" verticalAlignment="Top">
+									<font fontName="Zawgyi-One" size="8" pdfEncoding="Cp1252"/>
+									<paragraph rightIndent="2"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{addOnPremium}]]></textFieldExpression>
+								<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60" uuid="030f85c1-c173-4d19-be70-59d03872fe12">
+						<jr:groupFooter groupName="branchNameGroup">
+							<jr:cell height="30" rowSpan="1">
+								<box>
+									<topPen lineWidth="1.0"/>
+									<leftPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+									<rightPen lineWidth="1.0"/>
+								</box>
+								<textField>
+									<reportElement x="0" y="0" width="60" height="30" uuid="862fd919-55bb-48aa-815e-890901f128e3"/>
+									<textElement textAlignment="Right">
+										<font size="8"/>
+										<paragraph rightIndent="2"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{subtotalpremim}]]></textFieldExpression>
+									<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+								</textField>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="header_three" height="50" rowSpan="1">
+							<box>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="60" height="50" backcolor="#DBE6F1" uuid="67f03d88-0a16-484c-b14b-8547d3d92781"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One" size="8" isBold="true" pdfEncoding="Cp1252"/>
+								</textElement>
+								<text><![CDATA[Total Premium]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="48" rowSpan="1">
+							<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="4" width="60" height="40" uuid="f2ca0ce0-cd44-43ab-9516-4859fd883cba"/>
+								<textElement textAlignment="Right" verticalAlignment="Top">
+									<font fontName="Zawgyi-One" size="8" pdfEncoding="Cp1252"/>
+									<paragraph rightIndent="2"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{basicPremium} + $F{addOnPremium} + $F{penaltyPremium} - $F{ncbPremium}]]></textFieldExpression>
+								<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="57" uuid="2df1b768-fdca-4ab2-90de-51a5422f4649">
+						<jr:groupFooter groupName="branchNameGroup">
+							<jr:cell height="30" rowSpan="1">
+								<box>
+									<topPen lineWidth="1.0"/>
+									<leftPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+									<rightPen lineWidth="1.0"/>
+								</box>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="table" height="50" rowSpan="1">
+							<box>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="57" height="50" backcolor="#DBE6F1" uuid="d6e8b6cc-cf21-42ab-81d2-f2aa1e531904"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One" size="8" isBold="true" pdfEncoding="Cp1252"/>
+								</textElement>
+								<text><![CDATA[N.C.B]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="48" rowSpan="1">
+							<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="4" width="57" height="40" uuid="f2ca0ce0-cd44-43ab-9516-4859fd883cba"/>
+								<textElement textAlignment="Right" verticalAlignment="Top">
+									<font fontName="Zawgyi-One" size="8" pdfEncoding="Cp1252"/>
+									<paragraph rightIndent="2"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{ncbPremium}]]></textFieldExpression>
+								<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60" uuid="1084d526-9245-405b-bedd-38a711f67573">
+						<jr:groupFooter groupName="branchNameGroup">
+							<jr:cell height="30" rowSpan="1">
+								<box>
+									<topPen lineWidth="1.0"/>
+									<leftPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+									<rightPen lineWidth="1.0"/>
+								</box>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="table" height="50" rowSpan="1">
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="60" height="50" backcolor="#DBE6F1" uuid="d6e8b6cc-cf21-42ab-81d2-f2aa1e531904"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One" size="8" isBold="true" pdfEncoding="Cp1252"/>
+								</textElement>
+								<text><![CDATA[Penalty Premium]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="48" rowSpan="1">
+							<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="4" width="60" height="40" uuid="f2ca0ce0-cd44-43ab-9516-4859fd883cba"/>
+								<textElement textAlignment="Right" verticalAlignment="Top">
+									<font fontName="Zawgyi-One" size="8" pdfEncoding="Cp1252"/>
+									<paragraph rightIndent="2"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{penaltyPremium}]]></textFieldExpression>
+								<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="57" uuid="d8e065ef-9bfb-4ded-8b0d-faf70c4388bc">
+						<jr:groupFooter groupName="branchNameGroup">
+							<jr:cell height="30" rowSpan="1">
+								<box>
+									<topPen lineWidth="1.0"/>
+									<leftPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+									<rightPen lineWidth="1.0"/>
+								</box>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="table" height="50" rowSpan="1">
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="57" height="50" backcolor="#DBE6F1" uuid="d6e8b6cc-cf21-42ab-81d2-f2aa1e531904"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One" size="8" isBold="true" pdfEncoding="Cp1252"/>
+								</textElement>
+								<text><![CDATA[Branch]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="48" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="4" width="57" height="40" uuid="cee1bf0b-76e7-4f30-9d86-f43846d204e3"/>
+								<textElement verticalAlignment="Top">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{branch}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="33" uuid="94b07174-8ed3-40a7-9048-1815772aff17">
+						<jr:groupFooter groupName="branchNameGroup">
+							<jr:cell height="30" rowSpan="1">
+								<box>
+									<topPen lineWidth="1.0"/>
+									<leftPen lineWidth="1.0"/>
+									<bottomPen lineWidth="1.0"/>
+									<rightPen lineWidth="1.0"/>
+								</box>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader height="50" rowSpan="1">
+							<box>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="33" height="50" backcolor="#DBE6F1" uuid="d80ce283-1a81-4928-8505-001b6a406b87"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One" size="8" isBold="true" pdfEncoding="Cp1252"/>
+								</textElement>
+								<text><![CDATA[Remarks
+(Policy/RC/Endorse) ]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="48" rowSpan="1">
+							<box>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<staticText>
+				<reportElement style="table" positionType="Float" x="0" y="79" width="356" height="30" uuid="aef8c4f6-3fd7-43a4-b5a9-5d4a9bd80f51"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<text><![CDATA[Grand Total]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement style="table" positionType="Float" x="356" y="79" width="70" height="30" uuid="96ce385e-ac64-4f25-abf6-bd507e37d5f1"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalSI}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField pattern="##,##0.00">
+				<reportElement style="table" positionType="Float" x="546" y="79" width="60" height="30" uuid="58d6d430-8d88-4ed3-b913-8cf8ca23e971"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalPremium}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="table" positionType="Float" x="426" y="79" width="120" height="30" uuid="aef8c4f6-3fd7-43a4-b5a9-5d4a9bd80f51"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

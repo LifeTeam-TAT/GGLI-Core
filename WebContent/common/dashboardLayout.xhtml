@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" locale="#{LanguageActionBean.locale}">
+<h:head>
+	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/#{ApplicationSetting.cssFilePath}" />
+	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/app.css" />
+	<link rel="icon" type="image/jpg" href="#{request.contextPath}/images/favicon.ico" />
+	<style type="text/css">
+		table.noneBorderGrid tr {
+			border: none;
+		}
+		
+		table.noneBorderGrid td {
+			border: none;
+		}
+		
+		.ui-state-error {
+			border: 1px solid #8F8F8F;
+		}
+		
+		.rowWarnning {
+			background-color: #FF9933 !important;
+			background-image: none !important;
+			color: #000000 !important;
+		}
+		
+		div.ui-message-error {
+			margin-left: 0px;
+			width: 250px;
+		}
+		
+		.ui-wizard-step-title {
+			font-size: 12px;
+		}
+		
+		#roleEntryForm:resourceItem tr td ul {
+			height: 500px;
+		}
+		
+		#userEntryForm:messageUserName {
+			margin-left: 0px;
+			width: 300px;
+		}
+		
+		th div.ui-dt-c {
+			overflow: hidden;
+			padding: 4px 10px;
+			text-align: center;
+		}
+		
+		#topPanel {
+			z-index: 3 !important;
+		}
+		
+		#topPanel div {
+			overflow: visible;
+		}
+	</style>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Insurance Management System</title>
+</h:head>
+<h:body>
+	<div id="statusIndicator" style="z-index: 100; position: fixed; margin-top: 50px; margin-left: 650px;">
+		<p:ajaxStatus>
+			<f:facet name="start">
+				<!-- <h:outputText value="Loading..." /> -->
+			</f:facet>
+			<f:facet name="complete">
+				<h:outputText value="" />
+			</f:facet>
+		</p:ajaxStatus>
+		<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+			<h:panelGrid columns="1">
+				<h:graphicImage value="/images/loading.gif" style="width: 35px; height:35px;" />
+				<h:outputText value="Loading..." />
+			</h:panelGrid>
+		</p:dialog>
+	</div>
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north" rendered="#{empty sessionScope.LoginUser ? false : true}" id="topPanel" style="border:none;">
+			<ui:include src="#{ApplicationSetting.getHeader()}" />
+			<ui:include src="/common/menu.xhtml" />
+		</p:layoutUnit>
+		<p:layoutUnit position="west" size="222" collapsible="true" header="To Do List">
+			<ui:include src="/common/dashboardLeftMenu.xhtml" />
+		</p:layoutUnit>
+		<p:layoutUnit position="center" style="border: none;">
+			<p:spacer height="13px;" width="0px;" rendered="#{headerRendered}"/>
+			<h:outputText value="#{header}" styleClass="ui-widget ui-widget-header ui-corner-all submenu-title" rendered="#{headerRendered}"/>
+			<p:separator style="height:3px; margin-top:1px; width: #{width}" rendered="#{headerRendered}" />
+			<ui:insert name="content" />
+		</p:layoutUnit>
+		<p:layoutUnit position="south" size="45" rendered="#{empty sessionScope.LoginUser ? false : true}">
+			<ui:include src="/common/footer.xhtml" />
+		</p:layoutUnit>
+	</p:layout>
+</h:body>
+</html>

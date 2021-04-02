@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="renewalPolicyIssueReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="130" bottomMargin="20" resourceBundle="LANGUAGE_en" uuid="c3131b90-85d2-4160-8321-2d8bc45bb915">
+	<property name="ireport.zoom" value="1.2722928551174544"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="316"/>
+	<parameter name="policyNo" class="java.lang.String"/>
+	<parameter name="Date" class="java.util.Date"/>
+	<parameter name="customerName" class="java.lang.String"/>
+	<parameter name="premiumAmount" class="java.lang.Double"/>
+	<parameter name="endDate" class="java.lang.String"/>
+	<parameter name="sumInsurance" class="java.lang.Double"/>
+	<parameter name="carRegistrationNo" class="java.lang.String"/>
+	<parameter name="nrc" class="java.lang.String"/>
+	<parameter name="stringPremiumAmount" class="java.lang.String"/>
+	<parameter name="proposalNo" class="java.lang.String"/>
+	<parameter name="currencySymbol" class="java.lang.String"/>
+	<parameter name="currencyCode" class="java.lang.String"/>
+	<parameter name="noOfVehicle" class="java.lang.Integer"/>
+	<parameter name="isFleet" class="java.lang.Boolean"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="600" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="f91bc438-d8be-4cfd-b8b5-aca01b571a58" x="3" y="107" width="109" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[Renewal Certificate No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f91bc438-d8be-4cfd-b8b5-aca01b571a58" x="455" y="107" width="34" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="32026614-138d-4a49-9532-cd5692a51acd" x="3" y="165" width="552" height="110"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Zawgyi-One"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA["                RECEIVED from " +  $P{customerName} + $P{nrc}  + "  the sum of   " + $P{currencySymbol}+ $P{stringPremiumAmount}  +" " + $P{currencyCode} + "   being premium for the Renewal of the Motor Policy No. "+  $P{policyNo}  + " and therefore this Policy is hereby renewed for a further period of TWELVE months ending " +  $P{endDate}  + " for the amount and at the premium subject to the terms and conditions of the original policy and/or subsequent endorsements."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="f91bc438-d8be-4cfd-b8b5-aca01b571a58" x="3" y="309" width="100" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[Policy No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f91bc438-d8be-4cfd-b8b5-aca01b571a58" x="3" y="353" width="100" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[Sum Insured ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f91bc438-d8be-4cfd-b8b5-aca01b571a58" x="3" y="376" width="100" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[Premium ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f91bc438-d8be-4cfd-b8b5-aca01b571a58" x="3" y="331" width="100" height="18">
+					<printWhenExpression><![CDATA[$P{isFleet}? Boolean.FALSE : Boolean.TRUE]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[Car Registration no.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f91bc438-d8be-4cfd-b8b5-aca01b571a58" x="6" y="460" width="97" height="24"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[Examined by]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f91bc438-d8be-4cfd-b8b5-aca01b571a58" x="373" y="506" width="182" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[Manager]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f91bc438-d8be-4cfd-b8b5-aca01b571a58" x="373" y="528" width="182" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[Motor Insurance Department]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="a6acefbd-6805-4bd1-bae6-2fb33fb8a4b4" x="6" y="472" width="55" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="f91bc438-d8be-4cfd-b8b5-aca01b571a58" x="103" y="309" width="10" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f91bc438-d8be-4cfd-b8b5-aca01b571a58" x="103" y="353" width="10" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f91bc438-d8be-4cfd-b8b5-aca01b571a58" x="103" y="376" width="10" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f91bc438-d8be-4cfd-b8b5-aca01b571a58" x="103" y="331" width="10" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f91bc438-d8be-4cfd-b8b5-aca01b571a58" x="113" y="107" width="10" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="106d45fa-7bd1-4e25-a1b2-3a0cf89d16db" x="113" y="309" width="165" height="18"/>
+				<textElement>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{policyNo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement uuid="4b86a2cd-7410-4ac9-8bfa-0048b279567e" x="113" y="353" width="109" height="18"/>
+				<textElement textAlignment="Left">
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sumInsurance}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{currencySymbol}+" "+$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement uuid="b9d19efd-6ec6-419e-9a1e-7c2a25fb705d" x="112" y="376" width="110" height="18"/>
+				<textElement textAlignment="Left">
+					<paragraph leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{premiumAmount}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{currencySymbol}+" "+$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3e3cd6c5-060f-406c-9e0d-bc6dba830b95" x="113" y="331" width="165" height="18">
+					<printWhenExpression><![CDATA[$P{isFleet}? Boolean.FALSE : Boolean.TRUE]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{carRegistrationNo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement uuid="cfd0d00d-6c97-4b53-9547-9105a2dcf24e" x="489" y="107" width="66" height="18"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{Date}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e8c17f50-4572-4b62-b633-e278d082348e" x="123" y="107" width="165" height="18"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{proposalNo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="0d80e198-9a88-4e1e-bd87-5f1ece3dff54" x="222" y="353" width="22" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{currencyCode}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="0d80e198-9a88-4e1e-bd87-5f1ece3dff54" x="222" y="376" width="22" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{currencyCode}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="6dafdb40-b7c6-4e7f-850d-98793fdc7692" x="3" y="331" width="100" height="18">
+					<printWhenExpression><![CDATA[$P{isFleet}? Boolean.TRUE : Boolean.FALSE]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[No. of Vehicle]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="9328b67c-97a4-4a5a-bf17-1960181d2891" x="114" y="331" width="165" height="18">
+					<printWhenExpression><![CDATA[$P{isFleet}? Boolean.TRUE : Boolean.FALSE]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{noOfVehicle}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="f91bc438-d8be-4cfd-b8b5-aca01b571a58" x="102" y="331" width="10" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>

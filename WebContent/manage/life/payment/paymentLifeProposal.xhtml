@@ -1,0 +1,171 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{AddNewLifePaymentActionBean.getPageHeader()}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="lifePaymentForm" style="margin-left:15px;">
+			<p:growl escape="false" globalOnly="true" life="8000" showDetail="true" />
+				<table>
+					<tr>
+						<td style="width: 130px;">
+							<h:outputText styleClass="input-label" value="Proposal No" />
+						</td>
+						<td>
+							<h:panelGrid columns="2">
+								<p:inputText id="proposalNo" readonly="true" style="width:250px; margin-left:-4px;" value="#{AddNewLifePaymentActionBean.lifeProposal.proposalNo}" />
+								<p:commandLink id="detailsProposal" immediate="true" oncomplete="PF('lifeProposalDetailsDialog').show()">
+									<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Stamp Fees" />
+						</td>
+						<td>
+							<p:inputText id="stampFees" readonly="true" style="width:250px; text-align: right;" value="#{AddNewLifePaymentActionBean.payment.stampFees}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 130px;">
+							<h:outputText styleClass="input-label" value="Additional Charges" />
+						</td>
+						<td>
+							<p:inputText id="svicCharges" readonly="true" style="width:250px; text-align: right;" value="#{AddNewLifePaymentActionBean.payment.servicesCharges}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 130px;">
+							<h:outputText styleClass="input-label" value="Premium" />
+						</td>
+						<td>
+							<p:inputText id="premium" readonly="true" style="width:250px; text-align: right;" value="#{AddNewLifePaymentActionBean.payment.totalPremium}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+						<td style="width: 100px;" />
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Discount" />
+						</td>
+						<td>
+							<p:inputText id="discount" readonly="true" style="width:250px; text-align: right;" value="#{AddNewLifePaymentActionBean.payment.discountAmount}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Net Amount" />
+						</td>
+						<td>
+							<p:inputText id="netAmount" readonly="true" style="width:250px; text-align: right;" value="#{AddNewLifePaymentActionBean.payment.totalAmount}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr>
+					    <td>
+							<h:outputText styleClass="input-label" value="Payment Channel" />
+						</td>
+						<td>
+						    <p:inputText id="paymentChannel" readonly="true" style="width:250px;" value="#{AddNewLifePaymentActionBean.payment.paymentChannel.label}" />
+						</td>
+					</tr>
+					<tr>
+						 <td>
+							<h:outputText styleClass="input-label" value="Sale Point" />
+						</td>
+						<td>
+						 	 <p:inputText id="salePoint" readonly="true" style="width:250px;" value="#{AddNewLifePaymentActionBean.lifeProposal.salePoint.name}" />
+						</td>
+					</tr>
+					<h:panelGroup rendered="#{AddNewLifePaymentActionBean.payment.paymentChannel == 'CHEQUE' ? true : false}">
+					<tr>
+						<td style="width: 130px;">
+							<h:outputText styleClass="input-label" value="Bank " style="width:250px;" />
+						</td>
+						<td>
+							<p:inputText id="bank" readonly="true" style="width:250px;" value="#{AddNewLifePaymentActionBean.payment.bank.name}" />
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 130px;">
+							<h:outputText styleClass="input-label" value="Cheque No" style="width:250px;" />
+						</td>
+						<td>
+							<p:inputText id="chequeNo" readonly="true" style="width:250px;" value="#{AddNewLifePaymentActionBean.payment.chequeNo}" />
+						</td>
+					</tr>
+					</h:panelGroup>
+					<tr>
+						<td style="width: 130px;" valign="top">
+							<h:outputText styleClass="input-label" value="Remark" />
+						</td>
+						<td>
+							<p:inputTextarea autoResize="true" id="remark" rows="5" style="width: 250px;" value="#{AddNewLifePaymentActionBean.remark}">
+								<f:validateLength maximum="8000" />
+							</p:inputTextarea>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value="" />
+						</td>
+						<td style="width: 115px;">
+							<p:message for="responsiblePerson" display="text" />
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 115px;">
+							<h:outputText style="color:red;" value="*" />
+							<h:outputText styleClass="input-label" value="Issuer" />
+						</td>
+						<td>
+							<h:panelGrid columns="3" id="responsiblePersonPanel">
+								<p:inputText id="responsiblePerson" readonly="#{AddNewLifePaymentActionBean.responsiblePerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" 
+									required="true" style="width:250px;margin-left:-4px;"
+									value="#{AddNewLifePaymentActionBean.responsiblePerson == null ? '' : AddNewLifePaymentActionBean.responsiblePerson.name}" />
+								<p:commandLink actionListener="#{AddNewLifePaymentActionBean.selectUser()}" id="selectUserDialogLink" immediate="true">
+									<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+									<p:ajax event="dialogReturn" listener="#{AddNewLifePaymentActionBean.returnUser}" update="responsiblePersonPanel" />
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+				</table>
+			<p:commandButton style="width: 80px;" action="#{AddNewLifePaymentActionBean.paymentLifeProposal()}" id="addBtn" update=":lifePaymentForm" value="Confirm" />
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" action="dashboard" id="cancelBtn" immediate="true" value="Cancel" />
+		</h:form>
+		<h:form id="lifeProposalDetailsForm">
+			<p:dialog appendTo="@(body)" header="Life Proposal Details" height="550" hideEffect="explode" id="lifeProposalDetailsDialog" resizable="false" showEffect="explode"
+				widgetVar="lifeProposalDetailsDialog" width="1200">
+				<ui:include src="/manage/life/lifeProposalInfoTemplate.xhtml">
+					<ui:param name="lifePolicySummary" value="#{AddNewLifePaymentActionBean.lifePolicySummary}" />
+					<ui:param name="isEndorse" value="#{AddNewLifePaymentActionBean.isEndorse}" />
+					<ui:param name="lifePolicyList" value="#{AddNewLifePaymentActionBean.lifePolicyList}" />
+					<ui:param name="lifePolicyHistoryList" value="#{AddNewLifePaymentActionBean.lifePolicyHistoryList}" />
+					<ui:param name="endorseInfo" value="#{AddNewLifePaymentActionBean.lifeEndorseInfo}" />
+					<ui:param name="lifeProposal" value="#{AddNewLifePaymentActionBean.lifeProposal}" />
+					<ui:param name="bancaassuranceProposal" value="#{AddNewLifePaymentActionBean.bancaassuranceProposal}" />
+					<ui:param name="keyfactor" value="#{AddNewLifePaymentActionBean.keyFactor}" />
+					<ui:param name="isSimpleLife" value="#{AddNewLifePaymentActionBean.isSimpleLife}" />
+					<ui:param name="showPolicy" value="#{false}" />
+					<ui:param name="showPolicyHistory" value="#{true}" />
+					<ui:param name="workFlowList" value="#{AddNewLifePaymentActionBean.workFlowList}" />
+				</ui:include>
+			</p:dialog>
+		</h:form>
+		<!--  Responsible Person Dialog -->
+	</ui:define>
+</ui:composition>

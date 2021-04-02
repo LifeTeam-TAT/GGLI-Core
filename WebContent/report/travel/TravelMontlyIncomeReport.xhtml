@@ -1,0 +1,220 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:cyc="http://www.cycdemo.com/java"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet"
+			type="text/css" />
+		<h:form id="montlyIncomeReportForm">
+			<div
+				style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<table width="100%" style="margin-top: -8px;">
+				<tr>
+					<td><h:outputText id="title"
+							styleClass="ui-widget ui-widget-header ui-corner-all submenu-title"
+							value="The Travel Monthly Income Report Of #{ApplicationSetting.getMonthInString(TravelMonthlyIncomeReportActionBean.criteria.month)}, #{TravelMonthlyIncomeReportActionBean.criteria.year}" />
+						<p:separator style="height:3px; margin-top:1px;" /></td>
+				</tr>
+			</table>
+			<p:panelGrid columns="3"
+				columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4"
+				layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+						<div style="margin: -6px -6px;"
+							class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search"
+									disabled="#{!TravelMonthlyIncomeReportActionBean.accessBranches}"
+									actionListener="#{TravelMonthlyIncomeReportActionBean.selectEntity()}"
+									id="entityDialogLink" process="@this">
+									<p:ajax event="dialogReturn"
+										listener="#{TravelMonthlyIncomeReportActionBean.returnEntity}"
+										update="entity branchPanelGroup salePanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true"
+									value="#{TravelMonthlyIncomeReportActionBean.criteria.entity == null ? '' : TravelMonthlyIncomeReportActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times"
+									disabled="#{!TravelMonthlyIncomeReportActionBean.accessBranches}"
+									action="#{TravelMonthlyIncomeReportActionBean.setEntityNull() }"
+									process="@this" update="entity branchPanelGroup salePanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputLabel/>
+					<h:outputLabel/>
+					<h:outputLabel value="Month" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+						id="month"
+						value="#{TravelMonthlyIncomeReportActionBean.criteria.month}">
+						<f:selectItems
+							value="#{TravelMonthlyIncomeReportActionBean.monthSet}"
+							var="month" itemLabel="#{month}" itemValue="#{month.value}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<!-- Branch -->
+					<h:outputText styleClass="input-label" value="Branch" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;"
+							class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search"
+									actionListener="#{TravelMonthlyIncomeReportActionBean.selectBranch()}"
+									id="selectBranchDialogLink" process="@this"
+									disabled="#{!TravelMonthlyIncomeReportActionBean.accessBranches || TravelMonthlyIncomeReportActionBean.criteria.entity==null?true:false}">
+									<p:ajax event="dialogReturn"
+										listener="#{TravelMonthlyIncomeReportActionBean.returnBranch}"
+										update="branch salePanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true"
+									value="#{TravelMonthlyIncomeReportActionBean.criteria.branch == null ? '' : TravelMonthlyIncomeReportActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button"
+									icon="fa fa-times"
+									disabled="#{!TravelMonthlyIncomeReportActionBean.accessBranches || TravelMonthlyIncomeReportActionBean.criteria.entity==null?true:false}"
+									action="#{TravelMonthlyIncomeReportActionBean.setBranchNull}"
+									process="@this" update="branch salePanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputLabel/>
+					<h:outputLabel/>
+					<h:outputLabel value="Year" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+						value="#{TravelMonthlyIncomeReportActionBean.criteria.year}">
+						<f:selectItems
+							value="#{TravelMonthlyIncomeReportActionBean.yearList}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<!-- SalePoint -->
+					<p:outputLabel />
+					<p:message for="salePoint" />
+					<h:outputText styleClass="input-label" value="Sale Point" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;"
+							class="ui-g ui-fluid" jsf:id="salePanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search"
+									actionListener="#{TravelMonthlyIncomeReportActionBean.selectSalePoint()}"
+									id="selectSalePointDialogLink" process="@this"
+									disabled="#{TravelMonthlyIncomeReportActionBean.criteria.branch==null?true:false}">
+									<p:ajax event="dialogReturn"
+										listener="#{TravelMonthlyIncomeReportActionBean.returnSalePoint}"
+										update="salePoint" />
+								</p:commandButton>
+								<p:inputText id="salePoint" readonly="true"
+									value="#{TravelMonthlyIncomeReportActionBean.criteria.salePoint == null ? '' : TravelMonthlyIncomeReportActionBean.criteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button"
+									disabled="#{TravelMonthlyIncomeReportActionBean.criteria.branch==null?true:false}"
+									icon="fa fa-times"
+									action="#{TravelMonthlyIncomeReportActionBean.criteria.setSalePoint(null)}"
+									process="@this" update="salePoint" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panelGrid>
+
+
+			<h:panelGrid columns="2">
+				<p:commandButton
+					action="#{TravelMonthlyIncomeReportActionBean.search()}"
+					update="@form" value="Search" />
+				<p:commandButton
+					action="#{TravelMonthlyIncomeReportActionBean.init()}"
+					update="proposalList" immediate="true" value="Reset" />
+			</h:panelGrid>
+
+			<br />
+			<p:dataTable id="proposalList"
+				value="#{TravelMonthlyIncomeReportActionBean.proposalList}"
+				var="proposal" paginator="true" rowIndexVar="rowIndex"
+				rowsPerPageTemplate="10,20,30"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rows="10" style="align : center;">
+				<f:facet name="header">
+					<h:commandLink
+						action="#{TravelMonthlyIncomeReportActionBean.exportExcel}"
+						immediate="true">
+						<p:graphicImage style="width:30px;height:30px;"
+							value="/images/excel.png" />
+					</h:commandLink>
+					<p:messages for="proposalList" />
+				</f:facet>
+				<p:columnGroup type="header">
+					<p:row>
+						<p:column headerText="No." />
+						<p:column headerText="Date" />
+						<p:column headerText="Total Unit" />
+						<p:column headerText="Total Premium" />
+						<p:column headerText="Total Commission" />
+						<p:column headerText="Total Net Premium" />
+						<p:column headerText="Receipt Date" />
+						<p:column headerText="Bus Gate " />
+						<p:column headerText="Branch" />
+						<p:column headerText="Sale Point" />
+					</p:row>
+				</p:columnGroup>
+				<p:column>
+					<h:outputText value="#{rowIndex + 1}" style="width:3%" />
+				</p:column>
+				<p:column style="width:15%;text-align:center;">
+					<h:outputText value="#{proposal.submittedDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}"
+							timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:5%;text-align:center;">
+					<h:outputText value="#{proposal.totalUnit}">
+					</h:outputText>
+				</p:column>
+				<p:column style="width:15%;text-align:center;">
+					<h:outputText value="#{proposal.totalPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:15%;text-align:center;">
+					<h:outputText value="#{proposal.totalCommission}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:15%;text-align:center;">
+					<h:outputText value="#{proposal.totalNetPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:15%;text-align:center;">
+					<h:outputText value="#{proposal.paymentDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}"
+							timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:15%;text-align:center;">
+					<h:outputText value="#{proposal.expressName}">
+					</h:outputText>
+				</p:column>
+				<p:column style="width:15%;text-align:center;">
+					<h:outputText value="#{proposal.branchName}">
+					</h:outputText>
+				</p:column>
+				<p:column style="width:15%;text-align:center;">
+					<h:outputText value="#{proposal.salePointName}">
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

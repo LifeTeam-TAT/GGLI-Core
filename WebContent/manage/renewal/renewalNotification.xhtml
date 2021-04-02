@@ -1,0 +1,152 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Renewal Notification" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<h:form id="criteriaForm">
+			<table>
+				<tr>
+					<td>
+						<h:outputText value="Insurance Types: " />
+					</td>
+					<td>
+						<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="options" value="#{RenewalNotificationActionBean.criteria.insuranceType}" style="width:280px;">
+							<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{RenewalNotificationActionBean.criteria.insuTypes}" var="type" />
+						</p:selectOneRadio>
+					</td>
+					<td>
+						<h:outputLabel for="startDate" value="Start Date" />
+					</td>
+					<td>
+						<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+							value="#{RenewalNotificationActionBean.criteria.startDate}" />
+					</td>
+					<td>
+						<h:outputLabel for="endDate" value="End Date" />
+					</td>
+					<td>
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+							value="#{RenewalNotificationActionBean.criteria.endDate}" />
+					</td>
+					<td>
+						<p:commandButton value="Search" action="#{RenewalNotificationActionBean.search()}" update=":policyListForm" />
+					</td>
+					<td>
+						<p:commandButton value="Reset" action="#{RenewalNotificationActionBean.reset()}" update=":policyListForm :criteriaForm" />
+					</td>
+				</tr>
+			</table>
+		</h:form>
+		<br />
+		<h:form id="policyListForm">
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<h:panelGroup id="renewalNotiPanel">
+				<p:dataTable id="policyTable" paginator="true" paginatorPosition="top"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="10"
+					rowsPerPageTemplate="10,20, 30" selection="#{RenewalNotificationActionBean.selectedNotis}" value="#{RenewalNotificationActionBean.renewalDataModel}" var="renewal">
+					<f:facet name="header">
+						<p:commandLink action="#{RenewalNotificationActionBean.generateReport}" oncomplete="PF('pdfPreviewDialog').show()" update=":pdfPreviewForm:pdfPreviewDialog">
+							<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" url="#{ApplicationSetting.printIcon}" />
+						</p:commandLink>
+					</f:facet>
+					<p:column selectionMode="multiple" style="width:2%" />
+					<!-- <p:column rendered="#{RenewalNotificationActionBean.criteria.insuranceType == 'MOTOR'}" style="width: 4%; text-align: center">
+						<p:commandLink id="vehicleDialogLink" oncomplete="PF('vehicleDialog').show()" update=":vehicleDialogForm" action="#{RenewalNotificationActionBean.searchMotorPolicyVehicle()}"
+							disabled="#{renewal.multipleVehicle}">
+							<f:setPropertyActionListener target="#{RenewalNotificationActionBean.motorPolicyId}" value="#{renewal.policyId}" />
+							<p:graphicImage styleClass="command-image" value="/images/config.png" />
+						</p:commandLink>
+					</p:column> -->
+					<!-- <p:column rendered="#{RenewalNotificationActionBean.criteria.insuranceType == 'FIRE'}" style="width: 4%;text-align: center">
+						<p:commandLink id="fireNcbDialogLink" oncomplete="PF('fireNcbDialog').show()" update=":fireNcbDialogForm" action="#{RenewalNotificationActionBean.searchFirePolicy()}">
+							<f:setPropertyActionListener target="#{RenewalNotificationActionBean.firePolicyId}" value="#{renewal.policyId}" />
+							<p:graphicImage styleClass="command-image" value="/images/config.png" />
+						</p:commandLink>
+					</p:column> -->
+					<p:column headerText="No" style="width: 4%;">
+						<h:outputText style="float: right;" value="#{rowIndex + 1}." />
+					</p:column>
+					<p:column headerText="Policy No." style="width: 200px;">
+						<h:outputText value="#{renewal.policyNo}" />
+					</p:column>
+					<p:column headerText="Customer Name">
+						<h:outputText value="#{renewal.customerName}" />
+					</p:column>
+					<!-- <p:column headerText="Registration No." rendered="#{RenewalNotificationActionBean.criteria.insuranceType == 'MOTOR'}" style="width: 100px;">
+						<h:outputText value="#{renewal.regisNo}" />
+					</p:column>
+					<p:column headerText="Building Name" rendered="#{RenewalNotificationActionBean.criteria.insuranceType == 'FIRE'}">
+						<h:outputText value="#{renewal.buildingName}" />
+					</p:column>
+					<p:column headerText="Insured Address" rendered="#{RenewalNotificationActionBean.criteria.insuranceType == 'FIRE'}">
+						<h:outputText value="#{renewal.buildingAddress}" />
+					</p:column> -->
+					<p:column headerText="ActivedPolicy EndDate" style="width: 100px;">
+						<h:outputText value="#{renewal.endDate}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Day(s) Left" style="width: 100px;">
+						<h:outputText value="#{renewal.days} Day(s) Left" />
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+		</h:form>
+		<!-- <p:dialog modal="true" dynamic="true" appendTo="@(body)" header="Vehicle" hideEffect="explode" id="vehicleDialog" resizable="false" showEffect="explode"
+			widgetVar="vehicleDialog">
+			<h:form id="vehicleDialogForm">
+				<p:dataTable editable="true" editMode="cell" value="#{RenewalNotificationActionBean.motorPolicy.policyVehicleList}" var="vehicle">
+					<p:column headerText="Registration No">
+						<h:outputText value="#{vehicle.registrationNo}" />
+					</p:column>
+					<p:column headerText="No Claim  Bonus Amount">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{vehicle.ncbPremium}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{vehicle.ncbPremium}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Penalty Amount">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{vehicle.penaltyPremium}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{vehicle.penaltyPremium}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+				</p:dataTable>
+				<br />
+				<p:commandButton value="Save" action="#{RenewalNotificationActionBean.saveMotorPolicyVehicle()}" update=":policyListForm" oncomplete="PF('vehicleDialog').hide()" />
+				<p:commandButton value="Cancel" oncomplete="PF('vehicleDialog').hide()" />
+			</h:form>
+		</p:dialog> -->
+		<!-- <h:form id="fireNcbDialogForm">
+			<p:dialog header="No Claim Bonus" hideEffect="explode" id="fireNcbDialog" resizable="false" showEffect="explode" widgetVar="fireNcbDialog">
+				<p:fieldset>
+					<h:outputText styleClass="input-label" value="Total NCB" />
+					<p:inputText style="width:200px;margin-left:4px;" value="#{RenewalNotificationActionBean.firePolicy.totalNcbPremium}" />
+					<br />
+					<br />
+					<p:commandButton value="Save" action="#{RenewalNotificationActionBean.saveFirePolicy()}" oncomplete="PF('fireNcbDialog').hide()" />
+					<p:commandButton value="Cancel" oncomplete="PF('vehicleDialog').hide()" />
+				</p:fieldset>
+			</p:dialog>
+		</h:form> -->
+		<h:form enctype="multipart/form-data" id="pdfPreviewForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview (PDF)" width="1070" height="505" hideEffect="fade" id="pdfPreviewDialog" resizable="false" showEffect="fade"
+				widgetVar="pdfPreviewDialog">
+				<p:ajax event="close" update=":pdfPreviewForm :criteriaForm" listener="#{RenewalNotificationActionBean.handleClose}" />
+				<p:media width="1050" height="500" player="pdf" value="#{RenewalNotificationActionBean.stream}" cache="false" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,182 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['SALE_REPORT_LABEL']}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<h:form id="salesForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="startDate" value="Start Date" />
+					<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{SalesReportActionBean.criteria.startDate}" />
+					<h:outputLabel />
+					<p:message for="entity" />
+					<h:outputText styleClass="input-label" value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGroup">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{SalesReportActionBean.selectEntity()}" id="selectEntityDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{SalesReportActionBean.returnEntity}" update="entity branchPanelGroup salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true" value="#{SalesReportActionBean.criteria.entity== null ? '' : SalesReportActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{SalesReportActionBean.removeEntity()}" process="@this"
+									update="entity branchPanelGroup salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+						<h:outputLabel />
+					<h:outputLabel />
+					<h:outputLabel for="referenceType" value="Reference Type" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="referenceType" value="#{SalesReportActionBean.referenceType}">
+						<f:selectItem itemLabel="" />
+						<f:selectItems value="#{SalesReportActionBean.referenceTypes}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="endDate" value="End Date" />
+					<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{SalesReportActionBean.criteria.endDate}" />
+					<h:outputLabel />
+					<p:message for="branch" />
+					<h:outputText styleClass="input-label" value="#{label['ADDNEWLIFEPROPOSAL_BRANCH_LABEL']}" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{SalesReportActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this"
+									disabled="#{SalesReportActionBean.criteria.entity==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{SalesReportActionBean.returnBranch}" update="branch salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true" value="#{SalesReportActionBean.criteria.branch == null ? '' : SalesReportActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{SalesReportActionBean.removeBranch()}" process="@this" update="branch salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText styleClass="input-label" value="Agent" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="agentPanelGroup">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{SalesReportActionBean.selectAgent()}" id="selectAgentDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{SalesReportActionBean.returnAgent}" update="agent" />
+								</p:commandButton>
+								<p:inputText id="agent" readonly="true" value="#{SalesReportActionBean.criteria.agent == null ? '' : SalesReportActionBean.criteria.agent.fullName}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{SalesReportActionBean.criteria.setAgent(null)}" process="@this" update="agent" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText styleClass="input-label" value="Product" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="productPanelGroup">
+						<div style="margin-top: -6px; margin-left: -6px;" class="ui-g ui-fluid">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{SalesReportActionBean.selectProduct()}" id="selectProductDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{SalesReportActionBean.returnProduct}" update="product" />
+								</p:commandButton>
+								<p:inputText id="product" readonly="true" value="#{SalesReportActionBean.criteria.product == null ? '' : SalesReportActionBean.criteria.product.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{SalesReportActionBean.criteria.setProduct(null)}" process="@this" update="product" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputLabel />
+					<p:message for="salePoint" />
+					<h:outputText styleClass="input-label" value="Sale Point" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{SalesReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink" process="@this"
+									disabled="#{SalesReportActionBean.criteria.branch==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{SalesReportActionBean.returnSalePoint}" update="salePoint" />
+								</p:commandButton>
+								<p:inputText id="salePoint" readonly="true" value="#{SalesReportActionBean.criteria.salePoint == null ? '' :SalesReportActionBean.criteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{SalesReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salePoint" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton action="#{SalesReportActionBean.filter}" update=":salesForm:salesTablePanel" value="Search" />
+				<p:commandButton action="#{SalesReportActionBean.init}" update=":salesForm" value="Reset" />
+			</h:panelGrid>
+			<h:panelGroup id="salesTablePanel">
+				<p:dataTable id="agentTable" lazy="true" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="15"
+					rowsPerPageTemplate="15, 30, 50" value="#{SalesReportActionBean.salesReportList}" var="sale">
+					<f:facet name="header">
+						<p:commandLink disabled="#{SalesReportActionBean.salesReportList.size() lt 1 ? true : false}" action="#{SalesReportActionBean.generateReport()}" immediate="true"
+							oncomplete="PF('pdfPreviewDialog').show()">
+							<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" title="PDF Print" url="#{ApplicationSetting.printIcon}" />
+						</p:commandLink>
+					</f:facet>
+					<p:column headerText="No." style="width:3%;">
+						<h:outputText value="#{rowIndex + 1}" />
+					</p:column>
+					<p:column headerText="Policy No." style="width:10%;" styleClass="fixed-size">
+						<h:outputText value="#{sale.policyNo}" />
+					</p:column>
+					<p:column headerText="Policy Holder" style="width:13%;" styleClass="fixed-size">
+						<h:outputText value="#{sale.policyHolder}" />
+					</p:column>
+					<p:column headerText="Date Of Insured" style="width:8%;" styleClass="fixed-size">
+						<h:outputText value="#{sale.dateOfInsured}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column rendered="#{SalesReportActionBean.referenceType.label != 'Cargo Policy' ? true : false}" headerText="Period" style="width:5%;">
+						<h:outputText value="#{sale.period}" />
+					</p:column>
+					<p:column rendered="#{SalesReportActionBean.referenceType.label == 'Medical Policy' ? true : false}" headerText="Unit" style="width:5%;">
+						<h:outputText value="#{sale.unit}" />
+					</p:column>
+					<p:column rendered="#{SalesReportActionBean.referenceType.label != 'Medical Policy' ? true : false}" headerText="Insured Amount (Kyats)" style="width:10%;">
+						<h:outputText style="float: right;" value="#{sale.insuredAmount}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Premium (Kyats)" style="width:8%;" styleClass="fixed-size">
+						<h:outputText style="float: right;" value="#{sale.premium}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Commission (Kyats)" style="width:8%;" styleClass="fixed-size">
+						<h:outputText style="float: right;" value="#{sale.commission}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" /> /&gt;
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Product Type" style="width:10%;" styleClass="fixed-size">
+						<h:outputText value="#{sale.productType}" />
+					</p:column>
+					<p:column headerText="Branch Name" style="width:10%;" styleClass="fixed-size">
+						<h:outputText value="#{sale.branchName}" />
+					</p:column>
+					<p:column headerText="SalePoint Name" style="width:10%;" styleClass="fixed-size">
+						<h:outputText value="#{sale.salePointName}" />
+					</p:column>
+					<p:column headerText="Remark" style="width:5%;" styleClass="fixed-size">
+						<h:outputText value="#{sale.remark}" />
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+		</h:form>
+		<!-- PDF Preview Form -->
+		<h:form enctype="multipart/form-data" id="pdfPreviewForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview (PDF)" width="1070" height="505" hideEffect="fade" id="pdfPreviewDialog" resizable="false" showEffect="fade"
+				widgetVar="pdfPreviewDialog">
+				<p:media width="1050" height="500" id="pdfPlayer" player="pdf" value="#{SalesReportActionBean.stream}" cache="false" />
+			</p:dialog>
+		</h:form>
+		<!-- SelectAgent -->
+		<!-- SelectProduct -->
+	</ui:define>
+</ui:composition>

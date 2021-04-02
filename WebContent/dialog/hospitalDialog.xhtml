@@ -1,0 +1,33 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/dialog/dialogTemplate.xhtml">
+   <ui:define name="content">
+   	  <title>Hospital Dialog</title>
+      <h:form id="hospitalDialogForm">
+      	 <div class="ui-g" style="margin : 8px;">
+	         <p:dataTable id="hospitalTable" paginator="true" paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="index" rows="10" rowsPerPageTemplate="5,10, 15" 
+	         	value="#{HospitalDialogActionBean.hospitalList}" var="hospital" rowKey="#{hospital.id}">
+	            <p:column headerText="No" style="width:6%;">
+	               <h:outputText value="#{index + 1}"/>
+	            </p:column>
+	            <p:column filterBy="#{hospital.name}" filterMatchMode="contains" headerText="#{label['MANAGE_OCCUPATION_NAME_LABEL']}">
+					<h:outputText value="#{hospital.name}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_HOSPITAL_PHONE_LABEL']}" filterMatchMode="contains" filterBy="#{hospital.phone}">
+					<h:outputText value="#{hospital.phone}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_HOSPITAL_ADDRESS_LABEL']}" filterMatchMode="contains" filterBy="#{hospital.address}">
+					<h:outputText value="#{hospital.address}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_COMPANY_TOWNSHIP_LABEL']}" filterMatchMode="contains" filterBy="#{hospital.township}">
+					<h:outputText value="#{hospital.township}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_OCCUPATION_DESCRIPTION_LABEL']}">
+					<h:outputText value="#{hospital.description}" />
+				</p:column>
+	            <p:column style="width:7%;">
+	               <p:commandButton styleClass="green-button" icon="fa fa-check" action="#{HospitalDialogActionBean.selectHospital(hospital)}" id="selectHospitalLink" immediate="true"/>
+	            </p:column>
+	         </p:dataTable>
+         </div>
+      </h:form>
+   </ui:define>
+</ui:composition>

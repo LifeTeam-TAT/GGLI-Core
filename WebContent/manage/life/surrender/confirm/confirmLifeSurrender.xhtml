@@ -1,0 +1,78 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{LifeSurrenderConfirmActionBean.endowmentSurrender ? label['CONFIRM_LIFE_SURRENDER_TITLE'] : label['CONFIRM_ST_SURRENDER_TITLE']}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="lifeSurrenderConfirmForm">
+			<p:panel>
+				<table>
+					<tr>
+						<td style="width: 200px;">
+							<h:outputText styleClass="input-label" value="#{label['CONFIRMLIFESURRENDER_PROPOSALNO_LABEL']}" />
+						</td>
+						<td>
+							<h:panelGrid columns="2">
+								<p:inputText id="proposalNo" readonly="true" style="width:250px; margin-left:-4px;" value="#{LifeSurrenderConfirmActionBean.surrenderProposal.proposalNo}" />
+								<p:commandLink id="detailsProposal" immediate="true" oncomplete="PF('surrenderLifeProposalDetailsDialog').show()">
+									<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="#{label['CONFIRMLIFESURRENDER_REMARK_LABEL']}" />
+						</td>
+						<td>
+							<p:inputTextarea autoResize="true" id="remark" rows="7" style="width:350px;" value="#{LifeSurrenderConfirmActionBean.remark}">
+								<f:validateLength maximum="8000" />
+							</p:inputTextarea>
+						</td>
+					</tr>
+					<tr>
+						<td />
+						<td>
+							<p:message for="responsiblePerson" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText style="color:red;" value="*" />
+							<h:outputText styleClass="input-label" value="Responsible Person" />
+						</td>
+						<td>
+							<h:panelGrid columns="3" id="responsiblePersonPanel">
+								<p:inputText id="responsiblePerson" required="true" style="width:250px;margin-left:-4px;"
+									readonly="#{LifeSurrenderConfirmActionBean.responsiblePerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+									value="#{LifeSurrenderConfirmActionBean.responsiblePerson == null ? '' : LifeSurrenderConfirmActionBean.responsiblePerson.name}" />
+								<p:commandLink actionListener="#{LifeSurrenderConfirmActionBean.selectUser()}" id="selectUserDialogLink" immediate="true">
+									<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+									<p:ajax event="dialogReturn" listener="#{LifeSurrenderConfirmActionBean.returnUser}" update="responsiblePersonPanel" />
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+				</table>
+			</p:panel>
+			<p:commandButton style="width: 75px;" value="#{label['COMMON_CONFIRM_BTN']}" action="#{LifeSurrenderConfirmActionBean.confirmSurrenderApproval}"
+				update="lifeSurrenderConfirmForm" disabled="#{!LifeSurrenderConfirmActionBean.surrenderProposal.approved}" />
+			<p:spacer width="5" />
+			<p:commandButton style="width: 75px;" value="#{label['COMMON_EDIT_BTN']}" immediate="true" action="#{LifeSurrenderConfirmActionBean.editSurrenderApproval}" />
+			<p:spacer width="5" />
+			<p:commandButton style="width: 75px;" value="#{label['COMMON_DENY_BTN']}" immediate="true" action="#{LifeSurrenderConfirmActionBean.denySurrenderApproval}" />
+			<p:spacer width="5" />
+			<p:commandButton style="width: 75px;" action="dashboard" immediate="true" value="Cancel" />
+		</h:form>
+		<p:dialog appendTo="@(body)" dynamic="true" modal="true" header="life Proposal Details" height="500" hideEffect="explode" id="surrenderLifeProposalDetailsDialog"
+			resizable="false" showEffect="explode" widgetVar="surrenderLifeProposalDetailsDialog" width="1300">
+			<h:form id="surrenderLifeProposalDetailsDialogForm">
+				<ui:include src="/manage/life/surrender/lifeSurrenderProposalInfoTemplate.xhtml">
+					<ui:param name="proposal" value="#{LifeSurrenderConfirmActionBean.surrenderProposal}" />
+					<ui:param name="workFlowList" value="#{LifeSurrenderConfirmActionBean.workFlowList}" />
+					<ui:param name="paymentList" value="#{LifeSurrenderConfirmActionBean.paymentList}" />
+				</ui:include>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

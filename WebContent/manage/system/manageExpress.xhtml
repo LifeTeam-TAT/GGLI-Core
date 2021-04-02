@@ -1,0 +1,248 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['MANAGE_EXPRESS_TITLE']}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="expressEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" />
+			<div style="padding-left: 15px;">
+				<table>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td valign="top">
+										<table>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="name" /></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText style="color:red;" value="#{label['STAR_SIGN_LABEL']}" /> <h:outputText styleClass="input-label"
+														value="#{label['MANAGE_EXPRESS_NAME_LABEL']}" /></td>
+												<td><p:inputText id="name" required="true" style="width:250px;" value="#{ManageExpressActionBean.express.name}">
+														<f:validateLength maximum="50" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="address" /></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText style="color:red;" value="#{label['STAR_SIGN_LABEL']}" /> <h:outputText styleClass="input-label"
+														value="#{label['MANAGE_EXPRESS_ADDRESS_LABEL']}" /></td>
+												<td><p:inputTextarea id="address" required="true" rows="5" style="width:250px;" value="#{ManageExpressActionBean.express.address.permanentAddress}">
+														<f:validateLength maximum="300" />
+													</p:inputTextarea></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="township" /></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText style="color:red;" value="#{label['STAR_SIGN_LABEL']}" /> <h:outputText styleClass="input-label"
+														value="#{label['MANAGE_EXPRESS_TOWNSHIP_LABEL']}" /></td>
+												<td><h:panelGrid columns="3" id="townshipPanelGroup">
+														<p:inputText id="township" readonly="#{ManageExpressActionBean.express.address.township == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true"
+															style="width:250px;margin-left:-4px;"
+															value="#{ManageExpressActionBean.express.address.township == null ? '' : ManageExpressActionBean.express.address.township.name}" />
+														<p:commandLink actionListener="#{ManageExpressActionBean.selectTownship()}" id="selectTownshipDialogLink" immediate="true">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{ManageExpressActionBean.returnTownship}" update="townshipPanelGroup" />
+														</p:commandLink>
+													</h:panelGrid></td>
+											</tr>
+										</table>
+									</td>
+									<td valign="top">
+										<table>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;">
+													<div style="width: 270px; margin-left: -5px;">
+														<p:message for="ownername" />
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label" value="#{label['MANAGE_EXPRESS_OWNER_LABEL']}" /></td>
+												<td><p:inputText id="ownername" style="width:250px;" value="#{ManageExpressActionBean.express.ownerName}">
+														<f:validateLength maximum="100" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;">
+													<div style="width: 270px; margin-left: -5px;">
+														<p:message for="phone" />
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label" value="#{label['MANAGE_EXPRESS_PHONE_LABEL']}" /></td>
+												<td><p:inputText id="phone" validatorMessage="Character does not allow and comma use when u adding one more." style="width:250px;"
+														value="#{ManageExpressActionBean.express.contentInfo.phone}">
+														<f:validateLength maximum="100" />
+														<f:validateRegex pattern="(\b\d[\d,-]*\b)?" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;">
+													<div style="width: 270px; margin-left: -5px;">
+														<p:message for="fax" />
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label" value="#{label['MANAGE_EXPRESS_FAX_LABEL']}" /></td>
+												<td><p:inputText id="fax" style="width:250px;" validatorMessage="Character does not allow and comma use when u adding one more."
+														value="#{ManageExpressActionBean.express.contentInfo.fax}">
+														<f:validateLength maximum="100" />
+														<f:validateRegex pattern="(\b\d[\d,-]*\b)?" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;">
+													<div style="width: 270px; margin-left: -5px;">
+														<p:message for="mobile" />
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label" value="#{label['MANAGE_EXPRESS_MOBILE_LABEL']}" /></td>
+												<td><p:inputText id="mobile" validatorMessage="Character does not allow and comma use when u adding one more." style="width:250px;"
+														value="#{ManageExpressActionBean.express.contentInfo.mobile}">
+														<f:validateLength maximum="100" />
+														<f:validateRegex pattern="(\b\d[\d,-]*\b)?" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;">
+													<div style="width: 270px; margin-left: -5px;">
+														<p:message for="email" />
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label" value="#{label['MANAGE_EXPRESS_EMAIL_LABEL']}" /></td>
+												<td><p:inputText id="email" style="width:250px;" value="#{ManageExpressActionBean.express.contentInfo.email}" validatorMessage="email is invalid format">
+														<f:validateLength maximum="200" />
+														<f:validateRegex pattern="([\w\.-]*[a-zA-Z0-9_]@gmail.com)?" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="codeNo" /></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label" value="#{label['MANAGE_EXPRESS_CODENO_LABEL']}" /></td>
+												<td><p:inputText id="codeNo" style="width:250px;" value="#{ManageExpressActionBean.express.codeNo}">
+														<f:validateLength maximum="300" />
+													</p:inputText></td>
+											</tr>
+											<tr>
+												<td><h:outputText value="" /></td>
+												<td style="width: 115px;"><p:message for="regNo" /></td>
+											</tr>
+											<tr>
+												<td style="width: 115px;"><h:outputText styleClass="input-label" value="#{label['MANAGE_EXPRESS_REGNO_LABEL']}" /></td>
+												<td><p:inputText id="regNo" style="width:250px;" value="#{ManageExpressActionBean.express.regNo}">
+														<f:validateLength maximum="300" />
+													</p:inputText></td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td><p:commandButton action="#{ManageExpressActionBean.addNewExpress}" id="addBtn" rendered="#{ManageExpressActionBean.createNew}" style="width: 80px;"
+							oncomplete="PF('expressTable').filter();"	update=":expressEntryForm" value="#{label['COMMON_ADDNEW_BTN']}" />
+								 <p:commandButton action="#{ManageExpressActionBean.updateExpress}" id="editBtn"
+								oncomplete="PF('expressTable').filter();" rendered="#{!ManageExpressActionBean.createNew}" update="expressEntryForm" value="#{label['COMMON_UPDATE_BTN']}" /></td>
+					</tr>
+				</table>
+			</div>
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			<p:separator style="height:5px;" />
+			<h:commandLink action="#{ManageExpressActionBean.createNewExpress}">
+				<p:ajax update="expressEntryForm"/>
+				<h:panelGrid columns="2">
+					<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+					<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+				</h:panelGrid>
+			</h:commandLink>
+			<table>
+				<tr>
+					<td><p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="selectCustomerCriteria" value="#{ManageExpressActionBean.selectedCriteria}">
+							<f:selectItems value="#{ManageExpressActionBean.criteriaItemList}" var="criteriaItem" />
+						</p:selectOneMenu></td>
+					<td><p:inputText id="criteria" style="height:20px;width: 200px;" value="#{ManageExpressActionBean.criteria.criteriaValue}" >
+					    <p:ajax></p:ajax>
+					    </p:inputText>
+					</td>
+					<td><p:commandButton action="#{ManageExpressActionBean.search}" id="searchExpressButtonBtn" update="expressEntryForm:expressTable" value="Search"  oncomplete="PF('expressTable').filter();" immediate="true" /></td>
+					<td><p:commandButton action="#{ManageExpressActionBean.reset()}" id="resetExpress" update="expressEntryForm:expressTable" value="Reset" /></td>
+				</tr>
+			</table>
+			<p:dataTable id="expressTable" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+				rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageExpressActionBean.expressList}" var="express" widgetVar="expressTable" rowIndexVar="index">
+				<p:column headerText="No." style="width:50px;">
+					<h:outputText value="#{index + 1}" />
+				</p:column>
+				<p:column filterBy="#{express.name}" filterMatchMode="contains" headerText="#{label['MANAGE_EXPRESS_NAME_LABEL']}">
+					<h:outputText value="#{express.name}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_EXPRESS_ADDRESS_LABEL']}">
+					<h:outputText value="#{express.address.permanentAddress}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_EXPRESS_TOWNSHIP_LABEL']}">
+					<h:outputText value="#{express.address.township.name}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_EXPRESS_PHONE_LABEL']}">
+					<h:outputText value="#{express.contentInfo.phone}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_EXPRESS_FAX_LABEL']}">
+					<h:outputText value="#{express.contentInfo.fax}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_EXPRESS_MOBILE_LABEL']}">
+					<h:outputText value="#{express.contentInfo.mobile}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_EXPRESS_EMAIL_LABEL']}">
+					<h:outputText value="#{express.contentInfo.email}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_EXPRESS_CODENO_LABEL']}">
+					<h:outputText value="#{express.codeNo}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_EXPRESS_REGNO_LABEL']}">
+					<h:outputText value="#{express.regNo}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_EXPRESS_OWNER_LABEL']}">
+					<h:outputText value="#{express.ownerName}" />
+				</p:column>
+				<p:column style="width:50px;" headerText="Edit">
+					<p:commandLink action="#{ManageExpressActionBean.prepareUpdateExpress(express)}" update=":expressEntryForm" process="@this" >
+						<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="width:50px;" headerText="Delete">
+					<p:commandLink id="deleteGroupLink" oncomplete="PF('expressTable').filter()"  action="#{ManageExpressActionBean.deleteExpress(express)}"   immediate="true">
+						<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+						<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		 	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+		</p:confirmDialog>
+		
+	</ui:define>
+</ui:composition>

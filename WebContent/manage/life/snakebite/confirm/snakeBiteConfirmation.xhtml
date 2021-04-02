@@ -1,0 +1,253 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+   <ui:param name="leftMenu" value="/common/agentLeft.xhtml" />
+   <ui:param name="rendered" value="true" />
+   <ui:define name="content">
+      <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+      <h:form id="sankeBiteConfirmationForm">
+         <div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+            <p:messages globalOnly="true" id="messages" showDetail="true" />
+         </div>
+         <table cellspacing="5" width="100%">
+            <tr>
+               <td>
+                  <h:outputText styleClass="table-title" value="Snake Bite Confirmation" />
+               </td>
+               <td align="right" />
+            </tr>
+         </table>
+         <p:separator style="height:5px" />
+         <table cellpadding="5" width="100%">
+            <tr>
+               <td valign="top" width="100%">
+                  <table>
+                     <tr>
+                        <td colspan="2" style="padding-top: 8px; width: 100px;" valign="top">
+                           <h:outputText styleClass="input-label" value="Sale Person" />
+                        </td>
+                        <td colspan="2" valign="top">
+                           <p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="saleUserType" style="width:130px;"
+                              value="#{SnakeBiteConfirmationActionBean.userType}">
+                              <f:selectItem itemLabel="Agent" itemValue="AGENT" />
+                              <f:selectItem itemLabel="Saleman" itemValue="SALEMAN" />
+                              <f:selectItem itemLabel="Referral" itemValue="REFERRAL" />
+                              <p:ajax event="valueChange" listener="#{SnakeBiteConfirmationActionBean.changeSaleEvent}" update=":sankeBiteConfirmationForm:salePersonPanelGroup" />
+                           </p:selectOneRadio>
+                           <br />
+                           <p:message for="userType" />
+                           <br />
+                           <h:panelGrid columns="6" id="salePersonPanelGroup">
+                              <p:inputText id="userType" readonly="true" rendered="#{SnakeBiteConfirmationActionBean.userType eq 'AGENT'}" style="width:250px;margin-left:-4px;"
+                                 value="#{SnakeBiteConfirmationActionBean.agent == null ? '' : SnakeBiteConfirmationActionBean.agent.fullName}" />
+                              <p:watermark for="userType" value="Select Agent" />
+                              <p:inputText id="userType1" readonly="true" rendered="#{SnakeBiteConfirmationActionBean.userType eq 'SALEMAN'}" style="width:250px;margin-left:-4px;"
+                                 value="#{SnakeBiteConfirmationActionBean.saleMan == null ? '' : SnakeBiteConfirmationActionBean.saleMan.fullName}" />
+                              <p:watermark for="userType1" value="Select Sale Man" />
+                              <p:inputText id="userType2" readonly="true" rendered="#{SnakeBiteConfirmationActionBean.userType eq 'REFERRAL'}" style="width:250px;margin-left:-4px;"
+                                 value="#{SnakeBiteConfirmationActionBean.referral == null ? '' : SnakeBiteConfirmationActionBean.referral.fullName}" />
+                              <p:watermark for="userType2" value="Select Referral" />
+                              <p:commandLink actionListener="#{SnakeBiteConfirmationActionBean.selectAgent()}" id="selectAgentDialogLink" immediate="true"
+                                 rendered="#{SnakeBiteConfirmationActionBean.userType eq 'AGENT'}">
+                                 <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+                                 <p:ajax event="dialogReturn" listener="#{SnakeBiteConfirmationActionBean.returnAgent}" update="salePersonPanelGroup" />
+                              </p:commandLink>
+                              <p:commandLink actionListener="#{SnakeBiteConfirmationActionBean.selectSaleMan()}" id="selectSaleManDialogLink" immediate="true"
+                                 rendered="#{SnakeBiteConfirmationActionBean.userType eq 'SALEMAN'}">
+                                 <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+                                 <p:ajax event="dialogReturn" listener="#{SnakeBiteConfirmationActionBean.returnSaleMan}" update="salePersonPanelGroup" />
+                              </p:commandLink>
+                              <p:commandLink actionListener="#{SnakeBiteConfirmationActionBean.selectReferral()}" id="selectReferralDialogLink" immediate="true"
+                                 rendered="#{SnakeBiteConfirmationActionBean.userType eq 'REFERRAL'}">
+                                 <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+                                 <p:ajax event="dialogReturn" listener="#{SnakeBiteConfirmationActionBean.returnReferral}" update="salePersonPanelGroup" />
+                              </p:commandLink>
+                           </h:panelGrid>
+                        </td>
+                        <td style="padding-top: 8px;" valign="top">
+                           <h:outputText styleClass="input-label" value="Book No" />
+                        </td>
+                        <td valign="top">
+                           <h:panelGrid columns="3" id="bookPanelGroup">
+                              <p:inputText id="bookNo" style="width:250px" value="#{SnakeBiteConfirmationActionBean.bookNo}"  >
+                              <p:ajax event="valueChange" process="@this"></p:ajax>
+                              </p:inputText>
+                           </h:panelGrid>
+                        </td>
+                        <td valign="top">
+                           <p:commandButton action="#{SnakeBiteConfirmationActionBean.filter()}" process="@this" update=":sankeBiteConfirmationForm:snakeBitePolicyTablePanel" value="Search">
+                           </p:commandButton>
+                        </td>
+                     </tr>
+                  </table>
+                  <h:panelGroup id="snakeBitePolicyTablePanel">
+                     <p:dataTable id="varTable" rowKey="#{var.id}" rows="10" selection="#{SnakeBiteConfirmationActionBean.selectedSnakeBitePolicy}"
+                        value="#{SnakeBiteConfirmationActionBean.snakeBitePolicyDataModel}" var="var">
+                        <p:column disabledSelection="#{!SnakeBiteConfirmationActionBean.disablePrintBtn}" selectionMode="Multiple" style="width:18px" />
+                        <p:column headerText=" Book No">
+                           <h:outputText value="#{var.bookNo}" />
+                        </p:column>
+                        <p:column headerText="Customer Name">
+                           <h:outputText value="#{var.customer.fullName}" />
+                        </p:column>
+                        <p:column headerText=" Policy No">
+                           <h:outputText value="#{var.snakeBitePolicyNo}" />
+                        </p:column>
+                        <p:column headerText="Agent Name">
+                           <h:outputText value="#{var.agent.fullName}" />
+                        </p:column>
+                        <p:column headerText="Branch Name">
+                           <h:outputText value="#{var.branch.name}" />
+                        </p:column>
+                        <p:column headerText="Premium">
+                           <h:outputText value="#{var.premium}" />
+                        </p:column>
+                        <p:column headerText="Sum Insured">
+                           <h:outputText value="#{var.sumInsured}" />
+                        </p:column>
+                     </p:dataTable>
+                  </h:panelGroup>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <table>
+                     <tr>
+                        <td>
+                           <h:outputText styleClass="input-label" value="Payment Channel" />
+                        </td>
+                        <td>
+                           <p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="paymentChannel" required="true" value="#{SnakeBiteConfirmationActionBean.paymentDTO.paymentChannel}">
+								<f:selectItems itemLabel="#{c.label}" itemValue="#{c}" value="#{SnakeBiteConfirmationActionBean.paymentChannels}" var="c" />
+                              <p:ajax event="valueChange" listener="#{SnakeBiteConfirmationActionBean.changePaymentChannel}" update=":sankeBiteConfirmationForm:chequeEntryTable" />
+                           </p:selectOneRadio>
+                        </td>
+                     </tr>
+                  </table>
+               </td>
+            </tr>
+         </table>
+         <!--Cheque Entry Table -->
+         <p:outputPanel id="chequeEntryTable">
+               <table>
+						<tr>
+							<td/>
+							<td>
+								<p:message for="accountBankName" id="accountBankMessage"/>
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 120px;">
+								<h:outputText rendered="#{SnakeBiteConfirmationActionBean.paymentDTO.paymentChannel eq 'CHEQUE'}" styleClass="input-label" value="GGLI Account Bank" />
+								<h:outputText rendered="#{SnakeBiteConfirmationActionBean.paymentDTO.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="GGLI Account Bank"  />
+								<h:outputText rendered="#{SnakeBiteConfirmationActionBean.paymentDTO.paymentChannel eq 'SUNDRY'}" styleClass="input-label" value="GGLI Account" />
+							</td>
+							<td>
+								<h:panelGrid columns="3" id="accountBankPanelGroup" rendered="#{SnakeBiteConfirmationActionBean.paymentDTO.paymentChannel eq 'CHEQUE' || SnakeBiteConfirmationActionBean.paymentDTO.paymentChannel eq 'TRANSFER'|| SnakeBiteConfirmationActionBean.paymentDTO.paymentChannel eq 'SUNDRY'}">
+									<p:inputText id="accountBankName" readonly="#{SnakeBiteConfirmationActionBean.paymentDTO.accountBank == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" 
+										style="width:250px;margin-left:-4px;" required="true"
+										value="#{SnakeBiteConfirmationActionBean.paymentDTO.accountBank == null ? '' : SnakeBiteConfirmationActionBean.paymentDTO.accountBank.name}" />
+									<p:commandLink actionListener="#{SnakeBiteConfirmationActionBean.selectAccountBank()}" id="selectAccountBankDialogLink" immediate="true">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										<p:ajax event="dialogReturn" listener="#{SnakeBiteConfirmationActionBean.returnAccountBank}" update="accountBankPanelGroup" />
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td/>
+							<td>
+								<p:message for="bankName" id="bankMessage"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText rendered="#{SnakeBiteConfirmationActionBean.paymentDTO.paymentChannel eq 'CHEQUE'}" styleClass="input-label" value="Cheque Received Bank" />
+								<h:outputText rendered="#{SnakeBiteConfirmationActionBean.paymentDTO.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="Customer's Transfer Bank" />
+							</td>
+							<td>
+								<h:panelGrid columns="3" id="bankPanelGroup" rendered="#{SnakeBiteConfirmationActionBean.paymentDTO.paymentChannel eq 'CHEQUE' || SnakeBiteConfirmationActionBean.paymentDTO.paymentChannel eq 'TRANSFER'}">
+									<p:inputText id="bankName" readonly="#{SnakeBiteConfirmationActionBean.paymentDTO.bank == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" 
+										style="width:250px;margin-left:-4px;" required="true"
+										value="#{SnakeBiteConfirmationActionBean.paymentDTO.bank == null ? '' : SnakeBiteConfirmationActionBean.paymentDTO.bank.name}" />
+									<p:commandLink actionListener="#{SnakeBiteConfirmationActionBean.selectBank()}" id="selectBankDialogLink" immediate="true">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										<p:ajax event="dialogReturn" listener="#{SnakeBiteConfirmationActionBean.returnBank}" update="bankPanelGroup" />
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td/>
+							<td>
+								<p:message for="chequeNo" id="chequeNoMessage"/>
+								<p:message for="poNo" id="poNoMessage"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText rendered="#{SnakeBiteConfirmationActionBean.paymentDTO.paymentChannel eq 'CHEQUE'}" styleClass="input-label" value="PO / Account No." />
+								<h:outputText rendered="#{SnakeBiteConfirmationActionBean.paymentDTO.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="Transfer No." />
+							</td>
+							<td>
+								<p:inputText id="chequeNo" required="true" rendered="#{SnakeBiteConfirmationActionBean.paymentDTO.paymentChannel eq 'CHEQUE'}" style="width:250px;margin-left:-2px;"
+									value="#{SnakeBiteConfirmationActionBean.paymentDTO.chequeNo}" />
+								<p:inputText id="poNo" required="true" rendered="#{SnakeBiteConfirmationActionBean.paymentDTO.paymentChannel eq 'TRANSFER'}" style="width:250px;margin-left:-2px;"
+									value="#{SnakeBiteConfirmationActionBean.paymentDTO.poNo}" />
+							</td>
+						</tr>
+			  </table>
+
+         </p:outputPanel>
+         <table>
+            <tr>
+               <td>
+                  <h:outputText value="" />
+               </td>
+               <td style="width: 115px;">
+                  <p:message for="responsiblePerson" />
+               </td>
+            </tr>
+            <tr>
+               <td style="width: 120px;">
+                  <h:outputText style="color:red;" value="*" />
+                  <h:outputText styleClass="input-label" value="Responsible Person" />
+               </td>
+               <td>
+                  <h:panelGrid columns="3" id="responsiblePersonPanel">
+                     <p:inputText id="responsiblePerson" readonly="true" required="true" style="width:250px;margin-left:-4px;"
+                        value="#{SnakeBiteConfirmationActionBean.responsiblePerson== null ? '' : SnakeBiteConfirmationActionBean.responsiblePerson.name}" />
+                     <p:commandLink actionListener="#{SnakeBiteConfirmationActionBean.selectUser()}" id="selectUserDialogLink" immediate="true">
+                        <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+                        <p:ajax event="dialogReturn" listener="#{SnakeBiteConfirmationActionBean.returnUser}" update="responsiblePersonPanel" />
+                     </p:commandLink>
+                  </h:panelGrid>
+               </td>
+               <td>
+                  <p:commandButton action="#{SnakeBiteConfirmationActionBean.reset1()}" id="btnReset" immediate="true" value="Reset" ajax="false" />
+               </td>
+               <td>
+                  <p:commandButton action="#{SnakeBiteConfirmationActionBean.confirmSnakeBitePolicy}" disabled="#{!SnakeBiteConfirmationActionBean.disablePrintBtn}" id="submitbtn"
+                     update=":sankeBiteConfirmationForm" value="Submit" />
+               </td>
+               <td>
+                  <!-- Agent Slip-->
+                  <p:commandButton action="#{SnakeBiteConfirmationActionBean.generateReport()}" disabled="#{SnakeBiteConfirmationActionBean.disablePrintBtn}" id="btnPrintPreview"
+                     immediate="true" oncomplete="PF('pdfPreviewDialog').show()" update=":pdfPreviewForm" value="Print Preview" />
+               </td>
+            </tr>
+         </table>
+      </h:form>
+      <!-- Select user -->
+      <!-- Agent Selection Form -->
+      <!-- PDF Preview Form -->
+      <h:form enctype="multipart/form-data" id="pdfPreviewForm">
+         <p:dialog appendTo="@(body)" dynamic="true" header="Print Preview (PDF)" width="1070" height="505" hideEffect="fade" id="pdfPreviewDialog" resizable="false" showEffect="fade"
+            widgetVar="pdfPreviewDialog">
+            <p:ajax event="close" update=":pdfPreviewForm :sankeBiteConfirmationForm" listener="#{SnakeBiteConfirmationActionBean.handleClose}" />
+            <p:media width="1050" height="500" id="pdfPlayer" player="pdf" value="#{SnakeBiteConfirmationActionBean.stream}" cache="false"/>
+         </p:dialog>
+      </h:form>
+      <!-- Select Bank -->
+      <!--  Referral Dialog -->
+   </ui:define>
+</ui:composition>

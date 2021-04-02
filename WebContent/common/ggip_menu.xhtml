@@ -1,0 +1,259 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form id="menuForm">
+		<p:megaMenu autoDisplay="false" rendered="#{identity.loggedIn}">
+			<p:menuitem value="Dashboard" action="dashboard" ajax="false" immediate="true" />
+			<p:submenu label="Admin Management">
+				<p:column>
+					<p:submenu label="System">
+						<p:menuitem value="#{label['ADMIN_LEFT_COMPANY_LABEL']}" action="manageCompany" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_COIN_COMPANY_LABEL']}" action="manageCoinsuranceCompany" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_ORGANIZATION_LABEL']}" action="manageOrganization" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_TOWNSHIP_LABEL']}" action="manageTownship" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_PROVINCE_LABEL']}" action="manageProvince" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_COUNTRY_LABEL']}" action="manageCountry" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_BRANCH_LABEL']}" action="manageBranch" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_OCCUPATION_LABEL']}" action="manageOccupation" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_BUILDINGOCCUPATION_LABEL']}" action="manageBuildingOccupation" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_INDUSTRY_LABEL']}" action="manageIndustry" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_QUALIFICATION_LABEL']}" action="manageQualification" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_RELIGION_LABEL']}" action="manageReligion" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_RELATIONSHIP_LABEL']}" action="manageRelationShip" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_SALEMAN_LABEL']}" action="manageSaleMan" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_TYPESOFSPORT_LABEL']}" action="manageTypesOfSport" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+				<p:column>
+					<p:submenu label="Product">
+						<p:menuitem value="#{label['ADMIN_LEFT_KEYFACTOR_LABEL']}" action="manageKeyFactor" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_ADDON_LABEL']}" action="manageAddOn" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_PRODUCT_LABEL']}" action="manageProduct" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_PRODUCTGROUP_LABEL']}" action="manageProductGroup" ajax="false" immediate="true" />
+					</p:submenu>
+					<p:submenu label="Payment">
+						<p:menuitem value="#{label['ADMIN_LEFT_MANAGEDENO_LABEL']}" action="manageDeno" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_MANAGECURRENCY_LABEL']}" action="manageCurrency" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_PAYMENTTYPE_LABEL']}" action="managePaymentType" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_BANK_LABEL']}" action="manageBank" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_BANKBRANCH_LABEL']}" action="manageBankBranch" ajax="false" immediate="true" />
+					</p:submenu>
+					<p:submenu label="User Authority">
+						<p:menuitem value="#{label['ADMIN_LEFT_USER_LABEL']}" action="manageUser" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_ROLE_LABEL']}" action="RoleManagement" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+				<p:column>
+					<p:submenu label="Motor">
+						<p:menuitem value="#{label['ADMIN_LEFT_TYPEOFBODY_LABEL']}" action="manageTypeOfBody" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_MOTORTYPE_LABEL']}" action="manageMotorType" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_MANUFACTURE_LABEL']}" action="manageManufacture" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_VEHICLEPART_LABEL']}" action="manageVehiclePart" ajax="false" immediate="true" />
+					</p:submenu>
+					<p:submenu label="Fire">
+						<p:menuitem value="#{label['ADMIN_LEFT_ROOF_LABEL']}" action="manageRoof" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_WALL_LABEL']}" action="manageWall" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_FLOOR_LABEL']}" action="manageFloor" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_BUILDINGCLASS_LABEL']}" action="manageBuildingClass" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_MAINCOVER_LABEL']}" action="manageMainCover" ajax="false" immediate="true" />
+						<p:menuitem value="#{label['ADMIN_LEFT_CLAIMINFO_LABEL']}" action="claimSetting" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+			</p:submenu>
+			<p:submenu label="BI Report">
+				<p:column>
+					<p:submenu label="Overview Report">
+						<p:menuitem value="Policies Overview" action="productPolicy" ajax="false" immediate="true" />
+						<p:menuitem value="Fire Policies Overview" action="policyTownship" ajax="false" immediate="true" />
+						<p:menuitem value="Life Policies Overview" action="lifePolicyTownship" ajax="false" immediate="true" />
+						<p:menuitem value="Motor Policies Overview" action="productOfMotorPolicy" ajax="false" immediate="true" />
+						<p:menuitem value="Customer Overview" action="customerOverviewReport" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+			</p:submenu>
+			<p:submenu label="Report">
+				<p:column>
+					<p:submenu label="Agent">
+						<p:menuitem value="Agent Commission Detail Report" action="agentCommissionDetailReport" ajax="false" immediate="true" />
+						<p:menuitem value="Agent Information Report" action="agentInformationReport" ajax="false" immediate="true" />
+						<p:menuitem value="Sales Report" action="salesReport" ajax="false" immediate="true" />
+					</p:submenu>
+					<p:submenu label="Customer">
+						<p:menuitem value="Customer Information Report" action="customerInformationReport" ajax="false" immediate="true" />
+						<p:menuitem value="Customer Detail Information" action="activedCustomerDetailReport" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+				<p:column>
+					<p:submenu label="Financial Report">
+						<p:menuitem value="Financial Report" action="financialReport" ajax="false" immediate="true" />
+						<p:menuitem value="Motor Monthly Report" action="motorMonthlyReport" ajax="false" immediate="true" />
+						<p:menuitem value="Fire Monthly Report" action="fireMonthlyReport" ajax="false" immediate="true" />
+						<p:menuitem value="Fire Monthly Report (Agent)" action="fireMonthlyReport_Agent" ajax="false" immediate="true" />
+						<p:menuitem value="Life Monthly Report" action="lifeMonthlyReport" ajax="false" immediate="true" />
+						<p:menuitem value="Life Renewal Monthly Report" action="lifePermanentMonthlyReport" ajax="false" immediate="true" />
+					</p:submenu>
+					<p:submenu label="Summary">
+						<p:menuitem value="Proposal Summary Report" action="proposalSummaryReport" ajax="false" immediate="true" />
+						<p:menuitem value="Proposal Premium Summary Report" action="proposalPremiumSummaryReport" ajax="false" immediate="true" />
+						<p:menuitem value="WorkFlow Status" action="workFlowStatus" ajax="false" immediate="true" />
+					</p:submenu>
+					<p:submenu label="Co-insurance">
+						<p:menuitem value="Co-insurance Report" action="coinsuranceReport" ajax="false" immediate="true" />
+						<p:menuitem value="Co-insurance Summary Report" action="coinsuranceSummaryReport" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+				<p:column>
+					<p:submenu label="Motor">
+						<p:menuitem value="Motor Proposal Report" action="motorProposalReport" ajax="false" immediate="true" />
+						<p:menuitem value="Motor Proposal Endorsement Report" action="motorProposalEndorsementReport" ajax="false" immediate="true" />
+						<p:menuitem value="Motor Policy Report" action="motorPolicyReport" ajax="false" immediate="true" />
+						<p:menuitem value="Motor Daily Income Report" action="motorDailyIncomeReport" ajax="false" immediate="true" />
+						<p:menuitem value="Motor Premium Payment Report" action="motorPremiumPaymentReport" ajax="false" immediate="true" />
+						<p:menuitem value="Motor Claim Register Report" action="motorClaimRegisterReport" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+				<p:column>
+					<p:submenu label="Fire">
+						<p:menuitem value="Fire Proposal Report" action="fireProposalReport" ajax="false" immediate="true" />
+						<p:menuitem value="Fire Proposal Endorsement Report" action="fireProposalEndorsementReport" ajax="false" immediate="true" />
+						<p:menuitem value="Fire Policy Report" action="firePolicyReport" ajax="false" immediate="true" />
+						<p:menuitem value="Fire Daily Income Report" action="fireDailyIncomeReport" ajax="false" immediate="true" />
+						<p:menuitem value="Fire Premium Payment Report" action="firePremiumPaymentReport" ajax="false" immediate="true" />
+						<p:menuitem value="Fire Claim Register Report" action="fireClaimRegisterReport" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+				<p:column>
+					<p:submenu label="Life">
+						<p:menuitem value="Life Proposal Report" action="lifeProposalReport" ajax="false" immediate="true" />
+						<p:menuitem value="Life Policy Report" action="lifePolicyReport" ajax="false" immediate="true" />
+						<p:menuitem value="Life Daily Income Report" action="lifeDailyIncomeReport" ajax="false" immediate="true" />
+						<p:menuitem value="Life Premium Payment Report" action="lifePremiumPaymentReport" ajax="false" immediate="true" />
+						<p:menuitem value="Life Claim Register Report" action="lifeClaimRegisterReport" ajax="false" immediate="true" />
+						<p:menuitem value="Snake Bite Monthly Report" action="snakeBiteReport" ajax="false" immediate="true" />
+						<p:menuitem value="Stamp Fees Report" action="stampFeeReport" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+			</p:submenu>
+			<p:submenu label="New Business">
+				<p:column>
+					<p:submenu label="Proposal">
+						<p:menuitem value="Motor" action="motorProposal" ajax="false" immediate="true" />
+						<p:menuitem value="Fire" action="fireProposal" ajax="false" immediate="true" />
+						<p:menuitem value="Life" action="lifeProposal" ajax="false" immediate="true" />
+						<p:menuitem value="Snake Bite" action="SnakeBite" ajax="false" immediate="true" />
+						<p:menuitem value="Snake Bite Confirmation" action="SnakeBiteConfirmation" ajax="false" immediate="true" />
+						<p:menuitem value="Sport Man Abroad" action="sportManAbroadProposal" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+				<p:column>
+					<p:submenu label="Proposal">
+						<p:menuitem value="Cash-In-Transit" action="cashInTransit" ajax="false" immediate="true" />
+						<p:menuitem value="Cash-In-Safe" action="cashInSave" ajax="false" immediate="true" />
+						<p:menuitem value="Fidelity" action="fidelity" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+			</p:submenu>
+			<p:submenu label="Policy Administration">
+				<p:column>
+					<p:submenu label="Endorsement">
+						<p:menuitem value="Motor" action="motorPolicyEndorsement" ajax="false" immediate="true" />
+						<p:menuitem value="Fire" action="firePolicyEndorsement" ajax="false" immediate="true" />
+						<p:menuitem value="Life" action="lifePolicyEndorsementListing" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+				<p:column>
+					<p:submenu label="Renewal">
+						<p:menuitem value="Renewal" ajax="false" immediate="true" />
+						<p:menuitem value="Renewal Notification" action="renewalNoti" ajax="false" immediate="true" />
+					</p:submenu>
+					<p:submenu label="Loan">
+						<p:menuitem value="Loan" ajax="false" immediate="true" />
+					</p:submenu>
+					<p:submenu label="Declaration Policy">
+						<p:menuitem value="Declaration Policy" action="fireDeclarationPolicy" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+			</p:submenu>
+			<p:submenu label="Claim">
+				<p:column>
+					<p:submenu label="Motor">
+						<p:menuitem value="Motor" action="motorClaimRegister" ajax="false" immediate="true" />
+					</p:submenu>
+					<p:submenu label="Fire">
+						<p:menuitem value="Fire" action="FireClaim" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+				<p:column>
+					<p:submenu label="Life">
+						<p:menuitem value="Life Disability" action="lifeDisabilityClaimRequestForm" ajax="false" immediate="true" />
+						<p:menuitem value="Death Claim" action="lifeDeathClaimRequestForm" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+			</p:submenu>
+			<p:submenu label="Finance" rendered="#{identity.loggedIn}">
+				<p:column>
+					<p:submenu label="Finance">
+						<p:menuitem value="Recurring Billing" action="lifePaymentBillCollectionForm" ajax="false" immediate="true" />
+						<p:menuitem value="Multi Billing" action="cashReceipt" ajax="false" immediate="true" />
+						<p:menuitem value="Bill Collection" action="payment" ajax="false" immediate="true" />
+						<p:menuitem value="Life Policy Notification" action="lifePolicyNotification" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+			</p:submenu>
+			<p:submenu label="Co Insurance">
+				<p:column>
+					<p:submenu label="Co Insurance">
+						<p:menuitem value="Co-insurance from Other Company" action="inCoinsurance" ajax="false" immediate="true" />
+						<p:menuitem value="Co-insurance to Other Company" action="manageOutCoinsurance" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+			</p:submenu>
+			<p:submenu label="Agent Management">
+				<p:column>
+					<p:submenu label="Agent Profile">
+						<p:menuitem value="Agent Profile" action="manageAgent" ajax="false" immediate="true" />
+						<p:menuitem value="Agent Sanction" action="agentSanction" ajax="false" immediate="true" />
+						<p:menuitem value="Agent Invoice" action="agentCommisionPayment" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+			</p:submenu>
+			<p:submenu label="Customer Management">
+				<p:column>
+					<p:submenu label="Customer Management">
+						<p:menuitem value="Customer Profile" action="manageCustomer" ajax="false" immediate="true" />
+						<p:menuitem value="Customer Import" action="manageCustomerCSV" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+			</p:submenu>
+			<p:submenu label="Enquires">
+				<p:column>
+					<p:submenu label="Motor">
+						<p:menuitem value="Proposal" action="motorProposalEnquiry" ajax="false" immediate="true" />
+						<p:menuitem value="Policy" action="motorPolicyEnquiry" ajax="false" immediate="true" />
+						<p:menuitem value="Endorsement" action="motorProposalEndorsementEnquiry" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+				<p:column>
+					<p:submenu label="Fire">
+						<p:menuitem value="Proposal" action="fireProposalEnquiry" ajax="false" immediate="true" />
+						<p:menuitem value="Policy" action="firePolicyEnquiry" ajax="false" immediate="true" />
+						<p:menuitem value="Endorsement" action="fireProposalEndorsementEnquiry" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+				<p:column>
+					<p:submenu label="Life">
+						<p:menuitem value="Proposal" action="lifeProposalEnquiry" ajax="false" immediate="true" />
+						<p:menuitem value="Policy" action="lifePolicyEnquiry" ajax="false" immediate="true" />
+						<p:menuitem value="Endorsement" action="lifeProposalEndorsementEnquiry" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+			</p:submenu>
+			<p:submenu label="WorkFlow Changer">
+				<p:column>
+					<p:submenu label="WorkFlow Changer">
+						<p:menuitem value="WorkFlow Changer" action="lifechanger" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:column>
+			</p:submenu>
+		</p:megaMenu>
+	</h:form>
+</ui:composition>

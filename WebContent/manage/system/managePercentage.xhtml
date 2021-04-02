@@ -1,0 +1,79 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="EIPS Commission Rate" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="percentageForm">
+			<p:panelGrid style="margin:10px;" columns="2" columnClasses="ui-grid-col-2,ui-grid-col-3" layout="grid" styleClass="ui-fluid">
+				<h:outputText value="" />
+				<p:message for="product" display="text" />
+				<h:outputText styleClass="input-label mandatory" value="Product" />
+				<p:selectOneMenu converter="omnifaces.SelectItemsIndexConverter" id="product" required="true" value="#{ManagePercentageActionBean.percentage.product}">
+					<f:selectItem itemLabel="-SelectProduct-" noSelectionOption="true" />
+					<f:selectItems itemLabel="#{product.name}" itemValue="#{product}" value="#{ManagePercentageActionBean.productsList}" var="product" />
+					<p:ajax event="valueChange" listener="#{ManagePercentageActionBean.changeProduct}" update="relationShipType percent" />
+				</p:selectOneMenu>
+				<h:outputText value="" />
+				<p:message for="relationShipType" display="text" />
+				<h:outputText styleClass="input-label mandatory" value="RelationshipType" />
+				<p:selectOneMenu required="true" id="relationShipType" value="#{ManagePercentageActionBean.percentage.relationshiptype}" converter="omnifaces.SelectItemsIndexConverter">
+					<f:selectItem itemLabel="" noSelectionOption="true" />
+					<f:selectItems value="#{ManagePercentageActionBean.relationshiplist}" var="t" itemLabel="#{t.name}" itemValue="#{t}" />
+				</p:selectOneMenu>
+				<h:outputText value="" />
+				<p:message for="percent" display="text" />
+				<h:outputText styleClass="input-label mandatory" value="Percentage" />
+				<p:inputNumber id="percent" required="true" value="#{ManagePercentageActionBean.percentage.percent}">
+					<o:validator minimum="0" maximum="100" validatorId="javax.faces.LongRange" />
+				</p:inputNumber>
+			</p:panelGrid>
+			<p:commandButton action="#{ManagePercentageActionBean.addNewPercentage}" id="addBtn" rendered="#{ManagePercentageActionBean.createNew}" style="width: 80px;"
+				update=":percentageForm :percentTableForm" value="#{label['COMMON_ADDNEW_BTN']}" oncomplete="PF('percentTable').filter();" />
+			<p:commandButton action="#{ManagePercentageActionBean.updatePercentage}" id="editBtn" rendered="#{!ManagePercentageActionBean.createNew}"
+				update=":percentageForm :percentTableForm" value="#{label['COMMON_UPDATE_BTN']}" oncomplete="PF('percentTable').filter();" />
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			<br />
+			<p:separator style="height:5px" />
+		</h:form>
+		<h:form id="percentTableForm">
+			<h:commandLink action="#{ManagePercentageActionBean.createNewPercentageInfo}">
+				<h:panelGrid columns="2">
+					<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+					<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+				</h:panelGrid>
+			</h:commandLink>
+			<p:outputPanel id="listPanel">
+				<p:dataTable id="percentTable" paginator="true" widgetVar="percentTable"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rows="10"
+					rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManagePercentageActionBean.percentageInfoList}" var="percentage"
+					filteredValue="#{ManagePercentageActionBean.filterpercentageInfoList}">
+					<p:column filterBy="#{percentage.product.name}" filterMatchMode="contains" headerText="ProductName">
+						<h:outputText value="#{percentage.product.name}" />
+					</p:column>
+					<p:column headerText="RelationShipType">
+						<h:outputText value="#{percentage.relationshiptype.name}" />
+					</p:column>
+					<p:column headerText="Percentage">
+						<h:outputText value="#{percentage.percent}" />
+					</p:column>
+					<p:column style="width:50px;" headerText="Edit">
+						<p:commandButton styleClass="green-button" icon="fa fa-paint-brush" action="#{ManagePercentageActionBean.prepareUpdatePercentage(percentage)}"
+							update=":percentTableForm :percentageForm" />
+					</p:column>
+					<p:column style="width:4%;" headerText="Delete">
+						<p:commandButton styleClass="red-button" icon="fa fa-times" oncomplete="PF('percentTable').filter();" action="#{ManagePercentageActionBean.deletePercentage(percentage)}"
+							update=":percentTableForm :percentageForm">
+							<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+		</p:confirmDialog>
+	</ui:define>
+</ui:composition>

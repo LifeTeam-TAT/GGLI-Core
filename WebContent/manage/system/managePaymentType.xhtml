@@ -1,0 +1,126 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['MANAGE_PAYMENTTYPE_TITLE']}"/>
+	<ui:param name="headerRendered" value="true"/>
+	<ui:define name="content">
+		<h:form id="paymentTypeEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true"/>
+			<div style="padding-left: 15px;">
+				<h:outputText value="#{label['MANAGE_PAYMENTTYPE_ADDNEW_LABEL']}" styleClass="table-title" style="padding-top:-10px;" rendered="#{ManagePaymentTypeActionBean.createNew}" />
+				<h:outputText value="#{label['MANAGE_PAYMENTTYPE_EDIT_LABEL']}" styleClass="table-title" style="padding-top:-10px;" rendered="#{!ManagePaymentTypeActionBean.createNew}" />
+				<table>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 115px;">
+										<p:message for="name" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;">
+										<h:outputText value="*" style="color:red;" />
+										<h:outputText value="#{label['MANAGE_PAYMENTTYPE_NAME_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{ManagePaymentTypeActionBean.paymentType.name}" style="width:250px;" id="name" required="true">
+											<f:validateLength maximum="50" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 115px;">
+										<p:message for="month" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;">
+										<h:outputText value="#{label['MANAGE_PAYMENTTYPE_MONTH_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText  onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" value="#{ManagePaymentTypeActionBean.paymentType.month}" style="width:250px;" id="month">
+											<f:validateLength maximum="20" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 115px;">
+										<p:message for="description" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;" valign="top">
+										<h:outputText value="#{label['MANAGE_PAYMENTTYPE_DESCRIPTION_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputTextarea value="#{ManagePaymentTypeActionBean.paymentType.description}" style="width:250px;" id="description" rows="5" autoResize="true">
+											<f:validateLength maximum="300" />
+										</p:inputTextarea>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p:commandButton id="addBtn" value="#{label['COMMON_ADDNEW_BTN']}" action="#{ManagePaymentTypeActionBean.addNewPaymentType}"
+								rendered="#{ManagePaymentTypeActionBean.createNew}" update="paymentTypeEntryForm :paymentTypeTableForm" style="width: 80px;"  oncomplete="PF('paymentTypeTable').filter()"/>
+							<p:commandButton id="editBtn" value="#{label['COMMON_UPDATE_BTN']}" action="#{ManagePaymentTypeActionBean.updatePaymentType}"
+								rendered="#{!ManagePaymentTypeActionBean.createNew}" update="paymentTypeEntryForm :paymentTypeTableForm"  oncomplete="PF('paymentTypeTable').filter()"/>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<h:outputText value="#{label['COMMON_MSG_MANDATORY_LABEL']}" style="color:red;" />
+		</h:form>
+		<p:separator style="height:5px" />
+		<h:form id="paymentTypeTableForm">
+			<h:commandLink action="#{ManagePaymentTypeActionBean.createNewPaymentType}">
+				<h:panelGrid columns="2">
+					<h:graphicImage value="#{ApplicationSetting.addIcon}" styleClass="#{ApplicationSetting.addStyleClass}" />
+					<h:outputText value="#{label['COMMON_ADDNEW_LINK']}" styleClass="command-link" />
+				</h:panelGrid>
+			</h:commandLink>
+			<p:outputPanel id="listPanel">
+				<p:dataTable var="paymentType" value="#{ManagePaymentTypeActionBean.paymentTypeList}" id="paymentTypeTable" paginator="true" rows="10" style="width:100%;"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10, 15"
+					rowKey="index" widgetVar="paymentTypeTable" >
+					<p:column headerText="#{label['MANAGE_PAYMENTTYPE_NAME_LABEL']}" style="width:120px;"  filterBy="#{paymentType.name}" filterMatchMode="contains" >
+						<h:outputText value="#{paymentType.name}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_PAYMENTTYPE_DESCRIPTION_LABEL']}">
+						<h:outputText value="#{paymentType.description}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_PAYMENTTYPE_MONTH_LABEL']}">
+						<h:outputText value="#{paymentType.month}" />
+					</p:column>
+					<p:column style="width:50px;" headerText="Edit">
+						<p:commandLink action="#{ManagePaymentTypeActionBean.prepareUpdatePaymentType(paymentType)}" update=":paymentTypeEntryForm">
+							<p:graphicImage value="#{ApplicationSetting.editIcon}" styleClass="#{ApplicationSetting.editStyleClass}" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width:50px;" headerText="Delete">
+						<p:commandLink oncomplete="PF('paymentTypeTable').filter();" id="deleteGroupLink" action="#{ManagePaymentTypeActionBean.deletePaymentType(paymentType)}" update=":paymentTypeEntryForm :paymentTypeTableForm"  >
+							<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+							<p:graphicImage value="#{ApplicationSetting.deleteIcon}" styleClass="#{ApplicationSetting.deleteStyleClass}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		 	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+		</p:confirmDialog>
+	</ui:define>
+</ui:composition>

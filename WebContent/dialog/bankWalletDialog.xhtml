@@ -1,0 +1,35 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/dialog/dialogTemplate.xhtml">
+	<ui:define name="content">
+		<h:form id="bankWalletForm">
+			<title>Bank Wallet Dialog</title>
+			<div class="ui-g" style="margin: 8px;">
+				<p:dataTable id="bankWalletTable" paginator="true" rowIndexVar="index" rows="10" rowsPerPageTemplate="5,10, 15" style="width:100%;"
+					value="#{BankWalletDialogActionBean.bankChargesList}" var="bankCharges" widgetVar="bankChargesTable">
+					<p:column headerText="No" style="width:50px;">
+						<h:outputText value="#{index + 1}" />
+					</p:column>
+					<p:column headerText="Name" filterBy="#{bankCharges.name}" filterStyle="width:70%" filterMatchMode="contains">
+						<h:outputText value="#{bankCharges.name}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_TOC_LABEL']}">
+						<h:outputText value="#{bankCharges.typesOfCharges}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_BANKNAME_LABEL']}">
+						<h:outputText value="#{bankCharges.bank.name}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_CHARGES_LABEL']}" >
+						<h:outputText value="#{bankCharges.charges}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_ADDITIONAL_CHARGES_LABEL']}" >
+						<h:outputText value="#{bankCharges.additionalCharges}" />
+					</p:column>
+					<p:column style="width:30px;text-align: center;">
+						<p:commandButton action="#{BankWalletDialogActionBean.selectBankCharges(bankCharges)}" id="selectLink" update="@form" styleClass="green-button" icon="fa fa-check"
+							immediate="true" />
+					</p:column>
+				</p:dataTable>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

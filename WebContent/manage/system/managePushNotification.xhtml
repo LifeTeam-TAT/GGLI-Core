@@ -1,0 +1,110 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Push Notification Management" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="pushNotiManagementForm" enctype="multipart/form-data">
+			<style>
+.ui-fluid .ui-calendar, .ui-fluid .ui-calendar input {
+	width: 250px;
+}
+</style>
+			<div style="padding-left: 10px; padding-right: 10px;">
+				<p:growl globalOnly="true" id="messages" showDetail="true" escape="false" />
+				<div style="margin-left: -6px; margin-right: -6px;">
+					<h:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<h:outputText value="Title" />
+							<p:inputText id="title" value="#{ManagePushNotificationActionBean.criteria.title}" style="width: 200px;" />
+							<p:message for="title" />
+						</h:panelGrid>
+						<h:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<h:outputText value="Start Date" />
+							<p:calendar mask="true" id="startDate" value="#{ManagePushNotificationActionBean.criteria.startDate}" pattern="#{ApplicationSetting.dateFormat}" showOn="button"
+								timeZone="#{ApplicationSetting.timeZone}" style="width: 150px!important;">
+								<p:ajax event="dateSelect" update="endDate" />
+							</p:calendar>
+							<p:message for="startDate" />
+						</h:panelGrid>
+						<h:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<h:outputText value="End Date" />
+							<p:calendar mask="true" id="endDate" value="#{ManagePushNotificationActionBean.criteria.endDate}" pattern="#{ApplicationSetting.dateFormat}" showOn="button"
+								timeZone="#{ApplicationSetting.timeZone}" mindate="#{ManagePushNotificationActionBean.criteria.startDate}" style="width: 150px!important;" />
+							<p:message for="endDate" />
+						</h:panelGrid>
+						<!-- 	<h:panelGrid columns="3" style="margin-top: 10px; margin-left: 7px">
+							<p:selectBooleanCheckbox id="isFinishedPush" value="#{ManagePushNotificationActionBean.criteria.finishedPush}" />
+							<p:spacer width="5" />
+							<h:outputText value="Finished Push" />
+						</h:panelGrid> -->
+					</h:panelGrid>
+				</div>
+				<h:panelGrid columns="3" style="margin-left: -3px;">
+					<p:commandButton action="#{ManagePushNotificationActionBean.search()}" style="width: 65px;" update="@form" value="Search" />
+					<p:spacer width="10" />
+					<p:commandButton action="#{ManagePushNotificationActionBean.createNewInstance()}" style="width: 65px;" update="@form" value="Reset" process="@this" />
+				</h:panelGrid>
+				<p:dataTable id="notificationTable" paginator="true" rowIndexVar="index"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+					rowsPerPageTemplate="10, 20, 30" style="width:100%;" value="#{ManagePushNotificationActionBean.notificationList}" var="notification" widgetVar="notificationTable"
+					paginatorPosition="bottom">
+					<p:column headerText="No" style="width: 4%; text-align: center">
+						<h:outputText value="#{index + 1}." style="float: right;" />
+					</p:column>
+					<p:column filterBy="#{notification.title}" filterMatchMode="contains" headerText="Title" style="width: 20%;">
+						<h:outputText value="#{notification.title}" escape="false" />
+					</p:column>
+					<p:column headerText="Body" style="width: 38%;">
+						<h:outputText value="#{notification.body}" escape="false" />
+					</p:column>
+					<p:column headerText="Start Date" style="width: 10%; text-align: center">
+						<h:outputText value="#{notification.startDate}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="End Date" style="width: 10%; text-align: center">
+						<h:outputText value="#{notification.endDate}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column filterBy="#{notification.finishedPush}" filterMatchMode="contains" headerText="Already Pushed" style="width: 8%; text-align: center">
+						<f:facet name="filter">
+							<p:selectBooleanCheckbox onchange="PF('notificationTable').filter()" />
+						</f:facet>
+						<h:outputText value="#{notification.finishedPush ? 'True' : 'False'}" />
+					</p:column>
+					<p:column style="width: 4%; text-align: center;" headerText="Push">
+						<p:commandLink actionListener="#{ManagePushNotificationActionBean.preparePushNotification(notification)}" title="Push" process="@this"
+							update="@form :confirmPushNotiDialogForm">
+							<p:graphicImage styleClass="#{ApplicationSetting.configStyleClass}" value="#{ApplicationSetting.configIcon}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</div>
+		</h:form>
+		<p:dialog header="Confirmation" dynamic="true" modal="true" appendTo="@(body)" widgetVar="confirmPushNotiDialog" id="confirmPushNotiDialog" draggable="false" width="300"
+			height="130" closable="false" resizable="false" showEffect="explode" hideEffect="explode">
+			<h:form id="confirmPushNotiDialogForm">
+				<div class="ui-g-12">
+					<h:outputText styleClass="input-label mandatory" value="Time To Live" />
+					<h:panelGrid columns="2" style="margin-right: -2px;">
+						<p:inputText id="period" style="width: 100px; margin-left: -4px; margin-top: 5px;" required="true" value="#{ManagePushNotificationActionBean.period}">
+							<f:validateLongRange minimum="1" />
+						</p:inputText>
+						<p:selectOneMenu id="periodType" style="width: 100px; margin-top: 5px;" value="#{ManagePushNotificationActionBean.periodType}">
+							<f:selectItems itemLabel="#{type.label}" itemValue="#{type.value}" var="#{type}" value="#{ManagePushNotificationActionBean.getNotiPeriodTypes()}" />
+						</p:selectOneMenu>
+					</h:panelGrid>
+					<h:message for="period" />
+					<p:separator />
+					<h:panelGrid columns="3">
+						<p:commandButton style="width: 65px;" action="#{ManagePushNotificationActionBean.push}" value="Push" update="@form :pushNotiManagementForm" process="@form" />
+						<p:spacer width="10" />
+						<p:commandButton style="width: 65px;" value="Cancel" oncomplete="PF('PF('confirmPushNotiDialog').hide()" update="@form :pushNotiManagementForm" />
+					</h:panelGrid>
+				</div>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

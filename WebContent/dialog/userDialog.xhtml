@@ -1,0 +1,23 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/dialog/dialogTemplate.xhtml">
+	<ui:define name="content">
+		<h:form id="userTableForm">
+			<title>User Dialog</title>
+			 <div class="ui-g" style="margin : 8px;">
+			 	<p:dataTable id="userTable" widgetVar="userTable" paginatorPosition="bottom" paginator="true" rowIndexVar="index" rows="10" rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{UserDialogActionBean.userList}" var="user">
+					<p:column headerText="No" style="width:50px;">
+						<h:outputText value="#{index + 1}"/>
+					</p:column>
+					<p:column filterStyle="width:80%" headerText="User Code" filterBy="#{user.usercode}" filterMatchMode="contains">
+						<h:outputText value="#{user.usercode}"/>
+					</p:column>
+					<p:column filterStyle="width:80%" headerText="User Name" filterBy="#{user.name}" filterMatchMode="contains">
+						<h:outputText value="#{user.name}"/>
+					</p:column>
+					<p:column width="7%">
+		            	<p:commandButton action="#{UserDialogActionBean.selectUser(user)}" id="#{user.usercode}Link" update=":userTableForm" styleClass="green-button" icon="fa fa-check" immediate="true" />
+		            </p:column>
+				</p:dataTable>
+			 </div>
+		</h:form>
+	</ui:define>
+</ui:composition>

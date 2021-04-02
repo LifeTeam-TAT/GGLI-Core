@@ -1,0 +1,991 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="ShortTermEndowmentLife Renewal Proposal" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form enctype="multipart/form-data" id="lifeProposalEntryForm">
+		<p:messages globalOnly="true" id="messages" showDetail="true" />
+			<p:wizard flowListener="#{RenewalShortTermEndowmentLifeActionBean.onFlowProcess}" widgetVar="wiz">
+				<p:tab id="proposalInfo" title="Proposal Info">
+					<p:panel header="Proposal Info" id="proposalInfoWizardPanel" style="min-height:270px;">
+						<table>
+							<tr>
+								<td valign="top">
+									<table>
+										<tr>
+											<td style="width: 150px;" valign="top">
+												<h:outputText style="color:red;" value="*" />
+												<h:outputText styleClass="input-label" value="#{label['ADDNEWLIFEPROPOSAL_CUSTOMER_LABEL']}" />
+											</td>
+											<td valign="top">
+												<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="needSurvey" style="width:130px;" value="#{RenewalShortTermEndowmentLifeActionBean.organization}">
+													<f:selectItem itemLabel="Person" itemValue="false" />
+													<f:selectItem itemLabel="Organization" itemValue="true" />
+													<p:ajax event="valueChange" listener="#{RenewalShortTermEndowmentLifeActionBean.changeOrgEvent}" update=":lifeProposalEntryForm:customerPanelGroup" />
+												</p:selectOneRadio>
+												<p:message for="customer" />
+												<h:panelGrid columns="3" id="customerPanelGroup">
+													<p:inputText id="customer" required="true"
+														readonly="#{RenewalShortTermEndowmentLifeActionBean.lifeProposal.customerName == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" style="width:250px;margin-left:-4px;"
+														value="#{RenewalShortTermEndowmentLifeActionBean.lifeProposal.customerName}" />
+													<p:watermark for="customer" value="Select Customer" />
+													<p:commandLink actionListener="#{RenewalShortTermEndowmentLifeActionBean.selectCustomer()}" id="selectCustomerDialogLink" immediate="true"
+														rendered="#{!RenewalShortTermEndowmentLifeActionBean.organization}">
+														<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+														<p:ajax event="dialogReturn" listener="#{RenewalShortTermEndowmentLifeActionBean.returnCustomer}" update="customerPanelGroup" />
+													</p:commandLink>
+													<p:commandLink actionListener="#{RenewalShortTermEndowmentLifeActionBean.selectOrganization()}" id="selectOrganizationDialogLink" immediate="true"
+														rendered="#{RenewalShortTermEndowmentLifeActionBean.organization}">
+														<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+														<p:ajax event="dialogReturn" listener="#{RenewalShortTermEndowmentLifeActionBean.returnOrganization}" update="customerPanelGroup" />
+													</p:commandLink>
+												</h:panelGrid>
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="product" />
+											</td>
+										</tr>
+										<tr>
+											<td valign="top">
+												<h:outputText style="color:red;" value="*" />
+												<h:outputText styleClass="input-label" value="Product" />
+											</td>
+											<td>
+												<p:inputText id="product" required="true"
+														readonly="#{RenewalShortTermEndowmentLifeActionBean.lifeProposal.customerName == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" style="width:250px;"
+														value="#{RenewalShortTermEndowmentLifeActionBean.product.name}" />
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="paymentType" />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText style="color:red;" value="*" />
+												<h:outputText styleClass="input-label" value="#{label['ADDNEWLIFEROPOSAL_PAYMENTTYPE_LABEL']}" />
+											</td>
+											<td>
+												<p:selectOneMenu converter="omnifaces.SelectItemsConverter" required="true" id="paymentType" style="height:24px;width: 258px;"
+													value="#{RenewalShortTermEndowmentLifeActionBean.lifeProposal.paymentType}">
+													<f:selectItem itemLabel="-- Select Payment Type --" noSelectionOption="true" />
+													<f:selectItems value="#{RenewalShortTermEndowmentLifeActionBean.paymentTypes}" var="paymentType" itemLabel="#{paymentType.name}" itemValue="#{paymentType}" />
+												</p:selectOneMenu>
+											</td>
+										</tr>
+									</table>
+								</td>
+								<td width="100px;"></td>
+								<td valign="top">
+									<table>
+										<tr>
+											<td style="padding-top: 8px;" valign="top">
+												<h:outputText style="color:red;" value="*" />
+												<h:outputText styleClass="input-label" value="Sale Person" />
+											</td>
+											<td valign="top">
+												<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="saleUserType" style="width:200px;" value="#{RenewalShortTermEndowmentLifeActionBean.userType}">
+													<f:selectItem itemLabel="Agent" itemValue="AGENT" />
+													<f:selectItem itemLabel="Saleman" itemValue="SALEMAN" />
+													<f:selectItem itemLabel="Referral" itemValue="REFERRAL" />
+													<p:ajax event="valueChange" listener="#{RenewalShortTermEndowmentLifeActionBean.changeSaleEvent}" update=":lifeProposalEntryForm:salePersonPanelGroup" />
+												</p:selectOneRadio>
+												<p:message for="userType" />
+												<h:panelGrid columns="3" id="salePersonPanelGroup">
+													<p:inputText id="userType" required="true"
+														readonly="#{RenewalShortTermEndowmentLifeActionBean.lifeProposal.salePersonName == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" style="width:250px;margin-left:-4px;"
+														value="#{RenewalShortTermEndowmentLifeActionBean.lifeProposal.salePersonName}" />
+													<p:watermark for="userType" value="Select Sale Person" />
+													<p:commandLink actionListener="#{RenewalShortTermEndowmentLifeActionBean.selectAgent()}" id="selectAgentDialogLink" immediate="true"
+														rendered="#{RenewalShortTermEndowmentLifeActionBean.userType eq 'AGENT'}">
+														<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+														<p:ajax event="dialogReturn" listener="#{RenewalShortTermEndowmentLifeActionBean.returnAgent}" update="salePersonPanelGroup" />
+													</p:commandLink>
+													<p:commandLink actionListener="#{RenewalShortTermEndowmentLifeActionBean.selectSaleMan()}" id="selectSaleManDialogLink" immediate="true"
+														rendered="#{RenewalShortTermEndowmentLifeActionBean.userType eq 'SALEMAN'}">
+														<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+														<p:ajax event="dialogReturn" listener="#{RenewalShortTermEndowmentLifeActionBean.returnSaleMan}" update="salePersonPanelGroup" />
+													</p:commandLink>
+													<p:commandLink actionListener="#{RenewalShortTermEndowmentLifeActionBean.selectReferral()}" id="selectReferralDialogLink" immediate="true"
+														rendered="#{RenewalShortTermEndowmentLifeActionBean.userType eq 'REFERRAL'}">
+														<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+														<p:ajax event="dialogReturn" listener="#{RenewalShortTermEndowmentLifeActionBean.returnReferral}" update="salePersonPanelGroup" />
+													</p:commandLink>
+												</h:panelGrid>
+											</td>
+										</tr>
+										<tr>
+											<td style="width: 150px;" />
+											<td>
+												<p:message for="submittedDate" />
+											</td>
+										</tr>
+										<tr>
+											<td style="width: 150px;">
+												<h:outputText style="color:red;" value="*" />
+												<h:outputText styleClass="input-label" value="#{label['ADDNEWLIFEPROPOSAL_SUBMITTEDDATE_LABEL']}" />
+											</td>
+											<td>
+												<p:calendar required="true" id="submittedDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+													value="#{RenewalShortTermEndowmentLifeActionBean.lifeProposal.submittedDate}" />
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="branch" />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText style="color:red;" value="*" />
+												<h:outputText styleClass="input-label" value="#{label['ADDNEWLIFEPROPOSAL_BRANCH_LABEL']}" />
+											</td>
+											<td>
+												<h:panelGrid columns="3" id="branchPanelGroup">
+													<p:inputText id="branch" required="true" readonly="#{RenewalShortTermEndowmentLifeActionBean.lifeProposal.branch == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+														style="width:250px;margin-left:-4px;" value="#{RenewalShortTermEndowmentLifeActionBean.lifeProposal.branch == null ? '' : RenewalShortTermEndowmentLifeActionBean.lifeProposal.branch.name}" />
+													<p:commandLink actionListener="#{RenewalShortTermEndowmentLifeActionBean.selectBranch()}" id="selectBranchDialogLink" immediate="true">
+														<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+														<p:ajax event="dialogReturn" listener="#{RenewalShortTermEndowmentLifeActionBean.returnBranch}" update="branchPanelGroup" />
+													</p:commandLink>
+												</h:panelGrid>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</p:panel>
+				</p:tab>
+				<p:tab id="InsuredPersonInfo" title="InsuredPerson Info">
+					<p:panel header="InsuredPerson Information" id="insuredPersonInfoWizardPanel" style="min-height:270px;">
+						<table style="width: 100%;">
+							<tr>
+								<td style="width: 40%;" valign="top">
+									<table cellspacing="5">
+										<tr>
+											<td />
+											<td style="width: 115px;">
+												<p:message for="initialId" />
+											</td>
+										</tr>
+										<tr>
+											<td style="width: 115px;">
+												<h:outputText style="color:red;" value="*" />
+												<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_INITIALID_LABEL']}" />
+											</td>
+											<td>
+												<p:inputText id="initialId" required="#{not empty param[isRequired.clientId]}" style="width:250px;"
+													value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.initialId}">
+													<f:validateLength maximum="36" />
+												</p:inputText>
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="firstName" />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText style="color:red;" value="*" />
+												<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_FIRSTNAME_LABEL']}" />
+											</td>
+											<td>
+												<p:inputText id="firstName" required="#{not empty param[isRequired.clientId]}" style="width:250px;"
+													value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.name.firstName}">
+													<f:validateLength maximum="360" />
+												</p:inputText>
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="middleName" />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_MIDDLENAME_LABEL']}" />
+											</td>
+											<td>
+												<p:inputText id="middleName" style="width:250px;" value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.name.middleName}">
+													<f:validateLength maximum="100" />
+												</p:inputText>
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="lastName" />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_LASTNAME_LABEL']}" />
+											</td>
+											<td>
+												<p:inputText id="lastName" style="width:250px;" value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.name.lastName}">
+													<f:validateLength maximum="100" />
+												</p:inputText>
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="fatherName" />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText style="color:red;" value="*" />
+												<h:outputText styleClass="input-label" value="Father Name" />
+											</td>
+											<td>
+												<p:inputText id="fatherName" required="#{not empty param[isRequired.clientId]}" style="width:250px;"
+													value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.fatherName}">
+													<f:validateLength maximum="100" />
+												</p:inputText>
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="idType" />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText style="color:red;" value="*" />
+												<h:outputText styleClass="input-label" value="ID Type" />
+											</td>
+											<td>
+												<p:selectOneMenu converter="omnifaces.SelectItemsConverter" required="#{not empty param[isRequired.clientId]}" id="idType" style="height:24px;width: 258px;"
+													value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.idType}">
+													<f:selectItem itemLabel="-- Select Id Type --" noSelectionOption="true" />
+													<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{RenewalShortTermEndowmentLifeActionBean.idTypes}" var="type" />
+													<p:ajax event="valueChange" update="idNoLabelPanel idNoPanel" />
+												</p:selectOneMenu>
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="idNo" />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:panelGrid columns="2" id="idNoLabelPanel">
+													<h:outputText style="color:red;" value="*" rendered="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.idType ne 'STILL_APPLYING'}" />
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_IDNO_LABEL']}"
+														rendered="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.idType ne 'STILL_APPLYING'}" />
+												</h:panelGrid>
+											</td>
+											<td>
+												<h:panelGrid id="idNoPanel" style="margin-left:-4px;">
+													<p:inputText id="idNo" style="width:250px;" required="#{not empty param[isRequired.clientId]}" value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.idNo}"
+														rendered="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.idType ne 'STILL_APPLYING'}">
+														<f:validateLength maximum="36" />
+													</p:inputText>
+												</h:panelGrid>
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="dateOfBirth" />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText style="color:red;" value="*" />
+												<h:outputText styleClass="input-label" value="DateOfBirth" />
+											</td>
+											<td>
+												<p:inputMask id="dateOfBirth" required="#{not empty param[isRequired.clientId]}" mask="99-99-9999" style="width:250px;"
+													value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.dateOfBirth}">
+													<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+												</p:inputMask>
+											</td>
+										</tr>
+									</table>
+								</td>
+								<td style="width: 5%;" />
+								<td style="width: 55%;" valign="top">
+									<table align="top" width="100%">
+										<tr>
+											<td />
+											<td>
+												<p:message for="resident" />
+											</td>
+										</tr>
+										<tr>
+											<td style="width: 150px;" valign="top">
+												<h:outputText style="color:red;" value="*" />
+												<h:outputText styleClass="input-label" value="Resident Address" />
+											</td>
+											<td>
+												<p:inputTextarea id="resident" required="#{not empty param[isRequired.clientId]}" style="width:250px;"
+													value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.residentAddress.residentAddress}">
+													<f:validateLength maximum="200" />
+												</p:inputTextarea>
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="townShip" />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText style="color:red;" value="*" />
+												<h:outputText styleClass="input-label" value="Resident TownShip" />
+											</td>
+											<td>
+												<h:panelGrid columns="3" id="townShipPanelGroup1">
+													<p:inputText id="townShip" required="#{not empty param[isRequired.clientId]}" style="width:250px;margin-left:-4px;"
+														readonly="#{not empty param[isRequired.clientId] and RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.residentAddress.township.name == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+														value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.residentAddress.township == null ? '' : RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.residentAddress.township.name}" />
+													<p:commandLink actionListener="#{RenewalShortTermEndowmentLifeActionBean.selectTownship()}" id="selectTownShipDialogLink1" immediate="true">
+														<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+														<p:ajax event="dialogReturn" listener="#{RenewalShortTermEndowmentLifeActionBean.returnInsuredPersonTownShip}" update="townShipPanelGroup1" />
+													</p:commandLink>
+												</h:panelGrid>
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="occupation" />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText styleClass="input-label" value="Occupation" />
+											</td>
+											<td>
+												<h:panelGrid columns="3" id="occupationPanelGroup">
+													<p:inputText id="occupation" readonly="true" style="width:250px;margin-left:-4px;"
+														value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.occupation == null ? '' : RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.occupation.name}" />
+													<p:commandLink actionListener="#{RenewalShortTermEndowmentLifeActionBean.selectOccupation()}" id="selectOccupationDialogLink1" immediate="true">
+														<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+														<p:ajax event="dialogReturn" listener="#{RenewalShortTermEndowmentLifeActionBean.returnOccupation}" update="occupationPanelGroup" />
+													</p:commandLink>
+													<p:commandLink action="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.setOccupation(null)}" update=":lifeProposalEntryForm:occupation">
+														<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+													</p:commandLink>
+												</h:panelGrid>
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="gender" />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText style="color:red;" value="*" />
+												<h:outputText styleClass="input-label" value="Gender" />
+											</td>
+											<td>
+												<p:selectOneMenu required="#{not empty param[isRequired.clientId]}" converter="omnifaces.SelectItemsConverter" id="gender" style="height:24px;width: 258px;"
+													value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.gender}">
+													<f:selectItem itemLabel=" -- Select Gender --" noSelectionOption="true" />
+													<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{RenewalShortTermEndowmentLifeActionBean.gender}" var="type" />
+												</p:selectOneMenu>
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="periodOfInsurance" />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText style="color:red;" value="*" />
+												<h:outputText id="periodInsure" styleClass="input-label"
+													value="Period of Insurance (Years)" />
+											</td>
+											<td>
+												<h:panelGrid id="periodPanel" style="margin-left:-4px;">
+													<p:selectOneMenu id="periodOfInsurance" converter="omnifaces.SelectItemsConverter" required="#{not empty param[isRequired.clientId]}" style="width:258px;"
+														value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.periodOfYears}" >
+														<f:selectItem itemLabel="-- Select Period --" noSelectionOption="true" />
+														<f:selectItems value="#{RenewalShortTermEndowmentLifeActionBean.sePeriodYears}" var="year" />
+													</p:selectOneMenu>
+												</h:panelGrid>
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="sumInsuredInfo" />
+											</td>
+										</tr>
+										<tr>
+											<td valign="top">
+												<h:outputText style="color:red;" value="*" />
+												<h:outputText styleClass="input-label" value="Sum Insured" />
+											</td>
+											<td>
+												<p:inputText id="sumInsuredInfo" required="#{not empty param[isRequired.clientId]}" style="width:250px;"
+													value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.sumInsuredInfoNum}">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+													<o:validator disabled="#{empty param[isRequired.clientId]}" validatorId="javax.faces.LongRange" minimum="#{RenewalShortTermEndowmentLifeActionBean.product.minSumInsured}"
+														maximum="#{RenewalShortTermEndowmentLifeActionBean.product.maxSumInsured}" />
+												</p:inputText>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td align="left" colspan="3" style="width: 100%;">
+									<p:message for="beneficiariesInfoTablePanel" />
+									<h:panelGroup id="beneficiariesInfoTablePanel" style="width: 100%">
+										<fieldset style="width: 65%">
+											<legend>
+												<table>
+													<tr>
+														<td>
+															<p:commandLink id="beneficiarieid" action="#{RenewalShortTermEndowmentLifeActionBean.prepareAddNewBeneficiariesInfo()}" immediate="true"
+																oncomplete="PF('beneficiariesInfoEntryDialog').show()" update=":beneficiaryInfoEntryForm">
+																<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+															</p:commandLink>
+														</td>
+														<td>
+															<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIESINFO_LABLE']}" />
+														</td>
+													</tr>
+												</table>
+											</legend>
+											<p:dataTable id="beneficiaryPersonTable" style="width:100%" value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTO.beneficiariesInfoDTOList}" var="beneficiary">
+												<p:column headerText="Beneficiary">
+													<h:outputText value="#{beneficiary.fullName}" />
+												</p:column>
+												<p:column headerText="Age">
+													<h:outputText value="#{beneficiary.age}" />
+												</p:column>
+												<p:column headerText="Gender">
+													<h:outputText value="#{beneficiary.gender}" />
+												</p:column>
+												<p:column headerText="ID NO.">
+													<h:outputText value="#{beneficiary.idNo}" />
+												</p:column>
+												<p:column headerText="Resident TownShip">
+													<h:outputText value="#{beneficiary.residentAddress.township.name}" />
+												</p:column>
+												<p:column headerText="Beneficiary Percentage">
+													<h:outputText value="#{beneficiary.percentage}%" />
+												</p:column>
+												<p:column headerText="Relationship">
+													<h:outputText value="#{beneficiary.relationship.name}" />
+												</p:column>
+												<p:column headerText="Edit" style="width:50px; text-align: center;">
+													<p:commandLink action="#{RenewalShortTermEndowmentLifeActionBean.prepareEditBeneficiariesInfo(beneficiary)}" id="editBeneficiaryLink" immediate="true"
+														oncomplete="PF('beneficiariesInfoEntryDialog').show()" update=":beneficiaryInfoEntryForm">
+														<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+													</p:commandLink>
+												</p:column>
+												<p:column headerText="Delete" style="width:50px; text-align: center;">
+													<p:commandLink action="#{RenewalShortTermEndowmentLifeActionBean.removeBeneficiariesInfo(beneficiary)}" process="@this" id="removeBeneficiaryLink"
+														update=":lifeProposalEntryForm:beneficiariesInfoTablePanel">
+														<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+													</p:commandLink>
+												</p:column>
+											</p:dataTable>
+										</fieldset>
+									</h:panelGroup>
+								</td>
+							</tr>
+						</table>
+						<br />
+						<p:commandButton style="width: 80px;" action="#{RenewalShortTermEndowmentLifeActionBean.saveInsuredPersonInfo}" id="addInsuredPersonInfoBtn"
+							update=":lifeProposalEntryForm:insuredPersonInfoWizardPanel"
+							value="#{RenewalShortTermEndowmentLifeActionBean.createNewInsuredPersonInfo ? label['COMMON_ADDNEW_BTN'] : label['COMMON_UPDATE_BTN']}" binding="#{isRequired}" />
+						<br />
+						<p:separator style="height:3px" />
+						<h:panelGrid columns="4">
+							<h:commandLink action="#{RenewalShortTermEndowmentLifeActionBean.prepareAddNewInsuredPersonInfo()}" immediate="true" update=":lifeProposalEntryForm:insuredPersonInfoWizardPanel">
+								<f:ajax render=":lifeProposalEntryForm:insuredPersonInfoWizardPanel" />
+								<h:panelGrid columns="2">
+									<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+									<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+								</h:panelGrid>
+							</h:commandLink>
+							<p:fileUpload allowTypes="/(\.|\/)(xls|xlsx)$/" mode="simple" rendered="#{RenewalShortTermEndowmentLifeActionBean.organization}" sizeLimit="50000"
+								value="#{RenewalShortTermEndowmentLifeActionBean.uploadedFile}" />
+							<p:commandButton actionListener="#{RenewalShortTermEndowmentLifeActionBean.upload}" ajax="false" rendered="#{RenewalShortTermEndowmentLifeActionBean.organization}" value="Submit" />
+							<p:message for="insuredPersonInfoDTOTable" />
+						</h:panelGrid>
+						<p:dataTable id="insuredPersonInfoDTOTable" rowStyleClass="#{empty insuredPersonInfoDTO.beneficiariesInfoDTOList ? 'rowWarnning' : null}" style="width:100%"
+							value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonInfoDTOList}" var="insuredPersonInfoDTO">
+							<p:column headerText="Name">
+								<h:outputText value="#{insuredPersonInfoDTO.fullName}" />
+							</p:column>
+							<p:column headerText="Date Of Birth">
+								<h:outputText value="#{insuredPersonInfoDTO.dateOfBirth}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Father Name">
+								<h:outputText value="#{insuredPersonInfoDTO.fatherName}" />
+							</p:column>
+							<p:column headerText="Address">
+								<h:outputText value="#{insuredPersonInfoDTO.fullAddress}" />
+							</p:column>
+							<p:column headerText="Sum Insured">
+								<h:outputText style="float: right;" value="#{insuredPersonInfoDTO.sumInsuredInfo}">
+									<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Product Type" style="text-align: center">
+								<h:outputText value="#{insuredPersonInfoDTO.product.name}" />
+							</p:column>
+							<p:column headerText="Age" style="text-align:left;">
+								<h:outputText value="#{insuredPersonInfoDTO.ageForNextYear}" />
+							</p:column>
+							<p:column headerText="Period">
+								<h:outputText style="float:left;" value="#{insuredPersonInfoDTO.periodOfYears}'- Years'}" />
+							</p:column>
+							<p:column headerText="End Date">
+								<h:outputText value="#{insuredPersonInfoDTO.endDate}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Status" rendered="#{RenewalShortTermEndowmentLifeActionBean.isReplaceColumn()}" style="width:50px; text-align:center;">
+								<h:commandLink action="#{RenewalShortTermEndowmentLifeActionBean.prepareReplaceInsuredPersonInfo(insuredPersonInfoDTO)}" id="replaceInsuredPersonInfoLink" value="Replace">
+									<f:ajax render=":lifeProposalEntryForm:insuredPersonInfoWizardPanel" />
+								</h:commandLink>
+							</p:column>
+							<p:column headerText="Edit" style="width:50px; text-align:center;">
+								<h:commandLink action="#{RenewalShortTermEndowmentLifeActionBean.prepareEditInsuredPersonInfo(insuredPersonInfoDTO)}" id="editInsuredPersonInfoLink">
+									<f:ajax render=":lifeProposalEntryForm:insuredPersonInfoWizardPanel" />
+									<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+								</h:commandLink>
+							</p:column>
+							<p:column headerText="Delete" style="width:50px; text-align:center;">
+								<p:commandLink action="#{RenewalShortTermEndowmentLifeActionBean.removeInsuredPersonInfo(insuredPersonInfoDTO)}" id="removeEditInsuredPersonInfoLink"
+									update=":lifeProposalEntryForm:insuredPersonInfoWizardPanel">
+									<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+								</p:commandLink>
+							</p:column>
+						</p:dataTable>
+					</p:panel>
+				</p:tab>
+				<p:tab id="workflow" title="Workflow">
+					<p:panel header="Workflow" id="workflowWizardPanel" style="min-height:270px;">
+						<table>
+							<tr>
+								<td />
+								<td>
+									<p:message for="remark" />
+								</td>
+							</tr>
+							<tr>
+								<td style="width: 150px;" valign="top">
+									<h:outputText styleClass="input-label" value="Remark" />
+								</td>
+								<td valign="top">
+									<p:inputTextarea autoResize="true" id="remark" rows="10" style="width:350px;" value="#{RenewalShortTermEndowmentLifeActionBean.remark}">
+										<p:ajax update=":lifeProposalEntryForm:remark" />
+										<f:validateLength maximum="8000" />
+									</p:inputTextarea>
+								</td>
+							</tr>
+							<tr>
+								<td />
+								<td>
+									<p:message for="responsiblePerson" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText styleClass="input-label" value="Responsible Person" />
+								</td>
+								<td>
+									<h:panelGrid columns="3" id="responsiblePersonPanel">
+										<p:inputText id="responsiblePerson" required="true" readonly="#{RenewalShortTermEndowmentLifeActionBean.responsiblePerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+											style="width:250px;margin-left:-4px;" value="#{RenewalShortTermEndowmentLifeActionBean.responsiblePerson == null ? '' : RenewalShortTermEndowmentLifeActionBean.responsiblePerson.name}" />
+										<p:commandLink actionListener="#{RenewalShortTermEndowmentLifeActionBean.selectUser()}" id="selectUserDialogLink" immediate="true">
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											<p:ajax event="dialogReturn" listener="#{RenewalShortTermEndowmentLifeActionBean.returnUser}" update="responsiblePersonPanel" />
+										</p:commandLink>
+									</h:panelGrid>
+								</td>
+							</tr>
+							<tr>
+								<td style="padding-top: 30px;" colspan="2">
+									<p:commandButton id="submitProposal" action="#{RenewalShortTermEndowmentLifeActionBean.addNewLifeProposal}" update=":lifeProposalEntryForm" value="Submit Proposal" />
+								</td>
+							</tr>
+						</table>
+					</p:panel>
+				</p:tab>
+			</p:wizard>
+			<br />
+			<p:commandButton action="dashboard" immediate="true" value="#{label['COMMON_CANCEL_BTN']}" />
+			<br />
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			<br />
+		</h:form>
+		<!-- <h:form id="addOnEntryForm">
+			<p:dialog header="AddOn Entry" hideEffect="explode" id="addOnEntryDialog" resizable="false" showEffect="explode" widgetVar="addOnEntryDialog">
+				<table cellspacing="5">
+					<tr>
+						<td>
+							<h:outputText value="" />
+						</td>
+						<td>
+							<p:message for="addOn" id="addOnMsg" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText style="color:red;" value="*" />
+							<h:outputText styleClass="input-label" value="AddOn" />
+						</td>
+						<td>
+							<h:panelGrid columns="3" id="addOnPanel">
+								<p:inputText id="addOn" readonly="true" style="width:250px;margin-left:-4px;"
+									value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonAddOnDTO.addOn == null ? '' : RenewalShortTermEndowmentLifeActionBean.insuredPersonAddOnDTO.addOn.name}" />
+							</h:panelGrid>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value="" />
+						</td>
+						<td style="width: 150px;">
+							<p:message for="addOnSumInsured" />
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 150px;">
+							<h:outputText rendered="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonAddOnDTO.addOn.addOnType == 'BASED_ON_ADDON_SUMINSU' ? true : false}" style="color:red;" value="*" />
+							<h:outputText rendered="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonAddOnDTO.addOn.addOnType == 'BASED_ON_ADDON_SUMINSU' ? true : false}" styleClass="input-label"
+								value="AddOn Sum Insured" />
+						</td>
+						<td>
+							<p:inputText id="addOnSumInsured" rendered="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonAddOnDTO.addOn.addOnType == 'BASED_ON_ADDON_SUMINSU' ? true : false}"
+								style="width:250px;" value="#{RenewalShortTermEndowmentLifeActionBean.insuredPersonAddOnDTO.addOnSumInsured}">
+								<f:validateLength maximum="50" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<p:commandButton action="#{RenewalShortTermEndowmentLifeActionBean.saveInsuredPersonAddOnDTO()}" update=":lifeProposalEntryForm:addOnTablePanel addOnMsg" value="Add" />
+						</td>
+					</tr>
+				</table>
+			</p:dialog>
+		</h:form> -->
+		<p:dialog header="#{label['MANAGE_INSUREDPERSON_BENEFICIARIESINFO_LABLE']}" hideEffect="explode" id="beneficiariesInfoEntryDialog" resizable="false" showEffect="explode"
+			visible="#{facesContext.validationFailed}" widgetVar="beneficiariesInfoEntryDialog" dynamic="true" modal="true" appendTo="@(body)">
+			<h:form id="beneficiaryInfoEntryForm">
+				<h:panelGroup id="beneficiariesInfoPanel">
+					<table cellspacing="5">
+						<tr>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="initialId" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="Initial ID" />
+										</td>
+										<td>
+											<p:inputText id="initialId" required="true" style="width:250px;" value="#{RenewalShortTermEndowmentLifeActionBean.beneficiariesInfoDTO.initialId}">
+												<f:validateLength maximum="50" />
+											</p:inputText>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="firstName" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="First Name" />
+										</td>
+										<td>
+											<p:inputText id="firstName" required="true" style="width:250px;" value="#{RenewalShortTermEndowmentLifeActionBean.beneficiariesInfoDTO.name.firstName}">
+												<f:validateLength maximum="50" />
+											</p:inputText>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="middleName" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="Middle Name" />
+										</td>
+										<td>
+											<p:inputText id="middleName" style="width:250px;" value="#{RenewalShortTermEndowmentLifeActionBean.beneficiariesInfoDTO.name.middleName}">
+												<f:validateLength maximum="50" />
+											</p:inputText>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="lastName" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="Last Name" />
+										</td>
+										<td>
+											<p:inputText id="lastName" style="width:250px;" value="#{RenewalShortTermEndowmentLifeActionBean.beneficiariesInfoDTO.name.lastName}">
+												<f:validateLength maximum="50" />
+											</p:inputText>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="idType" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="IdType" />
+										</td>
+										<td>
+											<p:selectOneMenu required="true" converter="omnifaces.SelectItemsConverter" id="idType" style="height:24px;width: 258px;"
+												value="#{RenewalShortTermEndowmentLifeActionBean.beneficiariesInfoDTO.idType}">
+												<f:selectItems value="#{RenewalShortTermEndowmentLifeActionBean.idTypes}" />
+												<p:ajax event="valueChange" update="idNoLabelPanel idNoPanel" />
+											</p:selectOneMenu>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="idNo" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:panelGrid columns="2" id="idNoLabelPanel">
+												<h:outputText style="color:red;" value="*" rendered="#{RenewalShortTermEndowmentLifeActionBean.beneficiariesInfoDTO.idType ne 'STILL_APPLYING'}" />
+												<h:outputText styleClass="input-label" value="IdNo" rendered="#{RenewalShortTermEndowmentLifeActionBean.beneficiariesInfoDTO.idType ne 'STILL_APPLYING'}" />
+											</h:panelGrid>
+										</td>
+										<td>
+											<h:panelGrid id="idNoPanel">
+												<p:inputText id="idNo" required="true" style="width:250px; margin-left: -4px;" value="#{RenewalShortTermEndowmentLifeActionBean.beneficiariesInfoDTO.idNo}"
+													rendered="#{RenewalShortTermEndowmentLifeActionBean.beneficiariesInfoDTO.idType ne 'STILL_APPLYING'}" />
+											</h:panelGrid>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="gender" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="Gender" />
+										</td>
+										<td>
+											<p:selectOneMenu required="true" converter="omnifaces.SelectItemsConverter" id="gender" style="height:24px;width: 258px;"
+												value="#{RenewalShortTermEndowmentLifeActionBean.beneficiariesInfoDTO.gender}">
+												<f:selectItem itemLabel="-- Select Gender --" noSelectionOption="true" />
+												<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{RenewalShortTermEndowmentLifeActionBean.gender}" var="type" />
+											</p:selectOneMenu>
+										</td>
+									</tr>
+								</table>
+							</td>
+							<td valign="top">
+								<table>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td>
+											<div style="width: 270px; margin-left: -5px;">
+												<p:message for="beneficiaryRelationShip" />
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_RELATIONSHIP_LABEL']}" />
+										</td>
+										<td>
+											<p:selectOneMenu required="true" id="beneficiaryRelationShip" style="height:24px;width: 258px;"
+												value="#{RenewalShortTermEndowmentLifeActionBean.beneficiariesInfoDTO.relationship}">
+												<f:selectItem itemLabel="Select" noSelectionOption="true" />
+												<f:selectItems value="#{RenewalShortTermEndowmentLifeActionBean.relationshipList}" var="relationship" itemLabel="#{relationship.name}" itemValue="#{relationship}" />
+											</p:selectOneMenu>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="percentage" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_PERCENTAGE_LABEL']}" />
+										</td>
+										<td>
+											<p:inputText id="percentage" required="true" style="width:250px;" value="#{RenewalShortTermEndowmentLifeActionBean.beneficiariesInfoDTO.percentage}">
+												<f:validateDoubleRange minimum="1" maximum="100" />
+											</p:inputText>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="benificiaryAge" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_AGE_LABEL']}" />
+										</td>
+										<td>
+											<p:inputText id="benificiaryAge" required="true" style="width:250px;" value="#{RenewalShortTermEndowmentLifeActionBean.beneficiariesInfoDTO.age}">
+												<f:validateDoubleRange minimum="1" maximum="100" />
+											</p:inputText>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 115px;">
+											<p:message for="townShip" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 115px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="Resident TownShip" />
+										</td>
+										<td>
+											<h:panelGrid columns="3" id="townShipPanelGroup2">
+												<p:inputText id="townShip" style="width:250px;margin-left:-4px;" required="true"
+													readonly="#{RenewalShortTermEndowmentLifeActionBean.beneficiariesInfoDTO.residentAddress.township.name == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+													value="#{RenewalShortTermEndowmentLifeActionBean.beneficiariesInfoDTO.residentAddress.township == null ? '' : RenewalShortTermEndowmentLifeActionBean.beneficiariesInfoDTO.residentAddress.township.name}">
+													<f:validateLength maximum="36" />
+												</p:inputText>
+												<p:commandLink actionListener="#{RenewalShortTermEndowmentLifeActionBean.selectTownship()}" id="selectTownShipDialogLink2" immediate="true">
+													<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+													<p:ajax event="dialogReturn" listener="#{RenewalShortTermEndowmentLifeActionBean.returnBeneficiariesTownShip}" update="townShipPanelGroup2" />
+												</p:commandLink>
+											</h:panelGrid>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="address" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="Resident Address" />
+										</td>
+										<td>
+											<p:inputTextarea id="address" required="true" style="width:250px;" value="#{RenewalShortTermEndowmentLifeActionBean.beneficiariesInfoDTO.residentAddress.residentAddress}">
+												<f:validateLength maximum="300" />
+											</p:inputTextarea>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					<p:separator />
+					<p:commandButton id="saveBtn" style="width: 60px;" action="#{RenewalShortTermEndowmentLifeActionBean.saveBeneficiariesInfo()}"
+						update="@form :lifeProposalEntryForm:beneficiariesInfoTablePanel" value="Save" />
+					<p:spacer width="10" />
+					<p:commandButton immediate="true" style="width: 60px;" oncomplete="PF('beneficiariesInfoEntryDialog').hide()" value="Cancel" />
+					<br />
+				</h:panelGroup>
+			</h:form>
+		</p:dialog>
+		<h:form id="paidPremiumForPaidup">
+			<p:dialog header="Paid Premium for Paidup" height="100" hideEffect="explode" id="paidPremiumConfirmationDialog" resizable="false" showEffect="explode"
+				widgetVar="paidPremiumConfirmationDialog" width="350">
+				<h:panelGroup id="confirmationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:22px;height:22px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="Pay premium for the rest period to fill a full year?" />
+								<br />
+								<h:outputText value="" />
+							</td>
+						</tr>
+					</table>
+					<br />
+					<p:commandButton action="#{RenewalShortTermEndowmentLifeActionBean.paidPremiumForPaidUp(true)}" oncomplete="PF('paidPremiumConfirmationDialog').hide()"
+						update=":lifeProposalEntryForm:insuredPersonInfoWizardPanel" value="Paid" />
+					<p:commandButton action="#{RenewalShortTermEndowmentLifeActionBean.paidPremiumForPaidUp(false)}" oncomplete="PF('paidPremiumConfirmationDialog').hide()"
+						update=":lifeProposalEntryForm:insuredPersonInfoWizardPanel" value="Not Paid" />
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

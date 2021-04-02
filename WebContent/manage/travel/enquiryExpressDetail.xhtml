@@ -1,0 +1,79 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fu="http://java.sun.com/jsf/fileUpload" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Add Express Detail" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/inputText.css" rel="stylesheet" type="text/css" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<h:form enctype="multipart/form-data" id="expressListForm">
+			<p:growl escape="false" globalOnly="true" life="8000" showDetail="true" />
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="startDate" value="Start Date" />
+						<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+							value="#{EnquiryExpressDetailActionBean.criteria.startDate}" />
+						<h:outputText for="proposalNo" value="Proposal No." />
+						<p:inputText id="proposalNo" value="#{EnquiryExpressDetailActionBean.criteria.number}" />
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="endDate" value="End Date" />
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+							value="#{EnquiryExpressDetailActionBean.criteria.endDate}" />
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText styleClass="input-label" value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectBranchPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectBranchPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" disabled="#{!EnquiryExpressDetailActionBean.accessBranches}" icon="fa fa-search" actionListener="#{EnquiryExpressDetailActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{EnquiryExpressDetailActionBean.returnBranch}" update="branch" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true" value="#{EnquiryExpressDetailActionBean.criteria.branch == null ? 'ALL' : EnquiryExpressDetailActionBean.criteria.branch.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{!EnquiryExpressDetailActionBean.accessBranches}" icon="fa fa-times" action="#{EnquiryExpressDetailActionBean.criteria.setBranch(null)}" process="@this" update="branch" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton style="width:80px;" id="searchBtn" action="#{EnquiryExpressDetailActionBean.findTravelProposalListByEnquiryCriteria()}" update=":expressListForm"
+					value="Search" />
+				<p:commandButton style="width:80px;" action="#{EnquiryExpressDetailActionBean.resetCriteria}" update=":expressListForm" value="Reset" />
+			</h:panelGrid>
+			<p:panel id="expressListPanel" header="Travel Proposal List" styleClass="customTitleBar">
+				<p:dataTable id="proposalPanel" rowIndexVar="index" style="width:100%;" value="#{EnquiryExpressDetailActionBean.travelProposalList}" var="proposal" styleClass="borderless">
+					<p:column>
+						<p:panel id="dataTablePanel" toggleable="true" header="Proposal No. : #{proposal.proposalNo}" style="border: none;" collapsed="true">
+							<p:dataTable id="expressTable" rowIndexVar="index" style="width:100%;" value="#{proposal.expressList}" var="express"
+								rowStyleClass="#{(index mod 2) eq 0 ? 'second-row' : 'first-row'}">
+								<p:column width="20%">
+									<p:commandLink id="travelExpressLink" action="#{EnquiryExpressDetailActionBean.prepareAddTour(express)}" update=":expressListForm" style="color:#045F98;">
+										<h:outputText value="#{express.express.name}" />
+									</p:commandLink>
+								</p:column>
+								<p:column width="20%">
+									<h:outputText value="#{express.noOfPassenger} Passengers" />
+								</p:column>
+								<p:column width="20%">
+									<h:outputText value="#{express.noOfUnit} Units" />
+								</p:column>
+								<p:column width="20%">
+									<h:outputText value="#{express.netPremium}" />
+								</p:column>
+								<p:column width="20%">
+									<h:outputText value="#{EnquiryExpressDetailActionBean.requireUnit(express) eq 0 ? '': EnquiryExpressDetailActionBean.requireUnit(express)} Units Required "
+										style="color:red" rendered="#{EnquiryExpressDetailActionBean.requireUnit(express) eq 0 ? false : true}" />
+									<h:outputText value="#{EnquiryExpressDetailActionBean.requireUnit(express) eq 0 ? 'Fixed': EnquiryExpressDetailActionBean.requireUnit(express)} "
+										rendered="#{EnquiryExpressDetailActionBean.requireUnit(express) eq 0 ? true : false}" />
+								</p:column>
+							</p:dataTable>
+						</p:panel>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

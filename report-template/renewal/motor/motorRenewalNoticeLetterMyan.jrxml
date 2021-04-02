@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="motorRenewalNoticeLetter" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="40" rightMargin="40" topMargin="165" bottomMargin="30" resourceBundle="LANGUAGE_en" uuid="0bc6c320-2197-4b12-a310-ff85799b4277">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="81"/>
+	<parameter name="activedPolicyEndDate" class="java.lang.String"/>
+	<parameter name="policyNo" class="java.lang.String"/>
+	<parameter name="date" class="java.util.Date"/>
+	<parameter name="originalPremium" class="java.lang.Double"/>
+	<parameter name="noClaimBonus" class="java.lang.Double"/>
+	<parameter name="renewalPremium" class="java.lang.Double"/>
+	<parameter name="customerName" class="java.lang.String"/>
+	<parameter name="registrationNo" class="java.lang.String"/>
+	<parameter name="addOn" class="java.lang.String"/>
+	<parameter name="activedPolicyStartedDate" class="java.lang.String"/>
+	<parameter name="customerAddress" class="java.lang.String"/>
+	<parameter name="penaltyPremium" class="java.lang.Double"/>
+	<parameter name="isFleet" class="java.lang.Boolean"/>
+	<parameter name="phoneNo" class="java.lang.String"/>
+	<detail>
+		<band height="633" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="29" width="515" height="18" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[သို႔]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="351" y="155" width="56" height="18" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[ရက္စြဲ        ၊]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="121" y="180" width="393" height="20" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[အလံုးစံုေမာ္ေတာ္ယာဥ္အာမခံ ဆက္လက္ထားရိွရန္ ႏႈိးေဆာ္စာ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="24" y="206" width="491" height="120" uuid="15ee5b9c-aeda-44fb-a765-0db8c5048804">
+					<printWhenExpression><![CDATA[!$P{isFleet}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA["         လူႀကီးမင္း၏ ေမာ္ေတာ္ယာဥ္အမွတ္  " +  $P{registrationNo}  +  " အား  "+ $R{GRAND_GUARDIAN_LABEL}+"  တြင္ ေပၚလစီစာခ်ဳပ္အမွတ္  " +  $P{policyNo}  +  " ျဖင့္ အလံုးစံုေမာ္ေတာ္ယာဥ္အာမခံ အကာအကြယ္ အပိုအကာအကြယ္  " +  $P{addOn}  +  " အပိုအကာအကြယ္ မ်ားက  " +  $P{activedPolicyStartedDate} +  " ရက္ေန႔မွ စ၍ ၁၂လ အာမခံထားရိွခဲ့ျခင္းမွာ " +  $P{activedPolicyEndDate} +  " ရက္ေန႔တြင္ အာမခံ သက္တမ္းကုန္ဆံုးမည္ ျဖစ္ပါသည္။ "]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-yyyy">
+				<reportElement x="408" y="155" width="106" height="18" uuid="4cf9b688-d104-43ff-9d4c-d936a961458a"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="337" y="403" width="150" height="20" uuid="996004d9-b274-4a4f-ba67-9edcd3d2c18c"/>
+				<textElement textAlignment="Right">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{originalPremium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="337" y="427" width="150" height="20" uuid="8781f5fd-454a-4a51-9124-fd62525f63b5"/>
+				<textElement textAlignment="Right">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{noClaimBonus}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="337" y="451" width="150" height="20" uuid="a652831d-9d2b-4dbf-8c2d-c1ec11c3cda8"/>
+				<textElement textAlignment="Right">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{penaltyPremium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="1" width="515" height="27" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ ေမာ္ေတာ္ယာဥ္ အာမခံဌာန]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="333" width="491" height="65" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d">
+					<printWhenExpression><![CDATA[!$P{isFleet}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<text><![CDATA[         သို႔ျဖစ္ပါ၍ လူႀကီးမင္း၏ ေမာ္ေတာ္ယာဥ္အာမခံသက္တမ္း တိုးျမွင့္ႏိုင္ပါရန္ သက္တမ္းမကုန္ဆံုးမီ သက္တမ္းဆက္ပရီမီယံ   (Renewal Premium) ေအာက္ပါအတိုင္း ေပးသြင္းႏိုင္ပါရန္ ေလးစားစြာျဖင့္ အေၾကာင္းၾကားအပ္ပါသည္။]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="214" y="403" width="110" height="20" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[တစ္ႏွစ္က်သင့္ ပရီမီယံ                    ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="214" y="427" width="110" height="20" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[ေလ်ာ္ေၾကး မေတာင္းဆု ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="214" y="451" width="110" height="20" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[ေပးသြင္းရမည့္ ဒဏ္ေၾကး]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="294" y="588" width="206" height="20" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[ေမာ္ေတာ္ယာဥ္ အာမခံဌာန]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="326" y="403" width="10" height="20" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="326" y="427" width="10" height="20" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="326" y="451" width="10" height="20" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="558" width="38" height="20" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[မိတၱဴ ကို ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="585" width="49" height="20" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[ရံုးလက္ခံ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="601" width="49" height="20" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[ေမွ်ာစာ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="48" width="515" height="20" uuid="27a54b5d-d77b-4928-9c12-c9a9706b9011"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{customerName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="351" y="135" width="56" height="18" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[စာအမွတ္   ၊]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="70" width="515" height="30" uuid="1465fdf0-b536-4ad8-970c-fd18fdac76e1"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{customerAddress}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##,###.00">
+				<reportElement x="295" y="605" width="204" height="20" uuid="a652831d-9d2b-4dbf-8c2d-c1ec11c3cda8"/>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{GRAND_GUARDIAN_LABEL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="214" y="475" width="110" height="20" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[ေပးသြင္းရမည့္ ပရီမီယံ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="326" y="475" width="10" height="20" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="337" y="475" width="150" height="20" uuid="a652831d-9d2b-4dbf-8c2d-c1ec11c3cda8"/>
+				<textElement textAlignment="Right">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{renewalPremium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="489" y="403" width="25" height="20" uuid="076fc0c4-38b5-4921-8846-6fa141cc6547"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[က်ပ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="489" y="427" width="25" height="20" uuid="076fc0c4-38b5-4921-8846-6fa141cc6547"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[က်ပ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="489" y="451" width="25" height="20" uuid="076fc0c4-38b5-4921-8846-6fa141cc6547"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[က်ပ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="489" y="475" width="25" height="20" uuid="076fc0c4-38b5-4921-8846-6fa141cc6547"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[က်ပ္]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="24" y="206" width="491" height="120" uuid="15ee5b9c-aeda-44fb-a765-0db8c5048804">
+					<printWhenExpression><![CDATA[$P{isFleet}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA["         လူႀကီးမင္း၏ ေမာ္ေတာ္ယာဥ္မ်ားအား  "+ $R{GRAND_GUARDIAN_LABEL}+"  တြင္ ေပၚလစီစာခ်ဳပ္အမွတ္  " +  $P{policyNo}  +  " ျဖင့္ " +  $P{activedPolicyStartedDate} +  " ရက္ေန႔မွ စ၍ ၁၂လ အာမခံထားရိွခဲ့ျခင္းမွာ " +  $P{activedPolicyEndDate} +  " ရက္ေန႔တြင္ အာမခံ သက္တမ္းကုန္ဆံုးမည္ ျဖစ္ပါသည္။ "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="24" y="334" width="491" height="65" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d">
+					<printWhenExpression><![CDATA[$P{isFleet}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<text><![CDATA[         သို႔ျဖစ္ပါ၍ လူႀကီးမင္း၏ ေမာ္ေတာ္ယာဥ္အာမခံသက္တမ္း တိုးျမွင့္ႏိုင္ပါရန္ သက္တမ္းမကုန္ဆံုးမီ သက္တမ္းဆက္ပရီမီယံ   (Renewal Premium)  ေပးသြင္းႏိုင္ပါရန္ ေလးစားစြာျဖင့္ အေၾကာင္းၾကားအပ္ပါသည္။]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="206" width="17" height="20" uuid="ce2500ac-ecc9-4ac7-9610-2b65622cf70f"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[၁။]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="334" width="17" height="20" uuid="ce2500ac-ecc9-4ac7-9610-2b65622cf70f"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[၂။]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="506" width="17" height="20" uuid="ce2500ac-ecc9-4ac7-9610-2b65622cf70f"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[၃။]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="506" width="60" height="20" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[မွတ္ခ်က္    - ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="180" width="115" height="20" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[အေၾကာင္းအရာ ။      ။]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="84" y="506" width="431" height="39" uuid="c1715b8b-064b-4db0-ad06-26f3a1e8247d"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<text><![CDATA[သက္တမ္းမကုန္ဆံုးမီွ ထိခိုက္မႈ ၿဖစ္ပြား၍ ေလ်ာ္ေၾကးကိစၥ ေပၚေပါက္လွ်င္ ပရီမီယံ ေၿပာင္းလဲမႈ ရွိပါမည္။]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="84" y="100" width="100" height="20" uuid="aadfe92f-ea44-4ea0-a0b5-1f546fe77968"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{phoneNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="100" width="84" height="20" uuid="0a50a39b-c20d-46bc-b83d-37114c5243f2">
+					<printWhenExpression><![CDATA[$P{phoneNo} == null ? Boolean.FALSE : Boolean.TRUE]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Zawgyi-One" size="11"/>
+				</textElement>
+				<text><![CDATA[Phone No	:]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

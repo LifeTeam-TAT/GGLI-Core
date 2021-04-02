@@ -1,0 +1,183 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:param name="header" value="Agent Daily Sales Report" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<h:form id="agentSaleReportForm">
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="startDate" value="Start Date" />
+					<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+						value="#{AgentDailySalesReportActionBean.criteria.startDate}" />
+					<h:outputLabel />
+					<p:message for="entity" />
+					<h:outputText styleClass="input-label" value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGroup">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentDailySalesReportActionBean.selectEntity()}" id="selectEntityDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{AgentDailySalesReportActionBean.returnEntity}" update="entity branchPannelGroup salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true" value="#{AgentDailySalesReportActionBean.criteria.entity== null ? '' : AgentDailySalesReportActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AgentDailySalesReportActionBean.removeEntity()}" process="@this"
+									update="entity branchPannelGroup salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText value="Agent" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="agentPanelGroup">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectagentPanelGrid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentDailySalesReportActionBean.selectAgent()}" id="selectAgentDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{AgentDailySalesReportActionBean.returnAgent}" update="agent" />
+								</p:commandButton>
+								<p:inputText id="agent" readonly="true" value="#{AgentDailySalesReportActionBean.criteria.agent == null ? '' : AgentDailySalesReportActionBean.criteria.agent.fullName}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AgentDailySalesReportActionBean.criteria.setAgent(null)}" process="@this" update="agent" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="endDate" value="End Date" />
+					<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{AgentDailySalesReportActionBean.criteria.endDate}" />
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText styleClass="input-label" value="Branch" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPannelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentDailySalesReportActionBean.selectBranch()}" id="selectBranchDialogLink"
+									process="@this" disabled="#{AgentDailySalesReportActionBean.criteria.entity==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{AgentDailySalesReportActionBean.returnBranch}" update="branch salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true" value="#{AgentDailySalesReportActionBean.criteria.branch == null ? '' : AgentDailySalesReportActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AgentDailySalesReportActionBean.removeBranch()}" process="@this" update="branch salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputLabel style="width:500px;" value="Insurance Type" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuranceType" value="#{AgentDailySalesReportActionBean.criteria.insuranceType}">
+						<f:selectItems value="#{AgentDailySalesReportActionBean.insuranceTypes}" />
+						<p:ajax event="valueChange" listener="#{AgentDailySalesReportActionBean.changeInsuranceTypes}" update="proposalType" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText styleClass="input-label" value="Currency" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="currencyType" value="#{AgentDailySalesReportActionBean.criteria.currency}">
+						<f:selectItem itemLabel="Selected Currency" />
+						<f:selectItems value="#{AgentDailySalesReportActionBean.currencyList}" itemValue="#{currency}" var="currency" itemLabel="#{currency.description}" />
+					</p:selectOneMenu>
+					<h:outputLabel />
+					<p:message for="salePoint" />
+					<h:outputText styleClass="input-label" value="Sale Point" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentDailySalesReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+									process="@this" disabled="#{AgentDailySalesReportActionBean.criteria.branch==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{AgentDailySalesReportActionBean.returnSalePoint}" update="salePoint" />
+								</p:commandButton>
+								<p:inputText id="salePoint" readonly="true"
+									value="#{AgentDailySalesReportActionBean.criteria.salePoint == null ? '' :AgentDailySalesReportActionBean.criteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AgentDailySalesReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salePoint" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText styleClass="input-label" value="Proposal Type" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="proposalType" value="#{AgentDailySalesReportActionBean.criteria.proposalType}"
+						disabled="#{AgentDailySalesReportActionBean.lifeInsurance}">
+						<f:selectItem itemLabel="NEW" itemValue="NEW" />
+						<f:selectItem itemLabel="RENEWAL" itemValue="RENEWAL" />
+						<f:selectItem itemLabel="NEW + RENEWAL" itemValue="NEW_RENEWAL" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+			</p:panelGrid>
+			<p:commandButton action="#{AgentDailySalesReportActionBean.filter}" update=":agentSaleReportForm:agentSalePannelGroup" value="Search" />
+			<p:commandButton action="#{AgentDailySalesReportActionBean.reset()}" update=":agentSaleReportForm" value="Reset" />
+			<h:panelGroup id="agentSalePannelGroup">
+				<p:dataTable id="lifeInsuranceTable" paginator="true" lazy="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="10"
+					rowsPerPageTemplate="10,20, 30" value="#{AgentDailySalesReportActionBean.agentDailySalesList}" var="report">
+					<f:facet name="header">
+						<h:commandLink action="#{AgentDailySalesReportActionBean.exportExcel1()}" immediate="true" rendered="#{AgentDailySalesReportActionBean.lifeInsurance}">
+							<p:graphicImage style="widht:30px;height:30px;" value="/images/excel.png" />
+						</h:commandLink>
+					</f:facet>
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column colspan="1" headerText="No." rowspan="2" style="width:30px;" />
+							<p:column colspan="1" headerText="Code No." rowspan="2" style="width:150px;" />
+							<p:column colspan="1" headerText="Name" rowspan="2" style="width:150px;" />
+							<p:column colspan="2" headerText="Endowment Insurance" />
+							<p:column colspan="2" headerText="Group Life Insurance" />
+							<p:column colspan="2" headerText="Total" />
+							<p:column colspan="1" rowspan="2" headerText="Branch Name" />
+							<p:column colspan="1" rowspan="2" headerText="SalePoint Name" />
+						</p:row>
+						<p:row>
+							<p:column headerText="No. of Policy" />
+							<p:column headerText=" Premium" />
+							<p:column headerText="No. of Policy" />
+							<p:column headerText="Premium" />
+							<p:column headerText="No. of Policy" />
+							<p:column headerText="Premium" />
+						</p:row>
+					</p:columnGroup>
+					<p:column>
+						<h:outputText value="#{rowIndex + 1}" />
+					</p:column>
+					<p:column>
+						<h:outputText value="#{report.codeNo}" />
+					</p:column>
+					<p:column>
+						<h:outputText value="#{report.agentName}" />
+					</p:column>
+					<p:column style="text-align:center;">
+						<h:outputText value="#{report.endowmentLife}" />
+					</p:column>
+					<p:column style="text-align:right;">
+						<h:outputText value="#{report.endowmentPremium}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column style="text-align:center;">
+						<h:outputText value="#{report.groupLife}" />
+					</p:column>
+					<p:column style="text-align:right;">
+						<h:outputText value="#{report.groupLifePremium}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column style="text-align:center;">
+						<h:outputText value="#{report.lifePolicy}" />
+					</p:column>
+					<p:column style="text-align:right;">
+						<h:outputText value="#{report.totallifePremium}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column style="text-align:center;">
+						<h:outputText value="#{report.branchName}" />
+					</p:column>
+					<p:column style="text-align:center;">
+						<h:outputText value="#{report.salePointName}" />
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>

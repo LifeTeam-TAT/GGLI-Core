@@ -1,0 +1,402 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<style type="text/css">
+.ui-menubar, .ui-menu-child, .ui-menu {
+	background: #193b6b !important;
+	border: 1px solid #00aab5 !important;
+}
+
+.ui-menu .ui-menuitem-text {
+	color: white;
+}
+
+.ui-menu .ui-state-hover {
+	background: #00aab5 !important;
+}
+
+ .menuCategorieClass > ul {
+               overflow-y: auto;
+               max-height: 400px;
+           }
+ 
+</style>
+	<h:form id="menuForm">
+		<p:menubar autoDisplay="false" rendered="#{empty sessionScope.LoginUser ? false : true}">
+			<p:menuitem value="Dashboard" action="dashboard" ajax="false" immediate="true" />
+			<p:submenu label="Admin Management">
+				<p:submenu label="General" styleClass="menuCategorieClass">
+					<p:menuitem value="#{label['ADMIN_LEFT_COMPANY_LABEL']}" action="manageCompany" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<!-- <p:menuitem value="#{label['ADMIN_LEFT_COIN_COMPANY_LABEL']}" action="manageCoinsuranceCompany" ajax="false" /> -->
+					<p:menuitem value="Entity" action="manageEntity" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_CHANNEL_LABEL']}" action="manageChannel" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_BANCA_BRANCH_LABEL']}" action="manageBancaBranch" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_BANCABRM_LABEL']}" action="manageBancaBRM" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_BANCAlIC_LABEL']}" action="manageBancaLIC" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_BANCAMETHOD_LABEL']}" action="manageBancaMethod" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_BANCAREFERRAL_LABEL']}" action="manageBancaRefferal" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />				
+					<p:menuitem value="#{label['ADMIN_LEFT_ORGANIZATION_LABEL']}" action="manageOrganization" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_BRANCH_LABEL']}" action="manageBranch" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_SALEPOINT_LABEL']}" action="manageSalePoint" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_OCCUPATION_LABEL']}" action="manageOccupation" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<!-- <p:menuitem value="#{label['ADMIN_LEFT_BUILDINGOCCUPATION_LABEL']}" action="manageBuildingOccupation" ajax="false" /> -->
+					<p:menuitem value="#{label['ADMIN_LEFT_INDUSTRY_LABEL']}" action="manageIndustry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_QUALIFICATION_LABEL']}" action="manageQualification" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_RELIGION_LABEL']}" action="manageReligion" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_RELATIONSHIP_LABEL']}" action="manageRelationShip" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_SALEMAN_LABEL']}" action="manageSaleMan" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_TYPESOFSPORT_LABEL']}" action="manageTypesOfSport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_CLASSOFINSURANCE_LABEL']}" action="manageClassOfInsurance" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="#{label['ADMIN_LEFT_HOSPITAL_LABEL']}" action="manageHospital" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="#{label['ADMIN_LEFT_ICD10_LABEL']}" action="manageicd10" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="#{label['ADMIN_LEFT_PROCESS_LABEL']}" action="manageProcess" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="School Management" action="manageSchool" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="GradeInfo Management" action="addNewGradeInfo" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="EIPS Organization Management" action="manageGGIOrganization" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Staff Management" action="manageStaff" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="RelationShipType Management" action="manageRelationShipType" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="EIPS Commission Rate" action="managePercentage" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="#{label['ADMIN_LEFT_BANK_WALLER_LABEL']}" action="manageBankCharges" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="BMIChart Management" action="manageBMIChart" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Rishy Occupation Management" action="manageRiskyOccupation" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+
+					
+				</p:submenu>
+				<p:submenu label="Location">
+					<p:menuitem value="#{label['ADMIN_LEFT_TOWNSHIP_LABEL']}" action="manageTownship" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_PROVINCE_LABEL']}" action="manageProvince" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_COUNTRY_LABEL']}" action="manageCountry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" />
+					<p:menuitem value="#{label['ADMIN_LEFT_STATECODE_LABEL']}" action="manageStateCode" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="#{label['ADMIN_LEFT_TOWNSHIPCODE_LABEL']}" action="manageTownshipCode" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Product">
+					<p:menuitem value="#{label['ADMIN_LEFT_KEYFACTOR_LABEL']}" action="manageKeyFactor" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="#{label['ADMIN_LEFT_ADDON_LABEL']}" action="manageAddOn" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="#{label['ADMIN_LEFT_PRODUCT_LABEL']}" action="manageProduct" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="#{label['ADMIN_LEFT_PRODUCTGROUP_LABEL']}" action="manageProductGroup" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="#{label['ADMIN_LEFT_CLAIM_PRODUCT_LABEL']}" action="manageClaimProduct" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Product Specification" action="manageInformation" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="FAQ" action="manageProductFAQ" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Survey Question">
+					<p:menuitem value="Survey Question" action="manageSurveyQuestion" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Survey Question Configuration" action="surveyQuestionConfiguration" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Product Process Configuration" action="productProcessConfiguration" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu> 
+				<p:submenu label="Travel">
+					<p:menuitem value="#{label['ADMIN_LEFT_EXPRESS_LABEL']}" action="manageExpress" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="#{label['ADMIN_LEFT_OCCURRENCE_LABEL']}" action="manageOccurrence" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="#{label['ADMIN_LEFT_CITY_LABEL']}" action="manageCity" ajax="false" actionListener="#{ManageSessionBean.clearSession}" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Payment">
+					<p:menuitem value="#{label['ADMIN_LEFT_MANAGEDENO_LABEL']}" action="manageDeno" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="#{label['ADMIN_LEFT_MANAGECURRENCY_LABEL']}" action="manageCurrency" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="#{label['ADMIN_LEFT_PAYMENTTYPE_LABEL']}" action="managePaymentType" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="#{label['ADMIN_LEFT_BANK_LABEL']}" action="manageBank" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="#{label['ADMIN_LEFT_BANKBRANCH_LABEL']}" action="manageBankBranch" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="User Authority">
+					<p:menuitem value="#{label['ADMIN_LEFT_USER_LABEL']}" action="manageUser" actionListener="#{ManageSessionBean.clearSession}"  ajax="false" immediate="true" />
+					<p:menuitem value="#{label['ADMIN_LEFT_ROLE_LABEL']}" action="RoleManagement" actionListener="#{ManageSessionBean.clearSession}"  ajax="false" immediate="true" />
+<!-- 					<p:menuitem value="#{label['ADMIN_LEFT_MOBILE_USER_LABEL']}" action="MobileUserManagement" actionListener="#{DashBoard.clearSession}"  ajax="false" immediate="true" /> -->
+				</p:submenu>
+				<p:submenu label="Schedule">
+					<p:menuitem value="Scheduler" action="scheduler" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Mobile">
+					<p:menuitem value="Notifications" action="manageNotification" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Push Notifications" action="managePushNotification" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Security Question" action="manageSecurityQuestion" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="App Versions" action="manageAppVersion" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Number Reference">
+					<p:menuitem value="NumberReference" action="numberReference" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Disability Management">
+					<p:menuitem value="Disability Parts" action="manageDisabilityPart" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Disability Rate" action="manageDisabilityRate" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+			</p:submenu>
+			<p:submenu label="Report">
+				<p:submenu label="Report Configure">
+					<p:menuitem value="Configure" action="reportConfig" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:menuitem value="UPR Report" action="uprreport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				<p:menuitem value="ActuarialReserve Report" actionListener="#{ManageSessionBean.clearSession}" action="actuarialreserve" ajax="false" immediate="true" />
+				<p:submenu label="Agent">
+					<p:menuitem value="Commission Detail Report" action="agentCommissionDetailReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Information Report" action="agentInformationReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Sale Report(Agent)" action="salesReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Sale Report(Life)" action="agentSaleReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Sale Report (new , renewal)" action="agentDailySaleReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Monthly Sale Report (General)" action="agentMonthlySaleReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Monthly Sale Report(Product)" action="agentSaleMonthlyComparison" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Comparison Sale Report by Independent Agent" action="agentComparisonSalesReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Monthly Sale Report(Life)" action="agentMonthlyLifeSale" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Customer">
+					<p:menuitem value="Information Report" action="customerInformationReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Sale Point Control">
+					<p:menuitem value="SalePoint Report" action="newSalePointReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Account And Department Cancel Report" action="accountAndLifeDeptCancelReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Account Manual Receipt Report" action="accountManualReceipt" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Daily Income Report" action="dailyIncomeReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Financial Report">
+					<!-- <p:menuitem value="SalePoint Report" action="salePointReport" ajax="false" immediate="true" /> -->
+					<p:menuitem value="Financial Report" action="financialReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Life Monthly Report" action="lifeMonthlyReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Life Monthly Report(Renewal)" action="lifePermanentMonthlyReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Health Monthly Report" action="healthMonthlyReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Health Claim Monthly Report" action="healthClaimMonthlyReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Farmer Monthly Report" action="farmerMonthlyReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Person Travel Monthly Report" action="personTravelMonthlyReport" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Life">
+					<p:submenu label="Public">
+						<p:submenu label="Proposal">
+							<p:menuitem value="Life Proposal Report" action="lifeProposalReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+							<p:menuitem value="Life Daily Income Report" action="lifeDailyIncomeReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+						</p:submenu>
+						<p:submenu label="Policy">
+							<p:menuitem value="Life Policy Report" action="lifePolicyReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+							<p:menuitem value="Life Premium Payment Report" action="lifePremiumPaymentReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+						</p:submenu>
+						<p:submenu label="Claim">
+							<p:menuitem value="Life Claim Register Report" action="lifeClaimRegisterReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+							<p:menuitem value="Life Claim Policy Status Report" action="lifeClaimStatusReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+						</p:submenu>
+					</p:submenu>
+					<p:submenu label="Health">
+						<p:submenu label="Proposal">
+							<p:menuitem value="Daily Income Report" action="healthDailyIncomeReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+							<p:menuitem value="Proposal Report" action="healthProposalReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+						</p:submenu>
+						<p:submenu label="Policy">
+							<p:menuitem value="Policy Report" action="healthPolicyReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+							<!-- <p:menuitem value="Policy Monthly Report" action="policyMonthlyReport" ajax="false" immediate="true" /> -->
+							<p:menuitem value="InsuredPerson Monthly Report" action="medicalInsuredPersonMonthlyReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+							<!-- <p:menuitem value="Policy Monthly Report" action="medicalPolicyMonthlyReport" ajax="false" immediate="true" /> -->
+						</p:submenu>
+						<p:submenu label="Claim">
+							<p:menuitem value="Claim Initial Report" action="medicalClaimRequestReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+							<p:menuitem value="Claim Payment Report" action="medicalClaimPaymentReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+						</p:submenu>
+					</p:submenu>
+					<p:submenu label="Travel">
+						<p:menuitem value="Travel Daily Report" action="travelDailyReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+						<p:menuitem value="Travel Monthly Report" action="travelMonthlyReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					</p:submenu>
+					<p:submenu label="Snake Bit">
+						<p:menuitem value="Snake Bite Daily Report" action="snakeBiteReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					</p:submenu>
+					<p:submenu label="Farmer">
+						<p:menuitem value="Farmer Daily Report" action="farmerDailyReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+						<p:menuitem value="Farmer Summary Report" action="farmerSummaryReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					</p:submenu>
+					<p:submenu label="Short Endowment Life">
+						<p:submenu label="Policy">
+							<p:menuitem value="Short Term Endowment Policy Report" action="shortEndowLifePolicyReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+							<p:menuitem value="New Short Term Endowment Policy Report" action="newShortTermEndowmentLifeReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+						</p:submenu>
+					</p:submenu>
+						</p:submenu>
+					<p:submenu label="StudentLife">
+						<p:submenu label="Proposal">
+							<p:menuitem value="Life Daily Income Report" action="lifeDailyIncomeReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+						</p:submenu>
+				</p:submenu>
+				<p:submenu label="Personal Accident">
+					<p:submenu label="Proposal">
+						<p:menuitem value="Personal Accident Proposal" action="personalAccidentProposalReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					</p:submenu>
+					<p:submenu label="Policy">
+						<p:menuitem value="Personal Accident Policy" action="personalAccidentPolicyReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					</p:submenu>
+				</p:submenu>
+				<p:submenu label="Person Travel">
+					<p:menuitem value="Person Travel Monthly Report" action="personTravelMonthlyReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Student Life">
+					<p:menuitem value="Student Life Monthly Report(New)" action="newStudentLifeMonthlyReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Student Life Monthly Report(BC)" action="bcStudentLifeMonthlyReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Summary">
+					<p:menuitem value="Proposal Summary Report" action="proposalSummaryReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Proposal Premium Summary Report" action="proposalPremiumSummaryReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="WorkFlow Status" action="workFlowStatus" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Stamp Fees Report" action="stampFeeReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+			</p:submenu>
+			<p:submenu label="New Business">
+				<p:submenu label="Life">
+					<p:submenu label="Term Life Products">
+						<p:menuitem value="Endowment Life" action="lifeProposal" ajax="false" actionListener="#{MenuActionBean.outjectEndowmentProduct}" immediate="true" />
+						<p:menuitem value="Short Term Endowment Life" action="lifeProposal" ajax="false" actionListener="#{MenuActionBean.outjectShortTermEndowmentProduct}" immediate="true" />
+						<p:menuitem value="Single Premium Endowment Life" action="lifeProposal" ajax="false" actionListener="#{MenuActionBean.outjectSinglePremiumEndowmentLifeProduct}" immediate="true" />
+						<p:menuitem value="Single Premium Credit Life" action="lifeProposal" ajax="false" actionListener="#{MenuActionBean.outjectSinglePremiumCreditLifeProduct}" immediate="true" />
+						<p:menuitem value="Short Term Single Premium Credit Life" action="lifeProposal" ajax="false" actionListener="#{MenuActionBean.outjectShortTermSinglePremiumCreditLifeProduct}" immediate="true" />
+						<p:menuitem value="Student Life" action="#{MenuActionBean.getStudentLifeUI}" actionListener="#{DashBoard.clearSession}" ajax="false" immediate="true" />
+					
+					</p:submenu>
+					<p:submenu label="One-Year(or less than one-year) Products">
+						<p:menuitem value="Group Life" action="lifeProposal" ajax="false" actionListener="#{MenuActionBean.outjectGroupLifeProduct}" immediate="true" />
+						<p:menuitem value="Snake Bite" action="lifeProposal" ajax="false" actionListener="#{MenuActionBean.outjectSnakeBiteProduct}" immediate="true" />
+						<p:menuitem value="Sport Man" action="lifeProposal" ajax="false" actionListener="#{MenuActionBean.outjectSportManProduct}" immediate="true" />
+						<p:menuitem value="Personal Accident" action="lifeProposal" ajax="false" actionListener="#{MenuActionBean.outjectPersonalAccidentProduct}" immediate="true" />
+						<p:menuitem value="Public Term Life" action="lifeProposal" ajax="false" actionListener="#{MenuActionBean.outjectPublicTermLifeProduct}" immediate="true" />
+						<p:menuitem value="Simple Life" action="lifeProposal" ajax="false" actionListener="#{MenuActionBean.outjectSimpleLifeProduct}" immediate="true" />
+						<p:menuitem value="Farmer" action="lifeProposal" ajax="false" actionListener="#{MenuActionBean.outjectFarmerProduct}" immediate="true" />
+						<p:menuitem value="Farmer(Group)" action="addNewGroupFarmerProposal" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+						<p:menuitem value="Farmer(Group Details) " action="groupFarmerPolicyListForm" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+						<!-- 						<p:menuitem value="Snake Bite" action="SnakeBite" actionListener="#{DashBoard.clearSession}"  ajax="false" immediate="true" /> -->
+						<!-- 						<p:menuitem value="Snake Bite Confirmation" action="SnakeBiteConfirmation" actionListener="#{DashBoard.clearSession}"  ajax="false" immediate="true" /> -->
+						<!-- 						<p:menuitem value="Sport Man Abroad" action="sportManAbroadProposal" actionListener="#{DashBoard.clearSession}"  ajax="false" immediate="true" /> -->
+					</p:submenu>
+				</p:submenu>
+				<p:submenu label="Health">
+					<p:menuitem value="Health" action="#{MenuActionBean.getHealth}" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" id='healthProposalMenu' />
+					<p:menuitem value="Critical Illness" action="#{MenuActionBean.getCriticalIllnessUI}" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true"
+						id='creticalIllnessProposalMenu' />
+					<p:menuitem value="Micro Health" action="#{MenuActionBean.getMicroHealthUI}" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true"
+						id='microHealthProposalMenu' />
+					<p:menuitem value="Micro Health (Group)" action="#{MenuActionBean.getGroupMicroHealthUI}" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Micro Health (Group Details) " action="#{MenuActionBean.getDetailsGroupMicroHealthUI}" actionListener="#{ManageSessionBean.clearSession}" ajax="false"
+						immediate="true" />
+				</p:submenu>
+				<p:submenu label="Travel">
+					<p:menuitem value="Travel Insurance" action="travel" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Person Travel Insurance" action="personTravelProposal" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+			</p:submenu>
+			<p:submenu label="Enquires">
+				<p:submenu label="Personal Accident">
+					<p:menuitem value="Proposal" action="paProposalEnquiry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Policy" action="paPolicyEnquiry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Travel Insurance">
+					<p:menuitem id="addExpressDetailLink" value="Add Express Detail" action="enquiryExpressDetail" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="TravelProposal" action="enquiryTravelProposal" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Person Travel">
+					<p:menuitem value="Proposal" action="enquiryPersonTravelProposal" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Health" id="medical">
+					<p:menuitem value="Proposal" action="underwritingEnquery" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Renewal" action="medicalRenewalEnquery" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Policy" action="policyEnquiry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Claim" action="claimEnquery" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Group MicroHealth" id="groupMicroHealth">
+					<p:menuitem value="Group MicroHealth" action="groupMicroHealthEnquiry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Life" id="life">
+					<p:menuitem id="proposalLink" value="Proposal" action="lifeProposalEnquiry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem id="policyLink" value="Policy" action="lifePolicyEnquiry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Endorsement" action="lifeProposalEndorsementEnquiry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Renewal(Group Life)" action="renewalLifeProposalEnquiry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Proposal (Portal)" action="lifeProposalPortalEnquiry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Claim (Portal)" action="lifeClaimPortalEnquiry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Agent">
+					<p:menuitem value="Agent Sanction" action="agentSanctionReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Agent Invoice" action="agentInvoiceReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Bill Collection">
+					<p:menuitem value="Bill Collection Enquiry" action="regenerateBC" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Farmer">
+					<p:menuitem value="Proposal" action="farmerProposalEnquiry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Policy" action="farmerPolicyEnquiry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Short Endowment Life">
+					<p:menuitem value="Proposal" action="shortEndowLifeProposalEnquiry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Policy" action="shortEndowLifePolicyEnquiry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:menuitem value="DXC Migration" action="cscIntegration" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				<p:submenu label="Group Farmer">
+					<p:menuitem value="Proposal" action="groupFarmerProposalEnquiry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+			</p:submenu>
+			<p:submenu label="Policy Administration">
+				<p:submenu label="Endorsement">
+					<p:menuitem value="Life" action="lifePolicyEndorsementListing" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Renewal">
+					<p:menuitem value="GroupLife" action="renewalGroupLife" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Health" action="renewalMedical" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Renewal Notification">
+					<p:menuitem value="Renewal Notification" action="renewalNoti" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Life">
+					<p:menuitem value="Loan" ajax="false" immediate="true" />
+					<p:menuitem value="Migrate" action="migrateLifePolicy" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+<!-- 					<p:menuitem value="Year End PaidUp" action="yearEndPaidUp" ajax="false" immediate="true" />  -->
+				</p:submenu>
+				<p:submenu label="Surrender">
+					<p:menuitem value="Endowment" action="lifeSurrenderProposal" actionListener="#{MenuActionBean.sendInsureType('LIFE')}" ajax="false" immediate="true" />
+					<p:menuitem value="Short Term Endowment" action="lifeSurrenderProposal" actionListener="#{MenuActionBean.sendInsureType('SHORT_ENDOWMENT_LIFE')}" ajax="false" immediate="true" />
+				</p:submenu>
+			</p:submenu>
+			<p:submenu label="Claim">
+				<p:menuitem value="Health Claim Notification" action="manageMedicalClaimInitialReport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				<p:submenu label="Life">
+					<p:menuitem value="Life Disability" action="lifeDisabilityClaimRequestForm" actionListener="#{ManageSessionBean.clearSession}"  ajax="false" immediate="true" />
+					<p:menuitem value="Death Claim" action="lifeDeathClaimRequestForm" actionListener="#{ManageSessionBean.clearSession}"  ajax="false" immediate="true" />
+					<!-- <p:menuitem value="Paid Up" action="lifePaidUpProposal" actionListener="#{DashBoard.clearSession}"  ajax="false" immediate="true" /> -->
+				</p:submenu>
+			   <p:menuitem value="Paid Up" action="lifePaidUpProposal" actionListener="#{ManageSessionBean.clearSession}"  ajax="false" immediate="true" />
+				<p:menuitem value="Life Claim Notification" action="managelifeClaimNotification" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				<p:menuitem value="Life Disability Claim Payment" action="lifeDisabilityClaimPayment" ajax="false" immediate="true" />
+			</p:submenu>
+			<p:submenu label="Finance">
+				<p:submenu label="Life Policy">
+					<p:menuitem value="Life Bill Generation" action="lifePaymentBillCollectionForm" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Multi Bill Generation" action="cashReceipt" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Bill Collection" action="payment" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Policy Payment Notification" action="lifePolicyNotification" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					
+					<!-- 					<p:menuitem value="Life Policy Paid Up" action="lifePolicyPaidUp" actionListener="#{DashBoard.clearSession}"  ajax="false" immediate="true" /> -->
+				</p:submenu>
+<!-- 				<p:submenu label="Skip Payment Account"> -->
+<!-- 				    <p:menuitem value="Payment Transaction Skip" action="tlfSkipBillGeneration" actionListener="#{DashBoard.clearSession}" ajax="false" immediate="true" /> -->
+<!-- 					<p:menuitem value="Status Update in Payment" action="tlfSkipBillCollection" actionListener="#{DashBoard.clearSession}" ajax="false" immediate="true" /> -->
+<!-- 				</p:submenu> -->
+				<p:submenu label="Payment Order">
+					<p:menuitem value="Payment Order Clearing" action="paymentOrderEnquiry" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="TLF Voucher">
+					<p:menuitem value="TLF Voucher Generation" action="TLFVoucherGeneration" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+					<p:menuitem value="Reverse TLF" action="reverseTLF" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Import">
+					<p:menuitem value="Import TLF" action="tlfImport" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+				<p:submenu label="Mobile">
+					<p:menuitem value="Mobile Data Converter" action="mobileDataConverter" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				</p:submenu>
+			</p:submenu>
+			<p:submenu label="Agent Management">
+				<p:menuitem value="Agent Profile" action="manageAgent" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				<p:menuitem value="Agent Sanction" action="agentSanction" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				<p:menuitem value="Agent Invoice" action="agentCommisionPayment" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				<p:menuitem value="Staff Sanction" action="staffagentSanction" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				<p:menuitem value="Staff Invoice" action="staffagentCommisionPayment" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+			</p:submenu>
+			<p:submenu label="Customer Management">
+				<p:menuitem value="Customer Profile" action="manageCustomer" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				<p:menuitem value="Customer Import" action="manageCustomerCSV" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+			</p:submenu>
+			<p:submenu label="WorkFlow Changer">
+				<p:menuitem value="WorkFlow Changer" action="changeWorkflow" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				<p:menuitem value="Data Export/Import" action="eiexcel" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+			</p:submenu>
+			<p:submenu label="Audit" rendered="#{sessionScope.LoginUser.superUser ? true : false}">
+				<p:menuitem value="Fire" action="fireAudit" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+				<p:menuitem value="Life" action="lifeAudit" actionListener="#{ManageSessionBean.clearSession}" ajax="false" immediate="true" />
+			</p:submenu>
+		
+		</p:menubar>
+	</h:form>
+</ui:composition>

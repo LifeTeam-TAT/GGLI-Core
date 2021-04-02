@@ -1,0 +1,234 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:cyc="http://www.cycdemo.com/java"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet"
+			type="text/css" />
+		<h:form id="monthlyReportForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<p:messages globalOnly="true" id="messages" showDetail="true" />
+			<h:outputText id="title"
+				styleClass="ui-widget ui-widget-header ui-corner-all submenu-title"
+				value="The #{LifePolicyMonthlyReportActionBean.criteria.lifeProductType.label} Monthly Report Of #{LifePolicyMonthlyReportActionBean.criteria.monthString}, #{LifePolicyMonthlyReportActionBean.criteria.year}" />
+			<p:separator style="height:3px; margin-top:1px;" />
+			<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4"
+				layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel value="Month" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+						value="#{LifePolicyMonthlyReportActionBean.criteria.month}">
+						<f:selectItems
+							value="#{LifePolicyMonthlyReportActionBean.monthSet}" var="month"
+							itemLabel="#{month}" itemValue="#{month.value}" />
+					</p:selectOneMenu>
+					<h:outputLabel/>
+					<h:outputLabel/>
+					<h:outputText value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+						<div style="margin: -6px -6px;"
+							class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button"
+									disabled="#{!LifePolicyMonthlyReportActionBean.accessBranches}"
+									icon="fa fa-search"
+									actionListener="#{LifePolicyMonthlyReportActionBean.selectEntity()}"
+									id="entityDialogLink" process="@this">
+									<p:ajax event="dialogReturn"
+										listener="#{LifePolicyMonthlyReportActionBean.returnEntity}"
+										update="entity branchPanelGroup salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true"
+									value="#{LifePolicyMonthlyReportActionBean.criteria.entity == null ? '' : LifePolicyMonthlyReportActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button"
+									disabled="#{!LifePolicyMonthlyReportActionBean.accessBranches}"
+									icon="fa fa-times"
+									action="#{LifePolicyMonthlyReportActionBean.removeEntity}"
+									process="@this"
+									update="entity branchPanelGroup salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel value="Year" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+						value="#{LifePolicyMonthlyReportActionBean.criteria.year}">
+						<f:selectItems value="#{LifePolicyMonthlyReportActionBean.years}" />
+					</p:selectOneMenu>
+					<h:outputLabel/>
+					<h:outputLabel/>
+					<h:outputText styleClass="input-label" value="Branch" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid"
+							jsf:id="branchPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search"
+									actionListener="#{LifePolicyMonthlyReportActionBean.selectBranch()}"
+									id="selectBranchDialogLink" process="@this"
+									disabled="#{!LifePolicyMonthlyReportActionBean.accessBranches || LifePolicyMonthlyReportActionBean.criteria.entity==null?true:false}">
+									<p:ajax event="dialogReturn"
+										listener="#{LifePolicyMonthlyReportActionBean.returnBranch}"
+										update="branch salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true"
+									value="#{LifePolicyMonthlyReportActionBean.criteria.branch == null ? 'ALL' : LifePolicyMonthlyReportActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button"
+									disabled="#{!LifePolicyMonthlyReportActionBean.accessBranches || LifePolicyMonthlyReportActionBean.criteria.entity==null?true:false}"
+									icon="fa fa-times"
+									action="#{LifePolicyMonthlyReportActionBean.removeBranch()}"
+									process="@this" update="branch salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel value="Product" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+						value="#{LifePolicyMonthlyReportActionBean.criteria.lifeProductType}">
+						<f:selectItems itemLabel="#{type.label}" itemValue="#{type}"
+							value="#{LifePolicyMonthlyReportActionBean.lifeProductTypes}"
+							var="type" />
+					</p:selectOneMenu>
+					<h:outputLabel/>
+					<h:outputLabel/>
+					<h:outputText styleClass="input-label" value="Sale Point" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;"
+							class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" disabled="#{LifePolicyMonthlyReportActionBean.criteria.branch==null?true:false}"
+									actionListener="#{LifePolicyMonthlyReportActionBean.selectSalePoint()}"
+									id="selectSalePointDialogLink" process="@this">
+									<p:ajax event="dialogReturn"
+										listener="#{LifePolicyMonthlyReportActionBean.returnSalePoint}"
+										update="salePoint" />
+								</p:commandButton>
+								<p:inputText id="salePoint" required="false" readonly="true"
+									value="#{LifePolicyMonthlyReportActionBean.criteria.salepoint == null ? '' : LifePolicyMonthlyReportActionBean.criteria.salepoint.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{LifePolicyMonthlyReportActionBean.criteria.branch==null?true:false}"
+									action="#{LifePolicyMonthlyReportActionBean.criteria.setSalepoint(null)}"
+									process="@this" update="salePoint" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton
+					action="#{LifePolicyMonthlyReportActionBean.search()}"
+					update=":monthlyReportForm :monthlyReportForm:report"
+					value="Search" />
+				<p:commandButton
+					action="#{LifePolicyMonthlyReportActionBean.reset()}"
+					update="@form" value="Reset" />
+			</h:panelGrid>
+			<br />
+			<p:dataTable id="report" paginator="true" paginatorPosition="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowIndexVar="rowIndex" rowKey="index" rows="20"
+				rowsPerPageTemplate="10,15,20" style="width:100%;"
+				value="#{LifePolicyMonthlyReportActionBean.lifeMonthlyReportList}"
+				var="report">
+				<f:facet name="header">
+					<h:commandLink
+						action="#{LifePolicyMonthlyReportActionBean.exportExcel()}"
+						immediate="true">
+						<p:graphicImage style="widht:30px;height:30px;"
+							value="/images/excel.png" />
+					</h:commandLink>
+					<p:message for="report" />
+				</f:facet>
+				<p:column headerText="No." style="width:3%;">
+					<h:outputText style="float: right;" value="#{rowIndex + 1}" />
+				</p:column>
+				<p:column headerText="Policy No." style="width:10%;"
+					styleClass="fixed-size">
+					<h:outputText value="#{report.policyNo}" />
+				</p:column>
+				<p:column headerText="Proposal No." style="width:10%;"
+					styleClass="fixed-size">
+					<h:outputText value="#{report.proposalNo}" />
+				</p:column>
+				<p:column headerText="Start Date." style="width:7%;"
+					styleClass="fixed-size">
+					<h:outputText value="#{report.activedPolicyStartDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}"
+							timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Customer Name" style="width:10%;"
+					styleClass="fixed-size">
+					<h:outputText value="#{report.customerName}" />
+				</p:column>
+				<p:column headerText="Age"
+					rendered="#{!LifePolicyMonthlyReportActionBean.group}"
+					style="width:3%;">
+					<h:outputText value="#{report.age}">
+						<f:convertNumber minFractionDigits="0" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Address" style="width:10%;"
+					styleClass="fixed-size">
+					<h:outputText value="#{report.customerAddress}" />
+				</p:column>
+				<p:column headerText="Agent Name" style="width:10%;"
+					styleClass="fixed-size">
+					<h:outputText value="#{report.agentNameWithLiscenceNo}" />
+				</p:column>
+				<p:column headerText="Sum Insured" style="width:8%;"
+					styleClass="fixed-size">
+					<h:outputText value="#{report.sumInsured}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.numberFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Period" style="width:6%;">
+					<h:outputText value="#{report.periodOfMonth}" style="float:right;" />
+				</p:column>
+				<p:column headerText="No. Of Insured Person" style="width:5%;"
+					styleClass="fixed-size"
+					rendered="#{LifePolicyMonthlyReportActionBean.group}">
+					<h:outputText value="#{report.noOfInsu}" style="float:right;" />
+				</p:column>
+				<p:column headerText="Premium" style="width:8%;"
+					styleClass="fixed-size">
+					<h:outputText value="#{report.premium}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.numberFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Payment Type" style="width:10%;"
+					styleClass="fixed-size">
+					<h:outputText value="#{report.paymentType}" />
+				</p:column>
+				<p:column headerText="Commission" style="width:10%;"
+					styleClass="fixed-size">
+					<h:outputText value="#{report.commission}%" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.numberFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Branch Name" style="width:10%;"
+					styleClass="fixed-size">
+					<h:outputText value="#{report.branchName}" />
+				</p:column>
+				<p:column headerText="SalesPoint Name" style="width:10%;"
+					styleClass="fixed-size">
+					<h:outputText value="#{report.salePoint}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

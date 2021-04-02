@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="motorRenewalNotification" pageWidth="595" pageHeight="842" columnWidth="515" leftMargin="40" rightMargin="40" topMargin="160" bottomMargin="30" resourceBundle="LANGUAGE_en" isIgnorePagination="true" uuid="cbb04aea-5aa7-42b9-a51d-64fb22755d60">
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="20"/>
+	<property name="ireport.y" value="623"/>
+	<parameter name="customerName" class="java.lang.String"/>
+	<parameter name="customerAddress" class="java.lang.String"/>
+	<parameter name="date" class="java.lang.String"/>
+	<parameter name="policyNo" class="java.lang.String"/>
+	<parameter name="originalPremium" class="java.lang.String"/>
+	<parameter name="noClaimBonus" class="java.lang.String"/>
+	<parameter name="penaltyPremium" class="java.lang.String"/>
+	<parameter name="renewalPremium" class="java.lang.String"/>
+	<parameter name="activedPolicyEndDate" class="java.lang.String"/>
+	<parameter name="registrationNo" class="java.lang.String"/>
+	<parameter name="activedPolicyStartedDate" class="java.lang.String"/>
+	<parameter name="isFleet" class="java.lang.Boolean"/>
+	<parameter name="phoneNo" class="java.lang.String"/>
+	<parameter name="sumInsured" class="java.lang.String"/>
+	<parameter name="agentWithLicenceNo" class="java.lang.String"/>
+	<detail>
+		<band height="647">
+			<staticText>
+				<reportElement uuid="b23c6bf4-83a4-4696-8361-0871770ab932" x="0" y="-2" width="23" height="20"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[သို႔]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="6e1df9e3-2691-4ad4-9863-c64023cac6a6" positionType="Float" x="0" y="12" width="178" height="105" isPrintWhenDetailOverflows="true"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{customerName}+"\n"+$P{customerAddress}+"\n"+$P{phoneNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="badae6a3-2483-483c-91ed-ef9b1bfb356d" positionType="Float" x="332" y="79" width="86" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10" pdfEncoding="Cp1252"/>
+				</textElement>
+				<text><![CDATA[စာအမွတ္။	။]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e7adad64-0781-499d-8b00-4a4ff13ad5cb" positionType="Float" x="332" y="100" width="86" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[ရက္စြဲ     ။	။ ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="a6399f06-039f-4ecc-b32b-90dff673bd72" positionType="Float" x="1" y="145" width="516" height="60">
+					<printWhenExpression><![CDATA[!$P{isFleet}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+					<paragraph lineSpacing="1_1_2" firstLineIndent="60"/>
+				</textElement>
+				<textFieldExpression><![CDATA["လူၾကီးမင္းမွ Grand Guardian Insurance (GGI) တြင္ " +  $P{registrationNo} +  "  အား ( " +  $P{activedPolicyStartedDate} +  " မွ " +  $P{activedPolicyEndDate} +  " ထိ ) ထားရိွခဲ့ပါသည္။ ယခုကဲ့သို႔ ကၽြန္ေတာ္မ်ား ကုမၸဏီကို ယံုၾကည္စြာျဖင့္ ေရြးခ်ယ္ အားေပးခဲ့သည့္အတြက္ အထူးပင္ ေက်းဇူးတင္ရိွပါသည္။"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ae85e307-3ea2-40e4-b4ed-bdbc69ebf233" positionType="Float" x="1" y="205" width="514" height="60"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+					<paragraph lineSpacing="1_1_2" firstLineIndent="60"/>
+				</textElement>
+				<textFieldExpression><![CDATA["လူၾကီးမင္းထားရိွခဲ့ေသာ အာမခံသက္တမ္းမွာ ( " +  $P{activedPolicyEndDate} +  " ) ရက္ေန႔တြင္ ကုန္ဆံုးေတာ့မည္ ျဖစ္ပါသျဖင့္ သက္တမ္းမကုန္ဆံုးမီ အာမခံဆက္လက္ထားရိွႏိုင္ပါရန္ႏွင့္ သက္တမ္းဆက္ပရီမီယံ (Renewal Premium) အား ေအာက္ပါအတိုင္း ေပးသြင္းႏိုင္ပါရန္ ေလးစားစြာျဖင့္ အေၾကာင္းၾကားအပ္ပါသည္။"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5aaa9537-a641-4c9a-814e-17bf25d6703a" positionType="Float" x="243" y="270" width="14" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5aaa9537-a641-4c9a-814e-17bf25d6703a" positionType="Float" x="243" y="315" width="14" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5aaa9537-a641-4c9a-814e-17bf25d6703a" positionType="Float" x="243" y="359" width="14" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5aaa9537-a641-4c9a-814e-17bf25d6703a" positionType="Float" x="243" y="337" width="14" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5aaa9537-a641-4c9a-814e-17bf25d6703a" positionType="Float" x="243" y="381" width="14" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6237ad87-da2b-4e9c-813c-95eb7f2f1e7b" positionType="Float" x="95" y="270" width="148" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[ေပၚလစီအမွတ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="429551be-f5c2-453a-bd19-000b90c20b64" positionType="Float" x="95" y="315" width="148" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[တစ္ႏွစ္က်သင့္ပရီမီယံ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7d72c518-fd8c-4155-bb01-a90fd2bf015f" positionType="Float" x="95" y="337" width="148" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[ေလ်ာ္ေၾကးမေတာင္းဆု ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="808f707d-b735-4926-8129-f3b997c0e0ad" positionType="Float" x="95" y="359" width="148" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[ေပးသြင္းရမည့္ ဒဏ္ေၾကး]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="808f707d-b735-4926-8129-f3b997c0e0ad" positionType="Float" x="95" y="381" width="148" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[ယခုႏွစ္ ေပးသြင္းရမည့္ ပရီမီယံ ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="9db7f056-3087-488a-a015-e7fc3f568024" positionType="Float" x="257" y="270" width="163" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{policyNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e4235fe5-e2ae-4cb6-97eb-12149496a9c0" positionType="Float" x="257" y="315" width="130" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{originalPremium}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ec7a3b98-2816-4a89-980c-0aa454d26a02" positionType="Float" x="257" y="337" width="130" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{noClaimBonus}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f12247b0-3456-447a-a9fa-925fc2f88dcc" positionType="Float" x="257" y="359" width="130" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{penaltyPremium}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bd29f5ab-8839-4406-8ee7-9d846f1e2ae1" positionType="Float" x="257" y="381" width="130" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{renewalPremium}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="884eeb54-08c2-45d2-b388-0511e5d98741" positionType="Float" x="1" y="124" width="513" height="20"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[အေၾကာင္းအရာ ။		။အာမခံဆက္လက္ထားရိွႏိုင္ပါရန္ အေၾကာင္းၾကားစာ ေပးပို႔ျခင္း။]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="319a6f36-f40a-4a06-b5bc-b30cf16f2af0" positionType="Float" x="362" y="482" width="128" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[ေလးစားစြာျဖင့္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2299cb5a-6100-4002-96ff-c4af27b2f647" positionType="Float" x="388" y="315" width="32" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[က်ပ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2299cb5a-6100-4002-96ff-c4af27b2f647" positionType="Float" x="388" y="337" width="32" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[က်ပ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2299cb5a-6100-4002-96ff-c4af27b2f647" positionType="Float" x="388" y="359" width="32" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[က်ပ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2299cb5a-6100-4002-96ff-c4af27b2f647" positionType="Float" x="388" y="381" width="32" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[က်ပ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3e70f961-f30c-4a03-a087-9237d479071b" x="3" y="596" width="512" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[ဖုန္းနံပါတ္(09-261767973,09-977831373~4) အား တိုက္ရိုက္ ဆက္သြယ္ ေဆာင္ရြက္ႏိုင္ပါသည္။]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="a6399f06-039f-4ecc-b32b-90dff673bd72" positionType="Float" x="1" y="145" width="516" height="60">
+					<printWhenExpression><![CDATA[$P{isFleet}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+					<paragraph lineSpacing="1_1_2" firstLineIndent="60"/>
+				</textElement>
+				<textFieldExpression><![CDATA["လူၾကီးမင္းမွ Grand Guardian Insurance (GGI) တြင္ ေမာ္ေတာ္ကားအာမခံ အား ( " +  $P{activedPolicyStartedDate} +  " မွ " +  $P{activedPolicyEndDate} +  " ထိ ) ထားရိွခဲ့ပါသည္။ ယခုကဲ့သို႔ ကၽြန္ေတာ္မ်ား ကုမၸဏီကို ယံုၾကည္စြာျဖင့္ ေရြးခ်ယ္ အားေပးခဲ့သည့္အတြက္ အထူးပင္ ေက်းဇူးတင္ရိွပါသည္။"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="10bc8843-e489-4b90-9912-7c577e32a9d1" positionType="Float" x="419" y="100" width="95" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{date}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="360e2a4c-8be4-49f1-9da7-598b24310d81" positionType="Float" x="124" y="141" width="273" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="8970e440-8bd6-4eb7-9d1f-5ec3dbae2ccb" positionType="Float" x="1" y="400" width="515" height="80"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+					<paragraph lineSpacing="1_1_2" firstLineIndent="60"/>
+				</textElement>
+				<text><![CDATA[လူၾကီးမင္းတို႕ မိသားစု ကိုယ္စိတ္ႏွစ္ျဖာ က်န္းမာ၊ ခ်မ္းသာၾကျပီး စီးပြားေရးလုပ္ငန္းမ်ား ဆတက္ထမ္းပိုး တိုးတက္ေအာင္ျမင္ပါေစေၾကာင္း ဆုမြန္ေကာင္းေတာင္းအပ္ပါသည္။ အာမခံလုပ္ငန္းႏ⁭ွင့္ပတ္သတ္၍ လိုအပ္သည္မ်ားရိွပါက ကၽြန္ေတာ္မ်ားကုမၸဏီသို႕ ဆက္သြယ္ေဆာင္ရြက္ပါရန္ႏွင့္ အေကာင္းဆံုး ဝန္ေဆာင္မွဳမ်ားေပး၍ လူၾကီးမင္းစိတ္ခ်မ္းသာမွဳရရိွေအာင္ အစြမ္းကုန္ ေဆာင္ရြက္ေပးသြားမည္ ျဖစ္ပါသည္။]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="429551be-f5c2-453a-bd19-000b90c20b64" positionType="Float" x="95" y="293" width="148" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[အာမခံထားေငြ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5aaa9537-a641-4c9a-814e-17bf25d6703a" positionType="Float" x="243" y="293" width="14" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="e3029919-3f06-465a-ae99-06be9636c601" positionType="Float" x="257" y="293" width="130" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sumInsured}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2299cb5a-6100-4002-96ff-c4af27b2f647" positionType="Float" x="388" y="292" width="32" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[က်ပ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="319a6f36-f40a-4a06-b5bc-b30cf16f2af0" x="317" y="527" width="47" height="20"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[လက္မွတ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="319a6f36-f40a-4a06-b5bc-b30cf16f2af0" x="317" y="547" width="47" height="20"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[အမည္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="319a6f36-f40a-4a06-b5bc-b30cf16f2af0" x="317" y="567" width="47" height="20"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[ရာထူး]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="7d407227-2122-470c-ab23-a2b73d7004cb" x="364" y="533" width="150" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="7d407227-2122-470c-ab23-a2b73d7004cb" x="364" y="554" width="150" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="7d407227-2122-470c-ab23-a2b73d7004cb" x="364" y="576" width="150" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="3bb91783-d33f-471e-b512-aeb104e5f911" x="332" y="1" width="78" height="20"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[ကုိယ္စားလွယ္]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="0a29dd52-bfa4-4783-aaef-7012940fcdca" x="332" y="18" width="182" height="38"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{agentWithLicenceNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="d82c240f-d77b-4921-8be8-8aacd13eed90" x="3" y="619" width="514" height="22"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[မွတ္ခ်က္။	။သက္တမ္းမကုန္ဆံုးမီ ေလ်ာ္ေၾကးတစ္စံုတစ္ရာ ေပၚေပါက္ပါက ေပးသြင္းရမည့္ ပရီမီယံေၾကးေျပာင္းလဲမႈရွိႏိုင္ပါသည္။]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

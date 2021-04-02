@@ -1,0 +1,291 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form>
+		<table width="100%">
+			<tr>
+				<td align="center">
+					<font style="font-family: Courier; font-size: 15px; color: #7A7777;">Copyright@2013 ACE Data Systems</font>
+				</td>
+				<td align="right" width="150px">
+					<p:commandButton value="#{label['THEME_LABEL']}" oncomplete="PF('theamDialog').show()" immediate="true" />
+				</td>
+			</tr>
+		</table>
+	</h:form>
+	<p:dialog header="#{label['THEME_DIALOG_LABEL']}" widgetVar="theamDialog" resizable="true" width="850" height="600" showEffect="explode" hideEffect="explode">
+		<h:form id="theamForm">
+			<h:panelGroup id="theamPanel">
+				<table cellpadding="20" align="center">
+					<tr>
+						<td align="center">
+							<p:commandLink ajax="false">
+								<h:outputText value="afterdark" />
+								<h:graphicImage url="/images/theams/Afterdark.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="afterdark" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="afternoon" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Afternoon.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="afternoon" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="afterwork" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Afterwork.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="afterwork" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="blitzer" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Blitzer.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="blitzer" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="bluesky" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Bluesky.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="bluesky" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<h:outputText value="cruze" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Cruze.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="cruze" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="cupertino" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Cupertino.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="cupertino" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="dot-luv" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Dot-luv.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="dot-luv" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="excite-bike" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Excite-bike.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="excite-bike" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="glass-x" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Glass-x.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="glass-x" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<h:outputText value="home" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Home.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="home" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="hot-sneaks" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Hot-sneaks.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="hot-sneaks" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="le-frog" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Le-frog.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="le-frog" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="midnight" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Midnight.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="midnight" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="mint-choc" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Mint-choc.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="mint-choc" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<h:outputText value="aristo" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Aristo.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="aristo" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="black-tie" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Black-Tie.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="black-tie" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="casablanca" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Casablanca.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="casablanca" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="dark-hive" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Dark-Hive.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="dark-hive" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="eggplant" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Eggplant.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="eggplant" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<h:outputText value="flick" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Flick.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="flick" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="humanity" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Humanity.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="humanity" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="pepper-grinder" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Pepper-Grinder.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="pepper-grinder" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="redmond" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Redmond.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="redmond" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="afterdark" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Rocket.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="rocket" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<h:outputText value="smoothness" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Smoothness.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="smoothness" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="south-street" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/South-Street.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="south-street" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="afterdark" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Sunny.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="sunny" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="swanky-purse" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Swanky-Purse.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="swanky-purse" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="trontastic" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Trontastic.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="trontastic" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<h:outputText value="ui-darkness" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/UI-Darkness.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="ui-darkness" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="ui-lightness" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/UI-Lightness.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="ui-lightness" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="vader" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Vader.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="vader" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="overcast" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Overcast.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="overcast" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+						<td align="center">
+							<h:outputText value="start" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Start.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="start" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<h:outputText value="sam" />
+							<p:commandLink ajax="false">
+								<h:graphicImage url="/images/theams/Sam.png" styleClass="theams-img" />
+								<f:setPropertyActionListener value="sam" target="#{GuestPreferences.theme}" />
+							</p:commandLink>
+						</td>
+					</tr>
+				</table>
+			</h:panelGroup>
+		</h:form>
+	</p:dialog>
+</ui:composition>

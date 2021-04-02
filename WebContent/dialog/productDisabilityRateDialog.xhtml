@@ -1,0 +1,25 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+ xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/dialog/dialogTemplate.xhtml">
+ <ui:define name="content">
+  <h:form id="disabilityRateDialogForm">
+   <p:dataTable id="hospitalTable" paginator="true"
+    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="index" rows="10"
+    rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ProductDisabilityRateDialogActionBean.productDisabilityRateList}" var="rate" widgetVar="hospitalTable">
+    <p:column headerText="No" style="width:50px;">
+     <h:outputText value="#{index + 1}" />
+    </p:column>
+    <p:column headerText="Disability Part">
+     <h:outputText value="#{rate.disabilityPart.name}" />
+    </p:column>
+    <p:column headerText="Rate(%)">
+     <h:outputText value="#{rate.percentage}" />
+    </p:column>
+    <p:column style="width:30px;text-align: center;">
+     <p:commandLink id="selectBtn" action="#{ProductDisabilityRateDialogActionBean.selectDisabiliytRate(rate)}" immediate="true">
+      <h:graphicImage styleClass="#{ApplicationSetting.selectStyleClass}" url="#{ApplicationSetting.selectIcon}" />
+     </p:commandLink>
+    </p:column>
+   </p:dataTable>
+  </h:form>
+ </ui:define>
+</ui:composition>

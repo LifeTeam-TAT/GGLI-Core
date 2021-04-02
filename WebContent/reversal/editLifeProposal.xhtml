@@ -1,0 +1,1078 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:o="http://omnifaces.org/ui"
+	xmlns:fu="http://java.sun.com/jsf/fileUpload" xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{EditLifeProposalReversalActionBean.getPageHeader()}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form enctype="multipart/form-data" id="lifeProposalEntryForm">
+			<p:messages globalOnly="true" id="messages" showDetail="true" />
+			<p:wizard flowListener="#{EditLifeProposalReversalActionBean.onFlowProcess}" style="margin-bottom: 10px;" widgetVar="wiz">
+				<p:tab id="proposalInfo" title="Proposal Info">
+					<p:panel header="Proposal Info" id="proposalInfoWizardPanel" style="min-height:270px;">
+						<p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<h:outputText styleClass="input-label mandatory" value="#{label['ADDNEWLIFEPROPOSAL_CUSTOMER_LABEL']}" />
+								<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="needSurvey" value="#{EditLifeProposalReversalActionBean.organization}">
+									<f:selectItem itemLabel="Person" itemValue="false" />
+									<c:if test="#{!(EditLifeProposalReversalActionBean.isPublicTermLife or (EditLifeProposalReversalActionBean.isSinglePremiumEndowmentLife))}">
+									<f:selectItem itemLabel="Organization" itemValue="true" itemDisabled="#{EditLifeProposalReversalActionBean.isPublicTermLife or (EditLifeProposalReversalActionBean.isSinglePremiumEndowmentLife)}" />
+									</c:if>
+									<p:ajax event="valueChange" listener="#{EditLifeProposalReversalActionBean.changeOrgEvent}" update="proposalInfoWizardPanel" />
+								</p:selectOneRadio>
+								<p:outputLabel />
+								<p:message for="customer" />
+								<p:outputLabel />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="customerPanelGroup">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="customerPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton rendered="#{!EditLifeProposalReversalActionBean.organization}" styleClass="green-button" icon="fa fa-search"
+												actionListener="#{EditLifeProposalReversalActionBean.selectCustomer()}" id="selectCustomerDialogLink" process="@this">
+												<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnCustomer}" update="customer" />
+											</p:commandButton>
+											<p:commandButton rendered="#{EditLifeProposalReversalActionBean.organization}" styleClass="green-button" icon="fa fa-search"
+												actionListener="#{EditLifeProposalReversalActionBean.selectOrganization()}" id="selectOrganizationDialogLink" process="@this">
+												<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnOrganization}" update="customer" />
+											</p:commandButton>
+											<p:inputText id="customer" required="true"
+												readonly="#{EditLifeProposalReversalActionBean.lifeProposal.customerName == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{EditLifeProposalReversalActionBean.lifeProposal.customerName}" />
+											<p:commandButton rendered="#{!EditLifeProposalReversalActionBean.organization}" styleClass="red-button" icon="fa fa-times"
+												action="#{EditLifeProposalReversalActionBean.lifeProposal.setCustomer(null)}" process="@this" update="customer" />
+											<p:commandButton rendered="#{EditLifeProposalReversalActionBean.organization}" styleClass="red-button" icon="fa fa-times"
+												action="#{EditLifeProposalReversalActionBean.lifeProposal.setOrganization(null)}" process="@this" update="customer" />
+										</div>
+									</div>
+								</p:panelGrid>
+								<p:outputLabel />
+								<p:message for="product" />
+								<h:outputText styleClass="input-label mandatory" value="Product" />
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter" disabled="#{not empty EditLifeProposalReversalActionBean.insuredPersonInfoDTOList}" required="true" id="product"
+									value="#{EditLifeProposalReversalActionBean.product}">
+									<f:selectItems value="#{EditLifeProposalReversalActionBean.productList}" var="product" itemLabel="#{product.name}" itemValue="#{product}" />
+									<p:ajax event="valueChange" listener="#{EditLifeProposalReversalActionBean.changeProduct}" update="typesOfSportPanelGroup paymentType sumInsuredInfo periodOfInsurance" />
+								</p:selectOneMenu>
+								<p:outputLabel />
+								<p:message for="paymentType" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['ADDNEWLIFEROPOSAL_PAYMENTTYPE_LABEL']}" />
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter" required="true" id="paymentType" value="#{EditLifeProposalReversalActionBean.lifeProposal.paymentType}">
+									<f:selectItem itemLabel="" noSelectionOption="true" />
+									<f:selectItems value="#{EditLifeProposalReversalActionBean.paymentTypes}" var="paymentType" itemLabel="#{paymentType.name}" itemValue="#{paymentType}" />
+								</p:selectOneMenu>
+								
+								<p:outputLabel />
+								<p:message for="entity" />
+								<h:outputText styleClass="input-label mandatory" value="Entity" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGroup">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="entityPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{EditLifeProposalReversalActionBean.selectEntity()}" id="selectEnitysDialogLink"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnEntity}" update="entity salePoint branch" />
+											</p:commandButton>
+											<p:inputText id="entity" required="true" readonly="#{EditLifeProposalReversalActionBean.entitys == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{EditLifeProposalReversalActionBean.entitys == null ? '' : EditLifeProposalReversalActionBean.entitys.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{EditLifeProposalReversalActionBean.removeEntity()}" process="@this" update="entity salePoint branch" />
+										</div>
+									</div>
+								</p:panelGrid>
+								<p:outputLabel />
+								<p:message for="branch" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['ADDNEWLIFEPROPOSAL_BRANCH_LABEL']}" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="branchPanelGroup">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="branchPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{EditLifeProposalReversalActionBean.selectBranchByEntity}" id="selectBranchDialogLink"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnBranch}" update="branch salePoint" />
+											</p:commandButton>
+											<p:inputText id="branch" required="true" readonly="#{EditLifeProposalReversalActionBean.lifeProposal.branch == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{EditLifeProposalReversalActionBean.lifeProposal.branch == null ? '' : EditLifeProposalReversalActionBean.lifeProposal.branch.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{EditLifeProposalReversalActionBean.removeBranch()}" process="@this" update="branch salePoint" />
+										</div>
+									</div>
+								</p:panelGrid>
+								<p:outputLabel />
+								<p:message for="salePoint" />
+								<h:outputText styleClass="input-label mandatory" value="Sale Point" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="salePontPanelGroup">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="salePontPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{EditLifeProposalReversalActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnSalePoint}" update="salePoint" />
+											</p:commandButton>
+											<p:inputText id="salePoint" required="true"
+												readonly="#{EditLifeProposalReversalActionBean.lifeProposal.salePoint == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{EditLifeProposalReversalActionBean.lifeProposal.salePoint == null ? '' : EditLifeProposalReversalActionBean.lifeProposal.salePoint.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{EditLifeProposalReversalActionBean.lifeProposal.setSalePoint(null)}" process="@this"
+												update="salePoint" />
+										</div>
+									</div>
+								</p:panelGrid>							
+							</p:panelGrid>
+							
+							<p:panelGrid id="proposalRightPanel" columns="2" columnClasses="ui-grid-col-3,ui-grid-col-6"  layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel />
+								<p:message  display="text" for="saleUserType" />
+								<h:outputText styleClass="input-label mandatory" value="Sale Channel" />
+								<p:selectOneMenu  disabled="#{EditLifeProposalReversalActionBean.STELendorse}" id="saleUserType" converter="omnifaces.SelectItemsConverter"
+								value="#{EditLifeProposalReversalActionBean.lifeProposal.saleChannelType}" required="true">
+									<f:selectItem itemLabel=" -- Select SaleChannelType --" noSelectionOption="true"  itemDisabled="true"/>
+									<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditLifeProposalReversalActionBean.saleChannelType}" var="type" />
+									<p:ajax event="valueChange" listener="#{EditLifeProposalReversalActionBean.changeSaleEvent}" update="@form:proposalRightPanel" />
+								</p:selectOneMenu>
+								<p:outputLabel />								
+								<c:if test="#{EditLifeProposalReversalActionBean.lifeProposal.saleChannelType ne 'BANCASSURANCE'}"> 
+									<p:outputLabel />
+									<p:message  display="text" for="userType" />
+									<p:panelGrid styleClass="ui-panelgrid-blank" id="user">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" >
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+										<p:commandButton disabled="#{EditLifeProposalReversalActionBean.STELendorse}" styleClass="green-button" icon="fa fa-search"
+											actionListener="#{EditLifeProposalReversalActionBean.selectAgent()}" rendered="#{EditLifeProposalReversalActionBean.lifeProposal.saleChannelType eq 'AGENT'}" id="selectAgentDialogLink"
+											process="@this">
+											<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnAgent}" update="userType" />
+										</p:commandButton>
+										<p:commandButton disabled="#{EditLifeProposalReversalActionBean.STELendorse}" styleClass="green-button" icon="fa fa-search"
+											actionListener="#{EditLifeProposalReversalActionBean.selectSaleMan()}" rendered="#{EditLifeProposalReversalActionBean.lifeProposal.saleChannelType eq 'SALEMAN'}" id="selectSaleManDialogLink"
+											process="@this">
+											<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnSaleMan}" update="userType" />
+										</p:commandButton>
+										<p:commandButton disabled="#{EditLifeProposalReversalActionBean.STELendorse}" styleClass="green-button" icon="fa fa-search"
+											actionListener="#{EditLifeProposalReversalActionBean.selectReferral()}" rendered="#{EditLifeProposalReversalActionBean.lifeProposal.saleChannelType eq 'REFERRAL'}" id="selectReferralDialogLink"
+											process="@this">
+											<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnReferral}" update="userType" />
+										</p:commandButton>
+										<p:inputText id="userType" required="true" rendered="#{EditLifeProposalReversalActionBean.lifeProposal.saleChannelType != null }"
+											readonly="#{EditLifeProposalReversalActionBean.lifeProposal.salePersonName == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+											value="#{EditLifeProposalReversalActionBean.lifeProposal.salePersonName}" />
+										<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{EditLifeProposalReversalActionBean.lifeProposal.setAgent(null)}"
+											rendered="#{EditLifeProposalReversalActionBean.lifeProposal.saleChannelType eq 'AGENT'}" process="@this" update="userType" />
+										<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{EditLifeProposalReversalActionBean.lifeProposal.setSaleMan(null)}"
+											rendered="#{EditLifeProposalReversalActionBean.lifeProposal.saleChannelType eq 'SALEMAN'}" process="@this" update="userType" />
+										<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{EditLifeProposalReversalActionBean.lifeProposal.setReferral(null)}"
+											rendered="#{EditLifeProposalReversalActionBean.lifeProposal.saleChannelType eq 'REFERRAL'}" process="@this" update="userType" />
+										
+									</div>
+								</div>
+									</p:panelGrid>
+								 </c:if>
+								 <c:if test="#{EditLifeProposalReversalActionBean.lifeProposal.saleChannelType eq 'BANCASSURANCE'}">
+									<p:message  display="text" for="channel" />
+									<h:outputText  styleClass="input-label mandatory" id="channellabel" value="Channel" />
+									<p:panelGrid styleClass="ui-panelgrid-blank" id="channelPanelGroup">
+											<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid">
+											<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12" >
+												<p:commandButton styleClass="green-button" icon="fa fa-search"
+													actionListener="#{EditLifeProposalReversalActionBean.selectChannels()}" id="selectChannelDialogLink"
+													process="@this">
+													<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnChannel}"
+														update="channel bancaBranchPanelGroup bancaMethods" />
+												</p:commandButton>
+												<p:inputText id="channel" required="true"
+													readonly="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.channel == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+													value="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.channel == null ? '' : EditLifeProposalReversalActionBean.bancaassuranceProposal.channel.name}" />
+												<p:commandButton styleClass="red-button" icon="fa fa-times"
+													action="#{EditLifeProposalReversalActionBean.removeChannel()}" process="@this" update="channel bancaBranchPanelGroup bancaMethods" />
+											</div>
+											</div>
+									</p:panelGrid>								
+									<p:outputLabel />
+									<p:message  display="text" for="bancaBranch" />
+									<h:outputText styleClass="input-label mandatory" value="Banca Branch"/>
+									<p:panelGrid styleClass="ui-panelgrid-blank">
+										<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" jsf:id="bancaBranchPanelGroup">
+											<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12" >
+												<p:commandButton styleClass="green-button" icon="fa fa-search"
+													actionListener="#{EditLifeProposalReversalActionBean.selectBancaBranch()}" id="selectBancaBranchlink"
+													process="@this"  disabled="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.channel == null?true:false}">
+													<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnBancaBranch}"
+														update="bancaBranch bancaMethods" />
+												</p:commandButton>
+												<p:inputText id="bancaBranch" required="true" readonly="true"
+													value="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaBranch == null ? '' : EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaBranch.name}" />
+												<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.channel == null? true:false}"
+													action="#{EditLifeProposalReversalActionBean.removeBancaBranch()}" process="@this" update="bancaBranch bancaMethods" />
+											</div>
+										</div>
+									</p:panelGrid>
+									<p:outputLabel />
+									<p:message  display="text" for="bancaMethod" />
+									<h:outputText styleClass="input-label mandatory" value="Banca Method" />
+									<div jsf:id="bancaMethods">
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter"  required="true"
+										 id="bancaMethod" value="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaMethod}"
+										 disabled="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaBranch == null?true:false}">
+										<f:selectItem itemLabel="" noSelectionOption="true" />
+										<f:selectItems value="#{EditLifeProposalReversalActionBean.bancaMethodList}" var="bancaMethod"
+											itemLabel="#{bancaMethod.name}" itemValue="#{bancaMethod}" />
+										<p:ajax event="valueChange" listener="#{EditLifeProposalReversalActionBean.changeBancaEvent}" update="@form:proposalRightPanel" />
+									</p:selectOneMenu>
+									</div>
+									<p:outputLabel />
+
+										<c:if test="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaMethod.name eq 'REFERRAL'}">
+											<p:message  display="text" for="bancaBrm" />
+											<h:outputText styleClass="input-label mandatory"  value="Banca BRM"  />
+											<p:panelGrid styleClass="ui-panelgrid-blank" id="bancaBrmPanelGroup">
+												<div  style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid">
+													<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12" >
+														<p:commandButton styleClass="green-button" icon="fa fa-search"
+															actionListener="#{EditLifeProposalReversalActionBean.selectBancaBrm()}" id="selectBancaBrmlink"
+															process="@this" disabled="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaMethod == null?true:false}">
+															<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnBancaBrm}"
+																update="bancaBrm bancaLICPanelGroup bancaReferralPanelGroup" />
+														</p:commandButton>
+														<p:inputText id="bancaBrm" required="true"
+															readonly="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaBRM == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+															value="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaBRM == null ? '' : EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaBRM.name}" />
+														<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaMethod  == null?true:false}"
+															action="#{EditLifeProposalReversalActionBean.removeBancaBRM()}"
+															process="@this" update="bancaBrm bancaLICPanelGroup bancaReferralPanelGroup" />
+													</div>
+												</div>
+											</p:panelGrid>
+											<p:outputLabel />
+											<p:message  display="text" for="bancaLIC" />
+											<h:outputText styleClass="input-label mandatory"  value="Banca LIC"  />
+											<p:panelGrid styleClass="ui-panelgrid-blank">
+												<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" jsf:id="bancaLICPanelGroup">
+													<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12" >
+														<p:commandButton styleClass="green-button" icon="fa fa-search"
+															actionListener="#{EditLifeProposalReversalActionBean.selectBancaLIC()}" id="selectBancaCLIDialogLink"
+															process="@this" disabled="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaBRM == null?true:false}">
+															<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnBancaLIC}"
+																update="bancaLIC bancaReferralPanelGroup" />
+														</p:commandButton>
+														<p:inputText id="bancaLIC" required="true"
+															readonly="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaLIC == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+															value="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaLIC == null ? '' : EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaLIC.name}" />
+														<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaBRM  == null?true:false}"
+															action="#{EditLifeProposalReversalActionBean.removeBancaLIC()}" process="@this" update="bancaLIC bancaReferralPanelGroup" />
+													</div>
+												</div>
+											</p:panelGrid>
+											<p:outputLabel />
+											<p:message  display="text" for="bancaReferral" />
+											<h:outputText styleClass="input-label mandatory" value="Banca Refferal"  id="bancaRefferalLabel"  />
+											<p:panelGrid styleClass="ui-panelgrid-blank" >
+												<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" jsf:id="bancaReferralPanelGroup">
+													<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12" >
+														<p:commandButton styleClass="green-button" icon="fa fa-search"
+															actionListener="#{EditLifeProposalReversalActionBean.selectBancaReferral()}"
+															id="selectBancaReferralDialogLink" process="@this" disabled="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaLIC == null?true:false}">
+															<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnBancaRefferal}"
+																update="bancaReferral" />
+														</p:commandButton>
+														<p:inputText id="bancaReferral" required="true"
+															readonly="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaRefferal == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+															value="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaRefferal == null ? '' : EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaRefferal.name}" />
+														<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaLIC == null?true:false}"
+															action="#{EditLifeProposalReversalActionBean.removeBancaReferral()}" process="@this"
+															update="bancaReferral" />
+													</div>
+												</div>
+											</p:panelGrid>
+										</c:if>
+										
+										<c:if test="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaMethod.name eq 'OTC'}">
+											<p:message  display="text" for="bancaReferral" />
+											<h:outputText styleClass="input-label mandatory" value="Bank Staff" id="bancaRefferalLabel" />
+											<p:panelGrid styleClass="ui-panelgrid-blank" id="bancaReferralPanelGroup">
+												<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid">
+													<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12" >
+														<p:commandButton styleClass="green-button" icon="fa fa-search"
+															actionListener="#{EditLifeProposalReversalActionBean.selectBancaReferralByOTC()}"
+															id="selectBancaReferralDialogLink" process="@this">
+															<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnBancaRefferal}"
+																update="bancaReferral" />
+														</p:commandButton>
+														<p:inputText id="bancaReferral" required="true"
+															readonly="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaRefferal == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+															value="#{EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaRefferal == null ? '' : EditLifeProposalReversalActionBean.bancaassuranceProposal.bancaRefferal.name}" />
+														<p:commandButton styleClass="red-button" icon="fa fa-times"
+															action="#{EditLifeProposalReversalActionBean.removeBancaReferral()}" process="@this"
+															update="bancaReferral" />
+													</div>
+												</div>
+											</p:panelGrid>
+										</c:if>
+									</c:if>	
+							</p:panelGrid>
+						</p:panelGrid>
+					</p:panel>
+				</p:tab>
+				<p:tab id="InsuredPersonInfo" title="InsuredPerson Info">
+					<p:panel header="InsuredPerson Information" id="insuredPersonInfoWizardPanel" style="min-height:270px;">
+						<p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel />
+								<p:message for="initialId" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_CUSTOMER_INITIALID_LABEL']}" />
+								<p:inputText id="initialId" required="#{not empty param[isRequired.clientId]}" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.initialId}">
+									<f:validateLength maximum="36" />
+								</p:inputText>
+								<p:outputLabel />
+								<p:message for="firstName" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_CUSTOMER_FIRSTNAME_LABEL']}" />
+								<p:inputText id="firstName" required="#{not empty param[isRequired.clientId]}" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.name.firstName}">
+									<f:validateLength maximum="100" />
+								</p:inputText>
+								<p:outputLabel />
+								<p:message for="middleName" />
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_MIDDLENAME_LABEL']}" />
+								<p:inputText id="middleName" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.name.middleName}">
+									<f:validateLength maximum="100" />
+								</p:inputText>
+								<p:outputLabel />
+								<p:message for="lastName" />
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_LASTNAME_LABEL']}" />
+								<p:inputText id="lastName" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.name.lastName}">
+									<f:validateLength maximum="100" />
+								</p:inputText>
+								<p:outputLabel />
+								<p:message for="fatherName" />
+								<h:outputText styleClass="input-label mandatory" value="Father Name" />
+								<p:inputText id="fatherName" required="#{not empty param[isRequired.clientId]}" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.fatherName}">
+									<f:validateLength maximum="100" />
+								</p:inputText>
+								<h:outputText />
+								<p:message for="idNo" display="text" />
+								<h:outputText styleClass="input-label mandatory" value="ID Type" />
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="idType" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idType}">
+									<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditLifeProposalReversalActionBean.idTypes}" var="type" />
+									<p:ajax event="valueChange" listener="#{EditLifeProposalReversalActionBean.changeInsuredPersonIdType}" update="insuredPersonIdNoPanelGrid customerIdNoPanelGrid" />
+								</p:selectOneMenu>
+								<h:outputText />
+								<h:panelGrid columns="5" id="insuredPersonIdNoPanelGrid">
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuredPersonstateCode"
+										rendered="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idType ne 'STILL_APPLYING' and EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idType ne 'FRCNO' and
+										EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idType ne 'PASSPORTNO'}"
+										required="#{not empty param[isRequired.clientId]}" style="width:55px;" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.provinceCode}">
+										<f:selectItem itemLabel="---" noSelectionOption="true" />
+										<f:selectItems var="stateCode" itemLabel="#{stateCode.codeNo}" itemValue="#{stateCode.codeNo}" value="#{EditLifeProposalReversalActionBean.stateCodeList}" />
+										<p:ajax event="valueChange" listener="#{EditLifeProposalReversalActionBean.changeStateCode}" update="insuredPersontownshipCode" />
+									</p:selectOneMenu>
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuredPersontownshipCode" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.townshipCode}"
+										rendered="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idType ne 'STILL_APPLYING' and EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idType ne 'FRCNO' and
+										EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idType ne 'PASSPORTNO'}"
+										required="#{not empty param[isRequired.clientId]}" style="width:100px;">
+										<f:selectItem itemLabel="---" noSelectionOption="true" />
+										<f:selectItems var="townshipCode" itemLabel="#{townshipCode.townshipcodeno}" itemValue="#{townshipCode.townshipcodeno}"
+											value="#{EditLifeProposalReversalActionBean.townshipCodeList}" />
+									</p:selectOneMenu>
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuredPersonidConditionType"
+										value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idConditionType}" style="width:50px;"
+										rendered="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idType ne 'STILL_APPLYING' and EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idType ne 'FRCNO' and
+										EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idType ne 'PASSPORTNO'}">
+										<f:selectItems itemLabel="#{type.label}" itemValue="#{type.label}" value="#{EditLifeProposalReversalActionBean.idConditionType}" var="type" />
+									</p:selectOneMenu>
+									<p:inputText id="idNo" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idNo}" required="#{not empty param[isRequired.clientId]}"
+										rendered="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idType eq 'NRCNO'}"  maxlength="6"
+										style="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idType eq 'NRCNO' ?'width:100px':'width:320px'};">
+										<f:validateLength disabled="#{empty param[isRequired.clientId]}" maximum="6" minimum="6" />
+									</p:inputText>
+								</h:panelGrid>
+								<h:outputText />
+								<p:message for="customerRegIdNo" display="text" />
+								<h:outputText />
+								<h:panelGrid columns="1" id="customerIdNoPanelGrid" width="100%">
+									<p:inputText id="customerRegIdNo"
+										rendered="#{(EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idType eq 'FRCNO' or  EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idType eq 'PASSPORTNO' ) and EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idType ne null}"
+										value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.idNo}" required="true" maxlength="30" />
+								</h:panelGrid>
+								<p:outputLabel />
+								<p:message for="dateOfBirth" />
+								<h:outputText styleClass="input-label mandatory" value="Date Of Birth" />
+								<p:inputMask id="dateOfBirth" placeholder="dd-mm-yyy" required="#{not empty param[isRequired.clientId]}" mask="99-99-9999"
+									value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.dateOfBirth}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</p:inputMask>
+							</p:panelGrid>
+							<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel />
+								<p:message for="resident" />
+								<h:outputText styleClass="input-label mandatory" value="Resident Address" />
+								<p:inputTextarea id="resident" required="#{not empty param[isRequired.clientId]}"
+									value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.residentAddress.residentAddress}">
+									<f:validateLength maximum="200" />
+								</p:inputTextarea>
+								<p:outputLabel />
+								<p:message for="townShip" />
+								<h:outputText styleClass="input-label mandatory" value="Resident TownShip" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="townShipPanelGroup1">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="townShipPanelGroup1">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{EditLifeProposalReversalActionBean.selectTownship()}" id="selectTownShipDialogLink1"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnInsuredPersonTownShip}" update="townShip" />
+											</p:commandButton>
+											<p:inputText id="townShip" required="#{not empty param[isRequired.clientId]}"
+												readonly="#{not empty param[isRequired.clientId] and EditLifeProposalReversalActionBean.insuredPersonInfoDTO.residentAddress.township.name == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.residentAddress.township == null ? '' : EditLifeProposalReversalActionBean.insuredPersonInfoDTO.residentAddress.township.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.residentAddress.setTownship(null)}"
+												process="@this" update="townShip" />
+										</div>
+									</div>
+								</p:panelGrid>
+								<p:outputLabel />
+								<p:message for="occupation" />
+								<h:outputText styleClass="input-label" value="Occupation" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="occupationPanelGroup">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="occupationPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{EditLifeProposalReversalActionBean.selectOccupation()}" id="selectOccupationDialogLink1"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnOccupation}" update="occupation" />
+											</p:commandButton>
+											<p:inputText id="occupation" readonly="true"
+												value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.occupation == null ? '' : EditLifeProposalReversalActionBean.insuredPersonInfoDTO.occupation.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.setOccupation(null)}" process="@this"
+												update="occupation" />
+										</div>
+									</div>
+								</p:panelGrid>
+								<p:outputLabel />
+								<p:message for="gender" />
+								<h:outputText styleClass="input-label mandatory" value="Gender" />
+								<p:selectOneMenu required="#{not empty param[isRequired.clientId]}" converter="omnifaces.SelectItemsConverter" id="gender"
+									value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.gender}">
+									<f:selectItem itemLabel=" -- Select Gender --" noSelectionOption="true" />
+									<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditLifeProposalReversalActionBean.gender}" var="type" />
+								</p:selectOneMenu>
+								<p:outputLabel />
+								<!-- SUM Insured -->
+								<p:message for="sumInsuredInfo" />
+								<h:outputText styleClass="input-label mandatory" value="Sum Insured" />
+								<c:if test="#{!EditLifeProposalReversalActionBean.isSinglePremiumEndowmentLife}">
+									<p:inputText id="sumInsuredInfo" required="#{not empty param[isRequired.clientId]}" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.sumInsuredInfoNum}">
+										<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+										<o:validator disabled="#{empty param[isRequired.clientId]}" validatorId="javax.faces.LongRange" minimum="#{EditLifeProposalReversalActionBean.product.minSumInsured}"
+											maximum="#{EditLifeProposalReversalActionBean.product.maxSumInsured}" />
+									</p:inputText>
+								</c:if>
+								<c:if test="#{EditLifeProposalReversalActionBean.isSinglePremiumEndowmentLife}">
+									<p:selectOneMenu disabled="#{EditLifeProposalReversalActionBean.STELendorse}" id="sumInsuredInfo" converter="omnifaces.SelectItemsConverter"
+									required="#{not empty param[isRequired.clientId]}" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.sumInsuredInfoNum}">
+										<f:selectItem itemLabel="-- Select Sum Insured --" noSelectionOption="true" />
+										<f:selectItems value="#{EditLifeProposalReversalActionBean.selectSI}" var="si" itemLabel="#{si.intValue()}" itemValue="#{si}"/>
+									</p:selectOneMenu >
+								</c:if>
+								<p:outputLabel />
+								<p:message for="sumInsuredType" />
+								<h:outputText styleClass="input-label mandatory" value="Sum Insured Type" rendered="#{EditLifeProposalReversalActionBean.isShortTermSinglePremiumCreditLife}" />
+								<p:selectOneMenu rendered="#{EditLifeProposalReversalActionBean.isShortTermSinglePremiumCreditLife}" required="#{not empty param[isRequired.clientId]}" converter="omnifaces.SelectItemsConverter"
+									id="sumInsuredType" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.sumInsuredType}">
+									<f:selectItem itemLabel=" -- Select SumInsuredType --" noSelectionOption="true" />
+									<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditLifeProposalReversalActionBean.sumInsuredType}" var="type" />
+								</p:selectOneMenu> 
+								<p:outputLabel />
+								<!-- keyfactor addon Simple Life -->
+								<p:message display="text" for="keyfactorAddon" />
+								<h:outputText styleClass="input-label mandatory" value="Cover Option" rendered="#{EditLifeProposalReversalActionBean.isSimpleLife}" />
+								<p:selectOneMenu id="keyfactorAddon" converter="omnifaces.SelectItemsConverter"
+									value="#{EditLifeProposalReversalActionBean.simpleLifeKeyfactor}" required="true" rendered="#{EditLifeProposalReversalActionBean.isSimpleLife}">
+									<f:selectItem itemLabel=" -- Select Cover Option --" noSelectionOption="true" itemDisabled="true" />
+									<f:selectItems itemLabel="#{type.value}" itemValue="#{type}" value="#{EditLifeProposalReversalActionBean.simpleLifeKeyfactorList}" var="type" />
+								</p:selectOneMenu>
+								<!-- Period of Insurance Type -->
+								<h:outputText styleClass="input-label mandatory" value="Period of Insurance Type"
+									rendered="#{EditLifeProposalReversalActionBean.isSimpleLife}" />
+								<p:selectOneRadio id="periodOfType" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.periodType}" unselectable="false" converter="omnifaces.SelectItemsConverter" rendered="#{EditLifeProposalReversalActionBean.isSimpleLife}" >
+									<f:selectItems value="#{EditLifeProposalReversalActionBean.periodTypes}" var="periodType" itemLabel="#{periodType.label}" itemValue="#{periodType}"/>
+									<f:ajax execute="@this" render="@this periodOfInsur" listener="#{EditLifeProposalReversalActionBean.changePeriodType}" /> 
+								</p:selectOneRadio>
+								<p:outputLabel />
+															
+								<!-- Period of Insurance for Simple Life -->
+								<p:message display="text" for="periodOfInsur" />						
+								<h:outputText styleClass="input-label mandatory" value="Period of Insurance" rendered="#{EditLifeProposalReversalActionBean.isSimpleLife}" />
+								<p:selectOneMenu disabled="#{EditLifeProposalReversalActionBean.STELendorse or EditLifeProposalReversalActionBean.insuredPersonInfoDTO.periodType == null ? true : false}" converter="omnifaces.SelectItemsConverter" 
+								id="periodOfInsur" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.periodOfYears}"
+								rendered="#{EditLifeProposalReversalActionBean.isSimpleLife}" required="#{not empty param[isRequired.clientId]}"  >
+									<f:selectItem itemLabel="-- Select Period --" noSelectionOption="true" />
+									<f:selectItems value="#{EditLifeProposalReversalActionBean.simpleLifePeriodYear}" var="years"  />
+								</p:selectOneMenu>
+								
+								<p:message for="periodOfInsurance" />
+								<h:outputText styleClass="input-label mandatory" value="#{EditLifeProposalReversalActionBean.isMonthBase ? 'Period of Insurance (Months)' : 'Period of Insurance (Years)'}"
+									rendered="#{!EditLifeProposalReversalActionBean.isPersonalAccident and !EditLifeProposalReversalActionBean.isShortEndowLife and !EditLifeProposalReversalActionBean.isSinglePremiumCreditLife and !EditLifeProposalReversalActionBean.isSinglePremiumEndowmentLife and !EditLifeProposalReversalActionBean.isShortTermSinglePremiumCreditLife and !EditLifeProposalActionBean.isSimpleLife}" />
+								<p:inputText id="periodOfInsurance" required="#{not empty param[isRequired.clientId]}" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.periodOfYears}"
+									rendered="#{!EditLifeProposalReversalActionBean.isPersonalAccident and !EditLifeProposalReversalActionBean.isShortEndowLife and !EditLifeProposalReversalActionBean.isSinglePremiumCreditLife and !EditLifeProposalReversalActionBean.isSinglePremiumEndowmentLife and !EditLifeProposalReversalActionBean.isShortTermSinglePremiumCreditLife and !EditLifeProposalActionBean.isSimpleLife}">
+									<o:validator disabled="#{empty param[isRequired.clientId]}" validatorId="javax.faces.LongRange" minimum="#{EditLifeProposalReversalActionBean.munimumTrem}"
+										maximum="#{EditLifeProposalReversalActionBean.maximumTrem}" />
+								</p:inputText>
+								<p:outputLabel />
+								<p:message for="periodMonth" />
+								<h:outputText styleClass="input-label mandatory" value="Period of Insurance (Months)" rendered="#{EditLifeProposalReversalActionBean.isPersonalAccident}" />
+								<p:selectOneMenu id="periodMonth" converter="omnifaces.SelectItemsConverter" required="#{not empty param[isRequired.clientId]}"
+									value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.periodOfYears}" rendered="#{EditLifeProposalReversalActionBean.isPersonalAccident}">
+									<f:selectItem itemLabel="-- Select Period --" noSelectionOption="true" />
+									<f:selectItems value="#{EditLifeProposalReversalActionBean.periodMonths}" var="month" />
+								</p:selectOneMenu>
+								<p:outputLabel />
+								<p:message for="periodYear" />
+								<h:outputText styleClass="input-label mandatory" value="Period of Insurance (Years)" rendered="#{EditLifeProposalReversalActionBean.isShortEndowLife or EditLifeProposalReversalActionBean.isSinglePremiumCreditLife or EditLifeProposalReversalActionBean.isSinglePremiumEndowmentLife or EditLifeProposalReversalActionBean.isShortTermSinglePremiumCreditLife}" />
+								<p:selectOneMenu id="periodYear" converter="omnifaces.SelectItemsConverter" required="#{not empty param[isRequired.clientId]}"
+									value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.periodOfYears}" rendered="#{EditLifeProposalReversalActionBean.isShortEndowLife or EditLifeProposalReversalActionBean.isSinglePremiumEndowmentLife or EditLifeProposalReversalActionBean.isSinglePremiumCreditLife or EditLifeProposalReversalActionBean.isShortTermSinglePremiumCreditLife}">
+									<f:selectItem itemLabel="-- Select Period --" noSelectionOption="true" />
+									<f:selectItems value="#{EditLifeProposalReversalActionBean.spPeriodYear}" var="year" />
+								</p:selectOneMenu>
+								<p:message for="selectOneMenu" />
+								<h:outputText styleClass="input-label mandatory" value="Classification Of Health" rendered="#{EditLifeProposalReversalActionBean.isGroupLife}" />
+								<p:selectOneMenu required="true" id="selectOneMenu" rendered="#{EditLifeProposalReversalActionBean.isGroupLife}"  converter="omnifaces.SelectItemsConverter" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.classificationOfHealth}">
+									<f:selectItem itemLabel="Select Class" />
+									<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditLifeProposalReversalActionBean.classificationHealthList}" var="type" />
+<!-- 									<p:ajax event="valueChange" listener="#{EditLifeProposalReversalActionBean.loadDefaultClassOfHealth(EditLifeProposalReversalActionBean.insuredPersonInfoDTO.classificationOfHealth)}" update="lifeProposalEntryForm" /> -->
+								</p:selectOneMenu>
+								
+								<p:outputLabel />
+								<p:message for="typesOfSport" />
+								<h:outputText styleClass="input-label" value="TypesOfSport" rendered="#{EditLifeProposalReversalActionBean.isSportMan}" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="typesOfSportPanelGroup" rendered="#{EditLifeProposalReversalActionBean.isSportMan}">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="typesOfSportPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{EditLifeProposalReversalActionBean.selectTypesOfSport()}"
+												id="selectTypesOfSportDialogLink1" process="@this">
+												<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnTypesOfSport}" update="typesOfSport" />
+											</p:commandButton>
+											<p:inputText id="typesOfSport" readonly="true"
+												value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.typesOfSport == null ? '' : EditLifeProposalReversalActionBean.insuredPersonInfoDTO.typesOfSport.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.setTypesOfSport(null)}" process="@this"
+												update="typesOfSport" />
+										</div>
+									</div>
+								</p:panelGrid>
+								<p:outputLabel />	
+															
+						<p:outputPanel id ="simpleLifeContainer" layout="block" rendered="#{EditLifeProposalReversalActionBean.showSimpleLifeSurvey}">
+
+						<!--  BMI's Weight and Height for Simple Life -->	
+										<p:message for="weight" display="text" rendered="#{EditLifeProposalReversalActionBean.isSimpleLife}" />
+										<h:outputText styleClass="input-label mandatory" value="Weight" rendered="#{EditLifeProposalReversalActionBean.isSimpleLife}" />
+										<p:inputText id="weight" rendered="#{EditLifeProposalReversalActionBean.isSimpleLife}" required="#{not empty param[isRequired.clientId]}"
+											value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.weight}">
+											<o:validator disabled="#{empty param[isRequired.clientId]}" minimum="1" validatorId="javax.faces.LongRange" />
+											<p:ajax event="valueChange" listener="#{EditLifeProposalReversalActionBean.calculateBMI()}" update="bmi" />
+										</p:inputText>
+										
+										<h:outputText rendered="#{EditLifeProposalReversalActionBean.isSimpleLife}" value="Height" styleClass="input-label mandatory" style="margin-top:50px !important;" />
+										<p:panelGrid columns="2" rendered="#{EditLifeProposalReversalActionBean.isSimpleLife}">
+											<p:message for="feets" display="text" style="margin-left:-10" />
+											<p:message for="inches" display="text" style="margin-left:-10" />
+											<p:inputText id="feets" placeholder="Feets" required="#{not empty param[isRequired.clientId]}" style="margin-left:-10"
+												value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.feets}">
+												<p:ajax event="valueChange" listener="#{EditLifeProposalReversalActionBean.calculateBMI()}" update="bmi" />
+												<o:validator disabled="#{empty param[isRequired.clientId]}" minimum="1" validatorId="javax.faces.LongRange" />
+											</p:inputText>
+											<p:inputText id="inches" placeholder="Inches" required="#{not empty param[isRequired.clientId]}" style="margin-left:-10"
+												value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.inches}">
+												<o:validator disabled="#{empty param[isRequired.clientId]}" minimum="0" validatorId="javax.faces.LongRange" />
+												<p:ajax event="valueChange" listener="#{EditLifeProposalReversalActionBean.calculateBMI()}" update="bmi" />
+											</p:inputText>
+										</p:panelGrid>
+										
+										<p:outputLabel />
+										<p:message display="text" for="bmi" />
+										<h:outputText rendered="#{EditLifeProposalReversalActionBean.isSimpleLife}" value="BMI" styleClass="input-label mandatory" style="margin-top:50px !important;" />
+										<p:inputText id="bmi" required="#{not empty param[isRequired.clientId]}" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.bmi}">
+											<o:validator disabled="#{empty param[isRequired.clientId]}" minimum="0" validatorId="javax.faces.LongRange" />
+										</p:inputText>
+										<p:outputLabel />
+						
+						<p:outputLabel/>
+										<p:outputPanel>
+											<h:outputText styleClass="input-label"
+												value="1. Have you ever had or been told you had or been treated for cancer, tumor, cyst, hypertension, stroke, diabetes, SLE, HIV/AIDS or any disease/ disorder of the heart, lungs, kidney, liver (including Hepatitis B/C), thyroid gland, digestive system, genitourinary system (including breast), blood /circulatory system, brain / nervous system, spine / joints or any mental disorder,
+								 disability / paralysis, congenital condition, illegal drug usage or alcohol addiction?"
+												rendered="#{EditLifeProposalReversalActionBean.isSimpleLife}" />
+											<p:outputLabel />
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="survery1" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.surveyquestionOne}"
+												rendered="#{EditLifeProposalReversalActionBean.isSimpleLife}" required="#{not empty param[isRequired.clientId]}">
+												<f:selectItem itemLabel=" --  --" noSelectionOption="true" itemDisabled="true" />
+												<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditLifeProposalReversalActionBean.surveyAnswerOne}" var="type" />
+											</p:selectOneMenu>
+										</p:outputPanel>
+										<p:outputLabel />
+										<p:outputPanel>
+											<h:outputText styleClass="input-label"
+												value="2. Have you ever engaged or do you consider to engage in any dangerous activities as sports or occupation, such as sky diving, mountain climbing, 
+								horse racing, scuba diving, motor vehicle racing or travelling to oil rig? "
+												rendered="#{EditLifeProposalReversalActionBean.isSimpleLife}" />
+											<p:outputLabel />
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="survery2" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.surveyquestionTwo}"
+												rendered="#{EditLifeProposalReversalActionBean.isSimpleLife}" required="#{not empty param[isRequired.clientId]}">
+												<f:selectItem itemLabel=" --  --" noSelectionOption="true" itemDisabled="true" />
+												<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditLifeProposalReversalActionBean.surveyAnswerTwo}" var="type" />
+											</p:selectOneMenu>
+										</p:outputPanel>
+										
+								</p:outputPanel>
+							</p:panelGrid>
+						</p:panelGrid>
+						<p:column rendered="#{EditLifeProposalReversalActionBean.isPersonalAccident}">
+							<h:panelGroup id="addOnTablePanel" style="width:100%">
+								<fieldset>
+									<legend>
+										<table>
+											<tr>
+												<td><p:commandLink action="#{EditLifeProposalReversalActionBean.selectAddOn()}" immediate="true">
+														<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+														<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnAddOn}" update="insuredPersonAddOnTable" />
+													</p:commandLink></td>
+												<td><h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_ADDON_LABLE']}" /></td>
+											</tr>
+										</table>
+									</legend>
+									<p:dataTable id="insuredPersonAddOnTable" style="width:100%" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.insuredPersonAddOnDTOList}"
+										var="insuPesAddOn">
+										<p:column headerText="AddOn">
+											<h:outputText value="#{insuPesAddOn.addOn.name}" />
+										</p:column>
+										<p:column headerText="AddOn Type">
+											<h:outputText value="#{insuPesAddOn.addOn.addOnType.label}" />
+										</p:column>
+										<p:column style="width:50px; text-align:center;" headerText="Delete">
+											<p:commandLink action="#{EditLifeProposalReversalActionBean.removeAddOn(insuPesAddOn)}" id="removeInsuPesAddOnLink" update=":lifeProposalEntryForm:addOnTablePanel">
+												<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+											</p:commandLink>
+										</p:column>
+									</p:dataTable>
+								</fieldset>
+							</h:panelGroup>
+						</p:column>
+						<p:message for="beneficiariesInfoTablePanel" />
+						<h:panelGroup id="beneficiariesInfoTablePanel" style="width: 100%">
+							<fieldset>
+								<legend>
+									<table>
+										<tr>
+											<td><p:commandLink id="beneficiarieid" action="#{EditLifeProposalReversalActionBean.prepareAddNewBeneficiariesInfo()}" immediate="true"
+													oncomplete="PF('beneficiariesInfoEntryDialog').show()" update=":beneficiaryInfoEntryForm">
+													<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+												</p:commandLink></td>
+											<td><h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIESINFO_LABLE']}" /></td>
+										</tr>
+									</table>
+								</legend>
+								<p:dataTable id="beneficiaryPersonTable" style="width:100%" value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTO.beneficiariesInfoDTOList}" var="beneficiary">
+									<p:column headerText="Beneficiary">
+										<h:outputText value="#{beneficiary.organization == null ? beneficiary.fullName : beneficiary.organization.name}" />
+									</p:column>
+									<p:column headerText="Age">
+										<h:outputText value="#{beneficiary.organization == null ? beneficiary.age : '-'}" />
+									</p:column>
+									<p:column headerText="Gender">
+										<h:outputText value="#{beneficiary.organization == null ? beneficiary.gender : '-'}" />
+									</p:column>
+									<p:column headerText="ID NO.">
+										<h:outputText value="#{beneficiary.organization == null ? beneficiary.fullIdNo : beneficiary.organization.regNo}" />
+									</p:column>
+									<p:column headerText="Relationship">
+										<h:outputText value="#{beneficiary.relationship.name}" />
+									</p:column>
+									<p:column headerText="Beneficiary Percentage">
+										<h:outputText value="#{beneficiary.percentage}%" />
+									</p:column>
+									<p:column style="width:4%;" headerText="Edit">
+										<p:commandButton styleClass="green-button" icon="fa fa-paint-brush" action="#{EditLifeProposalReversalActionBean.prepareEditBeneficiariesInfo(beneficiary)}"
+											immediate="true" oncomplete="PF('beneficiariesInfoEntryDialog').show()" update=":beneficiaryInfoEntryForm">
+										</p:commandButton>
+									</p:column>
+									<p:column style="width:4%;" headerText="Delete">
+										<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{EditLifeProposalReversalActionBean.removeBeneficiariesInfo(beneficiary)}" process="@this"
+											id="removeBeneficiaryLink" update=":lifeProposalEntryForm:beneficiariesInfoTablePanel">
+											<p:confirm header="Confirmation" message="#{beneficiary.fullName} : #{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+										</p:commandButton>
+									</p:column>
+								</p:dataTable>
+							</fieldset>
+						</h:panelGroup>
+						<br />
+						<p:commandButton style="width: 80px;" action="#{EditLifeProposalReversalActionBean.saveInsuredPersonInfo}" id="addInsuredPersonInfoBtn"
+							update=":lifeProposalEntryForm:insuredPersonInfoWizardPanel"
+							value="#{EditLifeProposalReversalActionBean.createNewInsuredPersonInfo ? label['COMMON_ADDNEW_BTN'] : label['COMMON_UPDATE_BTN']}" binding="#{isRequired}" />
+						<br />
+						<p:separator style="height:2px" />
+						<h:panelGrid columns="4">
+							<h:commandLink action="#{EditLifeProposalReversalActionBean.prepareAddNewInsuredPersonInfo()}" immediate="true" update=":lifeProposalEntryForm:insuredPersonInfoWizardPanel">
+								<f:ajax render=":lifeProposalEntryForm:insuredPersonInfoWizardPanel" />
+								<h:panelGrid columns="2">
+									<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+									<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+								</h:panelGrid>
+							</h:commandLink>
+							<p:fileUpload allowTypes="/(\.|\/)(xls|xlsx)$/" mode="simple" rendered="#{EditLifeProposalReversalActionBean.organization}" sizeLimit="50000"
+								value="#{EditLifeProposalReversalActionBean.uploadedFile}" />
+							<p:commandButton actionListener="#{EditLifeProposalReversalActionBean.upload}" ajax="false" rendered="#{EditLifeProposalReversalActionBean.organization}" value="Submit" />
+							<p:message for="insuredPersonInfoDTOTable" />
+						</h:panelGrid>
+						<p:dataTable id="insuredPersonInfoDTOTable" rowStyleClass="#{empty insuredPersonInfoDTO.beneficiariesInfoDTOList ? 'rowWarnning' : null}" style="width:100%"
+							value="#{EditLifeProposalReversalActionBean.insuredPersonInfoDTOList}" var="insuredPersonInfoDTO">
+							<p:column headerText="Name">
+								<h:outputText value="#{insuredPersonInfoDTO.fullName}" />
+							</p:column>
+							<p:column headerText="Date Of Birth">
+								<h:outputText value="#{insuredPersonInfoDTO.dateOfBirth}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Father Name">
+								<h:outputText value="#{insuredPersonInfoDTO.fatherName}" />
+							</p:column>
+							<p:column headerText="Sum Insured">
+								<h:outputText style="float: right;" value="#{insuredPersonInfoDTO.sumInsuredInfo}">
+									<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Product Type" style="text-align: center">
+								<h:outputText value="#{insuredPersonInfoDTO.product.name}" />
+							</p:column>
+							<p:column headerText="Age" style="text-align:left;">
+								<h:outputText value="#{insuredPersonInfoDTO.ageForNextYear}" />
+							</p:column>
+							<p:column headerText="Period" rendered="#{!EditLifeProposalActionBean.isSimpleLife}">
+								<h:outputText style="float:left;" value="#{insuredPersonInfoDTO.periodOfYears} #{EditLifeProposalReversalActionBean.isMonthBase ? '- Month' : '- Years'}" rendered="#{!EditLifeProposalActionBean.isSimpleLife}"/>
+							</p:column>
+							<p:column headerText="Period" style="text-align:left;" rendered="#{EditLifeProposalActionBean.isSimpleLife}">
+								<h:outputText value="#{insuredPersonInfoDTO.periodValue}" rendered="#{EditLifeProposalActionBean.isSimpleLife}" />
+							</p:column>
+							<p:column headerText="End Date">
+								<h:outputText value="#{insuredPersonInfoDTO.endDate}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</h:outputText>
+							</p:column>
+							<p:column style="width:4%;" headerText="Edit">
+								<p:commandButton styleClass="green-button" icon="fa fa-paint-brush" action="#{EditLifeProposalReversalActionBean.prepareEditInsuredPersonInfo(insuredPersonInfoDTO)}"
+									process="@this" update=":lifeProposalEntryForm:insuredPersonInfoWizardPanel">
+								</p:commandButton>
+							</p:column>
+							<p:column style="width:4%;" headerText="Delete">
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{EditLifeProposalReversalActionBean.removeInsuredPersonInfo(insuredPersonInfoDTO)}"
+									update=":lifeProposalEntryForm:insuredPersonInfoWizardPanel">
+									<p:confirm header="Confirmation" message="#{insuredPersonInfoDTO.fullName} : #{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</p:panel>
+				</p:tab>
+			</p:wizard>
+			<p:commandButton action="dashboard" immediate="true" value="#{label['COMMON_CANCEL_BTN']}" />
+			<p:commandButton id="updateBtn" action="#{EditLifeProposalReversalActionBean.updateLifeProposal}" update=":lifeProposalEntryForm" value="Update" process="@this" />
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			<br />
+		</h:form>
+		<p:dialog header="#{label['MANAGE_INSUREDPERSON_BENEFICIARIESINFO_LABLE']}" hideEffect="explode" id="beneficiariesInfoEntryDialog" resizable="false" showEffect="explode"
+			width="1000" height="450" visible="#{facesContext.validationFailed}" widgetVar="beneficiariesInfoEntryDialog" dynamic="true" modal="true" appendTo="@(body)">
+			<h:form id="beneficiaryInfoEntryForm">
+				<p:panel>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<c:if test="#{EditLifeProposalReversalActionBean.singlePremiumCreditLife or EditLifeProposalReversalActionBean.shortTermSinglePremiumCreditLife}">
+								<h:outputText styleClass="input-label mandatory" value="#{label['ADDNEWLIFEPROPOSAL_CUSTOMER_LABEL']}" />
+								<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="needBeneSurvey" value="#{EditLifeProposalReversalActionBean.beneOrganization}">
+									<f:selectItem itemLabel="Person" itemValue="false" />
+									<f:selectItem itemLabel="Organization" itemValue="true" />
+									<p:ajax event="valueChange" listener="#{EditLifeProposalReversalActionBean.changeBeneOrgEvent}" update="beneficiaryInfoEntryForm" />
+								</p:selectOneRadio>
+								<p:outputLabel />
+								<p:message for="beneficiaryInfoEntryForm" />
+								<p:outputLabel />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="customerPanelGroup">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="customerPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton rendered="#{!EditLifeProposalReversalActionBean.beneOrganization}" styleClass="green-button" icon="fa fa-search"
+												actionListener="#{EditLifeProposalReversalActionBean.selectCustomer()}" id="selectCustomerDialogLink" process="@this">
+												<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnBeneCustomer}" update="beneficiaryInfoEntryForm" />
+											</p:commandButton>
+											<p:commandButton rendered="#{EditLifeProposalReversalActionBean.beneOrganization}" styleClass="green-button" icon="fa fa-search"
+												actionListener="#{EditLifeProposalReversalActionBean.selectOrganization()}" id="selectOrganizationDialogLink" process="@this">
+												<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnBeneOrganization}" update="beneficiaryInfoEntryForm" />
+											</p:commandButton>
+											<p:inputText id="customer" required="true" readonly="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.getFullName() == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{!EditLifeProposalReversalActionBean.beneOrganization ? EditLifeProposalReversalActionBean.beneficiariesInfoDTO.getFullName() : EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times"
+												action="#{EditLifeProposalReversalActionBean.prepareAddNewBeneficiariesInfo()}" process="@this" update="beneficiaryInfoEntryForm" />
+										</div>
+									</div>
+								</p:panelGrid>
+							</c:if>
+							
+							<c:if test="#{!EditLifeProposalReversalActionBean.beneOrganization}">
+								<p:outputLabel />
+								<p:message for="initialId" />
+								<h:outputText styleClass="input-label mandatory" value="Salutation" />
+								<p:inputText id="initialId" required="true" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.initialId}">
+									<f:validateLength maximum="50" />
+								</p:inputText>
+								<p:outputLabel />
+								<p:message for="firstName" />
+								<h:outputText styleClass="input-label mandatory" value="First Name" />
+								<p:inputText id="firstName" required="true" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.name.firstName}">
+									<f:validateLength maximum="100" />
+								</p:inputText>
+								<p:outputLabel />
+								<p:message for="middleName" />
+								<h:outputText styleClass="input-label" value="Middle Name" />
+								<p:inputText id="middleName" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.name.middleName}">
+									<f:validateLength maximum="100" />
+								</p:inputText>
+								<p:outputLabel />
+								<p:message for="lastName" />
+								<h:outputText styleClass="input-label" value="Last Name" />
+								<p:inputText id="lastName" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.name.lastName}">
+									<f:validateLength maximum="100" />
+								</p:inputText>
+								<h:outputText />
+								<p:message for="idNo" display="text" />
+								<h:outputText styleClass="input-label mandatory" value="ID Type" />
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="idType" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idType}">
+									<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditLifeProposalReversalActionBean.idTypes}" var="type" />
+									<p:ajax event="valueChange" update="beneIdNoPanelGrid beneIdNo" listener="#{EditLifeProposalReversalActionBean.changeBeneIdType}" />
+								</p:selectOneMenu>
+								<h:outputText />
+								<h:panelGrid columns="5" id="beneIdNoPanelGrid">
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuredPersonstateCode"
+										rendered="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idType ne 'STILL_APPLYING' and EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idType ne 'FRCNO' and
+										EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idType ne 'PASSPORTNO'}"
+										required="true" style="width:55px;" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.provinceCode}">
+										<f:selectItem itemLabel="---" noSelectionOption="true" />
+										<f:selectItems var="stateCode" itemLabel="#{stateCode.codeNo}" itemValue="#{stateCode.codeNo}" value="#{EditLifeProposalReversalActionBean.stateCodeList}" />
+										<p:ajax event="valueChange" listener="#{EditLifeProposalReversalActionBean.changeBeneStateCode}" update="beneTownshipCode" />
+									</p:selectOneMenu>
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="beneTownshipCode" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.townshipCode}"
+										rendered="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idType ne 'STILL_APPLYING' and EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idType ne 'FRCNO' and
+										EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idType ne 'PASSPORTNO'}"
+										required="true" style="width:100px;">
+										<f:selectItem itemLabel="---" noSelectionOption="true" />
+										<f:selectItems var="townshipCode" itemLabel="#{townshipCode.townshipcodeno}" itemValue="#{townshipCode.townshipcodeno}"
+											value="#{EditLifeProposalReversalActionBean.benTownshipCodeList}" />
+									</p:selectOneMenu>
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuredPersonidConditionType"
+										value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idConditionType}" style="width:50px;"
+										rendered="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idType ne 'STILL_APPLYING' and EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idType ne 'FRCNO' and
+										EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idType ne 'PASSPORTNO'}">
+										<f:selectItems itemLabel="#{type.label}" itemValue="#{type.label}" value="#{EditLifeProposalReversalActionBean.idConditionType}" var="type" />
+									</p:selectOneMenu>
+									<p:inputText id="idNo" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idNo}" required="true"
+										rendered="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idType eq 'NRCNO' }" maxlength="6"
+										style="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idType eq 'NRCNO'?'width:60px':'width:280px'};">
+										<f:validateLength maximum="6" minimum="6" />
+									</p:inputText>
+								</h:panelGrid>
+								<h:outputText />
+								<p:message for="beneRegIdNo" display="text" />
+								<h:outputText />
+								<h:panelGrid columns="1" id="beneIdNo" width="100%">
+									<p:inputText id="beneRegIdNo"
+										rendered="#{(EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idType eq 'FRCNO' or EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idType eq 'PASSPORTNO' ) and EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idType ne null}"
+										value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.idNo}" required="true" maxlength="30" />
+								</h:panelGrid>
+								<p:outputLabel />
+								<p:message for="gender" />
+								<h:outputText styleClass="input-label mandatory" value="Gender" />
+								<p:selectOneMenu required="true" converter="omnifaces.SelectItemsConverter" id="gender" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.gender}">
+									<f:selectItem itemLabel="" noSelectionOption="true" />
+									<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditLifeProposalReversalActionBean.gender}" var="type" />
+								</p:selectOneMenu>
+								
+							</c:if>
+							
+							<!-- Beneficiary Organization -->
+							<c:if test="#{(EditLifeProposalReversalActionBean.singlePremiumCreditLife or EditLifeProposalReversalActionBean.shortTermSinglePremiumCreditLife) and (EditLifeProposalReversalActionBean.beneOrganization)}">
+								<p:outputLabel/>
+								<p:message for="name" display="text"/>
+								<p:outputLabel/>
+								<p:message for="regNo" display="text"/>	 
+						
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_ORGANIZATION_NAME_LABEL']}" />
+			         			<p:inputText id="name" required="true" disabled="#{EditLifeProposalReversalActionBean.beneOrganization}" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.name}">
+									<f:validateLength maximum="100" />
+								</p:inputText>
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_ORGANIZATION_REGNO_LABEL']}" />
+								<p:inputText id="regNo" disabled="#{EditLifeProposalReversalActionBean.beneOrganization}" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.regNo}">
+									<f:validateLength maximum="300" />
+								</p:inputText>
+								
+								<p:outputLabel/>
+								<p:message for="branch" display="text"/>
+								<p:outputLabel/>
+								<p:message for="ownername" display="text"/>
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_CUSTOMER_BRANCH_LABEL']}" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="branchPanelGroup">
+									<div style="margin-top:-5px; margin-left:-5px;" class="ui-g ui-fluid" id="branchPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+											<p:commandButton styleClass="green-button" disabled="#{EditLifeProposalReversalActionBean.beneOrganization}" icon="fa fa-search" actionListener="#{ManageOrganizationActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+										       <p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnBeneBranch}" update="branch"/>
+										    </p:commandButton>
+										  	<p:inputText id="branch" disabled="#{EditLifeProposalReversalActionBean.beneOrganization}" readonly="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.branch == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true" 
+										  		value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.branch == null ? '' : EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.branch.name}"/>
+										    <p:commandButton styleClass="red-button" disabled="#{EditLifeProposalReversalActionBean.beneOrganization}" icon="fa fa-times" action="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.setBranch(null)}" process="@this" update="branch"/>
+										</div>
+									</div>
+								</p:panelGrid>
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_ORGANIZATION_OWNER_LABEL']}" />
+								<p:inputText id="ownername" disabled="#{EditLifeProposalReversalActionBean.beneOrganization}" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.ownerName}">
+									<f:validateLength maximum="100" />
+								</p:inputText>
+								
+								<p:outputLabel />
+								<p:message for="benePercentage" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_PERCENTAGE_LABEL']}" />
+								<p:inputText id="benePercentage" required="true" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.percentage}">
+									<f:validateDoubleRange minimum="1" maximum="100" />
+								</p:inputText>
+								
+							</c:if> 
+							
+						</p:panelGrid>
+						<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<c:if test="#{!EditLifeProposalReversalActionBean.beneOrganization}">
+								<p:outputLabel />
+								<p:message for="beneficiaryRelationShip" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_RELATIONSHIP_LABEL']}" />
+								<p:selectOneMenu required="true" converter="omnifaces.SelectItemsConverter" id="beneficiaryRelationShip"
+									value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.relationship}">
+									<f:selectItem itemLabel="" noSelectionOption="true" />
+									<f:selectItems value="#{EditLifeProposalReversalActionBean.relationshipList}" var="relationship" itemLabel="#{relationship.name}" itemValue="#{relationship}" />
+								</p:selectOneMenu>
+								<p:outputLabel />
+								<p:message for="percentage" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_PERCENTAGE_LABEL']}" />
+								<p:inputText id="percentage" required="true" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.percentage}">
+									<f:validateDoubleRange minimum="1" maximum="100" />
+								</p:inputText>
+								
+								<p:outputLabel />
+								<p:message for="dateOfBirth" />
+								<h:outputText styleClass="input-label" value="DateOfBirth" />
+								<p:inputMask id="dateOfBirth" mask="99-99-9999" placeholder="dd-mm-yyy"  value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.dateOfBirth}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+									<p:ajax event="valueChange" listener="#{EditLifeProposalReversalActionBean.calculateAgeForBene}" update="benificiaryAge" />
+								</p:inputMask>
+								
+								<p:outputLabel />
+								<p:message for="benificiaryAge" />
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_AGE_LABEL']}" />
+								<p:inputText id="benificiaryAge" disabled="true" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.age}" />
+								
+								<p:outputLabel />
+								<p:message for="phNumber" />
+								<h:outputText styleClass="input-label mandatory" value="Phone No." />
+								<p:inputText id="phNumber" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" required="true" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.contentInfo.phone}">
+									<f:validateLength maximum="30" />
+								</p:inputText>
+								
+								<p:outputLabel />
+								<p:message for="address" />
+								<h:outputText styleClass="input-label mandatory" value="Address" />
+								<p:inputTextarea id="address" required="true" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.residentAddress.residentAddress}">
+									<f:validateLength maximum="300" />
+								</p:inputTextarea>
+								
+								<p:outputLabel />
+								<p:message for="townShip" />
+								<h:outputText styleClass="input-label mandatory" value="TownShip" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="townShipPanelGroup2">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="townShipPanelGroup2">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{EditLifeProposalReversalActionBean.selectTownship()}" id="selectTownShipDialogLink2"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnTownShip}" update="townShip" />
+											</p:commandButton>
+											<p:inputText id="townShip" required="true"
+												readonly="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.residentAddress.township.name == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.residentAddress.township == null ? '' : EditLifeProposalReversalActionBean.beneficiariesInfoDTO.residentAddress.township.name}">
+												<f:validateLength maximum="36" />
+											</p:inputText>
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.residentAddress.setTownship(null)}"
+												process="@this" update="townShip" />
+										</div>
+									</div>
+								</p:panelGrid>
+							</c:if>
+							
+							<!-- Beneficiary Organization -->
+							<c:if test="#{(EditLifeProposalReversalActionBean.singlePremiumCreditLife or EditLifeProposalReversalActionBean.shortTermSinglePremiumCreditLife) and (EditLifeProposalReversalActionBean.beneOrganization)}">
+								<p:outputLabel/>
+								<p:message for="phone" display="text"/>
+								<p:outputLabel/>
+								<p:message for="mobile" display="text"/>
+								
+				  				<h:outputText styleClass="input-label" value="#{label['MANAGE_ORGANIZATION_PHONE_LABEL']}" />
+				  				<p:inputText id="phone" disabled="#{EditLifeProposalReversalActionBean.beneOrganization}" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.contentInfo.phone}" validatorMessage="Character does not allow and comma use when u adding one more">
+									<f:validateLength maximum="100" />
+									<f:validateRegex pattern="(\b\d[\d,-]*\b)?" />
+								</p:inputText>
+								
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_ORGANIZATION_MOBILE_LABEL']}"  />
+								<p:inputText id="mobile" disabled="#{EditLifeProposalReversalActionBean.beneOrganization}" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.contentInfo.mobile}" validatorMessage="Character does not allow and comma use when u adding one more">
+									<f:validateLength maximum="100" />
+									<f:validateRegex pattern="(\b\d[\d,-]*\b)?" />
+								</p:inputText>
+								
+								
+								<p:outputLabel/>
+								<p:message for="email" display="text"/>
+								<p:outputLabel/>
+								<p:message for="codeNo" display="text"/>
+								
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_ORGANIZATION_EMAIL_LABEL']}" />
+								<p:inputText id="email" disabled="#{EditLifeProposalReversalActionBean.beneOrganization}" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.contentInfo.email}" validatorMessage="email is invalid format">
+									<f:validateLength maximum="200" />
+									<f:validateRegex pattern="([\w\.-]*[a-zA-Z0-9_]@[\w]*.com)?" />	
+								</p:inputText>
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_ORGANIZATION_CODENO_LABEL']}" />
+								<p:inputText id="codeNo" disabled="#{EditLifeProposalReversalActionBean.beneOrganization}" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.codeNo}">
+									<f:validateLength maximum="2" />
+								</p:inputText>
+								
+								<p:outputLabel/>
+								<p:message for="fax" display="text"/>
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_ORGANIZATION_FAX_LABEL']}" />
+								<p:inputText id="fax" disabled="#{EditLifeProposalReversalActionBean.beneOrganization}" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.contentInfo.fax}">
+									<f:validateLength maximum="100" />
+								</p:inputText>
+								
+								<p:outputLabel/>
+								<p:message for="township" display="text"/>
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_ORGANIZATION_TOWNSHIP_LABEL']}" />								
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="townshipPanelGroup">
+									<div style="margin-top:-5px; margin-left:-5px;" class="ui-g ui-fluid" id="townshipPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" disabled="#{EditLifeProposalReversalActionBean.beneOrganization}" actionListener="#{ManageOrganizationActionBean.selectTownship()}" id="selectTownshipDialogLink" process="@this">
+										       <p:ajax event="dialogReturn" listener="#{EditLifeProposalReversalActionBean.returnTownship}" update="township"/>
+										    </p:commandButton>
+										  	<p:inputText id="township" disabled="#{EditLifeProposalReversalActionBean.beneOrganization}" readonly="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.address.township == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true" 
+										  		value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.address.township == null ? '' : EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.address.township.name}"/>
+										    <p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{EditLifeProposalReversalActionBean.beneOrganization}" action="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.address.setTownship(null)}" process="@this" update="township"/>
+										</div>
+									</div>
+								</p:panelGrid>
+								
+								<p:outputLabel/>
+								<p:message for="address" display="text"/>
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_ORGANIZATION_ADDRESS_LABEL']}" />
+								<p:inputTextarea id="address" required="true" rows="5" disabled="#{EditLifeProposalReversalActionBean.beneOrganization}" value="#{EditLifeProposalReversalActionBean.beneficiariesInfoDTO.organization.address.permanentAddress}">
+									<f:validateLength maximum="300" />
+								</p:inputTextarea>
+							</c:if> 
+						</p:panelGrid>
+					</p:panelGrid>
+				</p:panel>
+				<br />
+				<h:panelGroup id="beneficiariesInfoPanel">
+					<p:commandButton id="saveBtn" style="width: 60px;" action="#{EditLifeProposalReversalActionBean.saveBeneficiariesInfo()}"
+						update="@form :lifeProposalEntryForm:beneficiariesInfoTablePanel" value="Save" />
+					<p:spacer width="5" />
+					<p:commandButton immediate="true" style="width: 60px;" oncomplete="PF('beneficiariesInfoEntryDialog').hide()" value="Cancel" />
+				</h:panelGroup>
+			</h:form>
+		</p:dialog>
+		<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+		</p:confirmDialog>
+	</ui:define>
+</ui:composition>

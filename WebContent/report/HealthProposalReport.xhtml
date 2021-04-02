@@ -1,0 +1,194 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<h:form id="healthProposalListForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<h:outputText styleClass="table-title" value="#{label['HEALTH_PROPOSAL_REPORT']}" />
+			<p:separator style="height:3px" />
+			<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="startDate" value="From Date" />
+					<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{HealthProposalReportActionBean.criteria.startDate}"
+						timeZone="#{ApplicationSetting.timeZone}" />
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{HealthProposalReportActionBean.selectEntity()}" id="entityDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{HealthProposalReportActionBean.returnEntity}" update="entity branchPanelGroup selectSalePointPanelGrid" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true" value="#{HealthProposalReportActionBean.criteria.entity == null ? '' : HealthProposalReportActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{HealthProposalReportActionBean.removeEntity}" process="@this"
+									update="entity branchPanelGroup selectSalePointPanelGrid" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText styleClass="input-label" value="#{label['MANAGE_MOTORPROPOSAL_CUSTOMER_LABEL']}" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="selectCustomerPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{HealthProposalReportActionBean.selectCustomer()}" id="selectCustomerDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{HealthProposalReportActionBean.returnCustomer}" update="customer" />
+								</p:commandButton>
+								<p:inputText id="customer" readonly="true"
+									value="#{HealthProposalReportActionBean.criteria.customer == null ? '' : HealthProposalReportActionBean.criteria.customer.name.fullName}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{HealthProposalReportActionBean.criteria.setCustomer(null)}" process="@this" update="customer" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="endDate" value="To Date" />
+					<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{HealthProposalReportActionBean.criteria.endDate}"
+						timeZone="#{ApplicationSetting.timeZone}" />
+					<h:outputLabel />
+					<p:message for="branch" />
+					<h:outputText styleClass="input-label" value="#{label['ADDNEWLIFEPROPOSAL_BRANCH_LABEL']}" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" disabled="#{HealthProposalReportActionBean.criteria.entity==null?true:false}" icon="fa fa-search"
+									actionListener="#{HealthProposalReportActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{HealthProposalReportActionBean.returnBranch}" update="branch selectSalePointPanelGrid" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true" value="#{HealthProposalReportActionBean.criteria.branch == null ? '' : HealthProposalReportActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{HealthProposalReportActionBean.criteria.entity==null?true:false}" icon="fa fa-times"
+									action="#{HealthProposalReportActionBean.removeBranch()}" process="@this" update="branch selectSalePointPanelGrid" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText styleClass="input-label" value="Agent" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="selectAgentPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{HealthProposalReportActionBean.selectAgent}" id="selectAgentDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{HealthProposalReportActionBean.returnAgent}" update="agent" />
+								</p:commandButton>
+								<p:inputText id="agent" readonly="true" value="#{HealthProposalReportActionBean.criteria.agent == null ? '' : HealthProposalReportActionBean.criteria.agent.name.fullName}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{HealthProposalReportActionBean.criteria.setAgent(null)}" process="@this" update="agent" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText value="Sale Point " />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="selectSalePointPanelGrid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" disabled="#{HealthProposalReportActionBean.criteria.branch==null?true:false}" icon="fa fa-search"
+									actionListener="#{HealthProposalReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{HealthProposalReportActionBean.returnSalePoint}" update="salesPoints" />
+								</p:commandButton>
+								<p:inputText id="salesPoints" disabled="#{HealthProposalReportActionBean.criteria.branch==null?true:false}" readonly="true"
+									value="#{HealthProposalReportActionBean.criteria.salePoint == null ? '' : HealthProposalReportActionBean.criteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{HealthProposalReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salesPoints" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton style="width: 80px;" action="#{HealthProposalReportActionBean.filter}" update="@form:healthProposalListTable" value="Search" />
+				<p:commandButton style="width: 80px;" action="#{HealthProposalReportActionBean.resetCriteria}" update="@form" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="healthProposalListTable" lazy="true" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex"
+				rowKey="index" rows="10" rowsPerPageTemplate="5,10,15" value="#{HealthProposalReportActionBean.healthProposalReportList}" var="report" style="width:120%">
+				<f:facet name="header">
+					<h:commandLink action="#{HealthProposalReportActionBean.exportHealthProposalReport}" immediate="true">
+						<p:graphicImage style="width: 30px; height: 30px;" styleClass="#{ApplicationSetting.excelStyleClass}" value="#{ApplicationSetting.excelIcon}" />
+					</h:commandLink>
+					<p:spacer width="10px" />
+					<p:commandLink action="#{HealthProposalReportActionBean.generatePDFReport()}" immediate="true" oncomplete="PF('pdfPreviewDialog').show()" update="@form :pdfPreviewForm">
+						<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" title="PDF Print" url="#{ApplicationSetting.printIcon}" />
+					</p:commandLink>
+					<p:message for="healthProposalListTable" />
+				</f:facet>
+				<p:column headerText="No." style="width:3%;">
+					<h:outputText style="float: right;" value="#{rowIndex + 1}." />
+				</p:column>
+				<p:column headerText="Proposal No" styleClass="fixed-size" style="width:13%;">
+					<h:outputText value="#{report.proposalNo}" />
+				</p:column>
+				<p:column style="width: 8%;" styleClass="fixed-size" headerText="Date Of Proposed">
+					<h:outputText value="#{report.dateOfProposed}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:10%;" headerText="Customer Name">
+					<h:outputText value="#{report.customerName}" />
+				</p:column>
+				<p:column style="width: 10%;" styleClass="fixed-size" headerText="NRC No">
+					<h:outputText value="#{report.nrcNo}" />
+				</p:column>
+				<p:column style="width: 10%;" headerText="Father Name">
+					<h:outputText value="#{report.fatherName}" />
+				</p:column>
+				<p:column style="width: 13%;" styleClass="fixed-size" headerText="Address and Phone No">
+					<h:outputText value="#{report.addressAndPhoneNo}" />
+				</p:column>
+				<p:column style="width: 5%;" headerText="Basic Units" styleClass="fixed-size">
+					<h:outputText value="#{report.basicUnit}" />
+				</p:column>
+				<p:column style="width: 6%;" headerText="Additional Units" styleClass="fixed-size">
+					<h:outputText value="#{report.additionalUnit}" />
+				</p:column>
+				<p:column style="width: 5%;" headerText="Option (I) Units" styleClass="fixed-size">
+					<h:outputText value="#{report.option1Unit}" />
+				</p:column>
+				<p:column style="width: 5%; text-align: center" headerText="Option (II) Units" styleClass="fixed-size">
+					<h:outputText value="#{report.option2Unit}" />
+				</p:column>
+				<p:column style="width: 10%;" headerText="Premium" styleClass="fixed-size">
+					<h:outputText style="float: right;" value="#{report.premium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width: 10%;" styleClass="fixed-size" headerText="Agent Name And CodeNo">
+					<h:outputText value="#{report.agentNameAndCodeNo}" />
+				</p:column>
+				<p:column headerText="Workflow Task" style="width: 10%;">
+					<h:outputText value="#{report.workFlowTask.label}" />
+				</p:column>
+				<p:column headerText="Sale Point Name" styleClass="fixed-size" style="width:10%;">
+					<h:outputText value="#{report.salePointName}" />
+				</p:column>
+				<p:column headerText="Branch Name" styleClass="fixed-size" style="width:10%;">
+					<h:outputText value="#{report.branchName}" />
+				</p:column>
+				<p:column headerText="Responsible Person" style="width:7%;" styleClass="fixed-size">
+					<h:outputText value="#{report.responsiblePerson}" />
+				</p:column>
+				<p:column headerText="Remarks(Policy,Endorse)" styleClass="fixed-size" style="width: 10%;">
+					<h:outputText value="#{report.remark}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<!-- PDF Preview Form -->
+		<h:form enctype="multipart/form-data" id="pdfPreviewForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview (PDF)" width="1070" height="505" hideEffect="fade" id="pdfPreviewDialog" resizable="false" showEffect="fade"
+				widgetVar="pdfPreviewDialog">
+				<p:media width="1050" height="500" player="pdf" value="#{HealthProposalReportActionBean.stream}" cache="false" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

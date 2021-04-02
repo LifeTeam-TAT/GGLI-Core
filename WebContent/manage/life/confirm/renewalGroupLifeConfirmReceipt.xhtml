@@ -1,0 +1,238 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="GroupLife Renewal Confirmation" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="proposalReceiiptEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" escape="false"/>
+			<p:panel>
+				<table>
+					<tr>
+						<td>
+							<h:outputText value=""/>
+						</td>
+						<td>
+							<p:message for="totalPremium"/>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 150px;">
+							<h:outputText styleClass="input-label" value="Total Premium"/>
+						</td>
+						<td>
+							<p:inputText id="totalPremium" readonly="true" style="width:250px; text-align: right;" value="#{RenewalGroupLifeReceiptActionBean.lifeProposal.approvedTotalPremium}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}"/>
+							</p:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value="" />
+						</td>
+						<td>
+							<p:message for="totalTermPremium" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Term Premium" />
+						</td>
+						<td>
+							<p:inputText id="totalTermPremium" readonly="true" style="width:250px; text-align: right;" value="#{RenewalGroupLifeReceiptActionBean.lifeProposal.totalBasicTermPremium}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value=""/>
+						</td>
+						<td>
+							<p:message for="amount"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Discount Percent"/>
+						</td>
+						<td>
+							<p:inputText id="amount" style="width:250px; text-align: right;" value="#{RenewalGroupLifeReceiptActionBean.payment.discountPercent}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}"/>
+								<f:validateDoubleRange maximum="100"/>
+							</p:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value=""/>
+						</td>
+						<td>
+							<p:message for="additionalCharges"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Service Charges"/>
+						</td>
+						<td>
+							<p:inputText id="additionalCharges" style="width:250px; text-align: right;" value="#{RenewalGroupLifeReceiptActionBean.payment.servicesChargesNum}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}"/>
+							</p:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value=""/>
+						</td>
+						<td>
+							<p:message for="stampFees"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Policy Stamp Fees"/>
+						</td>
+						<td>
+							<p:inputText disabled="true" id="stampFees" style="width:250px; text-align: right;" value="#{RenewalGroupLifeReceiptActionBean.payment.stampFees}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}"/>
+							</p:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value=""/>
+						</td>
+						<td>
+							<p:message for="paymentChannel"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Payment Channel"/>
+						</td>
+						<td>
+							<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="paymentChannel" required="true" value="#{RenewalGroupLifeReceiptActionBean.channelValue}">
+								<f:selectItems itemLabel="#{c.label}" itemValue="#{c}" value="#{RenewalGroupLifeReceiptActionBean.channelValues}" var="c"/>
+								<p:ajax event="valueChange" listener="#{RenewalGroupLifeReceiptActionBean.changePaymentChannel}" update=":proposalReceiiptEntryForm:chequeEntryTable"/>
+							</p:selectOneRadio>
+						</td>
+					</tr>
+				</table>
+				<p:outputPanel id="chequeEntryTable">
+					<table>
+						<tr>
+							<td>
+								<p:message for="accountBankName" id="accountBankMessage" rendered="#{RenewalGroupLifeReceiptActionBean.isAccountBank}"/>
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 150px;">
+								<h:outputText rendered="#{RenewalGroupLifeReceiptActionBean.isCheque}" styleClass="input-label" value="Account Bank"/>
+								<h:outputText rendered="#{RenewalGroupLifeReceiptActionBean.isTransfer}" styleClass="input-label" value="Account Clearing Bank"/>
+								<h:outputText rendered="#{RenewalGroupLifeReceiptActionBean.isSundry}" styleClass="input-label" value="Account Clearing Bank"/>
+							</td>
+							<td>
+								<h:panelGrid columns="3" id="accountBankPanelGroup" rendered="#{RenewalGroupLifeReceiptActionBean.isAccountBank}">
+									<p:inputText id="accountBankName" readonly="true" style="width:250px;margin-left:-4px;" value="#{RenewalGroupLifeReceiptActionBean.payment.accountBank == null ? '' : RenewalGroupLifeReceiptActionBean.payment.accountBank.name}"/>
+									<p:commandLink actionListener="#{RenewalGroupLifeReceiptActionBean.selectAccountBank()}" id="selectAccountBankDialogLink" immediate="true">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}"/>
+										<p:ajax event="dialogReturn" listener="#{RenewalGroupLifeReceiptActionBean.returnAccountBank}" update="accountBankPanelGroup"/>
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p:message for="bankName" id="bankMessage" rendered="#{RenewalGroupLifeReceiptActionBean.isBank}"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText rendered="#{RenewalGroupLifeReceiptActionBean.isCheque}" styleClass="input-label" value="Bank"/>
+								<h:outputText rendered="#{RenewalGroupLifeReceiptActionBean.isTransfer}" styleClass="input-label" value="Cheque Received Bank"/>
+							</td>
+							<td>
+								<h:panelGrid columns="3" id="bankPanelGroup" rendered="#{RenewalGroupLifeReceiptActionBean.isBank}">
+									<p:inputText id="bankName" readonly="true" style="width:250px;margin-left:-4px;" value="#{RenewalGroupLifeReceiptActionBean.payment.bank == null ? '' : RenewalGroupLifeReceiptActionBean.payment.bank.name}"/>
+									<p:commandLink actionListener="#{RenewalGroupLifeReceiptActionBean.selectBank()}" id="selectBankDialogLink" immediate="true">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}"/>
+										<p:ajax event="dialogReturn" listener="#{RenewalGroupLifeReceiptActionBean.returnBank}" update="bankPanelGroup"/>
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p:message for="chequeNo" id="chequeNoMessage" rendered="#{RenewalGroupLifeReceiptActionBean.isCheque}"/>
+								<p:message for="poNo" id="poNoMessage" rendered="#{RenewalGroupLifeReceiptActionBean.isTransfer}"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText rendered="#{RenewalGroupLifeReceiptActionBean.isCheque}" styleClass="input-label" value="Account No."/>
+								<h:outputText rendered="#{RenewalGroupLifeReceiptActionBean.isTransfer}" styleClass="input-label" value="PO / Cheque No."/>
+							</td>
+							<td>
+								<p:inputText id="chequeNo" rendered="#{RenewalGroupLifeReceiptActionBean.isCheque}" style="width:250px;margin-left:-2px;" value="#{RenewalGroupLifeReceiptActionBean.payment.chequeNo}"/>
+								<p:inputText id="poNo" rendered="#{RenewalGroupLifeReceiptActionBean.isTransfer}" style="width:250px;margin-left:-2px;" value="#{RenewalGroupLifeReceiptActionBean.payment.poNo}"/>
+							</td>
+						</tr>
+						<tr>
+							<td/>
+							<td>
+								<p:message for="bankWallet" id="MsgBankWallet" display="text" />
+								<p:message for="bankCharges" id="bankChargesAmt" />
+							</td>
+						</tr>
+						<tr>
+						<td>
+								<h:outputText rendered="#{RenewalGroupLifeReceiptActionBean.isTransfer}" styleClass="input-label" value="Bank Wallet" />
+							</td>
+							<td>
+								<p:panelGrid styleClass="ui-panelgrid-blank" rendered="#{RenewalGroupLifeReceiptActionBean.isTransfer}">
+									<div style="width: 275px; margin-left: -9px;" class="ui-g ui-fluid">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{RenewalGroupLifeReceiptActionBean.selectBankWallets()}" id="selectBankWalletLink"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{RenewalGroupLifeReceiptActionBean.returnBankWallet}" update="bankWallet bankCharges" />
+											</p:commandButton>
+											<p:inputText id="bankWallet" readonly="true"
+												value="#{RenewalGroupLifeReceiptActionBean.bankCharges.name}" >
+												 <f:ajax execute="@this" render="@this bankCharges" ></f:ajax> 
+												</p:inputText>
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{RenewalGroupLifeReceiptActionBean. removeBankWallet()}" process="@this" update="bankWallet bankCharges" />
+										</div>
+									</div>
+								</p:panelGrid>
+							</td>
+							</tr>
+						<tr>
+						<td>
+							<h:outputText rendered="#{RenewalGroupLifeReceiptActionBean.isTransfer}" styleClass="input-label" value="Charges" />
+							</td>
+							<td>
+								<p:inputText id="bankCharges" rendered="#{RenewalGroupLifeReceiptActionBean.isTransfer}" readonly="true"
+									style="width: 250px; margin-left: -4px;" value="#{RenewalGroupLifeReceiptActionBean.charges}">
+									<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+								</p:inputText>
+							</td>
+						</tr>
+					</table>
+				</p:outputPanel>
+				<h:panelGroup id="btnGroup">
+					<p:commandButton action="#{RenewalGroupLifeReceiptActionBean.addNewLifeProposalReceiptInfo}" disabled="#{RenewalGroupLifeReceiptActionBean.atualPayment}" 
+						id="addBtn" style="width: 80px;" update=":proposalReceiiptEntryForm" value=" OK "/>
+					<p:spacer width="5" />
+					<p:commandButton style="width: 80px;" action="confirmLifeProposal" id="cancelBtn" value="Cancel"/>
+					<p:spacer width="5" />
+					<p:commandButton action="#{RenewalGroupLifeReceiptActionBean.generateReport()}" disabled="#{!RenewalGroupLifeReceiptActionBean.atualPayment}" icon="ui-icon-print" id="pdfSingleBtn" oncomplete="PF('issuePolicyPDFDialogSingle').show()" update=":pdfPrintForm" value="Print Preview"/>
+				</h:panelGroup>
+			</p:panel>
+		</h:form>
+		<h:form enctype="multipart/form-data" id="pdfPrintForm">
+			<p:dialog appendTo="@(body)" dynamic="true" width="1070" height="505" id="issuePolicyPDFDialogSingle" resizable="false" widgetVar="issuePolicyPDFDialogSingle">
+				<p:ajax event="close" update=":pdfPrintForm :proposalReceiiptEntryForm" listener="#{RenewalGroupLifeReceiptActionBean.handleClose}" />
+				<p:media width="1050" height="500" id="pdfPlayer" player="pdf" value="#{RenewalGroupLifeReceiptActionBean.reportStream}" cache="false"/>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

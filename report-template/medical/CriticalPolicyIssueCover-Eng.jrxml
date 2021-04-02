@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="medicalPolicyIssueCover" pageWidth="669" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="629" leftMargin="20" rightMargin="20" topMargin="170" bottomMargin="20" resourceBundle="LANGUAGE_en" uuid="8b699523-3e76-4d79-b79b-d9bee73bb9a6">
+	<property name="ireport.zoom" value="0.826446280991736"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="156"/>
+	<parameter name="policyNo" class="java.lang.String"/>
+	<parameter name="customerName" class="java.lang.String"/>
+	<parameter name="reportLogo" class="java.lang.String"/>
+	<parameter name="issueCover" class="java.lang.String"/>
+	<parameter name="basicUnit" class="java.lang.String"/>
+	<parameter name="basicPlus" class="java.lang.String"/>
+	<parameter name="additional1" class="java.lang.String"/>
+	<parameter name="additional2" class="java.lang.String"/>
+	<parameter name="nextPaymentDate" class="java.lang.String"/>
+	<parameter name="nextTermPremium" class="java.lang.Double"/>
+	<parameter name="isCriticalIllness" class="java.lang.Boolean"/>
+	<parameter name="isHealth" class="java.lang.Boolean"/>
+	<detail>
+		<band height="624" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="275" y="130" width="328" height="20" uuid="19fde8c7-1a87-4fb3-9789-3ada5f9b0c1e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+					<paragraph leftIndent="10" rightIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{policyNo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="275" y="186" width="328" height="38" uuid="1561f3bb-feec-46f6-8c7d-fcc351a292fe"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="12" isBold="true"/>
+					<paragraph leftIndent="10" rightIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{customerName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="252" y="130" width="23" height="20" uuid="4d689223-4991-46ad-937b-8533552049f3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="252" y="186" width="23" height="20" uuid="039440c6-5bb4-49da-819f-ce106d6461a8"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="252" y="275" width="23" height="20" isRemoveLineWhenBlank="true" uuid="40a03a62-f61c-4d33-ba5a-8c78461ad6c4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="58" y="130" width="194" height="20" uuid="8fd646be-82fe-47a5-bab3-6c45b0342315"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+					<paragraph rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[   Policy No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="58" y="186" width="194" height="20" uuid="35ee1be2-589f-4aa1-b02c-38e0456a469e"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="12" isBold="true"/>
+					<paragraph rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[   Insured Person's Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="58" y="236" width="194" height="20" isRemoveLineWhenBlank="true" uuid="b6c553ea-b8c9-425b-8d66-cc576f05940f">
+					<printWhenExpression><![CDATA[!$P{basicUnit}.startsWith("0")]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+					<paragraph leftIndent="10" rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[Insured Units]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="58" y="275" width="194" height="20" isRemoveLineWhenBlank="true" uuid="b5e52667-5bbf-4772-b536-84c217a89ea5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+					<paragraph rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[   Insured Units Critical Illness]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="111" y="448" width="492" height="92" isRemoveLineWhenBlank="true" uuid="b43db000-5fec-4aee-a4d8-eec7389e9296"/>
+				<textElement verticalAlignment="Top" rotation="None">
+					<font fontName="Arial" size="12"/>
+					<paragraph lineSpacing="1_1_2" firstLineIndent="15" rightIndent="20"/>
+				</textElement>
+				<text><![CDATA[This insurance company during the insurance period undertakes to give the claim payment to the insured or the beneficiary under the terms and conditions or possible future amendements of this policy, after the premium payment is made for admission, surgery, treatment for critical illness and death as per the units bought.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="275" y="313" width="354" height="72" isRemoveLineWhenBlank="true" uuid="70bda439-24ad-4622-a5b2-597632e828f8">
+					<printWhenExpression><![CDATA[$P{nextTermPremium} != 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="12" isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="10" rightIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nextPaymentDate}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="275" y="385" width="328" height="20" isRemoveLineWhenBlank="true" uuid="75ad8af9-caea-40ce-9fd7-84130132daf7">
+					<printWhenExpression><![CDATA[$P{nextTermPremium} != 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+					<paragraph leftIndent="10" rightIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MMK"+$P{nextTermPremium} + "/-"]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="58" y="313" width="194" height="20" isRemoveLineWhenBlank="true" uuid="04c91ee4-000a-4feb-89d8-aeba8caa6261"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+					<paragraph leftIndent="10" rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[Date of Next Payment]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="58" y="385" width="194" height="20" isRemoveLineWhenBlank="true" uuid="474639bb-71c1-40d4-a30a-f67ee9718c3e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+					<paragraph leftIndent="10" rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[Next Premium Payment]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="275" y="275" width="343" height="20" isRemoveLineWhenBlank="true" uuid="c5e6f203-8ee8-4c37-8c37-ea21912b4214"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{basicUnit}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="58" y="64" width="500" height="20" uuid="dcdfbabf-04e5-4af5-8237-4904bdbc2ced"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Grand Guardian Nippon Life Insurance Co.,Ltd]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="68" y="448" width="43" height="29" uuid="23abf4dd-da3e-487f-b033-b2a6db4ee266"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Note -]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="252" y="313" width="23" height="20" isRemoveLineWhenBlank="true" uuid="e172fd74-ba29-45e2-8188-d355b7160d68"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="252" y="385" width="23" height="20" isRemoveLineWhenBlank="true" uuid="e8314706-6117-4954-aa3f-1c44c4d47006"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="287" y="313" width="23" height="20" isRemoveLineWhenBlank="true" uuid="309775b0-ef01-4525-aa4a-9527b54b2ac9">
+					<printWhenExpression><![CDATA[$P{nextTermPremium} == 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="287" y="385" width="23" height="20" isRemoveLineWhenBlank="true" uuid="abe6c731-9d9a-475c-b12e-99cd580ae70f">
+					<printWhenExpression><![CDATA[$P{nextTermPremium} == 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

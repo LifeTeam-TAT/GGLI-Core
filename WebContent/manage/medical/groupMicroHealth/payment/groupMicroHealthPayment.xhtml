@@ -1,0 +1,80 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui"
+	template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Group Micro Health Proposal Payment" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="inputForm">
+			<p:panel>
+				<table>
+					<tr>
+						<td><p:outputLabel>Sale Person</p:outputLabel> </td>
+						<td><p:inputText value="#{GroupMicroHealthPaymentActionBean.salePersonName}" readonly="true" style="width:250px;"></p:inputText> </td>
+					</tr>
+					<tr>
+						<td><p:outputLabel>Start Date</p:outputLabel></td>
+						<td><p:calendar value="#{GroupMicroHealthPaymentActionBean.groupMicroHealth.startDate}" pattern="#{ApplicationSetting.dateFormat}"
+								id="startDate" timeZone="#{ApplicationSetting.timeZone}"
+								showOn="button" required="true"
+								requiredMessage="Start Date is required!" style="width:250px;" readonly="true"/>
+							<p:message for="startDate" display="text"></p:message></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel>Number Of Insured Person</p:outputLabel></td>
+						<td><p:inputText id="noOfInsuredPerson" value="#{GroupMicroHealthPaymentActionBean.groupMicroHealth.numberOfInsuredPerson}" required="true"
+								requiredMessage="Number Of Insured Person is required!"
+								style="width:250px;" readonly="true">
+								<f:convertNumber integerOnly="true" type="number" />
+							</p:inputText> <p:message for="noOfInsuredPerson" display="text" /></td>
+					</tr>
+					<!-- <tr>
+						<td><p:outputLabel>Number Of unit</p:outputLabel></td>
+						<td><p:inputText id="noOfUnit" value="#{GroupMicroHealthPaymentActionBean.groupMicroHealth.numberOfUnit}" required="true"
+								requiredMessage="Number Of Unit is required!"
+								style="width:250px;" readonly="true">
+								<f:convertNumber integerOnly="true" type="number" />
+							</p:inputText> <p:message for="noOfUnit" display="text" /></td>
+					</tr> -->
+					<tr>
+						<td><p:outputLabel>Total Premium</p:outputLabel></td>
+						<td><p:inputText id="totalPremium" value="#{GroupMicroHealthPaymentActionBean.groupMicroHealth.totalPremium}" required="true"
+								requiredMessage="Total Premium is required!"
+								style="width:250px;" readonly="true">
+								<f:convertNumber type="number" />
+							</p:inputText> <p:message for="totalPremium" display="text" /></td>
+					</tr>
+					<!-- <tr>
+						<td><p:outputLabel>Responsible Person</p:outputLabel></td>
+						<td><h:panelGrid columns="3" id="responsiblePersonPanel">
+								<p:inputText id="responsiblePerson" required="true"
+									readonly="#{GroupMicroHealthPaymentActionBean.responsiblePerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+									style="width:250px;margin-left:-4px;"
+									value="#{GroupMicroHealthPaymentActionBean.responsiblePerson == null ? '' : GroupMicroHealthPaymentActionBean.responsiblePerson.name}" />
+								<p:commandLink
+									actionListener="#{GroupMicroHealthPaymentActionBean.selectUser()}"
+									id="selectUserDialogLink" immediate="true">
+									<h:graphicImage
+										styleClass="#{ApplicationSetting.searchStyleClass}"
+										url="#{ApplicationSetting.searchIcon}" />
+									<p:ajax event="dialogReturn"
+										listener="#{GroupMicroHealthPaymentActionBean.returnUser}"
+										update="responsiblePersonPanel" />
+								</p:commandLink>
+							</h:panelGrid> <p:message for="responsiblePerson" display="text" /></td>
+					</tr> -->
+					<tr>
+						<td>
+						<p:commandButton style="width: 70px;" action="#{GroupMicroHealthPaymentActionBean.paymentMedicalProposal()}" id="addBtn" value="Confirm" update=":inputForm" />
+			<p:spacer width="10" />
+			<p:commandButton style="width: 65px;" action="dashboard" id="cancelBtn" immediate="true" value="Cancel" />
+						</td>
+					</tr>
+				</table>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

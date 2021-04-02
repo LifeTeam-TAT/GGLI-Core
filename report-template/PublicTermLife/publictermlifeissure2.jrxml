@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="publictermlifeissure2" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7c5f5f52-5d21-409a-8c2d-2b611fad4bb0">
+	<property name="ireport.zoom" value="1.3310000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="316"/>
+	<parameter name="policyNo" class="java.lang.String"/>
+	<parameter name="agentName" class="java.lang.String"/>
+	<parameter name="customerName" class="java.lang.String"/>
+	<parameter name="customerAge" class="java.lang.Integer"/>
+	<parameter name="customerOccupation" class="java.lang.String"/>
+	<parameter name="customerAddress" class="java.lang.String"/>
+	<parameter name="insuredPersonName" class="java.lang.String"/>
+	<parameter name="insuredPersonAge" class="java.lang.Integer"/>
+	<parameter name="insuredPersonOccupation" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="71" splitType="Stretch"/>
+	</title>
+	<detail>
+		<band height="721" splitType="Stretch">
+			<staticText>
+				<reportElement x="165" y="0" width="233" height="20" uuid="66364833-c71b-4e34-a42d-3652640b4cb1"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ၿပည္သူျပည္သားႏွစ္ခ်င္းအသက္အာမခံ အာမခံေပၚလစီ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="29" width="65" height="20" uuid="17c89ffd-544f-4fb5-a159-3ba228d10552"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ေပၚလစီအမွတ္-	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="29" width="124" height="20" uuid="576d1acb-20e3-4be0-bd66-babac340cb15"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အာမခံကိုယ္စားလွယ္အမည္-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="85" y="29" width="100" height="20" uuid="20109b04-ab85-46c2-84aa-778656fd35bc"/>
+				<textFieldExpression><![CDATA[$P{policyNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="434" y="29" width="100" height="20" uuid="ca85766e-a582-48fb-98dc-e079d99e7457"/>
+				<textFieldExpression><![CDATA[$P{agentName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="63" width="555" height="67" uuid="a2c3d6a2-3bf4-477c-9880-b3d98ed58757"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[၁။   ျပည္သူျပည္သား ႏွစ္ခ်င္းအသက္အာမခံ အဆိုလႊာႏွင့္ က်န္းမာေရးစစ္ေဆးခ်က္ အေျဖမ်ားသည္ ေပၚလစီရွင္ ျဖစ္သည့္ ကြ်ႏု္ပ္ႏွင့္ အာမခံကုမၸဏီတို႔ ခ်ဳပ္ဆိုမည့္အာမခံစာခ်ဳပ္အတြက္ လိုအပ္ေသာ အေျခခံအခ်က္ၾကီးမ်ား ျဖစ္ေၾကာင္းႏွင့္ ၄င္းေဖာ္ျပခ်က္မ်ားႏွင့္ က်န္းမာေရး စစ္ေဆးခ်က္အေျဖမ်ားတြင္ မမွန္ကန္ေသာ အခ်က္ သို႔မဟုတ္ အခ်က္မ်ား ပါရွိခဲ့လွ်င္ အာမခံစာခ်ဳပ္ ပယ္ဖ်က္ခံရမည္ ျဖစ္ေၾကာင္းကို ေပၚလစီရွင္သည္ နားလည္သိရွိ္ သေဘာတူပါသည္။]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="130" width="555" height="50" uuid="d45a2e1b-7d32-4896-8ed7-34bdd3bd080e"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[၂။ ထိုကဲ့သို႔ ႏွစ္ဦးႏွစ္ဖက္ သေဘာတူညီၾကသည့္အေလ်ာက္ ေပၚလစီရွင္သည္ ေအာက္တြင္ ေဖာ္ျပထားသည့္ အတိုင္း ပရီမီယံကို ေပးသြင္းရမည္ျဖစ္ျပီး၊ဤကုမၸဏီသည္ အာမခံစာခ်ဳပ္၌ ေဖာ္ျပထားေသာ အခြင့္အေရး မ်ား၊ စည္းမ်ဥ္းမ်ား ၊ျပင္ဆင္ခ်က္မ်ားႏွင့္အညီ ေပၚလစီရွင္၊အာမခံထားသူႏွင့္ အက်ိဳးခံစားခြင့္ လဲႊေျပာင္းျခင္းခံရသူ ထံသို႔ ေပးေခ်ရန္ တာ၀န္ယူ ကတိျပဳပါသည္။]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="180" width="555" height="30" uuid="1ca7ee78-9d67-4776-bba3-6241fd5fa9b7"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[၃။ ဤအာမခံေပၚလစီသည္ အာမခံစာခ်ဳပ္ခ်ဳပ္ဆိုရန္ အဆိုျပဳျခင္းကို ဤကုမၸဏီက သေဘာတူလက္ခံလိုက္ျပီး၊ ေပၚလစီရွင္ထံမွ ပရီမီယံေၾကးကို လက္ခံရရွိေသာ အခ်ိန္တြင္ စတင္ အသက္၀င္မည္။]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="245" width="555" height="191" uuid="682c5368-8262-4279-aa1a-ad4139102d6f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="436" width="555" height="248" uuid="69604c8a-0f2a-4e68-97ba-db7dedc89589"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="45" y="257" width="57" height="20" uuid="b0896dc7-f058-4e82-b123-8eaa10eb903b"/>
+				<textElement>
+					<font fontName="Zawgyi-One" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ေပၚလစီရွင္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="287" width="179" height="20" uuid="ebd0c162-3a1e-49f3-a8a0-4b31d38f448b"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အမည္				-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="46" y="324" width="178" height="20" uuid="1b76f4d4-1f0d-4c7d-a985-de193f09f051"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ေနာင္ေမြးေန႔တြင္ျပည့္မည့္အသက္	-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="358" width="179" height="20" uuid="e75afd19-6363-4c4e-87bc-5e0323700d7d"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အလုပ္အကိုင္			-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="48" y="406" width="176" height="20" uuid="0bdcfe63-2a20-4508-9ed3-9bd447ca77c2"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ေနရပ္လိပ္စာ			-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="224" y="287" width="100" height="20" uuid="e0ca7eb6-875f-4b43-ab2b-514fc08dbf91"/>
+				<textFieldExpression><![CDATA[$P{customerName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="224" y="324" width="100" height="20" uuid="b7683928-6d9d-4037-bd25-f449ed37598e"/>
+				<textFieldExpression><![CDATA[$P{customerAge}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="224" y="358" width="118" height="20" uuid="78483011-281d-462b-954b-40a91ecbcd97"/>
+				<textFieldExpression><![CDATA[$P{customerOccupation}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="224" y="406" width="100" height="20" uuid="275a05c6-0514-43e1-a5e9-fb59619c6c0a"/>
+				<textFieldExpression><![CDATA[$P{customerAddress}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="47" y="463" width="65" height="20" uuid="5b5367d5-011d-4829-af75-17d55b8bf3aa"/>
+				<textElement>
+					<font fontName="Zawgyi-One" isBold="true"/>
+				</textElement>
+				<text><![CDATA[အာမခံထားသူ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="47" y="500" width="176" height="20" uuid="f4a1ad54-90a1-4c49-b6c5-c9f66cfcaf4c"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အမည္				-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="47" y="540" width="176" height="20" uuid="5ab89918-6c57-4bb1-beda-7161ffe4e5b5"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ေနာင္ေမြးေန႔တြင္ျပည့္မည့္အသက္	-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="594" width="178" height="20" uuid="04ac90fb-8b99-4907-a8f6-9ce6a37f754c"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အလုပ္အကိုင္			-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="223" y="500" width="133" height="20" uuid="f7bca8f6-d2cd-46b3-acf9-83b35c9c987e"/>
+				<textFieldExpression><![CDATA[$P{insuredPersonName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="223" y="540" width="133" height="20" uuid="f1f20cd2-caf5-43d5-a3a3-66bdb9c463d4"/>
+				<textFieldExpression><![CDATA[$P{insuredPersonAge}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="223" y="594" width="160" height="20" uuid="2d7b5daf-42ba-4ee3-8f6f-b2bf833ef152"/>
+				<textFieldExpression><![CDATA[$P{insuredPersonOccupation}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

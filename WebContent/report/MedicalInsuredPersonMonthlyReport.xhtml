@@ -1,0 +1,206 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="monthlyForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<table width="100%" style="margin-top: -6px;">
+				<tr>
+					<td><h:outputText id="title" styleClass="ui-widget ui-widget-header ui-corner-all submenu-title"
+							value="The Medical InsuredPerson Monthly Report Of #{ApplicationSetting.getMonthInString(MedicalInsuredPersonMonthlyReportActionBean.criteria.month)}, #{MedicalInsuredPersonMonthlyReportActionBean.criteria.year}" />
+						<p:separator style="height:3px; margin-top:1px;" /></td>
+				</tr>
+			</table>
+			<p:panel>
+				<p:panelGrid columns="3" id="MedicalInsuredPersonMonthlyReportPanelGroup" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid"
+					styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText styleClass="input-label" value="Entity" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{MedicalInsuredPersonMonthlyReportActionBean.selectEntity()}" id="entityDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{MedicalInsuredPersonMonthlyReportActionBean.returnEntity}" update="entity branchPanelGroup selectSalePointPanelGrid" />
+									</p:commandButton>
+									<p:inputText id="entity" readonly="true"
+										value="#{MedicalInsuredPersonMonthlyReportActionBean.criteria.entity == null ? '' :MedicalInsuredPersonMonthlyReportActionBean.criteria.entity.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{MedicalInsuredPersonMonthlyReportActionBean.removeEntity}" process="@this"
+										update="entity branchPanelGroup selectSalePointPanelGrid" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputLabel />
+						<h:outputLabel />
+						<h:outputLabel for="month" value="Month" />
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="month" value="#{MedicalInsuredPersonMonthlyReportActionBean.criteria.month}">
+							<f:selectItems value="#{MedicalInsuredPersonMonthlyReportActionBean.monthSet}" var="month" itemLabel="#{month}" itemValue="#{month.value}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText styleClass="input-label" value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" disabled="#{MedicalInsuredPersonMonthlyReportActionBean.criteria.entity==null?true:false}" icon="fa fa-search"
+										actionListener="#{MedicalInsuredPersonMonthlyReportActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{MedicalInsuredPersonMonthlyReportActionBean.returnBranch}" update="branch selectSalePointPanelGrid" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true"
+										value="#{MedicalInsuredPersonMonthlyReportActionBean.criteria.branch == null ? '' : MedicalInsuredPersonMonthlyReportActionBean.criteria.branch.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{MedicalInsuredPersonMonthlyReportActionBean.criteria.entity==null?true:false}" icon="fa fa-times"
+										action="#{MedicalInsuredPersonMonthlyReportActionBean.removeBranch()}" process="@this" update="branch selectSalePointPanelGrid" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputLabel />
+						<h:outputLabel />
+						<h:outputLabel for="year" value="Year" />
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="year" value="#{MedicalInsuredPersonMonthlyReportActionBean.criteria.year}">
+							<f:selectItems value="#{MedicalInsuredPersonMonthlyReportActionBean.years}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText value="Sale Point " />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="selectSalePointPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" disabled="#{MedicalInsuredPersonMonthlyReportActionBean.criteria.branch==null?true:false}" icon="fa fa-search"
+										actionListener="#{MedicalInsuredPersonMonthlyReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{MedicalInsuredPersonMonthlyReportActionBean.returnSalePoint}" update="salesPoints" />
+									</p:commandButton>
+									<p:inputText id="salesPoints" readonly="true"
+										value="#{MedicalInsuredPersonMonthlyReportActionBean.criteria.salePoint == null ? '' : MedicalInsuredPersonMonthlyReportActionBean.criteria.salePoint.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{MedicalInsuredPersonMonthlyReportActionBean.criteria.branch==null?true:false}" icon="fa fa-times"
+										action="#{MedicalInsuredPersonMonthlyReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salesPoints" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<p:spacer width="5px;" />
+			<p:commandButton action="#{MedicalInsuredPersonMonthlyReportActionBean.filter()}" update="customerTable title" value="Search" style="margin-top:5px;margin-bottom:5px;" />
+			<p:spacer width="5px;" />
+			<p:commandButton style="width: 80px;" action="#{MedicalInsuredPersonMonthlyReportActionBean.resetCriteria}" update="@form" value="Reset" />
+			<p:dataTable id="customerTable" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex"
+				rowKey="index" rows="10" rowsPerPageTemplate="5,10,15" style="width: 150%;" value="#{MedicalInsuredPersonMonthlyReportActionBean.healthMonthlyReporList}" var="report">
+				<f:facet name="header">
+					<h:commandLink title="Excel Export" action="#{MedicalInsuredPersonMonthlyReportActionBean.exportExcel}" immediate="true">
+						<p:graphicImage style="width: 25px; height: 25px;" styleClass="#{ApplicationSetting.excelStyleClass}" value="#{ApplicationSetting.excelIcon}" />
+					</h:commandLink>
+					<p:message for="customerTable" />
+				</f:facet>
+				<p:columnGroup type="header">
+					<p:row>
+						<p:column headerText="No." rowspan="2" colspan="1" style="width: 2%;" />
+						<p:column headerText="Policy No" rowspan="2" colspan="1" style="width: 8%;" styleClass="fixed-size" />
+						<p:column headerText="Policy Start Date" rowspan="2" colspan="1" style="width: 4%; text-align: center;" />
+						<p:column headerText="InsuredPerson Name" rowspan="2" colspan="1" style="width: 8%;" styleClass="fixed-size" />
+						<p:column headerText="Id No" rowspan="2" colspan="1" style="with: 4%; text-align: center;" styleClass="fixed-size" />
+						<p:column headerText="Gender" rowspan="2" colspan="1" style="with: 4% text-align: center;;" styleClass="fixed-size" />
+						<p:column headerText="Age" rowspan="2" colspan="1" style="with: 4%; text-align: center;" styleClass="fixed-size" />
+						<p:column headerText="Address" rowspan="2" colspan="1" style="with: 10%;" styleClass="fixed-size" />
+						<p:column headerText="Occupation" rowspan="2" colspan="1" style="with: 8%;" styleClass="fixed-size" />
+						<p:column headerText="DiseaseStatus" rowspan="2" colspan="1" style="with: 4%; text-align: center;" />
+						<p:column headerText="Unit" colspan="4" style="with: 20%;" styleClass="fixed-size" />
+						<p:column headerText="Premium" colspan="4" style="with: 20%;" styleClass="fixed-size" />
+						<p:column headerText="Branch Name" rowspan="2" colspan="1" style="with: 4%;" styleClass="fixed-size" />
+						<p:column headerText="SalePoint Name" rowspan="2" colspan="1" style="with: 4%;" styleClass="fixed-size" />
+					</p:row>
+					<p:row>
+						<p:column style="with: 5%; text-align: center" headerText="Unit" styleClass="fixed-size" />
+						<p:column style="with: 5%; text-align: center" headerText="Basic Plus Unit" styleClass="fixed-size" />
+						<p:column style="with: 5%; text-align: center" headerText="Total AddOn Unit" styleClass="fixed-size" />
+						<p:column style="with: 5%; text-align: center" headerText="Total Unit" styleClass="fixed-size" />
+						<p:column style="with: 50px;" headerText="Premium" styleClass="fixed-size" />
+						<p:column style="with: 50px;" headerText="BasicPlus Unit Premium" styleClass="fixed-size" />
+						<p:column style="with: 50px;" headerText="Total AddOn Premium" styleClass="fixed-size" />
+						<p:column style="with: 50px;" headerText="Total Premium" styleClass="fixed-size" />
+					</p:row>
+				</p:columnGroup>
+				<p:column>
+					<h:outputText style="float: right;" value="#{rowIndex + 1}." />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.policyNo}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.policyStartDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.insuredName}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.nrc}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.gender}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.age}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.address}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.occupation}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="" />
+				</p:column>
+				<p:column>
+					<h:outputText style="float: right;" value="#{report.unit}" />
+				</p:column>
+				<p:column>
+					<h:outputText style="float: right;" value="#{report.basicPlusUnit}" />
+				</p:column>
+				<p:column>
+					<h:outputText style="float: right;" value="#{report.addOnUnit}" />
+				</p:column>
+				<p:column>
+					<h:outputText style="float: right;" value="#{report.totalUnit}" />
+				</p:column>
+				<p:column>
+					<h:outputText style="float: right;" value="#{report.premium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText style="float: right;" value="#{report.basicPlusPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText style="float: right;" value="#{report.addOnPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText style="float: right;" value="#{report.totalPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.branchName}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.salePointName}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

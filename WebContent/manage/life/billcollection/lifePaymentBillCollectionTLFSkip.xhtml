@@ -1,0 +1,269 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Student Life  Bill Generation Skip" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<style>
+.fixed-size {
+	table-layout: fixed;
+	word-wrap: break-word;
+}
+</style>
+		<h:form id="paymentBillCollectionForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" />
+			<p:messages for="paymentBillCollectionForm" />
+			<p:panel>
+			<p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-5,ui-grid-col-4,ui-grid-col-3" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel/>
+					<p:message for="selectPolicyCriteria" display="text" />
+					<p:message for="policyCriteria" display="text" />
+					<p:selectOneMenu autoWidth="false" converter="omnifaces.SelectItemsConverter" id="referenceType" value="#{StudentLifePaymentSkipBillCollectionActionBean.policyCriteria.referenceType}" >
+						<f:selectItems itemLabel="#{type}" itemValue="#{type}" value="#{StudentLifePaymentSkipBillCollectionActionBean.referenceTypeSelectedItemList}" var="type" />
+					</p:selectOneMenu>
+					<p:selectOneMenu autoWidth="false" converter="omnifaces.SelectItemsConverter" id="selectPolicyCriteria" value="#{StudentLifePaymentSkipBillCollectionActionBean.policyCriteria.policyCriteria}">
+						<f:selectItem itemLabel="Select Criteria" />
+						<f:selectItems value="#{StudentLifePaymentSkipBillCollectionActionBean.policyCriteria.studentLifePolicyCriteriaItemList}" />
+					</p:selectOneMenu>
+					<p:inputText id="policyCriteria" value="#{StudentLifePaymentSkipBillCollectionActionBean.policyCriteria.criteriaValue}" />
+				</p:panelGrid>
+<!-- 				<p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid"> -->
+<!-- 					<p:outputLabel /> -->
+<!-- 					<p:message for="policyStartDate" display="text" /> -->
+<!-- 					<p:outputLabel /> -->
+<!-- 					<p:message for="policyEndDate" display="text" /> -->
+<!-- 					<h:outputText value="Payment Due Start Date : " /> -->
+<!-- 					<p:calendar id="policyStartDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}" -->
+<!-- 						value="#{StudentLifePaymentSkipBillCollectionActionBean.policyCriteria.fromDate}" /> -->
+<!-- 					<h:outputText value="Payment Due End Date : " /> -->
+<!-- 					<p:calendar id="policyEndDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}" -->
+<!-- 						value="#{StudentLifePaymentSkipBillCollectionActionBean.policyCriteria.toDate}" /> -->
+<!-- 				</p:panelGrid> -->
+			</p:panelGrid>
+			
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton action="#{StudentLifePaymentSkipBillCollectionActionBean.search}" id="searchBtn" value="Search" update=":paymentBillCollectionForm" />
+				<p:commandButton action="#{StudentLifePaymentSkipBillCollectionActionBean.reset()}" id="resetBtn" value="Reset" immediate="true" update=":paymentBillCollectionForm"  process="@this"/>
+			</h:panelGrid>
+			<p:separator style="height:2px" />
+			<p:message for="paymentBillCollectionForm:lifePolicyInfoTable" />
+			<p:dataTable id="lifePolicyInfoTable" selection="#{StudentLifePaymentSkipBillCollectionActionBean.selectedDTOList}" style="width:100%;"
+				value="#{StudentLifePaymentSkipBillCollectionActionBean.billCollectionModel}" var="billCollection" paginator="true" styleClass="fixed-size"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="10"
+				rowsPerPageTemplate="10,20, 30" paginatorPosition="top">
+				<p:column selectionMode="multiple" width="3%" />
+				<p:column width="3%" headerText="Edit">
+					<p:commandLink id="lifePaymentDialogLink" oncomplete="PF('lifePaymentDialog').show()"
+						update=":paymentBillCollectionForm :paymentBillCollectionForm:lifePolicyInfoTable :lifePaymentDialogForm">
+						<f:setPropertyActionListener target="#{StudentLifePaymentSkipBillCollectionActionBean.billCollection}" value="#{billCollection}" />
+						<p:graphicImage styleClass="command-image" value="/images/config.png" />
+					</p:commandLink>
+				</p:column>
+				<p:column headerText="Policy No" width="9%">
+					<h:outputText value="#{billCollection.policyNo}" />
+				</p:column>
+				<p:column headerText="Insured Name" width="7%">
+					<h:outputText value="#{billCollection.insuredName}" />
+				</p:column>
+				<p:column headerText="IdNo" width="7%">
+					<h:outputText value="#{billCollection.idNo}" />
+				</p:column>
+				<p:column headerText="Payment Type" width="5%" >
+					<h:outputText value="#{billCollection.paymentType.name}" />
+				</p:column>
+				<p:column headerText="Payment Times" width="5%">
+					<h:outputText value="#{billCollection.paymentTimes}" />
+				</p:column>
+				<p:column headerText="Payment Term" width="5%">
+					<h:outputText value="#{billCollection.lastPaymentTerm}" />
+				</p:column>
+				<p:column headerText="Basic Term Premium"  width="7%">
+					<h:outputText value="#{billCollection.termPremium}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Discount Premium" width="7%">
+					<h:outputText value="#{billCollection.discountPremium}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="NCB Premium" width="7%">
+					<h:outputText value="#{billCollection.ncbPremium}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Loan Interest" width="5%">
+					<h:outputText value="#{billCollection.loanInterest}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Renewal Interest" width="5%">
+					<h:outputText value="#{billCollection.renewalInterest}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Service Charges" width="5%">
+					<h:outputText value="#{billCollection.serviceCharges}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Extra Amount" width="5%">
+					<h:outputText value="#{billCollection.extraAmount}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Refund" width="5%"> 
+					<h:outputText value="#{billCollection.refund}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Total Amount" width="8%">
+					<h:outputText value="#{billCollection.totalAmount}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Start Date" width="5%">
+					<h:outputText value="#{billCollection.startDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="End Date" width="5%">
+					<h:outputText value="#{billCollection.endDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:columnGroup type="footer">
+					<p:row>
+						<p:column colspan="16" footerText="Totals:" style="text-align:right" />
+						<p:column footerText="#{StudentLifePaymentSkipBillCollectionActionBean.sumTotalAmounts}" style="text-align:left" />
+						<p:column colspan="2" footerText="" />
+					</p:row>
+				</p:columnGroup>
+			</p:dataTable>
+			<br />
+			<p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<h:outputText styleClass="input-label" value="Skip Account" />
+				<p:selectBooleanCheckbox disabled="true"  value="#{StudentLifePaymentSkipBillCollectionActionBean.skipTLF}">
+					<p:ajax event="valueChange"   />
+				</p:selectBooleanCheckbox>
+				<p:outputLabel />
+				<p:message for="confirmDate" />
+				<h:outputText value="Confirm Date : " />
+					<p:calendar id="confirmDate" required="#{not empty param[confirmbtn.clientId]}" size="15"  pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+						value="#{StudentLifePaymentSkipBillCollectionActionBean.confirmDate}" />
+				<p:outputLabel />
+				<p:message for="paymentChannel" />
+				<h:outputText styleClass="input-label" value="Payment Channel" />
+				<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="paymentChannel" required="#{not empty param[confirmbtn.clientId]}"
+					value="#{StudentLifePaymentSkipBillCollectionActionBean.channelValue}">
+					<f:selectItems itemLabel="#{c.label}" itemValue="#{c}" value="#{StudentLifePaymentSkipBillCollectionActionBean.paymentChannels}" var="c" />
+					<p:ajax event="valueChange" listener="#{StudentLifePaymentSkipBillCollectionActionBean.changePaymentChannel}" update=":paymentBillCollectionForm:chequeEntryTable" />
+				</p:selectOneRadio>
+			</p:panelGrid>
+			<p:outputPanel id="chequeEntryTable">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-3" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:outputLabel />
+					<p:message for="accountBankName" id="accountBankMessage" rendered="#{StudentLifePaymentSkipBillCollectionActionBean.accBank}" />
+					<h:outputText rendered="#{StudentLifePaymentSkipBillCollectionActionBean.isCheque || StudentLifePaymentSkipBillCollectionActionBean.isTransfer ||StudentLifePaymentSkipBillCollectionActionBean.isSundry}"
+						styleClass="input-label" value="GGLI Account Bank" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="accountBankPanelGroup" rendered="#{StudentLifePaymentSkipBillCollectionActionBean.accBank}">
+						<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="accountBankPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{StudentLifePaymentSkipBillCollectionActionBean.selectAccountBank()}" id="selectAccountBankDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{StudentLifePaymentSkipBillCollectionActionBean.returnAccountBank}" update="accountBankName" />
+								</p:commandButton>
+								<p:inputText id="accountBankName" readonly="#{StudentLifePaymentSkipBillCollectionActionBean.accountBank == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+									value="#{StudentLifePaymentSkipBillCollectionActionBean.accountBank== null ? '' : StudentLifePaymentSkipBillCollectionActionBean.accountBank.name}"
+									required="#{not empty param[confirmbtn.clientId]}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{StudentLifePaymentSkipBillCollectionActionBean.setAccountBank(null)}" process="@this" update="accountBankName" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<p:outputLabel />
+					<p:message for="bankName" id="bankMessage" rendered="#{StudentLifePaymentSkipBillCollectionActionBean.isBank}" />
+					<h:outputText rendered="#{StudentLifePaymentSkipBillCollectionActionBean.isBank}" styleClass="input-label"
+						value="#{StudentLifePaymentSkipBillCollectionActionBean.isCheque ? 'Cheque Received Bank' : 'Customer Transfer Bank'}" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="bankPanelGroup" rendered="#{StudentLifePaymentSkipBillCollectionActionBean.isBank}">
+						<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="bankPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{StudentLifePaymentSkipBillCollectionActionBean.selectBank()}" id="selectBankDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{StudentLifePaymentSkipBillCollectionActionBean.returnBank}" update="bankName" />
+								</p:commandButton>
+								<p:inputText id="bankName" readonly="#{StudentLifePaymentSkipBillCollectionActionBean.bank == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+									value="#{StudentLifePaymentSkipBillCollectionActionBean.bank == null ? '' : StudentLifePaymentSkipBillCollectionActionBean.bank.name}" required="true" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{StudentLifePaymentSkipBillCollectionActionBean.setBank(null)}" process="@this" update="bankName" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<p:outputLabel rendered="#{StudentLifePaymentSkipBillCollectionActionBean.isCheque}" />
+					<p:message for="chequeNo" id="chequeNoMessage" rendered="#{StudentLifePaymentSkipBillCollectionActionBean.isCheque}" />
+					<h:outputText rendered="#{StudentLifePaymentSkipBillCollectionActionBean.isCheque}" styleClass="input-label" value="Account No." />
+					<p:inputText id="chequeNo" rendered="#{StudentLifePaymentSkipBillCollectionActionBean.isCheque}" value="#{StudentLifePaymentSkipBillCollectionActionBean.chequeNo}" required="true" />
+					<p:outputLabel rendered="#{StudentLifePaymentSkipBillCollectionActionBean.isTransfer}" />
+					<p:message for="poNo" id="poNoMessage" rendered="#{StudentLifePaymentSkipBillCollectionActionBean.isTransfer}" />
+					<h:outputText rendered="#{StudentLifePaymentSkipBillCollectionActionBean.isTransfer}" styleClass="input-label" value="PO / Cheque No." />
+					<p:inputText id="poNo" rendered="#{StudentLifePaymentSkipBillCollectionActionBean.isTransfer}" required="true" value="#{StudentLifePaymentSkipBillCollectionActionBean.poNo}" />
+				</p:panelGrid>
+			</p:outputPanel>
+			<br />
+			<h:panelGroup>
+				<p:commandButton action="#{StudentLifePaymentSkipBillCollectionActionBean.confirmSkipTLF()}" binding="#{confirmbtn}" disabled="#{StudentLifePaymentSkipBillCollectionActionBean.renderButton}"
+					id="confirmBtn" update=":paymentBillCollectionForm :paymentBillCollectionForm:confirmBtn" value="Confirm" />
+				<p:spacer width="10" />
+				<p:commandButton action="dashboard" id="cancelBtn" immediate="true" value="Cancel" />
+				<p:spacer width="10" />
+				<p:commandButton action="#{StudentLifePaymentSkipBillCollectionActionBean.generateReport()}" disabled="#{!StudentLifePaymentSkipBillCollectionActionBean.availablePrint}" icon="ui-icon-print"
+					id="pdfSingleBtn" oncomplete="PF('pdfPreviewDialog').show()" update=":pdfPrintForm:pdfPreviewDialog" value="Print Preview" />
+			</h:panelGroup>
+		</h:form>
+		<!-- Life Policy Dialog -->
+		<!-- Life Payment Edit Form -->
+		<p:dialog header="Life Payment Edit" hideEffect="explode" id="lifePaymentDialog" resizable="false" showEffect="explode" visible="#{facesContext.validationFailed}"
+			appendTo="@(body)" modal="true" draggable="false" widgetVar="lifePaymentDialog">
+			<h:form id="lifePaymentDialogForm">
+				<table>
+					<tr>
+						<td><h:outputText value="Policy No" /></td>
+						<td><h:outputText value="#{StudentLifePaymentSkipBillCollectionActionBean.billCollection.policyNo}" /></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><p:message for="paymentTimes" id="messages1" /></td>
+					</tr>
+					<tr>
+						<td><h:outputText styleClass="input-label" value="Payment Times" /> <h:outputText style="color:red;" value="*" /></td>
+						<td><p:inputText id="paymentTimes" required="true" style="width:250px;" value="#{StudentLifePaymentSkipBillCollectionActionBean.billCollection.paymentTimes}" /></td>
+					</tr>
+					<tr>
+						<td><h:outputText styleClass="input-label" value="Renewal Interest" /></td>
+						<td><p:inputText id="renewalInterest" style="width:250px;" styleClass="input-label" value="#{StudentLifePaymentSkipBillCollectionActionBean.billCollection.renewalInterest}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText></td>
+					</tr>
+					<tr>
+						<td><h:outputText styleClass="input-label" value="Service Charges" /></td>
+						<td><p:inputText id="serviceCharges" style="width:250px;" styleClass="input-label" value="#{StudentLifePaymentSkipBillCollectionActionBean.billCollection.serviceCharges}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText></td>
+					</tr>
+					<tr>
+						<td><p:commandButton actionListener="#{StudentLifePaymentSkipBillCollectionActionBean.editBill}"
+								update=":paymentBillCollectionForm:lifePolicyInfoTable,messages1,lifePaymentDialogForm" value="OK" /></td>
+					</tr>
+				</table>
+			</h:form>
+		</p:dialog>
+		<!-- Bank Form -->
+		<!-- PDF Preview Form -->
+		<h:form enctype="multipart/form-data" id="pdfPrintForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview (PDF)" hideEffect="fade" id="pdfPreviewDialog" resizable="false" showEffect="fade" widgetVar="pdfPreviewDialog"
+				width="1070" height="505">
+				<p:media width="1050" height="500" player="pdf" value="#{StudentLifePaymentSkipBillCollectionActionBean.stream}" cache="false" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

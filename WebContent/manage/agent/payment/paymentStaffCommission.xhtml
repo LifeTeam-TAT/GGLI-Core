@@ -1,0 +1,173 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:cyc="http://www.cycdemo.com/java" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Staff Commission Payment" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<p:messages showDetail="true" globalOnly="true" id="messages" />
+		<h:form id="agentCommissionPaymentForm">
+			<fieldset disabled="true">
+				<table>
+					<tr>
+						<td style="width: 100px;">
+							<h:outputText value="Invoice No" styleClass="input-label" />
+						</td>
+						<td>
+							<h:panelGrid columns="2">
+								<p:inputText value="#{AddNewStaffCommissionPaymentActionBean.staffCommissionDTO.invoiceNo}" style="width:250px;" id="invoiceNo" readonly="true" />
+								<p:commandLink id="detailsPolicy" oncomplete="PF('policyDetailsDialog').show()" immediate="true">
+									<h:graphicImage url="#{ApplicationSetting.detailIcon}" styleClass="#{ApplicationSetting.detailStyleClass}" />
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td>
+							<table>
+								<tr>
+									<td style="width: 100px;">
+										<h:outputText value="Staff No" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{AddNewStaffCommissionPaymentActionBean.staffCommissionDTO.staff.staff_no}" style="width:250px;" id="agentCode" readonly="true">
+										</p:inputText>
+									</td>
+								</tr>
+								<tr height="5" />
+								<tr>
+									<td>
+										<h:outputText value="Name" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{AddNewStaffCommissionPaymentActionBean.staffCommissionDTO.staff.fullName}" style="width:250px;" id="name" readonly="true">
+										</p:inputText>
+									</td>
+								</tr>
+								<tr height="5" />
+								<tr>
+									<td>
+										<h:outputText value="Commission" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{AddNewStaffCommissionPaymentActionBean.staffCommissionDTO.commission}" style="width:250px;  text-align: right;" id="commission" readonly="true">
+											<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr height="5" />
+								<tr>
+									<td>
+										<h:outputText value="With Holding Tax" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{AddNewStaffCommissionPaymentActionBean.staffCommissionDTO.withHoldingTax}" style="width:250px; text-align: right;" readonly="true">
+											<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr height="5" />
+								<tr>
+									<td>
+										<h:outputText value="Net Comission" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{AddNewStaffCommissionPaymentActionBean.staffCommissionDTO.commission - AddNewStaffCommissionPaymentActionBean.staffCommissionDTO.withHoldingTax}" style="width:250px; text-align: right;" readonly="true">
+											<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+										</p:inputText>
+									</td>
+								</tr>
+							</table>
+						</td>
+						<td style="width: 50px;" />
+						<td valign="top">
+							<table>
+								
+								<tr height="5" />
+								<tr>
+									<td>
+										<h:outputText value="Payment From" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{AddNewStaffCommissionPaymentActionBean.staffCommissionDTO.fromDate}" style="width:250px;" id="fromDate" readonly="true">
+											<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr height="5" />
+								<tr>
+									<td>
+										<h:outputText value="To" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{AddNewStaffCommissionPaymentActionBean.staffCommissionDTO.toDate}" style="width:250px;" id="toDate" readonly="true">
+											<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+										</p:inputText>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<p:outputPanel id="chequeEntryTable" rendered="#{AddNewStaffCommissionPaymentActionBean.staffCommissionDTO.paymentChannel=='CHEQUE'? true : false}">
+					<table>
+						<tr>
+							<td>
+								<h:outputText value="" />
+							</td>
+							<td>
+								<p:message for="bankName" id="bankMessage" />
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 105px;">
+								<h:outputText value="Bank " styleClass="input-label" />
+							</td>
+							<td>
+								<h:panelGrid columns="3" id="bankPanelGroup">
+									<p:inputText value="#{AddNewStaffCommissionPaymentActionBean.staffCommissionDTO.bank == null ? '' : AddNewStaffCommissionPaymentActionBean.staffCommissionDTO.bank.name}"
+										style="width:250px;margin-left:-4px;" id="bankName" readonly="true" />
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText value="" />
+							</td>
+							<td>
+								<p:message for="chequeNo" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText value="Cheque No." styleClass="input-label" />
+							</td>
+							<td>
+								<p:inputText value="#{AddNewStaffCommissionPaymentActionBean.staffCommissionDTO.chequeNo}" style="width:250px;margin-left:-4px;" id="chequeNo" />
+							</td>
+						</tr>
+					</table>
+				</p:outputPanel>
+			</fieldset>
+			<br />
+			<p:commandButton id="addBtn" value="Confirm" action="#{AddNewStaffCommissionPaymentActionBean.payAgentCommission()}" />
+			<p:commandButton id="cancelBtn" value="Cancel" action="dashboard" immediate="true" />
+		</h:form>
+		<h:form id="policyDetailsForm">
+			<p:dialog header="Policy Details" widgetVar="policyDetailsDialog" resizable="false" width="1000" height="500" showEffect="explode" hideEffect="explode" id="policyDetailsDialog"
+				appendTo="@(body)">
+				<ui:include src="/manage/agent/agentCommissionInfoTemplate.xhtml">
+					<ui:param name="policyList" value="#{AddNewStaffCommissionPaymentActionBean.policyListForCommission}" />
+				</ui:include>
+			</p:dialog>
+		</h:form>
+		<!-- PDF Preview For agent commission payment -->
+		<h:form id="pdfPreviewForm" enctype="multipart/form-data">
+			<p:dialog id="pdfPreviewDialog" widgetVar="pdfPreviewDialog" header="Print Preview (PDF)" resizable="false" width="1070" height="505" showEffect="fade" hideEffect="fade"
+				appendTo="@(body)" dynamic="true">
+				<p:media value="#{AddNewStaffCommissionPaymentActionBean.stream}" player="pdf" width="1050" height="500" cache="false" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

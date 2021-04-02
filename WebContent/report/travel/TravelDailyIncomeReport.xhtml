@@ -1,0 +1,238 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:cyc="http://www.cycdemo.com/java"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:param name="header" value="Travel Daily Income Report" />
+	<ui:define name="content">
+
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet"
+			type="text/css" />
+		<h:form id="dailyIncomeReportForm">
+			<p:panelGrid columns="3"
+				columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4"
+				layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel value="From Date" for="fromDate" />
+					<p:calendar showOn="button"
+						pattern="#{ApplicationSetting.dateFormat}"
+						value="#{TravelDailyIncomeReportActionBean.criteria.fromDate}"
+						id="fromDate" />
+					<p:outputLabel />
+					<p:outputLabel />
+					<h:outputText value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+						<div style="margin: -6px -6px;"
+							class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search"
+									actionListener="#{TravelDailyIncomeReportActionBean.selectEntity()}"
+									id="entityDialogLink" process="@this">
+									<p:ajax event="dialogReturn"
+										listener="#{TravelDailyIncomeReportActionBean.returnEntity}"
+										update="entity branchPanelGroup salePanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true"
+									value="#{TravelDailyIncomeReportActionBean.criteria.entity == null ? '' : TravelDailyIncomeReportActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times"
+									action="#{TravelDailyIncomeReportActionBean.setEntityNull() }"
+									process="@this" update="entity branchPanelGroup salePanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<p:outputLabel />
+					<p:outputLabel />
+					<h:outputText value="Registration No " />
+					<p:inputText id="registrationNo"
+						value="#{TravelDailyIncomeReportActionBean.criteria.registration}" />
+					<p:outputLabel />
+					<p:outputLabel />
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel value="To Date" for="toDate" />
+					<p:calendar showOn="button"
+						pattern="#{ApplicationSetting.dateFormat}"
+						value="#{TravelDailyIncomeReportActionBean.criteria.toDate}"
+						id="toDate" />
+					<!-- Branch -->
+					<p:outputLabel />
+					<p:message for="branch" id="MsgBranch" display="text" />
+					<h:outputText styleClass="input-label" value="Branch" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid"
+							jsf:id="branchPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search"
+									actionListener="#{TravelDailyIncomeReportActionBean.selectBranch()}"
+									id="selectBranchDialogLink" process="@this" disabled="#{TravelDailyIncomeReportActionBean.criteria.entity==null?true:false}">
+									<p:ajax event="dialogReturn"
+										listener="#{TravelDailyIncomeReportActionBean.returnBranch}"
+										update="branch salePanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true"
+									value="#{TravelDailyIncomeReportActionBean.criteria.branch == null ? '' : TravelDailyIncomeReportActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{TravelDailyIncomeReportActionBean.criteria.entity==null?true:false}" icon="fa fa-times"
+									action="#{TravelDailyIncomeReportActionBean.setBranchNull}" 
+									process="@this" update="branch salePanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<p:outputLabel />
+					<p:outputLabel />
+					<h:outputText value="Express Name " />
+					<p:panelGrid styleClass="ui-panelgrid-blank"
+						id="selectExpressPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search"
+									actionListener="#{TravelDailyIncomeReportActionBean.selectExpress()}"
+									process="@this">
+									<p:ajax event="dialogReturn"
+										listener="#{TravelDailyIncomeReportActionBean.returnExpress}"
+										update="express" />
+								</p:commandButton>
+								<p:inputText id="express" readonly="true"
+									value="#{TravelDailyIncomeReportActionBean.criteria.travelExpress == null ? '' : TravelDailyIncomeReportActionBean.criteria.travelExpress}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times"
+									action="#{TravelDailyIncomeReportActionBean.criteria.setBranch(null)}"
+									process="@this" update="express" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText value="Tour " />
+					<p:panelGrid styleClass="ui-panelgrid-blank"
+						id="selectTourPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search"
+									actionListener="#{TravelDailyIncomeReportActionBean.selectOccurrence()}"
+									process="@this">
+									<p:ajax event="dialogReturn"
+										listener="#{TravelDailyIncomeReportActionBean.returnOccurrence}"
+										update="tour" />
+								</p:commandButton>
+								<p:inputText id="tour" readonly="true"
+									value="#{TravelDailyIncomeReportActionBean.criteria.tour== null ? '' : TravelDailyIncomeReportActionBean.criteria.tour}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times"
+									action="#{TravelDailyIncomeReportActionBean.criteria.setTour(null)}"
+									process="@this" update="tour" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<!-- SalePoint -->
+					<p:outputLabel />
+					<p:message for="salePoint" />
+					<h:outputText styleClass="input-label" value="Sale Point" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;"
+							class="ui-g ui-fluid" jsf:id="salePanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search"
+									actionListener="#{TravelDailyIncomeReportActionBean.selectSalePoint()}"
+									id="selectSalePointDialogLink" process="@this" disabled="#{TravelDailyIncomeReportActionBean.criteria.branch==null?true:false}">
+									<p:ajax event="dialogReturn"
+										listener="#{TravelDailyIncomeReportActionBean.returnSalePoint}"
+										update="salePoint" />
+								</p:commandButton>
+								<p:inputText id="salePoint" readonly="true"
+									value="#{TravelDailyIncomeReportActionBean.criteria.salePoint == null ? '' : TravelDailyIncomeReportActionBean.criteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{TravelDailyIncomeReportActionBean.criteria.branch==null?true:false}" icon="fa fa-times"
+									action="#{TravelDailyIncomeReportActionBean.criteria.setSalePoint(null)}"
+									process="@this" update="salePoint" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+				</p:panelGrid>
+			</p:panelGrid>
+			<h:panelGrid columns="2" id="search">
+				<p:commandButton
+					action="#{TravelDailyIncomeReportActionBean.searchDetail}"
+					update="@form" value="Search" />
+				<p:commandButton
+					action="#{TravelDailyIncomeReportActionBean.resetCriteria}"
+					update="dailyIncomeReportForm" immediate="true" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="detailList"
+				value="#{TravelDailyIncomeReportActionBean.detailList}"
+				var="expressDetail" paginatorPosition="bottom" paginator="true"
+				rowIndexVar="rowIndex" rowsPerPageTemplate="10,20,30"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rows="10" style="align : center;">
+				<f:facet name="header">
+					<h:commandLink
+						action="#{TravelDailyIncomeReportActionBean.exportExcel}"
+						immediate="true">
+						<p:graphicImage style="widht:25px;height:25px;"
+							value="/images/excel.png" />
+					</h:commandLink>
+					<p:messages for="detailList" />
+				</f:facet>
+				<p:columnGroup type="header">
+					<p:row>
+						<p:column headerText="No." style="width:3%" />
+						<p:column headerText="Express Name" />
+						<p:column headerText="Registeration No." />
+						<p:column headerText="Tour" />
+						<p:column headerText="No. of Passenger" />
+						<p:column headerText="Premium" />
+						<p:column headerText="Commission" />
+						<p:column headerText="Net Premium" />
+						<p:column headerText="Branch" />
+						<p:column headerText="Sale Point" />
+						<p:column headerText="Remark" />
+					</p:row>
+				</p:columnGroup>
+				<p:column>
+					<h:outputText value="#{rowIndex + 1}." style="float: right;" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{expressDetail.expressName}"></h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{expressDetail.registrationNo}"></h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{expressDetail.occurrenceDesc}"></h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{expressDetail.noOfPassenger}"
+						style="float:right"></h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{expressDetail.premium}" style="float:right"></h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{expressDetail.commission}"
+						style="float:right"></h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{expressDetail.netPremium}"
+						style="float:right"></h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{expressDetail.branchName}"
+						style="float:right"></h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{expressDetail.salePointName}"
+						style="float:right"></h:outputText>
+				</p:column>
+				<p:column />
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,168 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Add New Sub Category Information" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<style>
+.ui-fileupload-content {
+	display: none;
+}
+
+.uploadIcon {
+	text-align: center;
+}
+
+.ui-panelgrid td {
+	border: none;
+}
+
+.image {
+	margin: -10px 0px -30px -22px;
+	width: 128%;
+	height: 150px;
+}
+</style>
+		<h:form id="subinformationEntryForm">
+			<div style="padding-left: 10px; padding-right: 10px;">
+				<p:panelGrid id="imagePanel" columns="1" style="width:200px">
+					<f:facet name="header">
+						<h:outputText style="margin-left: 3px;" value="Main Category Logo" />
+					</f:facet>
+					<h:panelGrid columns="1" style="width: 100%; height: 100px;">
+						<p:graphicImage id="image" styleClass="image" value="#{SubInformationManageActionBean.subCategoryDTO.photoImageDTO.imagePath}"
+							rendered="#{SubInformationManageActionBean.showImage}" />
+						<p:message for="imageUpload" display="text" />
+						<p:commandLink immediate="true" style="align:center" actionListener="#{SubInformationManageActionBean.removePhotoImage}" id="deletefrontSide" update="imagePanel"
+							rendered="#{SubInformationManageActionBean.showImage}">
+							<div align="center" style="margin-top: -14px; margin-bottom: -11px;">
+								<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+							</div>
+						</p:commandLink>
+					</h:panelGrid>
+					<p:fileUpload id="imageUpload" rendered="#{!SubInformationManageActionBean.showImage}" styleClass="uploadIcon noneBorder" required="true"
+						fileUploadListener="#{SubInformationManageActionBean.handleFileUpload}" mode="advanced" multiple="false" update="imagePanel" sizeLimit="100000" auto="true"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
+					</p:fileUpload>
+				</p:panelGrid>
+				<h:panelGrid style="margin-left: -6px;">
+					<p:commandLink id="addNewNameText" action="#{SubInformationManageActionBean.prepareNameText()}" oncomplete="PF('subcategoryDialog').show();"
+						update=":subinformationEntryForm,:subCategoryEntryForm" disabled="#{SubInformationManageActionBean.createNewNameText}">
+						<h:panelGrid columns="2">
+							<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+							<h:outputText value="Add New Sub Category" />
+						</h:panelGrid>
+					</p:commandLink>
+				</h:panelGrid>
+				<p:message for="subcategoryTable" />
+				<p:dataTable id="subcategoryTable" style="width:100%" value="#{SubInformationManageActionBean.subCategoryDTO.nameTextDTOList}" var="nameText" rowIndexVar="index">
+					<p:column headerText="No" style="width: 50px;">
+						<h:outputText value="#{index + 1}. " style="float: right;" />
+					</p:column>
+					<p:column headerText="Name">
+						<h:outputText value="#{nameText.name}" escape="false" />
+					</p:column>
+					<p:column headerText="Language" style="width: 20%;">
+						<h:outputText value="#{nameText.language.label}" />
+					</p:column>
+					<p:column style="width: 50px; text-align: center;" headerText="Edit">
+						<p:commandLink oncomplete="PF('PF('subcategoryDialog').show();" action="#{SubInformationManageActionBean.prepareEditNameText(nameText)}" update=":subCategoryEntryForm">
+							<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width: 50px; text-align: center;" headerText="Delete">
+						<p:commandLink action="#{SubInformationManageActionBean.removeNameText(nameText)}" update="subcategoryTable">
+							<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+				<p:separator style="height: 3px;" />
+				<p:commandButton value="Add" style="width: 65px;" action="#{SubInformationManageActionBean.addSubCategorytoMainCategory()}"
+					rendered="#{!SubInformationManageActionBean.updateFlag}" update="subinformationEntryForm" />
+				<p:commandButton value="Update" action="#{SubInformationManageActionBean.addSubCategorytoMainCategory()}" update="subinformationEntryForm"
+					rendered="#{SubInformationManageActionBean.updateFlag}" />
+				<p:spacer width="10" />
+				<p:commandButton value="Cancel" action="#{SubInformationManageActionBean.cancelMainCategory()}" ajax="false" immediate="true" />
+			</div>
+		</h:form>
+		<p:dialog appendTo="@(body)" modal="true" dynamic="true" header="Add New Sub Category" hideEffect="explode" id="subcategoryDialog" resizable="false" showEffect="explode"
+			widgetVar="subcategoryDialog" height="400px" width="800px" closable="false">
+			<h:form id="subCategoryEntryForm">
+				<table>
+					<tr>
+						<td></td>
+						<td>
+							<p:message for="language" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value="#{label['MANAGE_INFORMATION_LANGUAGE']}" />
+						</td>
+						<td>
+							<p:selectOneMenu id="language" converter="omnifaces.SelectItemsConverter" value="#{SubInformationManageActionBean.nameTextDTO.language}"
+								disabled="#{SubInformationManageActionBean.languageDisable}" style="height:26px;width: 258px;">
+								<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{SubInformationManageActionBean.nameTextDTO.languageType}" var="type" />
+							</p:selectOneMenu>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<p:message for="subcategoryName" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value="*" style="color:red;" />
+							<h:outputText value="#{label['MANAGE_INFORMATION_NAME']}" />
+						</td>
+						<td>
+							<p:inputText id="subcategoryName" value="#{SubInformationManageActionBean.nameTextDTO.name}" required="true" requiredMessage="Value is Required!"
+								style="height:25px;width: 258px;">
+								<p:ajax event="valueChange" listener="#{SubInformationManageActionBean.keyupName()}" />
+							</p:inputText>
+							<p:spacer />
+							<p:spacer />
+							<p:spacer />
+							<p:spacer />
+							<p:spacer />
+							<p:spacer />
+							<h:outputText value="#{SubInformationManageActionBean.text}" id="sampleFont" escape="false" />
+							<p:spacer />
+							<p:spacer />
+							<h:outputText value="Bold: " />
+							<p:selectBooleanCheckbox value="#{SubInformationManageActionBean.bold}" style="width:50px;">
+								<p:ajax listener="#{SubInformationManageActionBean.checkBUI}" />
+							</p:selectBooleanCheckbox>
+							<h:outputText value="Italic: " />
+							<p:selectBooleanCheckbox value="#{SubInformationManageActionBean.italic}" style="width:50px;">
+								<p:ajax listener="#{SubInformationManageActionBean.checkBUI}" />
+							</p:selectBooleanCheckbox>
+							<h:outputText value="Underline: " />
+							<p:selectBooleanCheckbox value="#{SubInformationManageActionBean.underline}">
+								<p:ajax listener="#{SubInformationManageActionBean.checkBUI}" />
+							</p:selectBooleanCheckbox>
+						</td>
+					</tr>
+					<tr>
+						<td valign="top">
+							<h:outputText value="#{label['MANAGE_INFORMATION_CONTENT']}" />
+						</td>
+						<td>
+							<p:editor id="editor" widgetVar="editorWidget" value="#{SubInformationManageActionBean.nameTextDTO.content}" width="600" />
+						</td>
+					</tr>
+				</table>
+				<p:spacer style="height:25px;" />
+				<p:commandButton value="Edit" action="#{SubInformationManageActionBean.updateSubCategoryNameText()}" update="@form,:subinformationEntryForm:subcategoryTable"
+					rendered="#{SubInformationManageActionBean.editNameFlag}" style="width: 65px; margin-left: -20px;" />
+				<p:commandButton value="Apply" action="#{SubInformationManageActionBean.applySubCategoryNameText}" update="@form,:subinformationEntryForm:subcategoryTable"
+					rendered="#{!SubInformationManageActionBean.editNameFlag}" style="width: 65px;" />
+				<p:spacer width="10" />
+				<p:commandButton value="Cancel" process="@form,:subinformationEntryForm:subcategoryTable" oncomplete="PF('PF('subcategoryDialog').hide()" style="width: 65px;"
+					action="#{SubInformationManageActionBean.nameTextDTO.setName(SubInformationManageActionBean.originalText)}" />
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

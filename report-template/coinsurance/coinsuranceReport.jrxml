@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="coinsuranceReport" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" resourceBundle="LANGUAGE_en" uuid="0b0dd665-4a08-4b9f-a6ed-b143e1afc1dd">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="header_one" forecolor="#000000" fill="Solid" hAlign="Center" vAlign="Middle" isBlankWhenNull="true" fontName="Zawgyi-One" fontSize="16" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="header_two" forecolor="#000000" fill="Solid" hAlign="Center" vAlign="Middle" fontName="Zawgyi-One" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="header_three" mode="Opaque" forecolor="#000000" backcolor="#DBE6F1" fill="Solid" hAlign="Center" vAlign="Middle" fontName="Zawgyi-One" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<box leftPadding="0">
+			<pen lineWidth="0.0" lineColor="#000000"/>
+			<topPen lineWidth="1.0"/>
+			<leftPen lineWidth="1.0"/>
+			<bottomPen lineWidth="1.0"/>
+			<rightPen lineWidth="1.0"/>
+		</box>
+	</style>
+	<style name="default" isDefault="true" mode="Opaque" forecolor="#000000" backcolor="#FFFFFF" fill="Solid" hAlign="Center" vAlign="Middle" fontName="Zawgyi-One" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<subDataset name="dsCoinsuranceReport" uuid="06337d15-7830-46e4-a1ae-9e3cddbb9e04">
+		<field name="policyNo" class="java.lang.String"/>
+		<field name="startDate" class="java.util.Date"/>
+		<field name="endDate" class="java.util.Date"/>
+		<field name="coinsuranceCompanyName" class="java.lang.String"/>
+		<field name="coinsuranceType" class="java.lang.String"/>
+		<field name="insuranceType" class="java.lang.String"/>
+		<field name="receivedSumInsured" class="java.lang.Double"/>
+		<field name="sumInsured" class="java.lang.Double"/>
+		<field name="premium" class="java.lang.Double"/>
+	</subDataset>
+	<parameter name="TableDataSource" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="totalPremium" class="java.lang.Double"/>
+	<parameter name="totalSI" class="java.lang.Double"/>
+	<parameter name="totalReceivedSI" class="java.lang.Double"/>
+	<title>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="34" width="822" height="26" uuid="1d8ff859-67db-41dd-9da1-ce2397f5dce9"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[Co-Insurance Report]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="1" width="822" height="32" uuid="9874c062-3d52-4362-a3cb-1146e6d9403f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{GRAND_GUARDIAN_LABEL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="79" splitType="Stretch">
+			<componentElement>
+				<reportElement key="table 1" x="0" y="0" width="822" height="79" uuid="2acafa39-5553-4ae9-b87a-84f36a45f61c"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="dsCoinsuranceReport" uuid="da145747-85c5-4a68-bbec-9eac1a934be0">
+						<dataSourceExpression><![CDATA[$P{TableDataSource}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="30" uuid="6bfc2727-2846-4d23-882e-4dca5037dbe9">
+						<jr:columnHeader style="header_three" height="49" rowSpan="1">
+							<staticText>
+								<reportElement mode="Transparent" x="0" y="0" width="30" height="49" uuid="f379e7a1-7e29-4454-8c86-581b40ab3b4e"/>
+								<textElement>
+									<font size="10"/>
+								</textElement>
+								<text><![CDATA[Sr No.]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="34" rowSpan="1">
+							<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="true">
+								<reportElement style="default" stretchType="RelativeToTallestObject" x="0" y="4" width="30" height="25" uuid="7d0d756d-fc50-42ca-b617-4c1892c8b360"/>
+								<textElement textAlignment="Left">
+									<font size="9"/>
+									<paragraph leftIndent="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="120" uuid="15297b3d-d6d5-4da1-bbad-29ef50d4f717">
+						<jr:columnHeader style="header_three" height="49" rowSpan="1">
+							<staticText>
+								<reportElement mode="Transparent" x="0" y="0" width="120" height="49" uuid="2cfb6d97-063d-4074-8518-1d28aeae5e27"/>
+								<textElement>
+									<font size="10"/>
+								</textElement>
+								<text><![CDATA[Policy No.]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="34" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement style="default" stretchType="RelativeToTallestObject" x="0" y="4" width="120" height="25" uuid="74431d8c-7177-48ac-9d12-0227ab4d82d2"/>
+								<textElement textAlignment="Left">
+									<font size="9"/>
+									<paragraph leftIndent="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{policyNo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60" uuid="55de0d4d-aaa8-4104-9560-b7563be9ab01">
+						<jr:columnHeader style="header_three" height="49" rowSpan="1">
+							<staticText>
+								<reportElement mode="Transparent" x="0" y="0" width="60" height="49" uuid="0a2f9d78-ec64-4def-b44d-faece0cbdb95"/>
+								<textElement>
+									<font size="10"/>
+								</textElement>
+								<text><![CDATA[Start Date]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="34" rowSpan="1">
+							<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+								<reportElement style="default" stretchType="RelativeToTallestObject" x="0" y="4" width="60" height="25" uuid="a41f006e-6f74-4263-a009-c1cc991d5950"/>
+								<textElement>
+									<font size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{startDate}]]></textFieldExpression>
+								<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60" uuid="668102e8-22ef-4040-abe0-1a4d7dc5dc83">
+						<jr:columnHeader style="header_three" height="49" rowSpan="1">
+							<staticText>
+								<reportElement mode="Transparent" x="0" y="0" width="60" height="49" uuid="c6f95985-70d2-4127-84d8-64b6980de278"/>
+								<textElement>
+									<font size="10"/>
+								</textElement>
+								<text><![CDATA[End Date]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="34" rowSpan="1">
+							<textField pattern="" isBlankWhenNull="true">
+								<reportElement x="0" y="4" width="60" height="25" uuid="742f0ce5-b411-4a9f-8510-13ba28d92676"/>
+								<textElement>
+									<font size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{endDate}]]></textFieldExpression>
+								<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="163" uuid="d8711be6-c466-4525-85c9-bb79a75e052d">
+						<jr:columnHeader style="header_three" height="49" rowSpan="1">
+							<staticText>
+								<reportElement mode="Transparent" x="0" y="0" width="163" height="49" uuid="85615e5c-b7f9-44ba-b2ac-ca19661e56a5"/>
+								<textElement>
+									<font size="10"/>
+								</textElement>
+								<text><![CDATA[Co-Insurance Company]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="34" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement style="default" stretchType="RelativeToTallestObject" x="0" y="4" width="163" height="25" uuid="9191edb9-ac17-41c5-8ef3-abd63ba6f025"/>
+								<textElement textAlignment="Left">
+									<font size="9"/>
+									<paragraph leftIndent="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{coinsuranceCompanyName}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60" uuid="a103457f-9e97-40b0-ae06-c060886898ce">
+						<jr:columnHeader style="header_three" height="49" rowSpan="1">
+							<staticText>
+								<reportElement mode="Transparent" x="0" y="0" width="60" height="49" uuid="88d77f44-ae90-40a7-a72b-734dda651069"/>
+								<textElement>
+									<font size="9"/>
+								</textElement>
+								<text><![CDATA[Co-Insurance Type]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="34" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement style="default" stretchType="RelativeToTallestObject" x="0" y="4" width="60" height="25" uuid="994709a2-e4fd-4897-8992-cd78e6ec535b"/>
+								<textElement>
+									<font size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{coinsuranceType}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="55" uuid="99a15374-9f0b-4a63-a601-6dd4da67b08c">
+						<jr:columnHeader style="header_three" height="49" rowSpan="1">
+							<staticText>
+								<reportElement mode="Transparent" x="0" y="0" width="55" height="49" uuid="e6050b07-8421-4539-a63a-37b020fc9ae2"/>
+								<textElement>
+									<font size="10"/>
+								</textElement>
+								<text><![CDATA[Insurance Type]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="34" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement style="default" stretchType="RelativeToTallestObject" x="0" y="4" width="55" height="25" uuid="55664627-5e3a-4a75-943a-efd6a7604f4b"/>
+								<textElement>
+									<font size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{insuranceType}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="3886d11f-9c60-4475-a696-25c75a22ba2f">
+						<jr:columnHeader style="header_three" height="49" rowSpan="1">
+							<staticText>
+								<reportElement mode="Transparent" x="0" y="0" width="90" height="49" uuid="f21388d5-ef8d-485d-9849-9f9f29c5880d"/>
+								<textElement>
+									<font size="10"/>
+								</textElement>
+								<text><![CDATA[Received Sum Insured]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="34" rowSpan="1">
+							<textField isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="4" width="90" height="25" uuid="5d6b768c-7579-4a90-abb4-3261d73d503a"/>
+								<textElement textAlignment="Right">
+									<font size="9"/>
+									<paragraph rightIndent="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{receivedSumInsured}]]></textFieldExpression>
+								<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="94" uuid="238542dd-6b27-4c5c-ba08-b189294e2120">
+						<jr:columnHeader style="header_three" height="49" rowSpan="1">
+							<staticText>
+								<reportElement mode="Transparent" x="0" y="0" width="94" height="49" uuid="4c080d46-6c2d-4d89-a49d-a760df3a09c9"/>
+								<textElement>
+									<font size="10"/>
+								</textElement>
+								<text><![CDATA[Sum Insured]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="34" rowSpan="1">
+							<textField isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToTallestObject" x="0" y="4" width="94" height="25" uuid="a81b9014-32bb-4faa-8672-437c50342fae"/>
+								<textElement textAlignment="Right">
+									<font size="9"/>
+									<paragraph rightIndent="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{sumInsured}]]></textFieldExpression>
+								<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="2ed90c68-6e39-4ca3-8395-0e4fc1bc3506">
+						<jr:columnHeader style="header_three" height="49" rowSpan="1">
+							<staticText>
+								<reportElement mode="Transparent" x="0" y="0" width="90" height="49" uuid="8e1959ed-0f1e-4f6e-83ac-cb6e0e4b699c"/>
+								<textElement>
+									<font size="10"/>
+								</textElement>
+								<text><![CDATA[Premium]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table" height="34" rowSpan="1">
+							<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+								<reportElement style="default" stretchType="RelativeToTallestObject" x="0" y="4" width="90" height="25" uuid="9f1b6231-21ce-49f6-90ce-d22a40ea7ffd"/>
+								<textElement textAlignment="Right">
+									<font size="9"/>
+									<paragraph rightIndent="4"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{premium}]]></textFieldExpression>
+								<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<summary>
+		<band height="29">
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="1" width="549" height="24" uuid="aef8c4f6-3fd7-43a4-b5a9-5d4a9bd80f51"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="638" y="1" width="94" height="24" uuid="96ce385e-ac64-4f25-abf6-bd507e37d5f1"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+					<paragraph rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalSI}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="732" y="1" width="90" height="24" uuid="58d6d430-8d88-4ed3-b913-8cf8ca23e971"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+					<paragraph rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalPremium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="548" y="1" width="89" height="24" uuid="490be182-9a5a-4796-8b29-5e619d357a19"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<paragraph rightIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalReceivedSI}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,185 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Medical Policy Enquiry" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="policyEnquiryForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="startDate" value="Start Date" styleClass="input-label" />
+						<p:calendar id="startDate" value="#{MedicalPolicyEnquiryActionBean.criteria.startDate}" showOn="button" pattern="#{ApplicationSetting.dateFormat}"
+							timeZone="#{ApplicationSetting.timeZone}" style="width:250px;" />
+						<h:outputText value="Agent" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectagentPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectagentPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{MedicalPolicyEnquiryActionBean.selectAgent()}" id="selectAgentDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{MedicalPolicyEnquiryActionBean.returnAgent}" update="agent" />
+									</p:commandButton>
+									<p:inputText id="agent" readonly="true" value="#{MedicalPolicyEnquiryActionBean.criteria.agent == null ? '' : MedicalPolicyEnquiryActionBean.criteria.agent.name.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{MedicalPolicyEnquiryActionBean.criteria.setAgent(null)}" process="@this" update="agent" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText value="Customer" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectCustomerPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectCustomerPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{MedicalPolicyEnquiryActionBean.selectCustomer()}" id="selectCustomerDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{MedicalPolicyEnquiryActionBean.returnCustomer}" update="customer" />
+									</p:commandButton>
+									<p:inputText id="customer" readonly="true"
+										value="#{MedicalPolicyEnquiryActionBean.criteria.customer == null ? '' : MedicalPolicyEnquiryActionBean.criteria.customer.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{MedicalPolicyEnquiryActionBean.criteria.setCustomer(null)}" process="@this" update="customer" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<p:outputLabel/>
+						<p:message for="healthTypeId"/>
+						<h:outputText for="healthTypeId" value="Health Type." />
+						<p:selectOneMenu id="healthTypeId" autoWidth="false" value="#{MedicalPolicyEnquiryActionBean.healthType}" converter="omnifaces.SelectItemsConverter" required="true">
+							<f:selectItem itemLabel="Select One Health Type" noSelectionOption="true" />
+							<f:selectItems value="#{MedicalPolicyEnquiryActionBean.healthTypes}" itemValue="#{healthType}" var="healthType" itemLabel="#{healthType.label}" />
+							<p:ajax event="valueChange" listener="#{MedicalPolicyEnquiryActionBean.clearList}" update="medicalPolicyTable" process="@this"></p:ajax>
+						</p:selectOneMenu>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="endDate" value="End Date" styleClass="input-label" />
+						<p:calendar id="endDate" value="#{MedicalPolicyEnquiryActionBean.criteria.endDate}" showOn="button" pattern="#{ApplicationSetting.dateFormat}"
+							timeZone="#{ApplicationSetting.timeZone}" style="width:250px;" />
+						<h:outputText value="SaleMan" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectSaleManPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectSaleManPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{MedicalPolicyEnquiryActionBean.selectSaleMan()}" id="selectSaleManDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{MedicalPolicyEnquiryActionBean.returnSaleMan}" update="saleMan" />
+									</p:commandButton>
+									<p:inputText id="saleMan" readonly="true"
+										value="#{MedicalPolicyEnquiryActionBean.criteria.saleMan == null ? '' : MedicalPolicyEnquiryActionBean.criteria.saleMan.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{MedicalPolicyEnquiryActionBean.criteria.setSaleMan(null)}" process="@this" update="saleMan" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText value="Organization" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectOrganizationPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectOrganizationPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{MedicalPolicyEnquiryActionBean.selectOrganization()}" id="selectOrganizationDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{MedicalPolicyEnquiryActionBean.returnOrganization}" update="organization" />
+									</p:commandButton>
+									<p:inputText id="organization" readonly="true"
+										value="#{MedicalPolicyEnquiryActionBean.criteria.organization == null ? '' : MedicalPolicyEnquiryActionBean.criteria.organization.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{MedicalPolicyEnquiryActionBean.criteria.setOrganization(null)}" process="@this" update="organization" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectBranchPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectBranchPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" disabled="#{!MedicalPolicyEnquiryActionBean.accessBranches}"
+										actionListener="#{MedicalPolicyEnquiryActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{MedicalPolicyEnquiryActionBean.returnBranch}" update="branch" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true" value="#{MedicalPolicyEnquiryActionBean.criteria.branch == null ? '' : MedicalPolicyEnquiryActionBean.criteria.branch.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{!MedicalPolicyEnquiryActionBean.accessBranches}"
+										action="#{MedicalPolicyEnquiryActionBean.criteria.setBranch(null)}" process="@this" update="branch" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText value="Referral" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectReferralPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectReferralPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{MedicalPolicyEnquiryActionBean.selectReferral()}" id="selectReferralDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{MedicalPolicyEnquiryActionBean.returnReferral}" update="referralMan" />
+									</p:commandButton>
+									<p:inputText id="referralMan" readonly="true"
+										value="#{MedicalPolicyEnquiryActionBean.criteria.referral == null ? '' : MedicalPolicyEnquiryActionBean.criteria.referral.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{MedicalPolicyEnquiryActionBean.criteria.setReferral(null)}" process="@this" update="referralMan" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText for="policyNo" value="Policy No." />
+						<p:inputText id="policyNo" value="#{MedicalPolicyEnquiryActionBean.criteria.policyNo}" />
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton style="width: 80px;" id="searchPolicy" action="#{MedicalPolicyEnquiryActionBean.findPolicyListByEnquiryCriteria}" update="@form" value="Search" />
+				<p:commandButton style="width: 80px;" action="#{MedicalPolicyEnquiryActionBean.resetCriteria}" update="@form" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="medicalPolicyTable" paginator="true" 
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+				rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{MedicalPolicyEnquiryActionBean.policyList}" var="medicalPolicy">
+				<p:column headerText="Policy No." style="width:13%;" styleClass="fixed-size">
+					<h:outputText value="#{medicalPolicy.policyNo}" />
+				</p:column>
+				<p:column headerText="Proposal No." style="width:13%;" styleClass="fixed-size">
+					<h:outputText value="#{medicalPolicy.proposalNo}" />
+				</p:column>
+				<p:column headerText="Sale Person" style="width:14%;">
+					<h:outputText value="#{medicalPolicy.agent}" />
+				</p:column>
+				<p:column headerText="Customer" style="width:15%;">
+					<h:outputText value="#{medicalPolicy.customer}" />
+				</p:column>
+				<p:column headerText="Policy Start Date" style="width:10%;" styleClass="fixed-size">
+					<h:outputText value="#{medicalPolicy.policyStartDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Policy End Date" style="width:10%;" styleClass="fixed-size">
+					<h:outputText value="#{medicalPolicy.policyEndDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Branch" style="width:10%;">
+					<h:outputText value="#{medicalPolicy.branch}" />
+				</p:column>
+				<p:column headerText="Edit" style="width:5%;" styleClass="fixed-size">
+					<p:commandLink id="editLink" action="#{MedicalPolicyEnquiryActionBean.editMedicalPolicy(medicalPolicy.id)}">
+						<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column headerText="Details" style="width:5%; text-align: center;" styleClass="fixed-size">
+					<p:commandLink action="#{MedicalPolicyEnquiryActionBean.showPolicyDetail(medicalPolicy.id)}" id="detailsProposal" immediate="true"
+						oncomplete="PF('medicalPolicyDetailsDialog').show()" update=":medicalPolicyDetailsForm:medicalPolicyDetailsPanel">
+						<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column headerText="Clone Policy" style="width:5%; text-align: center;">
+					<p:commandLink id="selectEditMedicalPolicy" action="#{MedicalPolicyEnquiryActionBean.editMedicalPolicy(medicalPolicy.id)}">
+						<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.policyIcon}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<h:form id="medicalPolicyDetailsForm">
+			<p:dialog header="Medical Policy Detail" widgetVar="medicalPolicyDetailsDialog" resizable="false" width="1000" height="563" showEffect="explode" hideEffect="explode"
+				id="medicalPolicyDetailsDialog" appendTo="@(body)" dynamic="true">
+				<p:outputPanel id="medicalPolicyDetailsPanel">
+					<ui:include src="/manage/medical/medicalProposalInfoTemplate.xhtml">
+						<ui:param name="medicalProposal" value="#{MedicalPolicyEnquiryActionBean.medProDTO}" />
+						<ui:param name="showPolicy" value="#{true}" />
+						<ui:param name="medicalPolicy" value="#{MedicalPolicyEnquiryActionBean.policy}" />
+						<ui:param name="workFlowList" value="#{MedicalPolicyEnquiryActionBean.workFlowList}" />
+					</ui:include>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

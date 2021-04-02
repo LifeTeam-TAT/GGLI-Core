@@ -1,0 +1,285 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Agent Sale Report" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:param name="width" value="150%;" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<h:form id="agentSaleReportForm">
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid"> 
+						
+						<h:outputLabel for="startDate" value="Start Date" />
+						<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" 
+							value="#{AgentSaleReportActionBean.criteria.startDate}" />
+					
+					<h:outputText styleClass="input-label" value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+						<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentSaleReportActionBean.selectEntity()}" id="entityDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{AgentSaleReportActionBean.returnEntity}" update="entity branchPanelGroup salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true" value="#{AgentSaleReportActionBean.criteria.entity == null ? '' :AgentSaleReportActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AgentSaleReportActionBean.removeEntity}" process="@this" update="entity branchPanelGroup salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+						<h:outputLabel value="Insurance Type" />
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuranceType" 
+							value="#{AgentSaleReportActionBean.criteria.insuranceType}">
+							<f:selectItems value="#{AgentSaleReportActionBean.insuranceTypes}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+						
+						
+						
+						
+						
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid"> 
+						
+						<h:outputLabel for="endDate" value="End Date" />
+					<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button"  value="#{AgentSaleReportActionBean.criteria.endDate}" />
+					
+					<h:outputText styleClass="input-label" value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" >
+							<div style="margin-top:-6px; margin-left:-6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentSaleReportActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this" disabled="#{ AgentSaleReportActionBean.criteria.entity==null?true:false}">
+								       <p:ajax event="dialogReturn" listener="#{AgentSaleReportActionBean.returnBranch}"  update="branch salePontPanelGroup"/>
+								    </p:commandButton>
+								    <p:inputText id="branch" readonly="true" 	value="#{AgentSaleReportActionBean.criteria.branch == null ? '' : AgentSaleReportActionBean.criteria.branch.name}" />
+								    <p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AgentSaleReportActionBean.removeBranch()}" process="@this" update="branch salePontPanelGroup"/>
+								</div>
+							</div>
+						</p:panelGrid>
+						
+					
+					
+					</p:panelGrid>	
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid"> 
+						
+						
+						
+						
+						
+						<h:outputText styleClass="input-label" value="Agent" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="agentPanelGroup">
+							<div style="margin-top:-6px; margin-left:-6px;" class="ui-g ui-fluid" >
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentSaleReportActionBean.selectAgent()}" id="selectAgentDialogLink" process="@this">
+								       <p:ajax event="dialogReturn" listener="#{AgentSaleReportActionBean.returnAgent}" update="agent"/>
+								    </p:commandButton>
+								    <p:inputText id="agent" readonly="true" value="#{AgentSaleReportActionBean.criteria.agent == null ? '' : AgentSaleReportActionBean.criteria.agent.fullName}" />
+								    <p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AgentSaleReportActionBean.criteria.setAgent(null)}" process="@this" update="agent"/>
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputLabel/>
+						<p:message for="salesPoints" />
+								<h:outputText styleClass="input-label" value="Sale Point" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" >
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentSaleReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+												process="@this" disabled="#{ AgentSaleReportActionBean.criteria.branch==null?true:false}"  >
+												<p:ajax event="dialogReturn" listener="#{AgentSaleReportActionBean.returnSalePoint}" update="salesPoints" />
+											</p:commandButton>
+											<p:inputText id="salesPoints"  readonly="true" value="#{AgentSaleReportActionBean.criteria.salePoint == null ? '' :AgentSaleReportActionBean.criteria.salePoint.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AgentSaleReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salesPoints" />
+										</div>
+									</div>
+								</p:panelGrid>
+					</p:panelGrid>
+				</p:panelGrid>
+				
+					<h:panelGrid columns="2">
+							<p:commandButton action="#{AgentSaleReportActionBean.filter}" update=":agentSaleReportForm:lifeInsuranceTable" value="Search" />
+							<p:commandButton action="#{AgentSaleReportActionBean.reset()}" update=":agentSaleReportForm" value="Reset" />
+					</h:panelGrid>
+
+			<p:dataTable id="lifeInsuranceTable" lazy="true" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rendered="#{AgentSaleReportActionBean.lifeInsurance}" rowIndexVar="rowIndex" rows="10" rowsPerPageTemplate="10,20, 30" value="#{AgentSaleReportActionBean.reportList}"
+				var="report" style="width:150%">
+				<f:facet name="header">
+					<h:commandLink action="#{AgentSaleReportActionBean.exportExcel1()}" immediate="true">
+						<p:graphicImage style="widht:30px;height:30px;" value="/images/excel.png" />
+					</h:commandLink>
+					<p:message for="lifeInsuranceTable"/>
+				</f:facet>
+				<p:columnGroup type="header">
+					<p:row>
+						<p:column colspan="1" headerText="No." rowspan="2" style="width:3%;" />
+						<p:column colspan="1" headerText="Name" rowspan="2" style="width:10%;" />
+						<p:column colspan="1" headerText="Code No." rowspan="2" style="width:10%;" />
+						<p:column colspan="1" headerText="Commission Start Date" rowspan="2" style="width:7%;" />
+						<p:column colspan="3" headerText="Group Life" style="width:20%;" />
+						<p:column colspan="3" headerText="Public Life" style="width:20%;" />
+						<p:column colspan="3" headerText="Medical Life" style="width:20%;" />
+						<p:column colspan="3" headerText="Sanke Bite" style="width:20%;" />
+						<p:column colspan="3" headerText="Sport Man" style="width:20%;" />
+						<p:column colspan="3" headerText="Travel Life" style="width:20%;" />
+						<p:column colspan="3" headerText="Total" tyle="width:20%;" />
+						<p:column colspan="1" headerText="Branch Name" rowspan="2" style="width:10%;" />
+						<p:column colspan="1" headerText=" SalePoint Name" rowspan="2" style="width:10%;" />
+					</p:row>
+					<p:row>
+						<p:column headerText="No. of Policy" />
+						<p:column headerText="Total Premium" />
+						<p:column headerText="Total Commission" />
+						<p:column headerText="No. of Policy" />
+						<p:column headerText="Total Premium" />
+						<p:column headerText="Total Commission" />
+						<p:column headerText="No. of Policy" />
+						<p:column headerText="Total Premium" />
+						<p:column headerText="Total Commission" />
+						<p:column headerText="No. of Policy" />
+						<p:column headerText="Total Premium" />
+						<p:column headerText="Total Commission" />
+						<p:column headerText="No. of Policy" />
+						<p:column headerText="Total Premium" />
+						<p:column headerText="Total Commission" />
+						<p:column headerText="No. of Policy" />
+						<p:column headerText="Total Premium" />
+						<p:column headerText="Total Commission" />
+						<p:column headerText="No. of Policy" />
+						<p:column headerText="Total Premium" />
+						<p:column headerText="Total Commission" />
+
+
+					</p:row>
+				</p:columnGroup>
+				<p:column>
+					<h:outputText value="#{rowIndex + 1}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.agentName}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.agentCodeNo}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.commissionStartDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.groupLifeCount}" />
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.groupLifePremium}" />
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.groupLifeCommission}" />
+				</p:column>
+
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.publicLifeCount}" />
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.publicLifePremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.publicLifeCommission}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.medicalPolicyCount}" />
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.medicalPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.medicalCommission}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.sankeBiteCount}" />
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.snakeBitePremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.sankeBiteCommission}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.sportManPolicyCount}" />
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.sportMenPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.sportMenCommission}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.travelPolicyCount}" />
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.travelPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.travelCommission}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+
+				<p:column>
+					<h:outputText value="#{report.policyCount}" />
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.totalPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.totalCommission}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.branchName}">
+					</h:outputText>
+				</p:column>
+
+				<p:column style="text-align:right;">
+					<h:outputText value="#{report.salePointName}">
+					</h:outputText>
+				</p:column>
+
+
+
+
+			</p:dataTable>
+
+
+		</h:form>
+		<!-- Agent Selection Form -->
+		<!--Select Branch Form -->
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,228 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Add New FAQ" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<div style="padding-left: 15px; padding-right: 15px;">
+			<h:form id="faqManagementForm" enctype="multipart/form-data">
+				<style>
+.ui-fileupload-content {
+	display: none;
+}
+
+.noneBorder {
+	broder: none;
+}
+
+.ui-fileupload {
+	broder: none;
+}
+
+.uploadIcon {
+	text-align: center;
+}
+
+.ui-editor {
+	height: 200px !important;
+}
+
+.ui-panelgrid td {
+	border: none;
+}
+
+.image {
+	margin: -10px 0px -30px -22px;
+	width: 128%;
+	height: 150px;
+}
+</style>
+				<p:growl globalOnly="true" id="messages" showDetail="true" escape="false" />
+				<div style="margin-right: -10px;">
+					<table>
+						<tr>
+							<td style="width: 400px;" valign="top">
+								<h:panelGrid columns="1">
+									<h:panelGrid style="width:100%">
+										<h:outputText styleClass="input-label mandatory" value="Product" />
+										<p:message for="product" display="text" />
+										<h:panelGrid columns="3" id="productPanelGroup">
+											<p:inputText id="product" readonly="#{ManageProductFAQActionBean.productFAQ.product == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true"
+												style="width:250px;margin-left:-4px;" value="#{ManageProductFAQActionBean.productFAQ.product == null ? '' : ManageProductFAQActionBean.productFAQ.product.name}" />
+											<p:commandLink actionListener="#{ManageProductFAQActionBean.selectProduct()}" id="selectProductDialogLink" immediate="true">
+												<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+												<p:ajax event="dialogReturn" listener="#{ManageProductFAQActionBean.returnProduct}" update="productPanelGroup" />
+											</p:commandLink>
+										</h:panelGrid>
+									</h:panelGrid>
+									<h:panelGrid style="width:100%" id="languagePanel">
+										<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_INFORMATION_LANGUAGE']}" />
+										<p:message for="languageId" display="text" />
+										<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="languageId" style="width:258px;" value="#{ManageProductFAQActionBean.productFAQ.language}">
+											<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{ManageProductFAQActionBean.languages}" var="type" />
+											<p:ajax event="valueChange" listener="#{ManageProductFAQActionBean.faqLanguageChangeEvent}" process="@this" update="faqTable" />
+										</p:selectOneMenu>
+									</h:panelGrid>
+									<h:panelGrid style="width:100%" id="titlePanel">
+										<h:outputText styleClass="input-label mandatory" value="Title" />
+										<p:message for="title" display="text" />
+										<p:inputText id="title" value="#{ManageProductFAQActionBean.productFAQ.title}" required="true" style="width: 250px;">
+											<p:ajax process="@this" />
+										</p:inputText>
+									</h:panelGrid>
+								</h:panelGrid>
+							</td>
+							<td valign="top">
+								<p:panelGrid id="imagePanel" columns="1" style="width:160px">
+									<f:facet name="header">
+										<h:outputText styleClass="input-label" value="Photo Image" />
+									</f:facet>
+									<h:panelGrid columns="1" style="width: 100%; height: 150px;">
+										<p:graphicImage id="image" styleClass="image" value="#{ManageProductFAQActionBean.productFAQ.filepath}" rendered="#{ManageProductFAQActionBean.showImage}" />
+										<p:message for="imageUpload" display="text" />
+										<p:commandLink process="@this" style="align:center" actionListener="#{ManageProductFAQActionBean.removePhotoImage}" update="imagePanel"
+											rendered="#{ManageProductFAQActionBean.showImage}">
+											<div align="center" style="margin-top: -14px; margin-bottom: -11px;">
+												<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+											</div>
+										</p:commandLink>
+									</h:panelGrid>
+									<p:fileUpload id="imageUpload" rendered="#{!ManageProductFAQActionBean.showImage}" styleClass="uploadIcon noneBorder" required="true"
+										fileUploadListener="#{ManageProductFAQActionBean.handleFileUpload}" mode="advanced" multiple="false" update="imagePanel" sizeLimit="100000" auto="true"
+										allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
+									</p:fileUpload>
+								</p:panelGrid>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<br />
+				<p:fieldset legend="FAQ Management">
+					<h:panelGrid>
+						<p:commandLink action="#{ManageProductFAQActionBean.createNewFAQ}" process="@this" oncomplete="PF('faqDialog').show()" update="@form :faqDialogForm">
+							<h:panelGrid columns="2" style="margin-left: -3px;">
+								<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+								<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+							</h:panelGrid>
+						</p:commandLink>
+					</h:panelGrid>
+					<p:dataTable id="faqTable" paginator="true" paginatorPosition="bottom" widgetVar="faqTable" rowIndexVar="index" rowsPerPageTemplate="5,10, 15" style="width:100%;"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rows="10"
+						value="#{ManageProductFAQActionBean.FAQList}" var="faq" rowKey="#{faq.codeNo}">
+						<p:column headerText="No" style="width: 3%;">
+							<h:outputText value="#{index + 1}. " style="float: right;" />
+						</p:column>
+						<p:column headerText="Question" style="width: 35%;">
+							<h:outputText value="#{faq.question}" />
+						</p:column>
+						<p:column headerText="Answer">
+							<h:outputText value="#{faq.answer}" />
+						</p:column>
+						<p:column headerText="Edit" style="text-align: center; width: 5%;">
+							<p:commandLink action="#{ManageProductFAQActionBean.prepareUpdateFAQ(faq)}" oncomplete="PF('faqDialog').show()" process="@this" update="@form,:faqDialogForm">
+								<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+							</p:commandLink>
+						</p:column>
+						<p:column headerText="Delete" style="text-align: center; width: 5%;">
+							<p:commandLink immediate="true" update="@form" actionListener="#{ManageProductFAQActionBean.deleteFAQ(faq)}">
+								<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+								<p:confirm header="Confirmation" message="Are you sure to delete this FAQ?" />
+							</p:commandLink>
+						</p:column>
+					</p:dataTable>
+				</p:fieldset>
+				<br />
+				<p:commandButton action="#{ManageProductFAQActionBean.addNewProductFAQ}" id="addBtn" rendered="#{ManageProductFAQActionBean.createNew}" style="width: 65px;" update="@form"
+					value="#{label['COMMON_ADDNEW_BTN']}" />
+				<p:commandButton style="width: 65px;" action="#{ManageProductFAQActionBean.updateProductFAQ}" rendered="#{!ManageProductFAQActionBean.createNew}" update="@form"
+					value="#{label['COMMON_UPDATE_BTN']}" />
+				<p:separator style="height:5px;width:100%;" />
+				<p:dataTable id="productFAQTable" paginator="true" paginatorPosition="bottom" var="proFAQ" widgetVar="productFAQTable" rowIndexVar="index"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+					rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageProductFAQActionBean.productFAQList}">
+					<p:column headerText="No" style="width: 4%;">
+						<h:outputText value="#{index + 1}." style="float: right;" />
+					</p:column>
+					<p:column headerText="Product" style="width: 20%;" filterBy="#{proFAQ.product.name}" filterMatchMode="exact">
+						<f:facet name="filter">
+							<p:selectOneMenu onchange="PF('productFAQTable').filter()" autoWidth="false" style="width: 80%;">
+								<f:selectItem itemLabel="All" noSelectionOption="true" />
+								<f:selectItems itemLabel="#{product}" itemValue="#{product}" value="#{ManageProductFAQActionBean.getProductList()}" var="product" />
+								<p:ajax event="valueChange" update="productFAQTable" />
+							</p:selectOneMenu>
+						</f:facet>
+						<h:outputText value="#{proFAQ.product.name}" />
+					</p:column>
+					<p:column headerText="Title">
+						<h:outputText value="#{proFAQ.title}" />
+					</p:column>
+					<p:column headerText="Language" filterBy="#{proFAQ.language}" filterMatchMode="exact" style="width: 13%;">
+						<f:facet name="filter">
+							<p:selectOneMenu onchange="PF('productFAQTable').filter()">
+								<f:selectItem itemLabel="All" noSelectionOption="true" />
+								<f:selectItems itemLabel="#{type.label}" itemValue="#{type.label}" value="#{ManageProductFAQActionBean.languages}" var="type" />
+								<p:ajax event="valueChange" update="productFAQTable" />
+							</p:selectOneMenu>
+						</f:facet>
+						<h:outputText value="#{proFAQ.language}" />
+					</p:column>
+					<p:column headerText="Image" style="text-align: center; width: 5%;">
+						<h:graphicImage value="#{proFAQ.filepath}" style="width: 100%; height: 50px;" />
+					</p:column>
+					<p:column headerText="Edit" style="text-align: center; width: 5%;">
+						<p:commandLink action="#{ManageProductFAQActionBean.prepareProductFAQ(proFAQ)}" process="@this" update="@form">
+							<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+						</p:commandLink>
+					</p:column>
+					<p:column headerText="Delete" style="text-align: center; width: 5%;">
+						<p:commandLink immediate="true" update="@form" actionListener="#{ManageProductFAQActionBean.deleteProductFAQ(proFAQ)}">
+							<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+							<p:confirm header="Confirmation" message="Are you sure to delete?" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" closable="false">
+					<center>
+						<p:commandButton style="width: 75px;" value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:spacer width="30px;" />
+						<p:commandButton style="width: 75px;" value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</center>
+				</p:confirmDialog>
+			</h:form>
+			<p:dialog appendTo="@(body)" modal="true" dynamic="true" header="FAQ Dialog" hideEffect="explode" id="faqDialog" resizable="false" showEffect="explode" 
+				widgetVar="faqDialog" height="auto" width="650px">
+				<h:form id="faqDialogForm">
+					<h:panelGrid columns="1" layout="grid" style="width: 100%;">
+						<h:panelGrid style="width:100%" id="languagePanel">
+							<h:outputText styleClass="input-label mandatory" value="Language" />
+							<p:message for="languageId" display="text" />
+							<p:selectOneMenu converter="omnifaces.SelectItemsConverter" disabled="true" id="languageId" style="width:250px;"
+								value="#{ManageProductFAQActionBean.selectedFAQ.language}">
+								<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{ManageProductFAQActionBean.languages}" var="type" />
+							</p:selectOneMenu>
+						</h:panelGrid>
+						<h:panelGrid style="width:100%" id="questionPanel">
+							<h:outputText styleClass="input-label mandatory" value="Question" />
+							<p:message for="questionId" display="text" />
+							<p:inputTextarea id="questionId" required="true" rows="3" value="#{ManageProductFAQActionBean.selectedFAQ.question}" style="width: 100%;" />
+						</h:panelGrid>
+						<h:panelGrid style="width:100%" id="answerPanel">
+							<h:outputText styleClass="input-label mandatory" value="Answer" />
+							<p:message for="answerId" display="text" />
+							<p:inputTextarea id="answerId" required="true" value="#{ManageProductFAQActionBean.selectedFAQ.answer}" rows="10" style="width: 100%;" />
+						</h:panelGrid>
+						<h:panelGrid columns="3">
+							<p:commandButton action="#{ManageProductFAQActionBean.addNewFAQ()}" id="addBtn" rendered="#{ManageProductFAQActionBean.newFAQ}" style="width: 80px;"
+								update=":faqManagementForm, :faqManagementForm:productFAQTable" value="#{label['COMMON_ADDNEW_BTN']}" />
+							<p:commandButton action="#{ManageProductFAQActionBean.updateFAQ()}" id="editBtn" rendered="#{!ManageProductFAQActionBean.newFAQ}" style="width: 80px;"
+								update=":faqManagementForm, :faqManagementForm:productFAQTable" value="#{label['COMMON_UPDATE_BTN']}" />
+							<p:spacer width="10" />
+							<p:commandButton style="width: 80px;" value="Cancel" oncomplete="PF('PF('faqDialog').hide()" />
+						</h:panelGrid>
+					</h:panelGrid>
+					<br />
+				</h:form>
+			</p:dialog>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OutCoInsuranceFirePolicy2" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="130" bottomMargin="20" resourceBundle="LANGUAGE_en" isIgnorePagination="true" uuid="f9685632-b8a3-4a0c-9e92-f4395e1cc754">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="332"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0FFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="CoinsuranceList" uuid="a0191629-ce51-4b3e-aaeb-10536fd16b5a">
+		<field name="coinsuranceCompany" class="org.ace.insurance.system.common.coinsurancecompany.CoinsuranceCompany"/>
+		<field name="sumInsuranced" class="java.lang.Double"/>
+		<field name="netPremium" class="java.lang.Double"/>
+		<field name="commissionPercentString" class="java.lang.String"/>
+		<field name="premium" class="java.lang.Double"/>
+	</subDataset>
+	<parameter name="companyTotalSumInsured" class="java.lang.String"/>
+	<parameter name="companyTotalNetPremium" class="java.lang.String"/>
+	<parameter name="TableDataSource2" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<title>
+		<band height="692" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="a6b67787-6d59-4f58-bdcd-cedca2f67c6f" x="1" y="1" width="554" height="42"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[အာမခံတာဝန္၊ ပရီမီယံႏွင့္ အက်ိဳးတူအခ်ိဳးက်အာမခံ ေကာ္မရွင္ခြဲေ၀ျခင္း]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement uuid="eeee804a-e643-4605-9f79-592913551fe7" key="table" style="table" x="19" y="59" width="518" height="50"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="CoinsuranceList" uuid="4b92eeba-83bf-498e-b86a-96c38b74cbfa">
+						<dataSourceExpression><![CDATA[$P{TableDataSource2}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="22" uuid="ebc7a74e-c26b-492b-9d4d-ff4a1667b507">
+						<jr:columnHeader style="table_CH" height="31" rowSpan="1">
+							<staticText>
+								<reportElement uuid="6dccb03d-d427-4131-a190-6ff242a150f4" x="0" y="0" width="22" height="31"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One"/>
+								</textElement>
+								<text><![CDATA[စဥ္]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="03b13624-acc6-482c-9942-4a1e1fbdceb5" x="2" y="0" width="20" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="198" uuid="0351c71c-ad3a-4638-a561-67b5a4d8756d">
+						<jr:columnHeader style="table_CH" height="31" rowSpan="1">
+							<staticText>
+								<reportElement uuid="ac9bf68c-4ae6-400b-9a32-5cebe841ab3f" x="0" y="0" width="198" height="31"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One"/>
+								</textElement>
+								<text><![CDATA[အာမခံကုမၸဏီ]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="fbb4a653-7217-4c90-8a8e-6aa072bbfd88" x="2" y="0" width="196" height="20"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Zawgyi-One"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{coinsuranceCompany}.getName()]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="6c85576f-1669-4e0c-97ae-f63c4f8542ad">
+						<jr:columnHeader style="table_CH" height="31" rowSpan="1">
+							<staticText>
+								<reportElement uuid="6dccb03d-d427-4131-a190-6ff242a150f4" x="0" y="0" width="100" height="31"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One"/>
+								</textElement>
+								<text><![CDATA[အာမခံထားေငြ]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField pattern="">
+								<reportElement uuid="3ab5ddd4-fefb-486a-b709-66e2efceb86a" x="2" y="0" width="96" height="20"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{sumInsuranced}]]></textFieldExpression>
+								<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="47442a32-944e-43c5-a46c-6f4d12f54210">
+						<jr:columnHeader style="table_CH" height="31" rowSpan="1">
+							<staticText>
+								<reportElement uuid="a6bc8b66-bf76-4b32-8554-9c8a3e4d9ccb" x="0" y="0" width="100" height="31"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One"/>
+								</textElement>
+								<text><![CDATA[အသားတင္ပရီမီယံ]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField pattern="">
+								<reportElement uuid="555dc496-2572-4d11-ad19-7ed482d581e7" x="2" y="0" width="96" height="20"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{premium}]]></textFieldExpression>
+								<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="97" uuid="dc3c4ab1-9d8a-4ddc-9046-8e3751c1ab3c">
+						<jr:columnHeader style="table_CH" height="31" rowSpan="1">
+							<staticText>
+								<reportElement uuid="bf609bfc-9065-43d1-b97d-972716d249eb" x="0" y="0" width="97" height="31"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One"/>
+								</textElement>
+								<text><![CDATA[ေကာ္မရွင္ (+ / -)]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="d93787f6-1577-46ce-956f-b5b88cef6fcd" x="2" y="0" width="93" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Zawgyi-One"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{commissionPercentString}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<rectangle>
+				<reportElement uuid="5601594a-ab24-4779-84ab-e5a56db08c1c" positionType="Float" x="19" y="109" width="220" height="20"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="a29d26f1-2aca-46f5-8f5f-1a18f2eaa7ce" positionType="Float" x="239" y="109" width="100" height="20"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="6a0b6bcc-8341-4abf-be05-2f826d7c5be2" positionType="Float" x="339" y="109" width="100" height="20"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="761964c4-4ddf-4ffb-a84f-bb8f449da215" positionType="Float" x="439" y="109" width="97" height="20"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="84e529d6-2fc9-47cf-bb22-70f17964e657" positionType="Float" x="19" y="109" width="220" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[စုစုေပါင္း]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="fc9a0d60-da54-4ea8-ba52-baf7df466d40" positionType="Float" x="241" y="109" width="96" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{companyTotalSumInsured}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement uuid="556316be-c170-40da-a883-a3379733248e" positionType="Float" x="341" y="109" width="96" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{companyTotalNetPremium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="13d8a1dd-095f-496f-9fdc-3f9be8789229" x="1" y="642" width="326" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ျဖန္႔ေဝျခင္း       - အာမခံလုပ္ငန္းၾကီးၾကပ္ေရးအဖြဲ႔ သိသာႏုိင္ပါရန္ တင္ျပအပ္ပါသည္။]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5bef76c9-c63b-4869-a2ba-880ec4facf3e" x="65" y="662" width="262" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[- အက်ိဳးတူ အခ်ိဳးက်အာမခံသူမ်ား (Co-insured) အားလံုး]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e7f0d38f-6885-4e36-8eb3-72db21b58a10" x="414" y="575" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ေလးစားစြာျဖင့္]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>

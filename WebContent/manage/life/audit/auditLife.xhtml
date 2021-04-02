@@ -1,0 +1,181 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <ui:param name="header" value="Life Audit"/>
+	<ui:param name="headerRendered" value="true"/>
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="auditLifeForm">
+			<p:growl globalOnly="true" showDetail="true" escape="false" />
+			<table>
+				<tr>
+					<td colspan="2">
+						<h:outputText value="Proposal No." />
+						<p:inputText value="#{LifeAuditActionBean.proposalNo}" size="50"/>
+						<p:commandButton value="Search" action="#{LifeAuditActionBean.searchLifeProposal()}" update=":auditLifeForm"/>
+					</td>
+				</tr>
+			
+				<tr>
+					<td>
+						<p:commandButton value="Generate Insured Person Code No" action="#{LifeAuditActionBean.generatePersonCodeNo()}" 
+								update="personCodeNoPanel"/>
+						<br/>
+						<p:outputPanel id="personCodeNoPanel">
+							<br/>
+							<p:dataTable value="#{LifeAuditActionBean.personCodeList}" var="personCodeNo" rowIndexVar="index"
+								 rendered="#{LifeAuditActionBean.personCodeList.size() gt 0}">
+								<p:column headerText="No.">
+									<h:outputText value="#{index + 1}" />
+								</p:column>
+								<p:column headerText="Insured Person Code No">
+									<h:outputText value="#{personCodeNo}" />
+								</p:column>
+							</p:dataTable>
+						</p:outputPanel>
+					</td>
+					<td>
+						<p:commandButton value="Generate Beneficiary Code No" action="#{LifeAuditActionBean.generateBeneficiaryCodeNo()}" 
+								update="beneficiaryCodeNoPanel"/>
+						<br/>
+						<p:outputPanel id="beneficiaryCodeNoPanel">
+							<br/>
+							<p:dataTable value="#{LifeAuditActionBean.beneficiaryCodeList}" var="beneficiaryCodeNo" rowIndexVar="index"
+								 rendered="#{LifeAuditActionBean.beneficiaryCodeList.size() gt 0}">
+								<p:column headerText="No.">
+									<h:outputText value="#{index + 1}" />
+								</p:column>
+								<p:column headerText="Beneficiary Code No">
+									<h:outputText value="#{beneficiaryCodeNo}" />
+								</p:column>
+							</p:dataTable>
+						</p:outputPanel>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<p:panel rendered="#{LifeAuditActionBean.lifeProposal != null}" header="Proposal Building">
+							<p:dataTable id="proposalPersonTable" rowIndexVar="index" style="width: 100%" 
+								value="#{LifeAuditActionBean.lifeProposal.proposalInsuredPersonList}" var="proposalPerson">
+								<p:column headerText="No.">
+									<h:outputText value="#{index + 1}" />
+								</p:column>
+								<p:column headerText="Name">
+									<h:outputText value="#{proposalPerson.fullName}" />
+								</p:column>
+								<p:column headerText="Father Name">
+									<h:outputText value="#{proposalPerson.fatherName}" />
+								</p:column>
+								<p:column headerText="ID No.">
+									<h:outputText value="#{proposalPerson.idNo}" />
+								</p:column>
+								<p:column headerText="Date Of Birth">
+									<h:outputText value="#{proposalPerson.dateOfBirth}" >
+										<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}"/>
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Person Code No" >
+									<p:inputText value="#{proposalPerson.insPersonCodeNo}" size="30"/>
+								</p:column>
+							</p:dataTable>
+						</p:panel>
+					</td>
+					<td>
+						<p:panel header="Policy Building" rendered="#{LifeAuditActionBean.lifePolicy != null}">
+							<p:dataTable id="policyBuildTable" rowIndexVar="index"
+								value="#{LifeAuditActionBean.lifePolicy.policyInsuredPersonList}" var="policyPerson">
+								<p:column headerText="No.">
+									<h:outputText value="#{index + 1}" />
+								</p:column>
+								<p:column headerText="Name">
+									<h:outputText value="#{policyPerson.fullName}" />
+								</p:column>
+								<p:column headerText="Father Name">
+									<h:outputText value="#{policyPerson.fatherName}" />
+								</p:column>
+								<p:column headerText="ID No.">
+									<h:outputText value="#{policyPerson.idNo}" />
+								</p:column>
+								<p:column headerText="Date Of Birth">
+									<h:outputText value="#{policyPerson.dateOfBirth}" >
+										<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}"/>
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Person Code No" >
+									<p:inputText value="#{policyPerson.insPersonCodeNo}" size="30"/>
+								</p:column>
+							</p:dataTable>
+						</p:panel>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<p:dataTable var="proposalPerson" value="#{LifeAuditActionBean.lifeProposal.proposalInsuredPersonList}"
+							rendered="#{LifeAuditActionBean.lifeProposal != null and LifeAuditActionBean.lifeProposal.proposalInsuredPersonList.size() gt 0}">
+						<p:column>
+							<p:panel header="Proposal Insured Person : #{proposalPerson.fullName}">
+							<p:dataTable id="proposalBeneTable" rowIndexVar="index" style="width: 100%" 
+								value="#{proposalPerson.insuredPersonBeneficiariesList}" var="proposalBene"
+								rendered="#{proposalPerson.insuredPersonBeneficiariesList.size() gt 0}">
+								<p:column headerText="No.">
+									<h:outputText value="#{index + 1}" />
+								</p:column>
+								<p:column headerText="Name">
+									<h:outputText value="#{proposalBene.fullName}" />
+								</p:column>
+								<p:column headerText="Relationship">
+									<h:outputText value="#{proposalBene.relationship.name}" />
+								</p:column>
+								<p:column headerText="ID No.">
+									<h:outputText value="#{proposalBene.idNo}" />
+								</p:column>
+								<p:column headerText="Beneficiary No" >
+									<p:inputText value="#{proposalBene.beneficiaryNo}" size="30"/>
+								</p:column>
+							</p:dataTable>
+						</p:panel>
+						</p:column>
+					</p:dataTable>
+					</td>
+					<td>
+						<p:dataTable value="#{LifeAuditActionBean.lifePolicy.policyInsuredPersonList}" var="policyPerson"
+							rendered="#{LifeAuditActionBean.lifePolicy != null and LifeAuditActionBean.lifePolicy.policyInsuredPersonList.size() gt 0}">
+							<p:column>
+								<p:panel header="Policy Insured Person : #{policyPerson.fullName}">
+								<p:dataTable value="#{policyPerson.policyInsuredPersonBeneficiariesList}" var="policyBene" rowIndexVar="index"
+									rendered="#{policyPerson.policyInsuredPersonBeneficiariesList.size() gt 0}">
+									<p:column headerText="No.">
+										<h:outputText value="#{index + 1}" />
+									</p:column>
+									<p:column headerText="Name">
+										<h:outputText value="#{policyBene.fullName}" />
+									</p:column>
+									<p:column headerText="Relationship">
+										<h:outputText value="#{policyBene.relationship.name}" />
+									</p:column>
+									<p:column headerText="ID No.">
+										<h:outputText value="#{policyBene.idNo}" />
+									</p:column>
+									<p:column headerText="Beneficiary No" >
+										<p:inputText value="#{policyBene.beneficiaryNo}" size="30"/>
+									</p:column>
+								</p:dataTable>
+								</p:panel>
+							</p:column>
+						</p:dataTable>
+					</td>
+				</tr>
+				
+				<tr>
+					<td colspan="2">
+						<p:commandButton value="Update" action="#{LifeAuditActionBean.updatePersonCode()}"
+							rendered="#{LifeAuditActionBean.update}" update=":auditLifeForm" style="width:100px;height:30px;"/>
+					</td>
+				</tr>
+				
+			</table>
+		</h:form>
+	</ui:define>
+</ui:composition>

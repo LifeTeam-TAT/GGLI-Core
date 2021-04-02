@@ -1,0 +1,180 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['MOTOR_AGENT_COMISSION_REPORT_LABEL']}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<h:form id="agentCommissionListForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="startDate" value="Start Date" />
+					<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+						value="#{AgentCommissionDetailReportActionBean.criteria.startDate}" />
+					<h:outputLabel />
+					<p:message for="entity" />
+					<h:outputText styleClass="input-label" value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGroup">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentCommissionDetailReportActionBean.selectEntity()}" id="selectEntityDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{AgentCommissionDetailReportActionBean.returnEntity}" update="entity branchPanelGroup salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true"
+									value="#{AgentCommissionDetailReportActionBean.criteria.entity== null ? '' : AgentCommissionDetailReportActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AgentCommissionDetailReportActionBean.removeEntity()}" process="@this"
+									update="entity branchPanelGroup salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputText styleClass="input-label" value="Agent" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="agentPanelGroup">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentCommissionDetailReportActionBean.selectAgent()}" id="selectAgentDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{AgentCommissionDetailReportActionBean.returnAgent}" update="agent" />
+								</p:commandButton>
+								<p:inputText id="agent" readonly="true"
+									value="#{AgentCommissionDetailReportActionBean.criteria.agent == null ? '' : AgentCommissionDetailReportActionBean.criteria.agent.fullName}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AgentCommissionDetailReportActionBean.criteria.setAgent(null)}" process="@this" update="agent" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="endDate" value="End Date" />
+					<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{AgentCommissionDetailReportActionBean.criteria.endDate}" />
+					<h:outputLabel />
+					<p:message for="branch" />
+					<h:outputText styleClass="input-label" value="#{label['ADDNEWLIFEPROPOSAL_BRANCH_LABEL']}" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentCommissionDetailReportActionBean.selectBranch()}" id="selectBranchDialogLink"
+									process="@this" disabled="#{AgentCommissionDetailReportActionBean.criteria.entity==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{AgentCommissionDetailReportActionBean.returnBranch}" update="branch salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true"
+									value="#{AgentCommissionDetailReportActionBean.criteria.branch == null ? '' : AgentCommissionDetailReportActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{AgentCommissionDetailReportActionBean.criteria.entity==null?true:false}" icon="fa fa-times"
+									action="#{AgentCommissionDetailReportActionBean.removeBranch()}" process="@this" update="branch salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputLabel for="agentStatus" value="Agent Status" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="agentStatus" value="#{AgentCommissionDetailReportActionBean.criteria.agentStatus}">
+						<f:selectItem itemLabel="" />
+						<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{AgentCommissionDetailReportActionBean.agentStatues}" var="type" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="insuranceType" value="Insurance Type" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuranceType" value="#{AgentCommissionDetailReportActionBean.criteria.insuranceType}">
+						<f:selectItem itemLabel=" " />
+						<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{AgentCommissionDetailReportActionBean.insuranceTypes}" var="type" />
+					</p:selectOneMenu>
+					<h:outputLabel />
+					<p:message for="salePoint" />
+					<h:outputText styleClass="input-label" value="Sale Point" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentCommissionDetailReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+									process="@this" disabled="#{AgentCommissionDetailReportActionBean.criteria.branch==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{AgentCommissionDetailReportActionBean.returnSalePoint}" update="salePoint" />
+								</p:commandButton>
+								<p:inputText id="salePoint" readonly="true"
+									value="#{AgentCommissionDetailReportActionBean.criteria.salePoint == null ? '' : AgentCommissionDetailReportActionBean.criteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{AgentCommissionDetailReportActionBean.criteria.branch==null?true:false}" icon="fa fa-times"
+									action="#{AgentCommissionDetailReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salePoint" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton action="#{AgentCommissionDetailReportActionBean.filter}" update=":agentCommissionListForm:agentCommissionTablePanel" value="Search">
+					<!-- <p:graphicImage value="/images/filter.png" /> -->
+				</p:commandButton>
+				<p:commandButton action="#{AgentCommissionDetailReportActionBean.reset()}" immediate="true" update=":agentCommissionListForm" value="Reset" />
+			</h:panelGrid>
+			<br />
+			<h:panelGroup id="agentCommissionTablePanel">
+				<p:dataTable id="varTable" lazy="true" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="10"
+					rowsPerPageTemplate="10,20, 30" value="#{AgentCommissionDetailReportActionBean.agentCommissionList}" var="var">
+					<f:facet name="header">
+						<p:commandLink disabled="#{AgentCommissionDetailReportActionBean.agentCommissionList.size() lt 1 ? true : false}"
+							action="#{AgentCommissionDetailReportActionBean.generateReport()}" immediate="true" oncomplete="PF('pdfPreviewDialog').show()">
+							<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" url="#{ApplicationSetting.printIcon}" />
+						</p:commandLink>
+					</f:facet>
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column colspan="1" headerText=" No." rowspan="2" style="width: 3%;" />
+							<p:column colspan="5" headerText=" Agent" style="width:40%;" />
+							<p:column headerText=" Policy No." rowspan="2" style="width:10%;" />
+							<p:column headerText=" Receipt No." rowspan="2" style="width:10%;" />
+							<p:column colspan="1" headerText=" Commission" rowspan="2" style="width:7%;" />
+							<p:column colspan="1" headerText=" Reference Type" rowspan="2" style="width:7%;" />
+							<p:column colspan="1" headerText=" Invoice Date" rowspan="2" style="width:7%;" />
+							<p:column colspan="1" headerText=" Invoice No." rowspan="2" style="width:7%;" />
+							<p:column colspan="1" headerText=" Branch Name" rowspan="2" style="width:7%;" />
+							<p:column colspan="1" headerText=" SalePoint Name" rowspan="2" style="width:7%;" />
+						</p:row>
+						<p:row>
+							<p:column headerText=" Code No." style="width:7%;" styleClass="fixed-size" />
+							<p:column headerText=" Licensed No." style="width:5%;" />
+							<p:column headerText=" Name" style="width:5%;" />
+							<p:column headerText=" Phone No." style="width:5%;" />
+							<p:column headerText=" Address" style="width:7%;" />
+						</p:row>
+					</p:columnGroup>
+					<p:column>
+						<h:outputText value="#{rowIndex + 1}" />
+					</p:column>
+					<p:column styleClass="fixed-size">
+						<h:outputText style="text-align: right;" value="#{var.agentCode}" />
+					</p:column>
+					<p:column styleClass="fixed-size">#{var.liscenseNo}</p:column>
+					<p:column styleClass="fixed-size">#{var.agentName}</p:column>
+					<p:column styleClass="fixed-size">#{var.phoneNo}</p:column>
+					<p:column styleClass="fixed-size">#{var.address}</p:column>
+					<p:column styleClass="fixed-size">#{var.policyNo}</p:column>
+					<p:column styleClass="fixed-size">#{var.receiptNo}</p:column>
+					<p:column style="text-align:right;">#{var.commission}</p:column>
+					<p:column styleClass="fixed-size">#{var.insuranceType}</p:column>
+					<p:column>
+						<h:outputText value="#{var.invoiceDate}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column>#{var.invoiceNo}</p:column>
+					<p:column>#{var.branchName}</p:column>
+					<p:column>#{var.salePointName}</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+		</h:form>
+		<!-- Agent Preview Form -->
+		<!-- PDF Preview Form -->
+		<h:form enctype="multipart/form-data" id="pdfPreviewForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview (PDF)" width="1070" height="505" hideEffect="fade" id="pdfPreviewDialog" resizable="false" showEffect="fade"
+				widgetVar="pdfPreviewDialog">
+				<p:outputPanel id="stream">
+					<p:media width="1050" height="500" player="pdf" value="#{AgentCommissionDetailReportActionBean.stream}" cache="false" />
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,222 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<!-- 		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" /> -->
+		<h:form id="montlyIncomeReportForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<table width="100%" style="margin-top: -8px;">
+				<tr>
+					<td><h:outputText id="title" styleClass="ui-widget ui-widget-header ui-corner-all submenu-title"
+							value="Person Travel Monthly Income Report Of #{ApplicationSetting.getMonthInString(PersonTravelMonthlyIncomeReportActionBean.criteria.month)}, #{PersonTravelMonthlyIncomeReportActionBean.criteria.year}" />
+						<p:separator style="height:3px; margin-top:1px;" /></td>
+				</tr>
+			</table>
+			<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel styleClass="input-label mandatory" value="Month" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="month" required="true" value="#{PersonTravelMonthlyIncomeReportActionBean.criteria.month}">
+						<f:selectItems value="#{PersonTravelMonthlyIncomeReportActionBean.monthSet}" var="month" itemLabel="#{month}" itemValue="#{month.value}" />
+					</p:selectOneMenu>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText value="Agent" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="selectagentPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectagentPanelGrid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{PersonTravelMonthlyIncomeReportActionBean.selectAgent()}" id="selectAgentDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{PersonTravelMonthlyIncomeReportActionBean.returnAgent}" update="agent" />
+								</p:commandButton>
+								<p:inputText id="agent" readonly="true"
+									value="#{PersonTravelMonthlyIncomeReportActionBean.criteria.agentId == null ? '--Select Agent--' : PersonTravelMonthlyIncomeReportActionBean.criteria.agentName}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{PersonTravelMonthlyIncomeReportActionBean.clearAgent}" process="@this" update="agent" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{PersonTravelMonthlyIncomeReportActionBean.selectEntity()}" id="entityDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{PersonTravelMonthlyIncomeReportActionBean.returnEntity}" update="entity selectBranchPanelGrid salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true"
+									value="#{PersonTravelMonthlyIncomeReportActionBean.criteria.entity == null ? '' : PersonTravelMonthlyIncomeReportActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{PersonTravelMonthlyIncomeReportActionBean.removeEntity}" process="@this"
+									update="entity selectBranchPanelGrid salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText for="vehicleNo" value="Vehicle No." />
+					<p:inputText id="vehicleNo" value="#{PersonTravelMonthlyIncomeReportActionBean.criteria.vehicleNo}" />
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel styleClass="input-label mandatory" value="Year" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="year" required="true" value="#{PersonTravelMonthlyIncomeReportActionBean.criteria.year}">
+						<f:selectItems value="#{PersonTravelMonthlyIncomeReportActionBean.yearList}" />
+					</p:selectOneMenu>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText for="proposalNo" value="Proposal No." />
+					<p:inputText id="proposalNo" value="#{PersonTravelMonthlyIncomeReportActionBean.criteria.proposalNo}" />
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText value="Branch" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="selectBranchPanelGrid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{PersonTravelMonthlyIncomeReportActionBean.selectBranch()}" id="selectBranchDialogLink"
+									process="@this" disabled="#{PersonTravelMonthlyIncomeReportActionBean.criteria.entity==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{PersonTravelMonthlyIncomeReportActionBean.returnBranch}" update="branch salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true"
+									value="#{PersonTravelMonthlyIncomeReportActionBean.criteria.branch == null ? '--Select Branch--' : PersonTravelMonthlyIncomeReportActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{PersonTravelMonthlyIncomeReportActionBean.criteria.entity==null?true:false}" icon="fa fa-times"
+									action="#{PersonTravelMonthlyIncomeReportActionBean.clearBranch}" process="@this" update="branch salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText styleClass="input-label mandatory" value="Product" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="product" required="true" value="#{PersonTravelMonthlyIncomeReportActionBean.criteria.productId}">
+						<f:selectItems value="#{PersonTravelMonthlyIncomeReportActionBean.productList}" var="product" itemLabel="#{product.name}" itemValue="#{product.id}" />
+					</p:selectOneMenu>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText for="policyNo" value="Policy No." />
+					<p:inputText id="policyNo" value="#{PersonTravelMonthlyIncomeReportActionBean.criteria.policyNo}" />
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText styleClass="input-label" value="Sale Point" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{PersonTravelMonthlyIncomeReportActionBean.selectSalePoint()}"
+									id="selectSalePointDialogLink" process="@this" disabled="#{PersonTravelMonthlyIncomeReportActionBean.criteria.branch==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{PersonTravelMonthlyIncomeReportActionBean.returnSalePoint}" update="salePoint" />
+								</p:commandButton>
+								<p:inputText id="salePoint" readonly="true"
+									value="#{PersonTravelMonthlyIncomeReportActionBean.criteria.salePoint == null ? '' : PersonTravelMonthlyIncomeReportActionBean.criteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{PersonTravelMonthlyIncomeReportActionBean.criteria.branch==null?true:false}" icon="fa fa-times"
+									action="#{PersonTravelMonthlyIncomeReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salePoint" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton action="#{PersonTravelMonthlyIncomeReportActionBean.search()}" update="travelList montlyIncomeReportForm:title" value="Search" />
+				<p:commandButton action="#{PersonTravelMonthlyIncomeReportActionBean.resetCriteria()}" update="@form" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="travelList" value="#{PersonTravelMonthlyIncomeReportActionBean.reportList}" var="travel" paginator="true" rowIndexVar="rowIndex" rowsPerPageTemplate="10,20,30"
+				rows="10" style="align : center;">
+				<f:facet name="header">
+					<h:commandLink action="#{PersonTravelMonthlyIncomeReportActionBean.exportExcel}" immediate="true">
+						<p:graphicImage style="widht:30px;height:30px;" value="/images/excel.png" />
+					</h:commandLink>
+					<p:message for="travelList" />
+				</f:facet>
+				<p:columnGroup type="header">
+					<p:row>
+						<p:column headerText="No." style="width:4%" />
+						<p:column headerText="Payment Date" styleClass="fixed-size" />
+						<p:column headerText="Express Name" styleClass="fixed-size" rendered="#{PersonTravelMonthlyIncomeReportActionBean.under100Travel}" />
+						<p:column headerText="Proposal No" styleClass="fixed-size" rendered="#{!PersonTravelMonthlyIncomeReportActionBean.under100Travel}" width="10%" />
+						<p:column headerText="Policy No" styleClass="fixed-size" rendered="#{!PersonTravelMonthlyIncomeReportActionBean.under100Travel}" width="10%" />
+						<p:column headerText="Agent Name" styleClass="fixed-size" />
+						<p:column headerText="Insured Person" rendered="#{!PersonTravelMonthlyIncomeReportActionBean.under100Travel}" />
+						<p:column headerText="Route" />
+						<p:column headerText="Travel Days" styleClass="fixed-size" />
+						<p:column headerText="Vehicle" />
+						<p:column headerText="Total Unit" styleClass="fixed-size" />
+						<p:column headerText="SumInsured" styleClass="fixed-size" />
+						<p:column headerText="Total Premium" styleClass="fixed-size" />
+						<p:column headerText="Total Commission" styleClass="fixed-size" />
+						<p:column headerText="Total Net Premium" styleClass="fixed-size" />
+						<p:column headerText="Branch Name" styleClass="fixed-size" />
+						<p:column headerText="Sale Point Name" styleClass="fixed-size" />
+					</p:row>
+				</p:columnGroup>
+				<p:column>
+					<h:outputText value="#{rowIndex + 1}" />
+				</p:column>
+				<p:column style="text-align:center;" styleClass="fixed-size">
+					<h:outputText value="#{travel.paymentDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column rendered="#{PersonTravelMonthlyIncomeReportActionBean.under100Travel}" styleClass="fixed-size">
+					<h:outputText value="#{travel.expressName}" />
+				</p:column>
+				<p:column rendered="#{!PersonTravelMonthlyIncomeReportActionBean.under100Travel}" styleClass="fixed-size">
+					<h:outputText value="#{travel.proposalNo}" />
+				</p:column>
+				<p:column rendered="#{!PersonTravelMonthlyIncomeReportActionBean.under100Travel}" styleClass="fixed-size">
+					<h:outputText value="#{travel.policyNo}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{travel.agentName}" styleClass="fixed-size" />
+				</p:column>
+				<p:column rendered="#{!PersonTravelMonthlyIncomeReportActionBean.under100Travel}" styleClass="fixed-size">
+					<h:outputText value="#{travel.insurers}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{travel.travelPath}" />
+				</p:column>
+				<p:column style="text-align:center;" styleClass="fixed-size">
+					<h:outputText value="#{travel.travelDays}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{travel.vehicleNo}" />
+				</p:column>
+				<p:column style="text-align:center;" styleClass="fixed-size">
+					<h:outputText value="#{travel.totalUnit}">
+					</h:outputText>
+				</p:column>
+				<p:column style="text-align:center;" styleClass="fixed-size">
+					<h:outputText value="#{travel.sumInsured}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="text-align:center;" styleClass="fixed-size">
+					<h:outputText value="#{travel.premium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="text-align:center;" styleClass="fixed-size">
+					<h:outputText value="#{travel.commission}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="text-align:center;" styleClass="fixed-size">
+					<h:outputText value="#{travel.netPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Branch Name" style="width:10%">
+					<h:outputText value="#{travel.branchName}" />
+				</p:column>
+				<p:column headerText="Sale Point Name" style="width:10%">
+					<h:outputText value="#{travel.salePointName}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

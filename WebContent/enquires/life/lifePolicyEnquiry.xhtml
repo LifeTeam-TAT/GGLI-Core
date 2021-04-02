@@ -1,0 +1,197 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Life Policy Enquiry" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="lifeEquiryForm">
+		<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="startDate" value="Start Date" />
+						<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{LifePolicyEnquiryActionBean.criteria.startDate}" />
+						
+						<h:outputText value="Agent" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectagentPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectagentPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{LifePolicyEnquiryActionBean.selectAgent()}" id="selectAgentDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{LifePolicyEnquiryActionBean.returnAgent}" update="agent" />
+									</p:commandButton>
+									<p:inputText id="agent" readonly="true" value="#{LifePolicyEnquiryActionBean.criteria.agent == null ? '' : LifePolicyEnquiryActionBean.criteria.agent.name.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{LifePolicyEnquiryActionBean.criteria.setAgent(null)}" process="@this" update="agent" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText value="SaleMan" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectSaleManPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectSaleManPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{LifePolicyEnquiryActionBean.selectSaleMan()}" id="selectSaleManDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{LifePolicyEnquiryActionBean.returnSaleMan}" update="saleMan" />
+									</p:commandButton>
+									<p:inputText id="saleMan" readonly="true" value="#{LifePolicyEnquiryActionBean.criteria.saleMan == null ? '' : LifePolicyEnquiryActionBean.criteria.saleMan.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{LifePolicyEnquiryActionBean.criteria.setSaleMan(null)}" process="@this" update="saleMan" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="endDate" value="End Date" />
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{LifePolicyEnquiryActionBean.criteria.endDate}" />
+						<h:outputText value="Customer" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectCustomerPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectCustomerPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{LifePolicyEnquiryActionBean.selectCustomer()}" id="selectCustomerDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{LifePolicyEnquiryActionBean.returnCustomer}" update="customer" />
+									</p:commandButton>
+									<p:inputText id="customer" readonly="true" value="#{LifePolicyEnquiryActionBean.criteria.customer == null ? '' : LifePolicyEnquiryActionBean.criteria.customer.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{LifePolicyEnquiryActionBean.criteria.setCustomer(null)}" process="@this" update="customer" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectBranchPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectBranchPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" disabled="#{!LifePolicyEnquiryActionBean.isAccessBranches}" icon="fa fa-search" actionListener="#{LifePolicyEnquiryActionBean.selectBranch()}" id="selectBranchDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{LifePolicyEnquiryActionBean.returnBranch}" update="branch" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true" value="#{LifePolicyEnquiryActionBean.criteria.branch == null ? '' : LifePolicyEnquiryActionBean.criteria.branch.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{!LifePolicyEnquiryActionBean.isAccessBranches}" action="#{LifePolicyEnquiryActionBean.criteria.setBranch(null)}" process="@this" update="branch" />
+								</div>
+							</div>
+						</p:panelGrid>
+						
+						
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel/>
+						<p:message for="product"/>
+						<h:outputText value="Product" />
+						<p:selectOneMenu autoWidth="false" required="true" converter="omnifaces.SelectItemsConverter" id="product" value="#{LifePolicyEnquiryActionBean.criteria.product}">
+							<f:selectItem itemLabel="-- Select Product --" noSelectionOption="true" />
+							<f:selectItems value="#{LifePolicyEnquiryActionBean.productList}" var="product" itemLabel="#{product.name}" itemValue="#{product}" />
+						</p:selectOneMenu>
+						<h:outputText value="Organization" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectOrganizationPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectOrganizationPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{LifePolicyEnquiryActionBean.selectOrganization()}" id="selectOrganizationDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{LifePolicyEnquiryActionBean.returnOrganization}" update="organization" />
+									</p:commandButton>
+									<p:inputText id="organization" readonly="true"
+										value="#{LifePolicyEnquiryActionBean.criteria.organization == null ? '' : LifePolicyEnquiryActionBean.criteria.organization.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{LifePolicyEnquiryActionBean.criteria.setOrganization(null)}" process="@this" update="organization" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText for="policyNo" value="Policy No." />
+						<p:inputText id="policyNo" value="#{LifePolicyEnquiryActionBean.criteria.number}" />
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton style="width: 80px;" id="searchBtn" action="#{LifePolicyEnquiryActionBean.findMotorProposalListByEnquiryCriteria}" update=":lifeEquiryForm" value="Search" />
+				<p:commandButton style="width: 80px;" action="#{LifePolicyEnquiryActionBean.resetCriteria}" immediate="true" update=":lifeEquiryForm" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="lifePolicyTable" paginator="true" paginatorPosition="bottom" style="width:140%;"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+				rowsPerPageTemplate="5,10, 15" value="#{LifePolicyEnquiryActionBean.loadLifePolicyList()}" var="lifePolicy">
+				<p:column headerText="Policy No." style="width:11%;" styleClass="fixed-size">
+					<h:outputText value="#{lifePolicy.policyNo}"/>
+				</p:column>
+				<p:column headerText="Proposal No." style="width:11%;" styleClass="fixed-size">
+					<h:outputText value="#{lifePolicy.proposalNo}"/>
+				</p:column>
+				<p:column headerText="Saleman" style="width:11%;" styleClass="fixed-size">
+					<h:outputText value="#{lifePolicy.saleMan}"/>
+				</p:column>
+				<p:column headerText="Agent" style="width:11%;" styleClass="fixed-size">
+					<h:outputText value="#{lifePolicy.agent}"/>
+				</p:column>
+				<p:column headerText="Customer" style="width:11%;" styleClass="fixed-size">
+					<h:outputText value="#{lifePolicy.customer}"/>
+				</p:column>
+				<p:column headerText="Branch" style="width:10%;" styleClass="fixed-size">
+					<h:outputText value="#{lifePolicy.branch}"/>
+				</p:column>
+				<p:column headerText="Total Premium" style="width:10%;" styleClass="fixed-size">
+					<h:outputText value="#{lifePolicy.premium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Total Sum Insured" style="width:10%;" styleClass="fixed-size">
+					<h:outputText style="float: left;" value="#{lifePolicy.sumInsured}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="PaymentType" style="width:8%;" styleClass="fixed-size">
+					<h:outputText value="#{lifePolicy.paymentType}"/>
+				</p:column>
+				<p:column headerText="Commenmance Date" style="width:10%; text-align: center;">
+					<h:outputText value="#{lifePolicy.commenmanceDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Payment Times" style="width:5%; text-align: center;">
+					<h:outputText value="#{lifePolicy.paymentTimes}">
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Term Premium" style="width:10%; text-align: center;" styleClass="fixed-size">
+					<h:outputText value="#{lifePolicy.basicTermPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:5%;" headerText="Details" styleClass="fixed-size">
+					<p:commandLink id="detailsProposal" immediate="true" actionListener="#{LifePolicyEnquiryActionBean.openTemplateDialog(lifePolicy)}">
+						<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="width:5%;" headerText="Edit" styleClass="fixed-size">
+					<p:commandLink id="editLink" action="#{LifePolicyEnquiryActionBean.editLifePolicy(lifePolicy.id)}" disabled="#{LifePolicyEnquiryActionBean.isStudentLife}">
+						<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="width:6%;text-align: center;" headerText="Attachment">
+					<p:commandLink action="#{LifePolicyEnquiryActionBean.getPagePolicy(lifePolicy.id)}" id="policyAttachment">
+						<p:graphicImage styleClass="#{ApplicationSetting.attachStyleClass}" value="#{ApplicationSetting.attachIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="width:6%;text-align: center;" styleClass="fixed-size">
+					<f:facet name="header">
+						<h:outputLabel style="white-space:pre;" value="Premium&#10;Ledger" />
+					</f:facet>
+					<p:commandLink action="#{LifePolicyEnquiryActionBean.generateReport(lifePolicy.id)}" id="premiumLedgerLink" immediate="true" oncomplete="PF('premiumLedgerPrintDailog').show()"
+						update=":documentPrintForm">
+						<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" url="#{ApplicationSetting.printIcon}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<h:form enctype="multipart/form-data" id="documentPrintForm">
+			<p:dialog appendTo="@(body)" dynamic="true" height="500" id="premiumLedgerPrintDailog" resizable="false" widgetVar="premiumLedgerPrintDailog" width="1050">
+				<p:ajax event="close" update=":documentPrintForm :lifeEquiryForm" listener="#{LifePolicyEnquiryActionBean.handleClosePremiumLedger}" />
+				<p:media height="500" id="pdfPlayer" player="pdf" value="#{LifePolicyEnquiryActionBean.stream}" width="1050"  cache="false" />
+			</p:dialog>
+		</h:form>
+		<h:form id="lifePolicyDetailsForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Life Policy Details" height="500" hideEffect="explode" id="lifePolicyDetailsDialog" resizable="false" showEffect="explode"
+				widgetVar="lifePolicyDetailsDialog" width="1050">
+				<p:outputPanel id="detailPannel">
+					<ui:include src="/enquires/life/lifePolicyEnquiryTemplate.xhtml">
+					</ui:include>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

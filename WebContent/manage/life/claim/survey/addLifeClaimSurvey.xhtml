@@ -1,0 +1,191 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+ xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core">
+ <ui:param name="uploadRootPath" value="/image" />
+ <ui:param name="header" value="Life Claim Survey" />
+ <ui:param name="headerRendered" value="true" />
+ <ui:define name="content">
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  <h:form enctype="multipart/form-data" id="proposalUploadForm" style="margin-left: 1%;">
+   <table>
+    <tr>
+     <td style="width: 60px;">
+      <h:outputText styleClass="input-label" value="Claim No" />
+     </td>
+     <td>
+      <!-- Start Proposal Number and Detailed Button -->
+      <h:panelGrid columns="3">
+       <p:inputText id="proposalNo" readonly="true" style="width:250px;" value="#{AddLifeClaimSurvey.lifeClaimProposal.claimProposalNo}" />
+       <p:commandLink id="detailsProposal" actionListener="#{AddLifeClaimSurvey.openTemplateDialog()}" process="@this" immediate="true">
+        <h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+       </p:commandLink>
+       <!-- End Proposal Number and Detailed Button -->
+      </h:panelGrid>
+     </td>
+    </tr>
+   </table>
+   <table>
+    <tr>
+     <td valign="top">
+      <!-- Start Proposal Attachment File Upload -->
+      <fieldset>
+       <legend>
+        <h:outputText styleClass="input-label" value="Claim Proposal Attachment" />
+       </legend>
+       <table>
+        <tr>
+         <td valign="top">
+          <p:fileUpload allowTypes="/(\.|\/)(gif|jpe?g|png)$/" fileUploadListener="#{AddLifeClaimSurvey.handleProposalAttachment}" id="proposalAttachment" mode="advanced"
+           multiple="true" sizeLimit="300000000" update="proposalImageGrid" />
+         </td>
+        </tr>
+        <tr>
+         <td align="center" valign="top">
+          <p:dataGrid columns="8" id="proposalImageGrid" paginator="true"
+           paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rows="16"
+           value="#{AddLifeClaimSurvey.proposalUploadedFileList}" var="image">
+           <p:graphicImage style="width:120px;height:120px;" value="#{uploadRootPath}#{image}" />
+           <br />
+           <p:commandLink action="#{AddLifeClaimSurvey.removeProposalUploadedFile(image)}" id="deleteGroupLink" update="proposalImageGrid">
+            <p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+           </p:commandLink>
+          </p:dataGrid>
+         </td>
+        </tr>
+       </table>
+      </fieldset>
+     </td>
+    </tr>
+   </table>
+  </h:form>
+  <h:form enctype="multipart/form-data" id="lifeClaimProposalForm">
+   <p:panel>
+    <p:accordionPanel value="#{AddLifeClaimSurvey.disabilityLifeClaims}" var="lifeClaim" rendered="#{AddLifeClaimSurvey.death}">
+     <p:tab title="Death Claim">
+      <p:dataTable style="widht:100%" value="#{AddLifeClaimSurvey.disabilityLifeClaims}" id="lifeClaimTable" var="claim" rowIndexVar="index">
+       <p:column headerText="No." style="width: 3%;" >
+        <h:outputText value="#{index + 1}" />
+       </p:column>
+       <p:column headerText="Claim Type">
+        <h:outputText value="#{claim.claimType}" />
+       </p:column>
+       <p:column headerText="Death Claim Amount">
+        <h:outputText value="#{claim.deathClaimAmount}">
+        </h:outputText>
+       </p:column>
+       <p:column headerText="Death Date">
+        <h:outputText value="#{claim.deathDate}">
+         <f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+        </h:outputText>
+       </p:column>
+      </p:dataTable>
+     </p:tab>
+    </p:accordionPanel>
+    <p:accordionPanel value="#{AddLifeClaimSurvey.lifeClaimProposal}" var="lifeClaim" rendered="#{AddLifeClaimSurvey.disbility}">
+     <p:tab title="Disability Claim">
+      <p:dataTable style="widht:100%" value="#{AddLifeClaimSurvey.disabilityLifeClaims}" id="lifeClaimTable" var="claim" rowIndexVar="index">
+       <p:column headerText="No." style="width: 3%;">
+        <h:outputText value="#{index + 1}" />
+       </p:column> 
+       <p:column headerText="Claim Type">
+        <h:outputText value="#{claim.claimType}" />
+       </p:column>
+       <p:column headerText="Disability Percentate">
+        <h:outputText value="#{claim.percentage}">
+        </h:outputText>
+       </p:column>
+       <p:column headerText="Disability Claim Amount">
+        <h:outputText value="#{claim.disabilityAmount}">
+        </h:outputText>
+       </p:column>
+       <p:column headerText="DisabilityPart">
+        <h:outputText value="#{claim.disabilityPart}">
+        </h:outputText>
+       </p:column>
+      </p:dataTable>
+     </p:tab>
+    </p:accordionPanel>
+    <p:accordionPanel value="#{AddLifeClaimSurvey.lifeHospitalizedClaims}" var="lifeClaim" rendered="#{AddLifeClaimSurvey.hospital}">
+     <p:tab title="Hospitilized Claim">
+      <p:dataTable style="widht:100%" value="#{AddLifeClaimSurvey.lifeHospitalizedClaims}" id="lifeClaimTable" var="claim" rowIndexVar="index">
+       <p:column headerText="No."  style="width: 3%;" >
+        <h:outputText value="#{index + 1}"   />
+       </p:column>
+       <p:column headerText="Claim Type">
+        <h:outputText value="#{claim.claimType}" />
+       </p:column>
+       <p:column headerText="Admission Fee">
+        <h:outputText value="#{claim.hospitalizedAmount}">
+        </h:outputText>
+       </p:column>
+       <p:column headerText="Hospitilized Started Date">
+        <h:outputText value="#{claim.startDate}">
+         <f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+        </h:outputText>
+       </p:column>
+       <p:column headerText="Hospitilized Discharged Date">
+        <h:outputText value="#{claim.endDate}">
+         <f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+        </h:outputText>
+       </p:column>
+       <p:column headerText="Hospital">
+        <h:outputText value="#{claim.medicalPlace.name}">
+        </h:outputText>
+       </p:column>
+      </p:dataTable>
+     </p:tab>
+    </p:accordionPanel>
+    <br />
+    <p:fieldset legend="Survey Information">
+     <h:panelGrid columns="2" cellspacing="8px">
+      <h:outputText/>
+      <p:message for="surveyDate"/>
+      <h:outputText styleClass="input-label" value="Survey Date" />
+      <p:calendar id="surveyDate" required="true" pattern="#{ApplicationSetting.dateFormat}" showOn="button" size="35" timeZone="#{ApplicationSetting.timeZone}"
+       value="#{AddLifeClaimSurvey.lifeClaimSurvey.surveyDate}">
+      </p:calendar>
+      <h:outputText styleClass="input-label" value="Medical Officer Name" />
+      <p:inputText value="#{AddLifeClaimSurvey.lifeClaimSurvey.medicalOfficerName}" style="width:240px;">
+      </p:inputText>
+      <h:outputText styleClass="input-label" value="Hospital" />
+      <h:panelGrid columns="3" id="medcialPlaceGrid">
+       <p:inputText id="hospitalPlace" readonly="true" style="width:240px;margin-left:-4px;"
+        value="#{AddLifeClaimSurvey.lifeClaimSurvey.hospitalPlace == null ? '' : AddLifeClaimSurvey.lifeClaimSurvey.hospitalPlace.name}" />
+       <p:commandLink actionListener="#{AddLifeClaimSurvey.selectHospital()}" id="selectMedicalPlaceDialogLink" immediate="true">
+        <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+        <p:ajax event="dialogReturn" listener="#{AddLifeClaimSurvey.returnHospital}" update="medcialPlaceGrid" />
+       </p:commandLink>
+      </h:panelGrid>
+      <h:outputText styleClass="input-label" value="Township" />
+      <h:panelGrid columns="3" id="townshipGrid">
+       <p:inputText id="township" readonly="true" style="width:240px;margin-left:-4px;"
+        value="#{AddLifeClaimSurvey.lifeClaimSurvey.township == null ? '' : AddLifeClaimSurvey.lifeClaimSurvey.township.name}" />
+       <p:commandLink actionListener="#{AddLifeClaimSurvey.selectTownship()}" id="selectTownshipDialogLink" immediate="true" process="@this">
+        <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+        <p:ajax event="dialogReturn" listener="#{AddLifeClaimSurvey.returnTownship}" update="townshipGrid" />
+       </p:commandLink>
+      </h:panelGrid>
+      <h:outputText styleClass="input-label" value="Address" />
+      <p:inputTextarea autoResize="true" rows="5" readonly="true" style="width:240px;" value="#{AddLifeClaimSurvey.lifeClaimSurvey.address}" id="address">
+       <f:validateLength maximum="8000" />
+      </p:inputTextarea>
+      <h:outputText/>
+      <p:message for="responsiblePerson"/>
+      <h:outputText styleClass="input-label" value="Responsible Person" />
+      <h:panelGrid columns="3" id="responsiblePersonPanel">
+       <p:inputText id="responsiblePerson" required="true" readonly="#{AddLifeClaimSurvey.responsiblePerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+        style="width:250px;margin-left:-4px;" value="#{AddLifeClaimSurvey.responsiblePerson == null ? '' : AddLifeClaimSurvey.responsiblePerson.name}" />
+       <p:commandLink actionListener="#{AddLifeClaimSurvey.selectUser()}" id="selectUserDialogLink" immediate="true">
+        <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+        <p:ajax event="dialogReturn" listener="#{AddLifeClaimSurvey.returnUser}" update="responsiblePersonPanel" />
+       </p:commandLink>
+      </h:panelGrid>
+     </h:panelGrid>
+    </p:fieldset>
+   </p:panel>
+   <h:panelGrid columns="2" cellspacing="10px">
+      <p:commandButton value="Submit" action="#{AddLifeClaimSurvey.addLifeClaimSurvey()}" update="lifeClaimProposalForm"/>
+      <p:commandButton value="Cancel" action="dashboard" immediate="true"/>
+   </h:panelGrid>
+  </h:form>
+ </ui:define>
+</ui:composition>

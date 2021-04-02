@@ -1,0 +1,210 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:jsf="http://xmlns.jcp.org/jsf" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="monthlyForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<h:outputText id="title" styleClass="ui-widget ui-widget-header ui-corner-all submenu-title"
+				value="The Medical Monthly Report Of #{ApplicationSetting.getMonthInString(HealthMonthlyReportActionBean.criteria.month)}, #{HealthMonthlyReportActionBean.criteria.year}" />
+			<p:separator style="height:3px; margin-top:1px;" />
+			<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{HealthMonthlyReportActionBean.selectEntity()}" id="entityDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{HealthMonthlyReportActionBean.returnEntity}" update="entity branchPanelGroup salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true" value="#{HealthMonthlyReportActionBean.criteria.entity == null ? '' : HealthMonthlyReportActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{HealthMonthlyReportActionBean.removeEntity}" process="@this"
+									update="entity branchPanelGroup salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText styleClass="input-label" value="Month" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="month" value="#{HealthMonthlyReportActionBean.criteria.month}">
+						<f:selectItems value="#{HealthMonthlyReportActionBean.monthSet}" var="month" itemLabel="#{month}" itemValue="#{month.value}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText styleClass="input-label" value="Branch" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{HealthMonthlyReportActionBean.selectBranch()}" id="selectBranchDialogLink"
+									disabled="#{HealthMonthlyReportActionBean.criteria.entity==null?true:false}" process="@this">
+									<p:ajax event="dialogReturn" listener="#{HealthMonthlyReportActionBean.returnBranch}" update="branch salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true" value="#{HealthMonthlyReportActionBean.criteria.branch == null ? 'ALL' : HealthMonthlyReportActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{HealthMonthlyReportActionBean.removeBranch()}" process="@this"
+									disabled="#{HealthMonthlyReportActionBean.criteria.entity==null?true:false}" update="branch salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText styleClass="input-label" value="Product" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="product" value="#{HealthMonthlyReportActionBean.criteria.medicalProductType}">
+						<f:selectItems value="#{HealthMonthlyReportActionBean.medicalProductTypes}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText styleClass="input-label" value="Sale Point" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{HealthMonthlyReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+									process="@this" disabled="#{HealthMonthlyReportActionBean.criteria.branch==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{HealthMonthlyReportActionBean.returnSalePoint}" update="salePoint" />
+								</p:commandButton>
+								<p:inputText id="salePoint" readonly="true" value="#{HealthMonthlyReportActionBean.criteria.salePoint== null ? '' : HealthMonthlyReportActionBean.criteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{HealthMonthlyReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salePoint"
+									disabled="#{HealthMonthlyReportActionBean.criteria.branch==null?true:false}" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton action="#{HealthMonthlyReportActionBean.filter()}" update=":monthlyForm :monthlyForm:medicalPolicyListTable" value="Search" />
+				<p:commandButton action="#{HealthMonthlyReportActionBean.resetCriteria()}" update=":monthlyForm" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="medicalPolicyListTable" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex"
+				rowKey="index" rows="10" rowsPerPageTemplate="5,10,15" style="width:150%;" value="#{HealthMonthlyReportActionBean.healthMonthlyReporList}" var="report">
+				<f:facet name="header">
+					<h:commandLink action="#{HealthMonthlyReportActionBean.exportExcel}" immediate="true">
+						<p:graphicImage style="width: 30px; height: 30px;" styleClass="#{ApplicationSetting.excelStyleClass}" value="#{ApplicationSetting.excelIcon}" />
+					</h:commandLink>
+					<p:message for="medicalPolicyListTable" />
+				</f:facet>
+				<p:columnGroup type="header">
+					<p:row>
+						<p:column colspan="1" headerText="No." rowspan="2" style="width:20px;" />
+						<p:column colspan="1" headerText="Start Date" rowspan="2" style="width:50px;" />
+						<p:column colspan="1" headerText="Policy No." rowspan="2" style="width:100px;" />
+						<p:column colspan="1" headerText="Proposal No." rowspan="2" style="width:100px;" />
+						<p:column colspan="1" headerText="Insured Person Name" rowspan="2" style="width:120px;" />
+						<p:column colspan="1" headerText="Gender" rowspan="2" style="width:30px;" />
+						<p:column colspan="1" headerText="Date of Birth" rowspan="2" style="width:50px;" />
+						<p:column colspan="1" headerText="Age" rowspan="2" style="width:20px;" />
+						<p:column colspan="1" headerText="Nrc" rowspan="2" style="width:100px;" />
+						<p:column colspan="1" headerText="Occupation" rowspan="2" style="width:50px;" />
+						<p:column colspan="1" headerText="Address" style="width:120px;" rowspan="2" />
+						<p:column colspan="1" headerText="Payment Type" rowspan="2" style="width:50px;" />
+						<p:column colspan="1" headerText="Premium" rowspan="2" style="width:80px;" />
+						<p:column colspan="2" headerText="Beneficary" style="width:120px;" />
+						<p:column colspan="1" headerText="Basic Unit" style="width:50px;" />
+						<p:column colspan="1" headerText="AddOn 1" rowspan="2" style="width:30px;" />
+						<p:column colspan="1" headerText="AddOn 2" rowspan="2" style="width:30px;" />
+						<p:column colspan="3" headerText="SalePerson" style="width:220px;" />
+						<p:column colspan="1" headerText="Commission" rowspan="2" style="width:50px;" />
+						<p:column colspan="1" headerText="Branch Name" rowspan="2" style="width:50px;" />
+						<p:column colspan="1" headerText="SalePoint Name" rowspan="2" style="width:50px;" />
+					</p:row>
+					<p:row>
+						<p:column headerText="Beneficiary Name" styleClass="fixed-size" />
+						<p:column headerText="RelationShip" styleClass="fixed-size" />
+						<p:column headerText="Basic" />
+						<p:column headerText="SalePerson Name" style="width:50px;" styleClass="fixed-size" />
+						<p:column headerText="Customer Type" style="width:50px;" styleClass="fixed-size" />
+						<p:column headerText="SalePerson Type" style="width:50px;" styleClass="fixed-size" />
+					</p:row>
+				</p:columnGroup>
+				<p:column>
+					<h:outputText value="#{rowIndex + 1}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.activedPolicyStartDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.policyNo}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.proposalNo}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.insuredPersonName}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.gender.label}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.dateOfBirth}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.age}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.fullIdNo}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.occupation}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.address}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.paymentType}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.premium}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.beneficiaryName}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.relationship}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.unit}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.addOn1}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.addOn2}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.salePersonName}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.customerType.label}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.salePersonType}" />
+				</p:column>
+				<p:column headerText="Comission" styleClass="fixed-size">
+					<h:outputText value="#{report.commission}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.branchName}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.salePoint}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,94 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['MANAGE_KEYFACTOR_TITLE']}"/>
+	<ui:param name="headerRendered" value="true"/>
+	<ui:define name="content">
+		<h:form id="keyFactorEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true"/>
+			 <p:panel>
+				<h:outputText rendered="#{ManageKeyFactorActionBean.createNew}" style="padding-top:-10px;" styleClass="table-title" value="#{label['MANAGE_KEYFACTOR_ADDNEW_LABEL']}" />
+				<h:outputText rendered="#{!ManageKeyFactorActionBean.createNew}" style="padding-top:-10px;" styleClass="table-title" value="#{label['MANAGE_KEYFACTOR_EDIT_LABEL']}" />
+				
+				 <p:panelGrid id="targetPanelGrid" columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+           			<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+           				
+           				<p:outputLabel/>
+           				<p:message for="keyFactorValue" display="text"/>
+           				
+						<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_KEYFACTOR_TYPE_LABEL']}" />
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="keyFactorValue" required="true"   value="#{ManageKeyFactorActionBean.keyFactor.keyFactorType}">
+							<f:selectItem itemLabel="" noSelectionOption="true"/>
+							<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{ManageKeyFactorActionBean.keyFactorValueSelectItemList}" var="type" />
+							<p:ajax listener="#{ManageKeyFactorActionBean.changeKeyValue}" update="targetPanelGrid" />
+						</p:selectOneMenu>
+						
+						<p:outputLabel/>
+           				<p:message for="referenceValue" display="text"/>
+           				
+           				<h:outputText styleClass="input-label mandatory" rendered="#{ManageKeyFactorActionBean.keyFactor.keyFactorType == 'REFERENCE' ? true : false}"  value="#{label['MANAGE_KEYFACTOR_VALUE_LABEL']}" />
+           				<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="referenceValue" rendered="#{ManageKeyFactorActionBean.keyFactor.keyFactorType == 'REFERENCE' ? true : false}" value="#{ManageKeyFactorActionBean.keyFactor.value}">
+							<f:selectItem itemLabel="" noSelectionOption="true"/>
+							<f:selectItems value="#{ManageKeyFactorActionBean.referenceItemList}" />
+						</p:selectOneMenu>
+						
+						<p:outputLabel/>
+           				<p:message for="name" display="text"/>
+           				
+						<h:outputText rendered="#{ManageKeyFactorActionBean.keyFactor.keyFactorType == 'REFERENCE' ? false : true}" styleClass="input-label mandatory" value="#{label['MANAGE_KEYFACTOR_VALUE_LABEL']}" />
+						<p:inputText id="name" required="true" rendered="#{ManageKeyFactorActionBean.keyFactor.keyFactorType == 'REFERENCE' ? false : true}" value="#{ManageKeyFactorActionBean.keyFactor.value}">
+							<f:validateLength maximum="50" />
+						</p:inputText>
+							
+           			</p:panelGrid>
+           		</p:panelGrid>
+				
+			 </p:panel>
+			 
+			 <h:panelGrid columns="2">
+				 	<p:commandButton action="#{ManageKeyFactorActionBean.addNewKeyFactor}" id="addBtn" rendered="#{ManageKeyFactorActionBean.createNew}" style="width: 80px;" update="keyFactorEntryForm :keyFactorTableForm" value="#{label['COMMON_ADDNEW_BTN']}" oncomplete="PF('keyFactorTable').filter();" />
+					<p:commandButton action="#{ManageKeyFactorActionBean.updateKeyFactor}" id="editBtn" oncomplete="PF('keyFactorTable').filter();" rendered="#{!ManageKeyFactorActionBean.createNew}"
+						update="keyFactorEntryForm" value="#{label['COMMON_UPDATE_BTN']}" />
+			 </h:panelGrid>
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			<p:separator style="height:2px;" />
+			
+		</h:form>
+		<h:form id="keyFactorTableForm">
+			<h:commandLink action="#{ManageKeyFactorActionBean.createNewKeyFactor}">
+				<h:panelGrid columns="2">
+					<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+					<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+				</h:panelGrid>
+			</h:commandLink>
+			<p:outputPanel id="listPanel">
+				<p:dataTable id="keyFactorTable" paginator="true" paginatorPosition="bottom" rowIndexVar="index"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+					rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageKeyFactorActionBean.keyFactorList}" var="keyFactor" widgetVar="keyFactorTable">
+					
+					<p:column headerText="No." width="5%">
+						<h:outputText value="#{index +1 }" />
+					</p:column>
+					<p:column filterStyle="width:70%" filterBy="#{keyFactor.value}" filterMatchMode="contains" headerText="#{label['MANAGE_KEYFACTOR_VALUE_LABEL']}">
+						<h:outputText value="#{keyFactor.value}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_KEYFACTOR_TYPE_LABEL']}">
+						<h:outputText value="#{keyFactor.keyFactorType.label}" />
+					</p:column>
+					<p:column headerText="Edit" style="width:4%;">
+			   			<p:commandButton styleClass="green-button" icon="fa fa-paint-brush" action="#{ManageKeyFactorActionBean.prepareUpdateKeyFactor(keyFactor)}" update=":keyFactorEntryForm"/>
+					</p:column>
+					<p:column headerText="Delete" style="width:4%;">
+					    <p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ManageKeyFactorActionBean.deleteKeyFactor(keyFactor)}" oncomplete="PF('keyFactorTable').filter();" update=":keyFactorEntryForm">
+					    	<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+					    </p:commandButton>
+					 </p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		 	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+		</p:confirmDialog>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,26 @@
+package org.ace.insurance.life.bancassurance.proposalhistory.service.interfaces;
+
+import org.ace.insurance.life.bancassurance.proposal.BancaassuranceProposal;
+import org.ace.insurance.life.bancassurance.proposalhistory.BancaassuranceProposalHistory;
+import org.ace.insurance.system.common.customer.CustomerHistory;
+import org.ace.java.component.persistence.exception.DAOException;
+
+public interface IBancaassuranceProposalHistoryService {
+
+	public void addNewBancaassuranceProposalHistory(BancaassuranceProposal bancaassuranceProposal);
+
+	public BancaassuranceProposalHistory updateBancaassuranceProposalHistory(BancaassuranceProposalHistory bancaassuranceProposalHistory);
+
+	public void deleteBancaassuranceProposalHistory(BancaassuranceProposalHistory BancaassuranceProposalHistory);
+
+	public BancaassuranceProposalHistory findBancaassuranceProposalByLifeproposalId(String lifeProposalId);
+
+	public BancaassuranceProposalHistory findBancaassuranceProposalByMedicalproposalId(String medicalProposalId);
+
+	public BancaassuranceProposalHistory findBancaassuranceProposalByPersonTravelproposalId(String personTravelProposalId);
+
+	public BancaassuranceProposalHistory findBancaassuranceProposalByTravelproposalId(String TravelProposalId);
+	
+	public BancaassuranceProposalHistory addBancaassuranceProposalHistory(BancaassuranceProposalHistory bancaHistory) throws DAOException;
+
+}

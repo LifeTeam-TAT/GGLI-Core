@@ -1,0 +1,208 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<h:form id="accountList">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:outputLabel value="Start Date" />
+					<p:calendar value="#{AccountAndLifeDeptCancelReportActionBean.tlfCriteria.startDate}" pattern="#{ApplicationSetting.dateFormat}" id="startDate"
+						timeZone="#{ApplicationSetting.timeZone}" showOn="button" style="width:250px;" />
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AccountAndLifeDeptCancelReportActionBean.selectEntity()}" id="entityDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{AccountAndLifeDeptCancelReportActionBean.returnEntity}" update="entity branchPanelGroup salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true"
+									value="#{AccountAndLifeDeptCancelReportActionBean.tlfCriteria.entity == null ? '' : AccountAndLifeDeptCancelReportActionBean.tlfCriteria.entity.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AccountAndLifeDeptCancelReportActionBean.removeEntity}" process="@this"
+									update="entity branchPanelGroup salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText value="Payment Channel" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="paymentChannel" value="#{AccountAndLifeDeptCancelReportActionBean.tlfCriteria.paymentChannel}">
+						<f:selectItem itemLabel="-- All Channel --" noSelectionOption="true" />
+						<f:selectItems value="#{AccountAndLifeDeptCancelReportActionBean.paymentChannels}" var="paymentChannel" itemLabel="#{paymentChannel.label}" itemValue="#{paymentChannel}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:outputLabel value="End Date" />
+					<p:calendar value="#{AccountAndLifeDeptCancelReportActionBean.tlfCriteria.endDate}" pattern="#{ApplicationSetting.dateFormat}" id="endDate"
+						timeZone="#{ApplicationSetting.timeZone}" showOn="button" style="width:250px;" />
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText value="Branch" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AccountAndLifeDeptCancelReportActionBean.selectBranch}" id="selectbranchDialogLink"
+									process="@this" disabled="#{AccountAndLifeDeptCancelReportActionBean.tlfCriteria.entity==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{AccountAndLifeDeptCancelReportActionBean.returnBranch}" update="branch salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true"
+									value="#{AccountAndLifeDeptCancelReportActionBean.tlfCriteria.branch == null ? '' : AccountAndLifeDeptCancelReportActionBean.tlfCriteria.branch.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AccountAndLifeDeptCancelReportActionBean.removeBranch}" process="@this"
+									disabled="#{AccountAndLifeDeptCancelReportActionBean.tlfCriteria.entity==null?true:false}" update="branch salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText value="Product" />
+					<p:selectOneMenu id="productTypeId" value="#{AccountAndLifeDeptCancelReportActionBean.productType}" converter="omnifaces.SelectItemsConverter">
+						<f:selectItem itemLabel="-- All Product --" noSelectionOption="true" />
+						<f:selectItems value="#{AccountAndLifeDeptCancelReportActionBean.productTypes}" var="productType" itemLabel="#{productType.label}" itemValue="#{productType}" />
+						<p:ajax event="valueChange" process="@this"></p:ajax>
+					</p:selectOneMenu>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText value="Sale Point" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" disabled="#{AccountAndLifeDeptCancelReportActionBean.tlfCriteria.branch==null?true:false}"
+									actionListener="#{AccountAndLifeDeptCancelReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{AccountAndLifeDeptCancelReportActionBean.returnSalePoint}" update="salePoint" />
+								</p:commandButton>
+								<p:inputText id="salePoint" readonly="true"
+									value="#{AccountAndLifeDeptCancelReportActionBean.tlfCriteria.salePoint == null ? '' : AccountAndLifeDeptCancelReportActionBean.tlfCriteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{AccountAndLifeDeptCancelReportActionBean.tlfCriteria.branch==null?true:false}"
+									action="#{AccountAndLifeDeptCancelReportActionBean.tlfCriteria.setSalePoint(null)}" process="@this" update="salePoint" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton value="Search" action="#{AccountAndLifeDeptCancelReportActionBean.SearchDTOList}" update=":accountList :accountList:salePointTable"></p:commandButton>
+				<p:commandButton value="Reset" action="#{AccountAndLifeDeptCancelReportActionBean.resetCriteria}" update="@form"></p:commandButton>
+			</h:panelGrid>
+			<p:panel>
+				<p:dataTable id="salePointTable" lazy="true" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="10"
+					rowsPerPageTemplate="10,20,30" value="#{AccountAndLifeDeptCancelReportActionBean.accountAndLifeDeptCancelReportDTOList}" var="tlfDTO" style="width:100%;">
+					<f:facet name="header">
+						<div style="float: center; padding-top: 5px;">
+							<h:commandLink action="#{AccountAndLifeDeptCancelReportActionBean.exportExcel}" immediate="true">
+								<p:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" value="/images/excel.png" />
+							</h:commandLink>
+						</div>
+						<p:message for="salePointTable" />
+					</f:facet>
+					<p:column headerText="No." style="width:3%;">
+						<h:outputText value="#{rowIndex + 1}" />
+					</p:column>
+					<!-- TLF No -->
+					<p:column style="width:13%;" styleClass="fixed-size">
+						<f:facet name="header">
+							<h:outputText value="TLF No." />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.tlfNo}" />
+					</p:column>
+					<!-- ProductGroup's name as product name -->
+					<p:column style="width:10%;">
+						<f:facet name="header">
+							<h:outputText value="Product Name" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.productGroupName}" />
+					</p:column>
+					<p:column style="width:8%;">
+						<f:facet name="header">
+							<h:outputText value="Branch" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.branchName}" />
+					</p:column>
+					<!-- Sale Point Name -->
+					<p:column style="width:8%;">
+						<f:facet name="header">
+							<h:outputText value="Sale Point" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.salePointName}" />
+					</p:column>
+					<!-- Payment Channel -->
+					<p:column style="width:8%;">
+						<f:facet name="header">
+							<h:outputText value="Payment Channel" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.paymentChannel}" />
+					</p:column>
+					<!-- Received Date -->
+					<p:column style="width:10%;">
+						<f:facet name="header">
+							<h:outputText value="Received Date" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.accountReceiptDate}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<!-- Account Status -->
+					<p:column style="width:10%;">
+						<f:facet name="header">
+							<h:outputText value="Account Status" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.accountStatus eq true? 'CANCEL':'COMPLETE'}" />
+					</p:column>
+					<!-- Account Premium -->
+					<p:column style="width:8%;">
+						<f:facet name="header">
+							<h:outputText value="Account Premium" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.amount}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<!-- Life Department Payment Date -->
+					<p:column style="width:10%;">
+						<f:facet name="header">
+							<h:outputText value="Life Department Payment Date" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.lifeDeptPaymentDate}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<!-- Life Department Status -->
+					<p:column style="width:10%;">
+						<f:facet name="header">
+							<h:outputText value="Life Department Status" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.paymentCompleteProcess ? 'COMPLETE':'CANCEL'}" />
+					</p:column>
+					<!-- Account Premium -->
+					<p:column style="width:8%;">
+						<f:facet name="header">
+							<h:outputText value="Life Depart Premium" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.accountPremium}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+		<h:form id="pdfPrintPreviewForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview" width="1070" height="505" id="pdfPrintPreviewDialog" resizable="false" widgetVar="pdfPrintPreviewDialog">
+				<p:media width="1050" height="500" player="pdf" cache="false" value="#{AccountAndLifeDeptCancelReportActionBean.stream}" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

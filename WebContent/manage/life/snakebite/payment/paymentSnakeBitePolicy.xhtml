@@ -1,0 +1,123 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:p="http://primefaces.org/ui" xmlns:cyc="http://www.cycdemo.com/java" template="/common/commonLayout.xhtml">
+   <ui:define name="content">
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <h:form id="snakeBitePolicyPaymentForm">
+         <fieldset>
+            <legend>
+               <h:outputText value="SnakeBite Policy Payment" styleClass="input-label" />
+            </legend>
+            <table>
+               <tr>
+                  <td>
+                     <table>
+                        <tr>
+                           <td>
+                              <h:outputText value="Receipt No" styleClass="input-label" />
+                           </td>
+                           <td>
+                              <p:inputText value="#{AddNewSnakeBitePolicyPaymentActionBean.snakeBitePolicyDTO.receiptNo}" style="width:250px;" id="receiptNo" readonly="true" />
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <h:outputText value="Premium" styleClass="input-label" />
+                           </td>
+                           <td>
+                              <p:inputText value="#{AddNewSnakeBitePolicyPaymentActionBean.snakeBitePolicyDTO.totalPremium}" style="width:250px;" id="premium" readonly="true">
+                                 <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+                              </p:inputText>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <h:outputText value="Agent Commission" styleClass="input-label" />
+                           </td>
+                           <td>
+                              <p:inputText value="#{AddNewSnakeBitePolicyPaymentActionBean.snakeBitePolicyDTO.agentCommission}" style="width:250px;" id="agentCommission"
+                                 readonly="true">
+                                 <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+                              </p:inputText>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <h:outputText value="Net Amount" styleClass="input-label" />
+                           </td>
+                           <td>
+                              <p:inputText value="#{AddNewSnakeBitePolicyPaymentActionBean.snakeBitePolicyDTO.netPremium}" style="width:250px;" id="netAmount" readonly="true">
+                                 <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+                              </p:inputText>
+                           </td>
+                        </tr>
+                      <tr>
+					    <td>
+							<h:outputText styleClass="input-label" value="Payment Channel" />
+						</td>
+						<td>
+						    <p:inputText id="paymentChannel" readonly="true" style="width:250px;" value="#{AddNewSnakeBitePolicyPaymentActionBean.paymentDTO.paymentChannel.label}" />
+						</td>
+					</tr>
+					<tr>
+						 <td>
+							<h:outputText styleClass="input-label" value="Sale Point" />
+						</td>
+						<td>
+						 	 <p:inputText id="salePoint" readonly="true" style="width:250px;" value="#{AddNewSnakeBitePolicyPaymentActionBean.snakeBitePolicyDTO.salePoint}" />
+						</td>
+					</tr>
+                     </table>
+                  </td>
+                  <td valign="top">
+                     <table>
+                        <tr>
+                           <td valign="top">
+                              <h:outputText value="Book No" styleClass="input-label" />
+                           </td>
+                           <td>
+                              <p:inputText value="#{AddNewSnakeBitePolicyPaymentActionBean.snakeBitePolicyDTO.bookNo}" style="width:250px;" id="bookNo" readonly="true" />
+                           </td>
+                        </tr>
+                        <tr>
+                           <td valign="top">
+                              <h:outputText value="Sale Person" styleClass="input-label" />
+                           </td>
+                           <td>
+                              <p:inputText value="#{AddNewSnakeBitePolicyPaymentActionBean.snakeBitePolicyDTO.agentName}" style="width:250px;" id="agent" readonly="true" />
+                           </td>
+                        </tr>
+                        <tr>
+                           <td valign="top">
+                              <h:outputText value="Branch" styleClass="input-label" />
+                           </td>
+                           <td>
+                              <p:inputText value="#{AddNewSnakeBitePolicyPaymentActionBean.snakeBitePolicyDTO.branch.name}" style="width:250px;" id="branch" readonly="true" />
+                           </td>
+                        </tr>
+                        <tr>
+                           <td valign="top">
+                              <h:outputText value="SumInsured" styleClass="input-label" />
+                           </td>
+                           <td>
+                              <p:inputText value="#{AddNewSnakeBitePolicyPaymentActionBean.snakeBitePolicyDTO.totalSumInsured}" style="width:250px;" id="sumInsured" readonly="true">
+                                 <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+                              </p:inputText>
+                           </td>
+                        </tr>
+                     </table>
+                  </td>
+               </tr>
+            </table>
+         </fieldset>
+         <h:panelGrid columns="2" rendered="#{AddNewSnakeBitePolicyPaymentActionBean.paymentDTO.paymentChannel == 'CHEQUE' ? true : false}">
+            <h:outputText value="Bank " styleClass="input-label" />
+            <p:inputText value="#{AddNewSnakeBitePolicyPaymentActionBean.payment.bank.name}" style="width:250px;" id="bank" readonly="true" />
+            <h:outputText value="Cheque No" styleClass="input-label" />
+            <p:inputText value="#{AddNewSnakeBitePolicyPaymentActionBean.payment.chequeNo}" style="width:250px;" id="chequeNo" readonly="true" />
+         </h:panelGrid>
+         <p:commandButton style="width: 80px;" id="addBtn" value="Confirm" action="#{AddNewSnakeBitePolicyPaymentActionBean.confirm()}" />
+         <p:spacer width="5" />
+         <p:commandButton style="width: 80px;" id="cancelBtn" value="Cancel" action="dashboard" immediate="true" />
+      </h:form>
+   </ui:define>
+</ui:composition>

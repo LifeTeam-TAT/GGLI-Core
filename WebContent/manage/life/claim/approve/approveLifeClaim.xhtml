@@ -1,0 +1,163 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+ xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core">
+ <ui:param name="header" value="Life Claim Approval" />
+ <ui:param name="headerRendered" value="true" />
+ <ui:define name="content">
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  <h:form enctype="multipart/form-data" id="lifeClaimApprovalForm">
+   <p:growl life="8000" globalOnly="true" showDetail="true" escape="false" />
+   <h:panelGrid columns="2" cellpadding="5px">
+    <h:outputText styleClass="input-label" value="Claim No" />
+    <h:panelGrid columns="3">
+     <p:inputText id="proposalNo" readonly="true" style="width:250px;" value="#{ApproveLifeClaimActionBean.lifeClaimProposal.claimProposalNo}" />
+     <p:commandLink id="detailsProposal" actionListener="#{ApproveLifeClaimActionBean.openTemplateDialog()}" process="@this" immediate="true">
+      <h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+     </p:commandLink>
+    </h:panelGrid>
+   </h:panelGrid>
+   <p:panel>
+    <p:dataTable id="deathClaimtabel" rendered="#{ApproveLifeClaimActionBean.death}" value="#{ApproveLifeClaimActionBean.lifeDeathClaims}" var="deathClaim">
+     <p:column headerText="Approve" style="text-align:center;width:80px">
+      <p:selectBooleanCheckbox id="approvalChbox" value="#{deathClaim.approved}">
+       <p:ajax event="change" update="deathClaimtabel" />
+      </p:selectBooleanCheckbox>
+     </p:column>
+     <p:column headerText="Reject Reason" style="text-align:center;width:80px">
+      <p:commandLink disabled="#{deathClaim.approved}" id="rejectLink" immediate="true" oncomplete="PF('lifeApprovalDialog').show()" update=":lifeApprovalDialogForm">
+      <f:setPropertyActionListener target="#{ApproveLifeClaimActionBean.lifePolicyClaim}" value="#{deathClaim}" />
+       <p:graphicImage styleClass="#{ApplicationSetting.configStyleClass}" value="#{ApplicationSetting.configIcon}" />
+      </p:commandLink>
+     </p:column>
+     <p:column headerText="Claim Type" style="text-align:center">
+      <h:outputText value="#{deathClaim.claimType}" />
+     </p:column>
+     <p:column headerText="Death Claim Amount" style="text-align:center">
+      <h:outputText value="#{deathClaim.deathClaimAmount}">
+      <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+      </h:outputText>
+     </p:column>
+     <p:column headerText="Death Date" style="text-align:center">
+      <h:outputText value="#{deathClaim.deathDate}">
+       <f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+      </h:outputText>
+     </p:column>
+    </p:dataTable>
+    <p:dataTable id="disabilityClaimtabel" rendered="#{ApproveLifeClaimActionBean.disbility}" rowStyleClass="#{disabilityClaim.approved ?  null : 'rowWarnningGrey'}"
+     value="#{ApproveLifeClaimActionBean.disabilityLifeClaims}" var="disabilityClaim">
+     <p:column headerText="Approve" style="text-align:center;width:80px">
+      <p:selectBooleanCheckbox id="approvalChbox" value="#{disabilityClaim.approved}">
+       <p:ajax event="change" update="disabilityClaimtabel" />
+      </p:selectBooleanCheckbox>
+     </p:column>
+      <p:column headerText="Reject Reason" style="text-align:center;width:80px">
+      <p:commandLink disabled="#{disabilityClaim.approved}" id="rejectLink2" immediate="true" oncomplete="PF('lifeApprovalDialog').show()" update=":lifeApprovalDialogForm">
+      <f:setPropertyActionListener target="#{ApproveLifeClaimActionBean.lifePolicyClaim}" value="#{disabilityClaim}" />
+       <p:graphicImage styleClass="#{ApplicationSetting.configStyleClass}" value="#{ApplicationSetting.configIcon}" />
+      </p:commandLink>
+     </p:column>
+     <p:column headerText="Claim Type">
+      <h:outputText value="#{disabilityClaim.claimType}" />
+     </p:column>
+     <p:column headerText="Disability Percentate">
+      <h:outputText value="#{disabilityClaim.percentage}">
+      </h:outputText>
+     </p:column>
+     <p:column headerText="Disability Claim Amount">
+      <h:outputText value="#{disabilityClaim.disabilityAmount}">
+      <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+      </h:outputText>
+     </p:column>
+     <p:column headerText="DisabilityPart">
+      <h:outputText value="#{disabilityClaim.disabilityPart}">
+      </h:outputText>
+     </p:column>
+    </p:dataTable>
+    <br />
+    <p:dataTable id="hospitalClaimtabel" rendered="#{ApproveLifeClaimActionBean.hospital}" rowStyleClass="#{hospitalClaim.approved ?  null : 'rowWarnningGrey'}"
+     value="#{ApproveLifeClaimActionBean.lifeHospitalizedClaims}" var="hospitalClaim">
+     <p:column headerText="Approve" style="text-align:center;width:80px">
+      <p:selectBooleanCheckbox id="approvalChbox" value="#{hospitalClaim.approved}">
+       <p:ajax event="change" update="hospitalClaimtabel" />
+      </p:selectBooleanCheckbox>
+     </p:column>
+      <p:column headerText="Reject Reason" style="text-align:center;width:80px">
+      <p:commandLink disabled="#{hospitalClaim.approved}" id="rejectLink3" immediate="true" oncomplete="PF('lifeApprovalDialog').show()" update=":lifeApprovalDialogForm">
+      <f:setPropertyActionListener target="#{ApproveLifeClaimActionBean.lifePolicyClaim}" value="#{hospitalClaim}" />
+       <p:graphicImage styleClass="#{ApplicationSetting.configStyleClass}" value="#{ApplicationSetting.configIcon}" />
+      </p:commandLink>
+     </p:column>
+     <p:column headerText="Claim Type">
+      <h:outputText value="#{hospitalClaim.claimType}" />
+     </p:column>
+     <p:column headerText="Admission Fee">
+      <h:outputText value="#{hospitalClaim.hospitalizedAmount}">
+      <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+      </h:outputText>
+     </p:column>
+     <p:column headerText="Hospitilized Started Date">
+      <h:outputText value="#{hospitalClaim.startDate}">
+       <f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+      </h:outputText>
+     </p:column>
+     <p:column headerText="Hospitilized Discharged Date">
+      <h:outputText value="#{hospitalClaim.endDate}">
+       <f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+      </h:outputText>
+     </p:column>
+     <p:column headerText="Hospital">
+      <h:outputText value="#{hospitalClaim.medicalPlace.name}">
+      </h:outputText>
+     </p:column>
+    </p:dataTable>
+    <br />
+    <h:panelGrid columns="2" cellpadding="5px">
+     <h:outputText styleClass="input-label" value="Remark" />
+     <p:inputTextarea autoResize="true" rows="5" style="width:240px;" value="#{ApproveLifeClaimActionBean.remark}" id="remark">
+      <f:validateLength maximum="8000" />
+     </p:inputTextarea>
+     <h:outputText />
+     <p:message for="responsiblePerson" />
+     <h:outputText styleClass="input-label mandatory" value="Responsible Person" />
+     <h:panelGrid columns="3" id="responsiblePersonPanel">
+      <p:inputText id="responsiblePerson" required="true" readonly="#{ApproveLifeClaimActionBean.responsiblePerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+       style="width:250px;margin-left:-4px;" value="#{ApproveLifeClaimActionBean.responsiblePerson == null ? '' : ApproveLifeClaimActionBean.responsiblePerson.name}" />
+      <p:commandLink actionListener="#{ApproveLifeClaimActionBean.selectUser()}" id="selectUserDialogLink" immediate="true">
+       <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+       <p:ajax event="dialogReturn" listener="#{ApproveLifeClaimActionBean.returnUser}" update="responsiblePersonPanel" />
+      </p:commandLink>
+     </h:panelGrid>
+    </h:panelGrid>
+   </p:panel>
+   <h:panelGrid columns="2" cellpadding="5px">
+    <p:commandButton value="Approve" action="#{ApproveLifeClaimActionBean.approveLifeClaim()}" update="lifeClaimApprovalForm" />
+    <p:commandButton value="Cancel" action="dashboard" immediate="true" />
+   </h:panelGrid>
+  </h:form>
+  <h:form id="lifeApprovalDialogForm">
+   <p:dialog header="Life Approval" hideEffect="explode" id="lifeProposalDetailsDialog" resizable="false" showEffect="explode" widgetVar="lifeApprovalDialog">
+    <table>
+     <tr>
+      <td>
+       <h:outputText value="" />
+      </td>
+     </tr>
+     <tr>
+      <td style="width: 115px;" valign="top">
+       <h:outputText styleClass="input-label" value="If reject, Reason" />
+      </td>
+     <td>
+       <p:inputTextarea autoResize="true" id="rejectReason" rows="7" style="width:250px;" value="#{ApproveLifeClaimActionBean.lifePolicyClaim.rejectReason}">
+        <f:validateLength maximum="250" />
+       </p:inputTextarea>
+      </td>
+     </tr>
+     <tr>
+      <td colspan="2">
+       <p:commandButton oncomplete="PF('lifeApprovalDialog').hide()" update=":lifeClaimApprovalForm" value="OK" />
+      </td>
+     </tr>
+    </table>
+   </p:dialog>
+  </h:form>
+ </ui:define>
+</ui:composition>

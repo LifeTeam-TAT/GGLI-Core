@@ -1,0 +1,207 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="farmerPolicyListForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-wrap: break-word;
+}
+</style>
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<table width="100%" style="margin-top: -8px;">
+				<tr>
+					<td><h:outputText id="title" styleClass="ui-widget ui-widget-header ui-corner-all submenu-title" value="Farmer Daily Report" /> <p:separator
+							style="height:3px; margin-top:1px;" /></td>
+				</tr>
+			</table>
+			<p:panel>
+				<p:panelGrid columns="3" id="farmerDailyPanelGroup" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:message for="startDate" />
+						<h:outputLabel for="startDate" value="Start Date" />
+						<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{FarmerDailyReportActionBean.criteria.startDate}"
+							timeZone="#{ApplicationSetting.timeZone}" />
+						<h:outputLabel />
+						<h:outputLabel />
+						<h:outputText value="Entity" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectEntityPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectBranchPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" disabled="#{!FarmerDailyReportActionBean.accessBranches}" icon="fa fa-search"
+										actionListener="#{FarmerDailyReportActionBean.selectEntity()}" id="selectEntityDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{FarmerDailyReportActionBean.returnEntity}" update="entity selectBranchPanelGrid salePontPanelGroup" />
+									</p:commandButton>
+									<p:inputText id="entity" readonly="true"
+										value="#{FarmerDailyReportActionBean.criteria.entity == null ? '--Select Entity--' : FarmerDailyReportActionBean.criteria.entity.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{!FarmerDailyReportActionBean.accessBranches}" icon="fa fa-times" action="#{FarmerDailyReportActionBean.removeEntity}"
+										process="@this" update="entity selectBranchPanelGrid salePontPanelGroup" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="endDate" value="End Date" />
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{FarmerDailyReportActionBean.criteria.endDate}"
+							timeZone="#{ApplicationSetting.timeZone}" />
+						<h:outputLabel />
+						<h:outputLabel />
+						<h:outputText value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="selectBranchPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{FarmerDailyReportActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this"
+										disabled="#{!FarmerDailyReportActionBean.accessBranches || FarmerDailyReportActionBean.criteria.entity==null?true:false}">
+										<p:ajax event="dialogReturn" listener="#{FarmerDailyReportActionBean.returnBranch}" update="branch salePontPanelGroup" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true"
+										value="#{FarmerDailyReportActionBean.criteria.branch == null ? '--Select Branch--' : FarmerDailyReportActionBean.criteria.branch.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{!FarmerDailyReportActionBean.accessBranches || FarmerDailyReportActionBean.criteria.entity==null?true:false}"
+										icon="fa fa-times" action="#{FarmerDailyReportActionBean.clearBranch}" process="@this" update="branch salePontPanelGroup" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText styleClass="input-label" value="Farmer Type" />
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="farmerType" value="#{FarmerDailyReportActionBean.criteria.farmerType}">
+							<f:selectItem itemLabel="All" />
+							<f:selectItems value="#{FarmerDailyReportActionBean.farmerPolicyType}" itemValue="#{type}" var="type" itemLabel="#{type.label}" />
+						</p:selectOneMenu>
+						<h:outputLabel />
+						<h:outputLabel />
+						<h:outputText styleClass="input-label" value="Sale Point" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{FarmerDailyReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+										process="@this" disabled="#{FarmerDailyReportActionBean.criteria.branch==null?true:false}">
+										<p:ajax event="dialogReturn" listener="#{FarmerDailyReportActionBean.returnSalePoint}" update="salePoint" />
+									</p:commandButton>
+									<p:inputText id="salePoint" readonly="true" value="#{FarmerDailyReportActionBean.criteria.salePoint == null ? '' : FarmerDailyReportActionBean.criteria.salePoint.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{FarmerDailyReportActionBean.criteria.branch==null?true:false}" icon="fa fa-times"
+										action="#{FarmerDailyReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salePoint" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<p:spacer width="5px;" />
+			<p:commandButton action="#{FarmerDailyReportActionBean.filter}" update="farmerPolicyListForm:farmerPolicyListTable" value="Search" style="margin-top:5px;margin-bottom:5px;" />
+			<p:spacer width="5px;" />
+			<p:commandButton action="#{FarmerDailyReportActionBean.resetCriteria}" update="farmerPolicyListForm" value="Reset" />
+			<p:dataTable id="farmerPolicyListTable" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="10"
+				rowsPerPageTemplate="5,10,15" style="width:125%;" value="#{FarmerDailyReportActionBean.farmerDailyReportList}" var="report">
+				<f:facet name="header">
+					<!-- 							<p:commandLink action="#{PersonalAccidentProposalReportActionBean.generateReport()}" immediate="true" oncomplete="PF('pdfPreviewDialog').show()" update=":personalAcdntProposalListForm :pdfPreviewForm"> -->
+					<!-- 								<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" title="PDF Print" url="#{ApplicationSetting.printIcon}" /> -->
+					<!-- 							</p:commandLink> -->
+					<!-- 							<p:spacer width="10px"/> -->
+					<p:commandLink action="#{FarmerDailyReportActionBean.exportExcel}" immediate="true" ajax="false">
+						<p:graphicImage style="width: 30px; height: 30px;" styleClass="#{ApplicationSetting.excelStyleClass}" value="#{ApplicationSetting.excelIcon}" />
+					</p:commandLink>
+					<p:message for="farmerPolicyListTable" />
+				</f:facet>
+				<p:columnGroup type="header">
+					<p:row>
+						<p:column colspan="1" headerText="No." rowspan="2" style="width:3%;" />
+						<p:column colspan="1" headerText="Policy No." rowspan="2" style="width:9%;" />
+						<p:column colspan="1" headerText="Proposal No." rowspan="2" style="width:9%;" />
+						<p:column colspan="1" headerText="GroupFarmer No." rowspan="2" style="width:11%;" />
+						<p:column colspan="3" headerText="Insured Person" rowspan="1" style="width:29%;" />
+						<p:column colspan="3" headerText="Beneficary" rowspan="1" style="width:30%;" />
+						<p:column colspan="1" headerText="Actived Policy Start Date" rowspan="2" style="width:6%;" />
+						<p:column colspan="1" headerText="Sum Insured" rowspan="2" style="width:8%;" />
+						<p:column colspan="1" headerText="Premium" rowspan="2" style="width:7%;" />
+						<p:column colspan="1" headerText="Agent Name" rowspan="2" style="width:7%;" />
+						<p:column colspan="1" headerText="Remark" rowspan="2" style="width:7%;" />
+						<p:column colspan="1" headerText="Branch Name" rowspan="2" style="width:7%;" />
+						<p:column colspan="1" headerText="Sale Point Name" rowspan="2" style="width:7%;" />
+					</p:row>
+					<p:row>
+						<p:column headerText="Name" />
+						<p:column headerText="Id No." style="width:16%" />
+						<p:column headerText="Address" />
+						<p:column headerText="Name" />
+						<p:column headerText="Id No." style="width:16%" />
+						<p:column headerText="Address" style="width:8%" />
+					</p:row>
+				</p:columnGroup>
+				<p:column>
+					<h:outputText value="#{rowIndex + 1}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.policyNo}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.proposalNo}" styleClass="fixed-size" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.groupFarmerProposalNo}" styleClass="fixed-size" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.insuredPersonName}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.fullIdNo}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.address}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<ui:repeat var="name" value="#{report.nameList}" varStatus="_status">
+						<h:outputText value="#{name}" />
+						<h:outputText value="&lt;br/&gt;&lt;br/&gt;" rendered="#{!_status.last}" escape="false" />
+					</ui:repeat>
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<ui:repeat var="fullIdNo" value="#{report.fullIdNoList}" varStatus="_status">
+						<h:outputText value="#{fullIdNo}" />
+						<h:outputText value="&lt;br/&gt;&lt;br/&gt;" rendered="#{!_status.last}" escape="false" />
+					</ui:repeat>
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<ui:repeat var="address" value="#{report.addressList}" varStatus="_status">
+						<h:outputText value="#{address}" />
+						<h:outputText value="&lt;br/&gt;" rendered="#{!_status.last}" escape="false" />
+					</ui:repeat>
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.activedPolicyStartDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.sumInsured}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.premium}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.agentName}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.remark}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.branch}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{report.salepoint}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

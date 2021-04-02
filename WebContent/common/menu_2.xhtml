@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form id="menuForm">
+		<style type="text/css">
+.ui-menu {
+	padding: 0.3em;
+	position: relative;
+	width: 200px;
+}
+</style>
+		<p:toolbar rendered="#{identity.loggedIn}">
+			<p:toolbarGroup align="left">
+				<p:commandButton type="push" value="Dashboard" action="dashboard" image="ui-icon-document" ajax="false" rendered="#{identity.loggedIn ? true : false}" immediate="true" />
+				<p:commandButton type="push" value="WorkFlow Status" action="workFlowStatus" image="ui-icon-document" ajax="false" rendered="#{identity.loggedIn ? true : false}"
+					immediate="true" />
+				<p:commandButton type="push" value="Payment" action="payment" image="ui-icon-document" ajax="false" rendered="#{identity.loggedIn ? true : false}" immediate="true" />
+				<p:commandButton type="push" value="CashReceipt" action="cashReceipt" image="ui-icon-document" ajax="false" rendered="#{identity.loggedIn ? true : false}" immediate="true" />
+			</p:toolbarGroup>
+			<p:toolbarGroup align="right">
+				<p:menuButton value="Management" rendered="#{identity.loggedIn ? true : false}">
+					<p:menuitem value="Co-insurance Management" action="manageCoinsurance" ajax="false" immediate="true" icon="ui-icon-document" />
+					<p:separator />
+					<p:menuitem value="Customer Management" action="manageCustomerSetting" ajax="false" immediate="true" icon="ui-icon-document" />
+					<p:separator />
+					<p:menuitem value="Agent Management" action="manageAgentSetting" ajax="false" immediate="true" icon="ui-icon-document" />
+				</p:menuButton>
+				<p:commandButton type="push" value="Customer Service" action="customerService" image="ui-icon-document" ajax="false" rendered="#{identity.loggedIn ? true : false}"
+					immediate="true" />
+				<p:commandButton type="push" value="Enquires" action="enquires" image="ui-icon-document" ajax="false" rendered="#{identity.loggedIn ? true : false}" immediate="true" />
+				<p:commandButton type="push" value="Report" action="report" image="ui-icon-document" ajax="false" rendered="#{identity.loggedIn ? true : false}" immediate="true" />
+				<p:commandButton id="adminManageSetting" type="push" value="#{label['ADMIN_MANAGEMENT_LABEL']}" action="managementSetting" image="ui-icon-document" ajax="false"
+					rendered="#{identity.loggedIn ? true : false}" immediate="true" />
+			</p:toolbarGroup>
+		</p:toolbar>
+	</h:form>
+</ui:composition>

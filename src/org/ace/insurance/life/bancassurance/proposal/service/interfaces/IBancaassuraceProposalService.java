@@ -1,0 +1,28 @@
+package org.ace.insurance.life.bancassurance.proposal.service.interfaces;
+
+import org.ace.insurance.life.bancassurance.proposal.BancaassuranceProposal;
+import org.ace.java.component.SystemException;
+
+public interface IBancaassuraceProposalService {
+
+	public void insert(BancaassuranceProposal bancaassuranceProposal);
+
+	public void delete(BancaassuranceProposal bancaassuranceProposal);
+
+	public void update(BancaassuranceProposal bancaassuranceProposal);
+
+	public BancaassuranceProposal findBancaassuranceProposalByLifeproposalId(String lifeProposalId);
+
+	public BancaassuranceProposal findBancaassuranceProposalByMedicalproposalId(String medicalProposalId);
+
+	public BancaassuranceProposal findBancaassuranceProposalByPersonTravelproposalId(String personTravelProposalId);
+
+	public BancaassuranceProposal findBancaassuranceProposalByTravelproposalId(String TravelProposalId);
+
+	public BancaassuranceProposal CreateHistoryAndRemoveBancaassuranceProposalByLifeproposalId(String lifeProposalId) throws SystemException;
+
+	public BancaassuranceProposal CreateHistoryAndRemoveBancaassuranceProposalByMedicalproposalId(String medicalProposalId) throws SystemException;
+
+	BancaassuranceProposal CreateHistoryAndRemoveBancaassuranceProposalByPersonTravelproposalId(String personTravelProposalId) throws SystemException;
+
+}

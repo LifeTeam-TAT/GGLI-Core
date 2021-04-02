@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui" xmlns:fu="http://java.sun.com/jsf/fileUpload" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Customer Import Management"/>
+	<ui:param name="headerRendered" value="true"/>
+	<ui:define name="content">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<h:form enctype="multipart/form-data">
+			<p:messages showSummary="true" />
+			<p:fileUpload value="#{ManageCustomerCSVActionBean.uploadedFile}" mode="simple" sizeLimit="50000" allowTypes="/(\.|\/)(xls|xlsx)$/" />
+			<p:commandButton value="Submit" actionListener="#{ManageCustomerCSVActionBean.upload}" ajax="false" />
+			<p:separator style="height:5px" />
+			<p:dataTable var="customer" value="#{ManageCustomerCSVActionBean.customerList}" id="customerTable" paginator="true" rows="10" style="width:100%;"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="30,50,100"
+				rowKey="index" rowIndexVar="rowIndex" rendered="#{empty ManageCustomerCSVActionBean.customerList ? false : true}">
+				<p:column headerText="No" style="width:50px;">
+					<h:outputText value="#{rowIndex + 1}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_CUSTOMER_NAME_LABEL']}">
+					<h:outputText value="#{customer.fullName}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_CUSTOMER_FAMILYINFO_NRC_LABLE']}">
+					<h:outputText value="#{customer.idNo}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_CUSTOMER_PHONE_LABEL']}">
+					<h:outputText value="#{customer.contentInfo.phone}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_CUSTOMER_EMAIL_LABEL']}">
+					<h:outputText value="#{customer.contentInfo.email}" />
+				</p:column>
+				<p:column headerText="#{label['MANAGE_CUSTOMER_ACCOUNTNO_LABEL']}">
+					<h:outputText value="#{customer.bankAccountNo}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

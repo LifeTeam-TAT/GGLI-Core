@@ -1,0 +1,307 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{AddNewLifeProposalReceiptActionBean.getPageHeader()}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="proposalReceiiptEntryForm">
+			<p:growl escape="false" globalOnly="true" life="8000" showDetail="true" />
+			<p:panel>
+				<table>
+					<tr>
+						<td style="width: 140px;">
+							<h:outputText value="" />
+						</td>
+						<td>
+							<p:message for="totalPremium" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Total Premium" />
+						</td>
+						<td>
+							<p:inputText id="totalPremium" readonly="true" style="width:250px; text-align: right;" value="#{AddNewLifeProposalReceiptActionBean.lifeProposal.approvedTotalPremium}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<h:panelGroup id="commonTotalPremium" rendered="#{AddNewLifeProposalReceiptActionBean.lifeProposal.lifePolicy != null}">
+						<tr>
+							<td>
+								<h:outputText styleClass="input-label" value="Endorsement Net Premium" />
+							</td>
+							<td>
+								<p:inputText id="differencePremium" readonly="true" style="width:250px; text-align: right;"
+									value="#{AddNewLifeProposalReceiptActionBean.lifeProposal.endorsementNetPremium}">
+									<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+								</p:inputText>
+							</td>
+						</tr>
+					</h:panelGroup>
+						<tr>
+						<td>
+							<h:outputText value="" />
+						</td>
+						<td>
+							<p:message for="totalTermPremium" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Term Premium" />
+						</td>
+						<td>
+							<p:inputText id="totalTermPremium" readonly="true" style="width:250px; text-align: right;" value="#{AddNewLifeProposalReceiptActionBean.lifeProposal.totalBasicTermPremium}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value="" />
+						</td>
+						<td>
+							<p:message for="amount" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Discount Percent" />
+						</td>
+						<td>
+							<p:inputText id="amount" style="width:250px; text-align: right;" value="#{AddNewLifeProposalReceiptActionBean.payment.discountPercent}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+								<f:validateDoubleRange maximum="100" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td>
+							<h:outputText value="" />
+						</td>
+						<td>
+							<p:message for="additionalCharges" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Service Charges" />
+						</td>
+						<td>
+							<p:inputText id="additionalCharges" style="width:250px; text-align: right;" value="#{AddNewLifeProposalReceiptActionBean.payment.servicesChargesNum}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td>
+							<h:outputText value="" />
+						</td>
+						<td>
+							<p:message for="stampFees" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Policy Stamp Fees" />
+						</td>
+						<td>
+							<p:inputText disabled="true" id="stampFees" style="width:250px; text-align: right;" value="#{AddNewLifeProposalReceiptActionBean.payment.stampFees}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<p:outputPanel rendered="#{AddNewLifeProposalReceiptActionBean.isShortEndowLife or AddNewLifeProposalReceiptActionBean.isSimpleLife}">
+						<tr height="3" />
+						<tr>
+							<td>
+								<h:outputText value="" />
+							</td>
+							<td>
+								<p:message for="notificationDate" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText styleClass="input-label mandatory" value="Policy Start Date" />
+							</td>
+							<td>
+								<p:calendar id="notificationDate" required="true" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+									value="#{AddNewLifeProposalReceiptActionBean.payment.confirmDate}" maxdate="#{AddNewLifeProposalReceiptActionBean.today}" />
+							</td>
+						</tr>
+					</p:outputPanel>
+					<p:outputPanel
+						rendered="#{AddNewLifeProposalReceiptActionBean.singlePremiumEndowmentLife || AddNewLifeProposalReceiptActionBean.singlePremiumCreditLife || AddNewLifeProposalReceiptActionBean.shortTermSinglePremiumCreditLife}">
+						<tr height="3" />
+						<tr>
+							<td>
+								<h:outputText value="" />
+							</td>
+							<td>
+								<p:message for="paymentConfirmDate" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText styleClass="input-label mandatory" value="Policy Start Date" />
+							</td>
+							<td>
+								<p:calendar id="paymentConfirmDate" required="true" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+									value="#{AddNewLifeProposalReceiptActionBean.payment.confirmDate}" maxdate="#{AddNewLifeProposalReceiptActionBean.today}" />
+							</td>
+						</tr>
+					</p:outputPanel>
+					<tr height="3" />
+					<tr>
+						<td>
+							<h:outputText value="" />
+						</td>
+						<td>
+							<p:message for="paymentChannel" display="text" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Payment Channel" />
+						</td>
+						<td>
+							<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="paymentChannel" required="true" value="#{AddNewLifeProposalReceiptActionBean.payment.paymentChannel}">
+								<f:selectItems itemLabel="#{c.label}" itemValue="#{c}" value="#{AddNewLifeProposalReceiptActionBean.channelValues}" var="c" />
+								<p:ajax event="valueChange" listener="#{AddNewLifeProposalReceiptActionBean.changePaymentChannel}" update=":proposalReceiiptEntryForm:chequeEntryTable" />
+							</p:selectOneRadio>
+						</td>
+					</tr>
+				</table>
+				<p:outputPanel id="chequeEntryTable">
+					<table>
+						<tr>
+							<td />
+							<td>
+								<p:message for="accountBankName" id="accountBankMessage" />
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 140px;">
+								<h:outputText rendered="#{AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'CHEQUE'}" styleClass="input-label" value="GGLI Account Bank" />
+								<h:outputText rendered="#{AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="GGLI Account Bank" />
+								<h:outputText rendered="#{AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'SUNDRY'}" styleClass="input-label" value="GGLI Account Bank" />
+							</td>
+							<td>
+								<h:panelGrid columns="3" id="accountBankPanelGroup"
+									rendered="#{AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'CHEQUE' or AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'TRANSFER' or  AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'SUNDRY' }">
+									<p:inputText id="accountBankName" readonly="#{AddNewLifeProposalReceiptActionBean.payment.accountBank == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+										style="width:250px;margin-left:-4px;" required="true"
+										value="#{AddNewLifeProposalReceiptActionBean.payment.accountBank == null ? '' : AddNewLifeProposalReceiptActionBean.payment.accountBank.name}" />
+									<p:commandLink actionListener="#{AddNewLifeProposalReceiptActionBean.selectAccountBank()}" id="selectAccountBankDialogLink" immediate="true">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										<p:ajax event="dialogReturn" listener="#{AddNewLifeProposalReceiptActionBean.returnAccountBank}" update="accountBankPanelGroup" />
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="bankName" id="bankMessage" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText rendered="#{AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'CHEQUE'}" styleClass="input-label" value="Cheque Received Bank" />
+								<h:outputText rendered="#{AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="Customer's Transfer Bank" />
+							</td>
+							<td>
+								<h:panelGrid columns="3" id="bankPanelGroup"
+									rendered="#{AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'CHEQUE' || AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}">
+									<p:inputText id="bankName" readonly="#{AddNewLifeProposalReceiptActionBean.payment.bank == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+										style="width:250px;margin-left:-4px;" required="true"
+										value="#{AddNewLifeProposalReceiptActionBean.payment.bank == null ? '' : AddNewLifeProposalReceiptActionBean.payment.bank.name}" />
+									<p:commandLink actionListener="#{AddNewLifeProposalReceiptActionBean.selectBank()}" id="selectBankDialogLink" immediate="true">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										<p:ajax event="dialogReturn" listener="#{AddNewLifeProposalReceiptActionBean.returnBank}" update="bankPanelGroup" />
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="chequeNo" id="chequeNoMessage" />
+								<p:message for="poNo" id="poNoMessage" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText rendered="#{AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'CHEQUE'}" styleClass="input-label" value="PO / Account No." />
+								<h:outputText rendered="#{AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="Transfer No." />
+							</td>
+							<td>
+								<p:inputText id="chequeNo" required="true" rendered="#{AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'CHEQUE'}" style="width:250px;margin-left:-2px;"
+									value="#{AddNewLifeProposalReceiptActionBean.payment.chequeNo}" />
+								<p:inputText id="poNo" required="true" rendered="#{AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}" style="width:250px;margin-left:-2px;"
+									value="#{AddNewLifeProposalReceiptActionBean.payment.poNo}" />
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="bankWallet" id="MsgBankWallet" display="text" />
+								<p:message for="bankCharges" id="bankChargesAmt" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText rendered="#{AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="Bank Wallet" />
+							</td>
+							<td>
+								<p:panelGrid styleClass="ui-panelgrid-blank" rendered="#{AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}">
+									<div style="width: 275px; margin-left: -9px;" class="ui-g ui-fluid">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewLifeProposalReceiptActionBean.selectBankWallets()}" id="selectBankWalletLink"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{AddNewLifeProposalReceiptActionBean.returnBankWallet}" update="bankWallet bankCharges" />
+											</p:commandButton>
+											<p:inputText id="bankWallet" readonly="true"
+												value="#{AddNewLifeProposalReceiptActionBean.bankCharges.name}" >
+												 <f:ajax execute="@this" render="@this bankCharges proposalReceiiptEntryForm" ></f:ajax> 
+												</p:inputText>
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewLifeProposalReceiptActionBean. removeBankWallet()}" process="@this" update="bankWallet bankCharges" />
+										</div>
+									</div>
+								</p:panelGrid>
+							</td>
+						</tr>
+						<tr>
+						<td>
+							<h:outputText rendered="#{AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="Charges" />
+							</td>
+							<td>
+								<p:inputText id="bankCharges" required="true" rendered="#{AddNewLifeProposalReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}" readonly="true"
+									style="width: 250px; margin-left: -4px;" value="#{AddNewLifeProposalReceiptActionBean.charges}">
+									<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+								</p:inputText>
+							</td>
+						</tr>
+					</table>
+				</p:outputPanel>
+			</p:panel>
+			<p:commandButton action="#{AddNewLifeProposalReceiptActionBean.addNewLifeProposalReceiptInfo}" disabled="#{AddNewLifeProposalReceiptActionBean.atualPayment}" id="addBtn"
+				style="width: 80px;" update=":proposalReceiiptEntryForm" value=" OK " />
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" action="dashboard" id="cancelBtn" value="Cancel" immediate="true" />
+			<p:spacer width="5" />
+			<p:commandButton action="#{AddNewLifeProposalReceiptActionBean.generateReport()}" disabled="#{!AddNewLifeProposalReceiptActionBean.atualPayment}" icon="ui-icon-print"
+				id="pdfSingleBtn" oncomplete="PF('pdfDialog').show()" update=":pdfPrintForm" value="Print Preview" />
+		</h:form>
+		<p:dialog appendTo="@(body)" dynamic="true" width="1070" height="505" id="pdfDialog" resizable="false" widgetVar="pdfDialog">
+			<p:ajax event="close" update=":pdfPrintForm :proposalReceiiptEntryForm" listener="#{AddNewLifeProposalReceiptActionBean.handleClose}" />
+			<h:form enctype="multipart/form-data" id="pdfPrintForm">
+				<p:media width="1050" height="500" id="pdfPlayer" player="pdf" value="#{AddNewLifeProposalReceiptActionBean.reportStream}" cache="false" />
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

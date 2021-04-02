@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:mutu="http://java.sun.com/jsf/fileUpload" template="/common/commonLayout.xhtml">
+	<ui:param name="uploadRootPath" value="/image" />
+	<ui:define name="content">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<h:form id="policyUploadForm" enctype="multipart/form-data">
+			<p:panelGrid columns="2" style="width:400px;" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<h:outputText value="Policy No" styleClass="input-label" />
+				<p:panelGrid styleClass="ui-panelgrid-blank">
+					<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="detailProposal">
+						<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+							<p:inputText id="policyNo" readonly="true" value="#{LifePolicyAttachmentActionBean.lifePolicy.policyNo}" />
+							<p:commandButton actionListener="#{LifePolicyAttachmentActionBean.openTemplateDialog()}" immediate="true" styleClass="green-button" icon="fa fa-laptop" />
+						</div>
+					</div>
+				</p:panelGrid>
+			</p:panelGrid>
+			<p:fieldset legend="Policy Attachment" toggleable="true">
+				<p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:fileUpload fileUploadListener="#{LifePolicyAttachmentActionBean.handlePolicyAttachment}" mode="advanced" update="policyImageGrid" multiple="true" sizeLimit="3000000"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" id="policyAttachment" />
+					<p:dataGrid id="policyImageGrid" var="image" value="#{LifePolicyAttachmentActionBean.policyAttachmentList}" columns="8" rows="16" paginator="true"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+						<p:graphicImage value="#{uploadRootPath}#{image}" style="width:120px;height:120px;" />
+						<br />
+						<p:commandLink id="deleteGroupLink" action="#{LifePolicyAttachmentActionBean.removePolicyUploadedFile(image)}" update="policyImageGrid">
+							<p:graphicImage value="#{ApplicationSetting.deleteIcon}" styleClass="#{ApplicationSetting.deleteStyleClass}" />
+						</p:commandLink>
+					</p:dataGrid>
+				</p:panelGrid>
+			</p:fieldset>
+			<p:fieldset legend="Customer Medical CheckUp Attachment" toggleable="true" style="margin-top:5px;">
+				<p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:fileUpload fileUploadListener="#{LifePolicyAttachmentActionBean.handleMedicalCheckUpAttachment}" mode="advanced" update="medicalImageGrid" multiple="true"
+						sizeLimit="3000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" id="medialCheckUpAttachment" />
+					<p:dataGrid id="medicalImageGrid" var="image" value="#{LifePolicyAttachmentActionBean.customerMedicalAttachmentList}" columns="8" rows="16" paginator="true"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+						<p:graphicImage value="#{uploadRootPath}#{image}" style="width:120px;height:120px;" />
+						<br />
+						<p:commandLink id="deleteGroupLink" action="#{LifePolicyAttachmentActionBean.removeMedicalCheckUpUploadedFile(image)}" update="medicalImageGrid">
+							<p:graphicImage value="#{ApplicationSetting.deleteIcon}" styleClass="#{ApplicationSetting.deleteStyleClass}" />
+						</p:commandLink>
+					</p:dataGrid>
+				</p:panelGrid>
+			</p:fieldset>
+			<p:fieldset legend="Policy Insured Person Attachment" toggleable="true" style="margin-top:5px;margin-bottom:5px;">
+				<p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:fileUpload fileUploadListener="#{LifePolicyAttachmentActionBean.handleInsurePersonAttachment}" id="insuredPersonAttachment" mode="advanced"
+						update="insuredPersonImageGrid :policyUploadForm:personTable" multiple="true" sizeLimit="3000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+						rendered="#{LifePolicyAttachmentActionBean.showEntry}" />
+					<p:dataGrid var="image" value="#{LifePolicyAttachmentActionBean.personUploadedFileList}" columns="8" rows="16" paginator="true" id="insuredPersonImageGrid"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rendered="#{LifePolicyAttachmentActionBean.showEntry}">
+						<p:graphicImage value="#{uploadRootPath}#{image}" style="width:120px;height:120px;" />
+						<br />
+						<p:commandLink id="deleteGroupLink" action="#{LifePolicyAttachmentActionBean.removeInsuPersonUploadedFile(image)}" update="insuredPersonImageGrid">
+							<p:graphicImage value="#{ApplicationSetting.deleteIcon}" styleClass="#{ApplicationSetting.deleteStyleClass}" />
+						</p:commandLink>
+					</p:dataGrid>
+				</p:panelGrid>
+				<p:dataTable value="#{LifePolicyAttachmentActionBean.lifePolicy.insuredPersonInfo}" var="person" id="personTable" style="width:100%"
+					rowStyleClass="#{LifePolicyAttachmentActionBean.isEmptyAtt() ? 'rowWarnning' : null}">
+					<p:column headerText="Name">
+						<h:outputText value="#{person.name.firstName}" />
+					</p:column>
+					<p:column headerText="paymentTerm">
+						<h:outputText value="#{person.paymentTerm}" />
+					</p:column>
+					<p:column headerText="Suminsured">
+						<h:outputText value="#{person.sumInsured}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Date Of Birth">
+						<h:outputText value="#{person.dateOfBirth}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Age (Next Year)">
+						<h:outputText value="#{person.ageForNextYear}" />
+					</p:column>
+					<p:column headerText="Classification Of Health">
+						<h:outputText value="#{person.clsOfHealth}" />
+					</p:column>
+					<p:column headerText="Product type">
+						<h:outputText value="#{person.product.name}" />
+					</p:column>
+					<p:column style="width:50px;">
+						<p:commandLink action="#{LifePolicyAttachmentActionBean.preparePersonAttachment}" immediate="true" update=":policyUploadForm">
+							<p:graphicImage value="#{ApplicationSetting.attachIcon}" styleClass="#{ApplicationSetting.attachStyleClass}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:fieldset>
+			<p:spacer height="5px;" />
+			<p:commandButton action="#{LifePolicyAttachmentActionBean.uploadAttachment()}" value="Update" />
+			<p:commandButton action="lifePolicyEnquiry" immediate="true" value="Cancel" />
+		</h:form>
+	</ui:define>
+</ui:composition>

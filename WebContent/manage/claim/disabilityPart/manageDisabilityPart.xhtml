@@ -1,0 +1,104 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['MANAGE_DISABILITYPART_TITLE']}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="disabilityPartEntryForm" enctype="multipart/form-data">
+			<p:growl sticky="true" globalOnly="true" id="messages" showDetail="true" escape="false" />
+			
+			<div style="padding-left: 15px;">
+			<table>
+               <tr>
+                  <td valign="top">
+                     <table>
+                        <tr>
+                           <td>
+                              <h:outputText value="" />
+                           </td>
+                           <td style="width: 115px;">
+                              <p:message for="name" display="text" />
+                           </td>
+                        </tr>
+                        <tr>
+                           <td style="width: 115px;">
+                              <h:outputText style="color:red;" value="*" />
+                              <h:outputText styleClass="input-label" value="#{label['MANAGE_DISABILITYPART_LABEL']}" />
+                           </td>
+                           <td>
+                              <p:inputText id="name" required="true" style="width:250px;" value="#{ManageDisabilityPartActionBean.disabilityPart.name}">
+                                 <f:validateLength maximum="50" />
+                              </p:inputText>
+                           </td>
+                        </tr>
+                          <tr>
+                           <td>
+                              <h:outputText value="" />
+                           </td>
+                           <td style="width: 115px;">
+                              <p:message for="description" />
+                           </td>
+                        </tr>
+                        <tr>
+                           <td style="width: 115px;" valign="top">
+                              <h:outputText styleClass="input-label" value="#{label['MANAGE_DISABILITY_DISCRIPTION']}" />
+                           </td>
+                           <td>
+                              <p:inputTextarea autoResize="true" id="description" rows="5" style="width:250px;" value="#{ManageDisabilityPartActionBean.disabilityPart.description}">
+                                 <f:validateLength maximum="300" />
+                              </p:inputTextarea>
+                           </td>
+                        </tr>
+                     </table>
+                  </td> 
+                  </tr>
+                  </table> 
+                  </div>
+			<div style="padding-left: 20px; padding-right: 20px;">
+				<p:commandButton action="#{ManageDisabilityPartActionBean.addNewDisabilityPart}" id="addBtn" oncomplete="PF('PF('disabilityPartTable').filter();" rendered="#{ManageDisabilityPartActionBean.createNew}"
+					update="@form" value="#{label['COMMON_ADDNEW_BTN']}" />
+				<p:commandButton action="#{ManageDisabilityPartActionBean.updateDisabilityPart}" id="editBtn" oncomplete="PF('PF('disabilityPartTable').filter();" rendered="#{!ManageDisabilityPartActionBean.createNew}"
+					update="@form" value="#{label['COMMON_UPDATE_BTN']}" />
+				<p:spacer width="10" />
+				<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+				<br />
+				<p:separator style="height:3px;" />
+				<p:commandLink action="#{ManageDisabilityPartActionBean.createNewDisabilityPart}" process="@this" update="@form">
+					<h:panelGrid columns="2">
+						<p:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+						<p:outputLabel styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+					</h:panelGrid>
+				</p:commandLink>
+				<p:dataTable id="disabilityPartTable" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+					rowsPerPageTemplate="#{ApplicationSetting.getRowPerPage()}" style="width:100%;" value="#{ManageDisabilityPartActionBean.disabilityPartList}" var="disabilityPart" widgetVar="disabilityPartTable" paginatorPosition="bottom">
+					<p:column headerText="#{label['MANAGE_DISABILITYPART_LABEL']}" style="width: 10%;">
+						<h:outputText value="#{disabilityPart.name}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_DISABILITY_DISCRIPTION']}" style="width: 10%;">
+						<h:outputText value="#{disabilityPart.description}" />
+					</p:column>
+					<p:column style="width: 5%; text-align: center;" headerText="Edit">
+						<p:commandLink action="#{ManageDisabilityPartActionBean.prepareUpdateDisabilityPart(disabilityPart)}" process="@this" update="@form" resetValues="true">
+							<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width: 5%; text-align: center;" headerText="Delete">
+						<p:commandLink id="deleteGroupLink" process="@this" oncomplete="PF('disabilityPartTable').filter();" update="@form" actionListener="#{ManageDisabilityPartActionBean.deleteDisabilityPart(disabilityPart)}">
+							<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+							<p:confirm header="Confirmation" message="Are you sure to delete this disabilityPart (#{disabilityPart.name})?" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</div>
+			<!-- Confirmation Dialog -->
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" closable="false">
+				<center>
+					<p:commandButton value="Ok" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:spacer width="30px;" />
+					<p:commandButton value="Cancel" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</center>
+			</p:confirmDialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

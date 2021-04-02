@@ -1,0 +1,401 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:param name="uploadRootPath" value="/image" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<p:wizard widgetVar="wiz">
+		<p:tab id="proposalInfo" title="Proposal Info">
+			<p:panel header="Proposal Info" style="min-height:410px;">
+				<table>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td width="120px;">
+										<h:outputText value="#{label['ADDNEWLIFEOPOSAL_PROPOSALNO_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{personTravelProposal.proposalNo}" style="width:250px;" id="detailsProposalNo" readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{label['ADDNEWLIFEPROPOSAL_CUSTOMER_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{personTravelProposal.customerName}" style="width:250px;" id="customer" required="true" readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{label['ADDNEWLIFEPROPOSAL_PAYMENTTYPE_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{personTravelProposal.paymentType == null ? '' : personTravelProposal.paymentType.description}" style="width:250px;" id="paymentType" required="true"
+											readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{label['ADDNEWLIFEPROPOSAL_BRANCH_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{personTravelProposal.branch == null ? '' : personTravelProposal.branch.name}" style="width:250px;" id="branch" required="true" readonly="true" />
+									</td>
+								</tr>
+							</table>
+						</td>
+						<td style="width: 50px;"></td>
+						<td valign="top">
+							<table>
+								<tr>
+									<td>
+										<h:outputText value="#{label['ADDNEWLIFEPROPOSAL_SUBMITTEDDATE_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText showOn="button" value="#{personTravelProposal.submittedDate}" style="width:250px;" id="submittedDate" readonly="true">
+											<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{label['ADDNEWLIFEPROPOSAL_AGENT_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{personTravelProposal.agent == null ? '' : personTravelProposal.agent.fullName}" style="width:250px;" id="agent" required="true" readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{label['ADDNEWLIFEPROPOSAL_REFERRAL_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{personTravelProposal.referral == null ? '' : personTravelProposal.referral.fullName}" style="width:250px;" id="referral" required="true"
+											readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{label['ADDNEWLIFEPROPOSAL_SALEMAN_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{personTravelProposal.saleMan == null ? '' : personTravelProposal.saleMan.fullName}" style="width:250px;" id="saleMan" required="true"
+											readonly="true">
+											<f:validateLength maximum="20" />
+										</p:inputText>
+									</td>
+								</tr>
+
+								<tr>
+									<td>
+										<h:outputText value="SaleChannel" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{personTravelProposal.saleChannelType == null ? '' : personTravelProposal.saleChannelType.name()}" style="width:250px;" id="saleChannel" readonly="true">
+											<f:validateLength maximum="20" />
+										</p:inputText>
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<h:outputText value="Channel" styleClass="input-label" rendered="#{personTravelProposal.saleChannelType.name() eq 'BANCASSURANCE'}"/>
+									</td>
+									<td>
+										<p:inputText value="#{bancaassuranceProposal.channel == null ? '' : bancaassuranceProposal.channel.name}" style="width:250px;" id="channel" readonly="true" rendered="#{personTravelProposal.saleChannelType.name() eq 'BANCASSURANCE'}">
+											<f:validateLength maximum="20" />
+										</p:inputText>
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<h:outputText value="Banca Branch" styleClass="input-label" rendered="#{personTravelProposal.saleChannelType.name() eq 'BANCASSURANCE'}"/>
+									</td>
+									<td>
+										<p:inputText value="#{bancaassuranceProposal.bancaBranch == null ? '' : bancaassuranceProposal.bancaBranch.name}" style="width:250px;" id="bancaBranch" readonly="true" rendered="#{personTravelProposal.saleChannelType.name() eq 'BANCASSURANCE'}">
+											<f:validateLength maximum="20" />
+										</p:inputText>
+									</td>
+								</tr>
+								 
+								<tr>
+									<td>
+										<h:outputText value="Banca Method" styleClass="input-label" rendered="#{personTravelProposal.saleChannelType.name() eq 'BANCASSURANCE'}"/>
+									</td>
+									<td>
+										<p:inputText value="#{bancaassuranceProposal.bancaMethod == null ? '' : bancaassuranceProposal.bancaMethod.name}" style="width:250px;" id="bancaMethod" readonly="true" rendered="#{personTravelProposal.saleChannelType.name() eq 'BANCASSURANCE'}">
+											<f:validateLength maximum="20" />
+										</p:inputText>
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<h:outputText value="Banca Staff" styleClass="input-label" rendered="#{bancaassuranceProposal.bancaMethod.name eq 'OTC'}"/>
+										<h:outputText value="Banca BRM" styleClass="input-label" rendered="#{bancaassuranceProposal.bancaMethod.name eq 'REFERRAL'}"/>
+									</td>
+									<td>
+										<p:inputText value="#{bancaassuranceProposal.bancaMethod == null ? '' : bancaassuranceProposal.bancaMethod.name eq 'OTC' ? bancaassuranceProposal.bancaRefferal.name : bancaassuranceProposal.bancaBRM.name}" style="width:250px;" id="bancaRefferal" readonly="true" rendered="#{personTravelProposal.saleChannelType.name() eq 'BANCASSURANCE'}">
+											<f:validateLength maximum="20" />
+										</p:inputText>
+									</td>
+								</tr>
+
+								<tr>
+									<td>
+										<h:outputText value="Banca LIC" styleClass="input-label" rendered="#{bancaassuranceProposal.bancaBRM ne null}"/>
+									</td>
+									<td>
+										<p:inputText value="#{bancaassuranceProposal.bancaLIC == null ? '' : bancaassuranceProposal.bancaLIC.name}" style="width:250px;" id="bancaLIC" readonly="true" rendered="#{bancaassuranceProposal.bancaBRM ne null}">
+											<f:validateLength maximum="20" />
+										</p:inputText>
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<h:outputText value="Banca Refferal" styleClass="input-label" rendered="#{bancaassuranceProposal.bancaBRM ne null}"/>
+									</td>
+									<td>
+										<p:inputText value="#{bancaassuranceProposal.bancaRefferal == null ? '' : bancaassuranceProposal.bancaRefferal.name}" style="width:250px;" id="bancaRefferalId" readonly="true" rendered="#{bancaassuranceProposal.bancaBRM ne null}">
+											<f:validateLength maximum="20" />
+										</p:inputText>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td valign="top">
+							<h:panelGroup>
+								<fieldset>
+									<legend>
+										<h:outputText value="Proposal Premium and Unit" styleClass="input-label" />
+									</legend>
+									<table border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+										<tr>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+										</tr>
+										<tr>
+											<td colspan="3" style="height: 25px; width: 100px;">
+												<h:outputText value="#{personTravelProposal.proposalNo}" />
+											</td>
+											<td align="center" style="width: 120px;">
+												<font style="font-size: 11px; font-weight: bold;">No Of Units</font>
+											</td>
+											<td align="center" style="width: 120px;">
+												<font style="font-size: 11px; font-weight: bold;">No Of Passengers</font>
+											</td>
+											<td align="center" style="width: 120px;">
+												<font style="font-size: 11px; font-weight: bold;">Premium</font>
+											</td>
+											<td align="center" style="width: 120px;">
+												<font style="font-size: 11px; font-weight: bold;">Period of Insurance</font>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="3" style="height: 25px; width: 100px;">
+												<h:outputText value="#{personTravelProposal.customerName}" />
+											</td>
+											<td align="right">
+												<h:outputText value="#{personTravelProposal.personTravelInfo.totalUnit}" />
+											</td>
+											<td align="right">
+												<h:outputText value="#{personTravelProposal.personTravelInfo.noOfPassenger}" />
+											</td>
+											<td align="right">
+												<h:outputText value="#{personTravelProposal.personTravelInfo.basicTermPremium}">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+											<td align="right">
+												<h:outputText value="#{personTravelProposal.personTravelInfo.periodOfInsurance}" />
+											</td>
+										</tr>
+										<tr>
+											<td colspan="5" style="height: 25px;" align="right">
+												<b>Total Premium</b>
+											</td>
+											<td align="right">
+												<h:outputText value="#{personTravelProposal.personTravelInfo.premium}">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</h:panelGroup>
+						</td>
+						<td valign="top">
+							<h:panelGroup rendered="#{showPolicy}">
+								<fieldset>
+									<legend>
+										<h:outputText value="Policy Premium and Sum Insured" styleClass="input-label" />
+									</legend>
+									<table border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+										<tr>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+										</tr>
+										<tr>
+											<td colspan="3" style="height: 25px; width: 100px;">
+												<h:outputText value="#{personTravelPolicy.policyNo}" />
+											</td>
+											<td align="center">
+												<font style="font-size: 11px; font-weight: bold;">Total Unit</font>
+											</td>
+											<td align="center">
+												<font style="font-size: 11px; font-weight: bold;">Premium</font>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="3" style="height: 25px; width: 100px;">
+												<h:outputText value="#{personTravelPolicy.customerName}" />
+											</td>
+											<td align="right">
+												<h:outputText value="#{personTravelPolicy.personTravelPolicyInfo.totalUnit}" />
+											</td>
+											<td align="right">
+												<h:outputText value="#{personTravelPolicy.personTravelPolicyInfo.basicTermPremium}">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="4" style="height: 25px;" align="right">
+												<b>Total Premium</b>
+											</td>
+											<td align="right">
+												<h:outputText value="#{personTravelPolicy.personTravelPolicyInfo.premium}">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</h:panelGroup>
+						</td>
+					</tr>
+				</table>
+			</p:panel>
+		</p:tab>
+		<p:tab id="travelInfo" title="Travel Info">
+			<p:panel header="Travel Info" style="min-height:410px;">
+				<p:dataTable value="#{personTravelProposal.travelInfoList}" var="personTravelInfo">
+					<!-- <p:column headerText="Usage Of Vehicle">
+						<h:outputText value="#{personTravelInfo.usageOfVehicle}" />
+					</p:column>
+					<p:column headerText="Register No">
+						<h:outputText value="#{personTravelInfo.registrationNo}" />
+					</p:column> -->
+					<p:column headerText="Departure Date">
+						<h:outputText value="#{personTravelInfo.departureDate}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Arrival Date">
+						<h:outputText value="#{personTravelInfo.arrivalDate}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Travel Path">
+						<h:outputText value="#{personTravelInfo.travelPath}" />
+					</p:column>
+					<p:column headerText="No of Unit">
+						<h:outputText value="#{personTravelInfo.totalUnit}" />
+					</p:column>
+					<p:column headerText="No of Passengers">
+						<h:outputText value="#{personTravelInfo.noOfPassenger}" />
+					</p:column>
+					<p:column headerText="Round Trip">
+						<h:outputText value="#{personTravelInfo.roundTrip?'Yes':'No'}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</p:tab>
+		<p:tab id="insuredPersonInfo" title="InsuredPerson Info">
+			<p:panel header="InsuredPerson Information" id="insuredPersonInfoWizardPanel" style="min-height:410px;">
+				<p:dataTable value="#{personTravelProposal.personTravelInfo.proposalTravellerList}" var="traveller" id="travellerTable" style="width:100%" paginator="true">
+					<p:column headerText="Name">
+						<h:outputText value="#{traveller.name}" />
+					</p:column>
+					<p:column headerText="Father Name">
+						<h:outputText value="#{traveller.fatherName}" />
+					</p:column>
+					<p:column headerText="NRC">
+						<h:outputText value="#{traveller.nrcNo}" />
+					</p:column>
+					<p:column headerText="Address">
+						<h:outputText value="#{traveller.address}" />
+					</p:column>
+					<p:column headerText="Phone">
+						<h:outputText value="#{traveller.phone}" />
+					</p:column>
+					<p:column headerText="Email">
+						<h:outputText value="#{traveller.email}" />
+					</p:column>
+					<p:column headerText="No Of Units">
+						<h:outputText value="#{traveller.unit}" />
+					</p:column>
+					<p:column headerText="Premium">
+						<h:outputText value="#{traveller.basicTermPremium}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:50px;" headerText="Beneficiary Details">
+						<p:commandLink immediate="true" oncomplete="PF('beneficiaryDetailsDialog#{traveller.id}').show()">
+							<p:graphicImage value="/images/addOn.png" styleClass="command-image" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</p:tab>
+		<p:tab id="attachmentWizardTab" title="Attachment">
+			<p:dataGrid id="travelInfoImageGrid" value="#{personTravelProposal.personTravelInfo.attachmentList}" var="image" columns="8" rows="16" paginator="true"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+				<h:outputLink onclick="window.open('/ggli/image/#{image.filePath}');return false;">
+					<h:graphicImage value="#{uploadRootPath}#{image.filePath}" style="width:120px;height:120px;" />
+				</h:outputLink>
+			</p:dataGrid>
+		</p:tab>
+	</p:wizard>
+	<ui:repeat var="var" value="#{personTravelProposal.personTravelInfo.proposalTravellerList}">
+		<p:dialog header="Proposal Traveller Beneficiary Info" widgetVar="beneficiaryDetailsDialog#{var.id}" resizable="false" id="beneficiaryDetailsDialog#{var.id}">
+			<p:dataTable value="#{var.proposalTravellerBeneficiaryList}" var="beneficiary" id="beneficiaryTable" style="width:100%" paginator="true">
+				<p:column headerText="Name">
+					<h:outputText value="#{beneficiary.name}" />
+				</p:column>
+				<p:column headerText="Father Name">
+					<h:outputText value="#{beneficiary.fatherName}" />
+				</p:column>
+				<p:column headerText="Relationship">
+					<h:outputText value="#{beneficiary.relationship.name}" />
+				</p:column>
+				<p:column headerText="Percentage">
+					<h:outputText value="#{beneficiary.percentage}" />
+				</p:column>
+				<p:column headerText="Address">
+					<h:outputText value="#{beneficiary.address}" />
+				</p:column>
+				<p:column headerText="Email">
+					<h:outputText value="#{beneficiary.email}" />
+				</p:column>
+				<p:column headerText="Phone">
+					<h:outputText value="#{beneficiary.phone}" />
+				</p:column>
+			</p:dataTable>
+		</p:dialog>
+	</ui:repeat>
+</ui:composition>

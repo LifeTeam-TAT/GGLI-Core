@@ -1,0 +1,164 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:cyc="http://www.cycdemo.com/java"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet"
+			type="text/css" />
+		<h:form id="accountList">
+			<div
+				style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<table>
+				<tr>
+					<td>
+					<h:panelGrid columns="1" >	
+					<p:outputLabel value="Start Date"/> 
+					</h:panelGrid>
+					<h:panelGrid columns="1">
+					<p:calendar value="#{SalePointReportActionBean.tlfCriteria.startDate}"
+							pattern="#{ApplicationSetting.dateFormat}" id="startDate"
+							timeZone="#{ApplicationSetting.timeZone}" showOn="button"
+							style="width:250px;" />
+					</h:panelGrid>
+					<p:message for="startDate" display="text"/>
+					</td>
+					<td>
+					<h:panelGrid columns="1">
+					<p:outputLabel value="End Date" />
+					</h:panelGrid>
+					<h:panelGrid columns="1">
+					
+					 <p:calendar value = "#{SalePointReportActionBean.tlfCriteria.endDate}"
+							pattern="#{ApplicationSetting.dateFormat}" id="endDate"
+							timeZone="#{ApplicationSetting.timeZone}" showOn="button"
+							style="width:250px;" />
+					</h:panelGrid>
+					</td>
+					<td>
+									<h:outputText value="Sale Point" />
+									<h:panelGrid columns="3" id="salePointPanelGroup">
+										<p:inputText id="salePoint" style="width:250px;margin-left:-4px;margin-right: 3px;" readonly="true" required="true"
+											value="#{SalePointReportActionBean.tlfCriteria.salePoint == null ? '' : SalePointReportActionBean.tlfCriteria.salePoint.name}" />
+										<p:commandLink actionListener="#{SalePointReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink" immediate="true">
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											<p:ajax event="dialogReturn" listener="#{SalePointReportActionBean.returnSalePoint}" update="salePointPanelGroup" />
+										</p:commandLink>
+									</h:panelGrid>
+					</td>
+					<td>
+						<h:panelGrid columns="2">
+						<p:commandButton value="Search" action="#{SalePointReportActionBean.SearchDTOList}" update="@form"></p:commandButton>
+						<p:commandButton value="Reset"></p:commandButton>
+						</h:panelGrid>
+						
+					</td>
+				</tr>
+			</table>
+			<p:panel>
+			<h:panelGroup id="salePointReportTable">
+				<p:dataTable id="salePointTable" lazy="true" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+					rowIndexVar="rowIndex" rows="10" rowsPerPageTemplate="10,20,30"
+					value="#{SalePointReportActionBean.tlfDTOList}" var="tlfDTO"
+					style="width:100%;">
+						<f:facet name="header">
+							<div style="float: right; padding-top: 5px;">
+								<!-- <h:commandLink>
+									<p:graphicImage style="widht:30px;height:30px;"
+										value="/images/excel.png" />
+									<p:dataExporter type="xls" target="salePointTable"
+										fileName="Sale_Point" />
+								</h:commandLink> -->
+								<h:commandLink action="#{SalePointReportActionBean.exportExcel}" immediate="true">
+							<p:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" value="/images/excel.png" />
+						</h:commandLink>
+							</div>
+						</f:facet>
+						<p:column style="width:2px;">
+						<f:facet name="header">
+						<h:outputText value="No." />
+						</f:facet>
+						<h:outputText value="#{rowIndex + 1}"/>
+					</p:column>
+					<p:column style="width:10%;">
+					<f:facet name="header">
+						<h:outputText value="TLF No."/>
+					</f:facet>
+						<h:outputText value="#{tlfDTO.tlfNo}" />
+					</p:column>
+					<p:column style="width:10%;">
+						<f:facet name="header">
+						<h:outputText value="ACODE" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.acode}" />
+					</p:column>
+					<p:column style="width:8%;">
+					<f:facet name="header">
+						<h:outputText value="Home Amount" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.homeAmount}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:8%;">
+					<f:facet name="header">
+						<h:outputText value="Local Amount" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.localAmount}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:8%;">
+					<f:facet name="header">
+						<h:outputText value="Transaction Type" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.transaction}" />
+					</p:column>
+					<p:column style="width:30%;">
+					<f:facet name="header">
+						<h:outputText value="Narration" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.narration}"/>
+					</p:column>
+					<p:column style="width:8%;">
+					<f:facet name="header">
+						<h:outputText value="Sale Point" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.salePoint.name}"/>
+					</p:column>
+					<p:column style="width:5%;">
+					<f:facet name="header">
+						<h:outputText value="Payment Channel" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.paymentChannel.label}" />
+					</p:column>
+					<p:column headerText="Start Date" style="width:10%;">
+					<f:facet name="header">
+						<h:outputText value="Start Date" />
+						</f:facet>
+						<h:outputText value="#{tlfDTO.startDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+			</p:panel>
+		</h:form>
+		<h:form id="pdfPrintPreviewForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview"
+				width="1070" height="505" id="pdfPrintPreviewDialog"
+				resizable="false" widgetVar="pdfPrintPreviewDialog">
+				<p:media width="1050" height="500" player="pdf"
+					value="#{SalePointReportActionBean.stream}" cache="false"/>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

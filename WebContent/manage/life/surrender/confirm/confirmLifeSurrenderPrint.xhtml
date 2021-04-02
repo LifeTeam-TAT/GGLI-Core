@@ -1,0 +1,193 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{LifeSurrenderConfirmPrintActionBean.endowmentSurrender ? label['CONFIRM_LIFE_SURRENDER_TITLE'] : label['CONFIRM_ST_SURRENDER_TITLE']}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="proposalReceiptEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" escape="false" />
+			<p:panel>
+				<table>
+					<tr>
+						<td style="width: 200px;">
+							<h:outputText styleClass="input-label" value="#{label['CONFIRMLIFESURRENDERPRINT_SURRENDERAMOUNT_LABEL']}" />
+						</td>
+						<td>
+							<p:inputText id="surrenderAmount" readonly="true" style="width:250px;text-align:right;" value="#{LifeSurrenderConfirmPrintActionBean.surrenderProposal.surrenderAmount}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="#{label['CONFIRMLIFESURRENDERPRINT_LIFEPREMIUM_LABEL']}" />
+						</td>
+						<td>
+							<p:inputText id="lifePremium" readonly="true" style="width:250px;text-align:right;" value="#{LifeSurrenderConfirmPrintActionBean.surrenderProposal.lifePremium}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="#{label['CONFIRMLIFESURRENDERPRINT_LOAN_LABEL']}" />
+						</td>
+						<td>
+							<p:inputText id="loan" style="width:250px;text-align:right;" readonly="true" value="0.0">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="#{label['CONFIRMLIFESURRENDERPRINT_LOANINTEREST_LABEL']}" />
+						</td>
+						<td>
+							<p:inputText id="loanInterest" style="width:250px;text-align:right;" readonly="true" value="0.0">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Upkeep Premium" />
+						</td>
+						<td>
+							<p:inputText id="upkeep" style="width:250px;text-align:right;" readonly="true" value="0.0">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Upkeep Interest" />
+						</td>
+						<td>
+							<p:inputText id="upkeepInterest" style="width:250px;text-align:right;" readonly="true" value="0.0">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="#{label['CONFIRMLIFESURRENDERPRINT_SERVICECHARGES_LABEL']}" />
+						</td>
+						<td>
+							<p:inputText id="serviceCharges" style="width:250px;text-align:right;" value="#{LifeSurrenderConfirmPrintActionBean.payment.servicesCharges}" readonly="true">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td />
+						<td>
+							<p:message for="paymentChannel" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Payment Channel" />
+						</td>
+						<td>
+							<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="paymentChannel" required="true" value="#{LifeSurrenderConfirmPrintActionBean.payment.paymentChannel}">
+								<f:selectItems itemLabel="#{c.label}" itemValue="#{c}" value="#{LifeSurrenderConfirmPrintActionBean.channelValues}" var="c" />
+								<p:ajax event="valueChange" listener="#{LifeSurrenderConfirmPrintActionBean.changePaymentChannel}" update=":proposalReceiptEntryForm:chequeEntryTable" />
+							</p:selectOneRadio>
+						</td>
+					</tr>
+				</table>
+				<p:outputPanel id="chequeEntryTable">
+					<table>
+						<tr>
+							<td/>
+							<td>
+								<p:message for="accountBankName" />
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 200px;">
+							<h:outputText rendered="#{LifeSurrenderConfirmPrintActionBean.payment.paymentChannel eq 'CHEQUE'}" styleClass="input-label" value="Account Bank" />
+								<h:outputText rendered="#{LifeSurrenderConfirmPrintActionBean.payment.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="Account Clearing Bank" />
+								<h:outputText rendered="#{LifeSurrenderConfirmPrintActionBean.payment.paymentChannel eq 'SUNDRY'}" styleClass="input-label" value="Account Clearing Bank" />
+							</td>
+							<td>
+								<h:panelGrid columns="3" id="accountBankPanelGroup" rendered="#{LifeSurrenderConfirmPrintActionBean.payment.paymentChannel eq 'CHEQUE' or LifeSurrenderConfirmPrintActionBean.payment.paymentChannel eq 'TRANSFER' or  LifeSurrenderConfirmPrintActionBean.payment.paymentChannel eq 'SUNDRY' }">
+									<p:inputText id="accountBankName" style="width:250px;margin-left:-4px;" required="true"
+										readonly="#{LifeSurrenderConfirmPrintActionBean.payment.accountBank == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+										value="#{LifeSurrenderConfirmPrintActionBean.payment.accountBank == null ? '' : LifeSurrenderConfirmPrintActionBean.payment.accountBank.name}" />
+									<p:commandLink actionListener="#{LifeSurrenderConfirmPrintActionBean.selectAccountBank()}" id="selectAccountBankDialogLink" immediate="true">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										<p:ajax event="dialogReturn" listener="#{LifeSurrenderConfirmPrintActionBean.returnAccountBank}" update="accountBankPanelGroup" />
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="bankName" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText rendered="#{LifeSurrenderConfirmPrintActionBean.payment.paymentChannel eq 'CHEQUE'}" styleClass="input-label" value="Bank" />
+								<h:outputText rendered="#{LifeSurrenderConfirmPrintActionBean.payment.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="Cheque Received Bank" />
+							</td>
+							<td>
+								<h:panelGrid columns="3" id="bankPanelGroup" rendered="#{LifeSurrenderConfirmPrintActionBean.payment.paymentChannel eq 'CHEQUE' || LifeSurrenderConfirmPrintActionBean.payment.paymentChannel eq 'TRANSFER'}">
+									<p:inputText id="bankName" style="width:250px;margin-left:-4px;" required="true"
+										readonly="#{LifeSurrenderConfirmPrintActionBean.payment.bank == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+										value="#{LifeSurrenderConfirmPrintActionBean.payment.bank == null ? '' : LifeSurrenderConfirmPrintActionBean.payment.bank.name}" />
+									<p:commandLink actionListener="#{LifeSurrenderConfirmPrintActionBean.selectBank()}" id="selectBankDialogLink" immediate="true">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										<p:ajax event="dialogReturn" listener="#{LifeSurrenderConfirmPrintActionBean.returnBank}" update="bankPanelGroup" />
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td/>
+							<td>
+								<p:message for="chequeNo" id="chequeNoMessage"/>
+								<p:message for="poNo" id="poNoMessage"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText rendered="#{LifeSurrenderConfirmPrintActionBean.payment.paymentChannel eq 'CHEQUE'}" styleClass="input-label" value="PO / Account No." />
+								<h:outputText rendered="#{LifeSurrenderConfirmPrintActionBean.payment.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="Transfer No." />
+							</td>
+							<td>
+								<p:inputText id="chequeNo" required="true" rendered="#{LifeSurrenderConfirmPrintActionBean.payment.paymentChannel eq 'CHEQUE'}" style="width:250px;margin-left:-2px;"
+									value="#{LifeSurrenderConfirmPrintActionBean.payment.chequeNo}" />
+								<p:inputText id="poNo" required="true" rendered="#{LifeSurrenderConfirmPrintActionBean.payment.paymentChannel eq 'TRANSFER'}" style="width:250px;margin-left:-2px;"
+									value="#{LifeSurrenderConfirmPrintActionBean.payment.poNo}" />
+							</td>
+						</tr>
+					</table>
+				</p:outputPanel>
+			</p:panel>
+			<h:panelGroup id="btnGroup">
+				<p:commandButton action="#{LifeSurrenderConfirmPrintActionBean.addSurrenderReceiptInfo}" disabled="#{LifeSurrenderConfirmPrintActionBean.actualPayment}" style="width: 80px;"
+					update=":proposalReceiptEntryForm" value="OK " />
+				<p:spacer width="5" />
+				<p:commandButton style="width: 80px;" action="dashboard" value="Cancel" immediate="true" />
+				<p:spacer width="5" />
+				<p:commandButton action="#{LifeSurrenderConfirmPrintActionBean.generateReport()}" disabled="#{!LifeSurrenderConfirmPrintActionBean.actualPayment}" icon="ui-icon-print"
+					oncomplete="PF('cashReceiptPDFDialog').show()" value="Print Cash Receipt" update=":pdfPrintForm" />
+			</h:panelGroup>
+		</h:form>
+		<h:form enctype="multipart/form-data" id="pdfPrintForm">
+			<p:dialog appendTo="@(body)" modal="true" dynamic="true" width="1070" height="505" id="cashReceipt" resizable="false" widgetVar="cashReceiptPDFDialog">
+				<p:ajax event="close" update="@form" listener="#{ApplicationSetting.handleDialogClose(LifeSurrenderConfirmPrintActionBean.reportStream)}" />
+				<p:media width="1050" height="500" id="pdfPlayer" player="pdf" value="#{LifeSurrenderConfirmPrintActionBean.reportStream}"  cache="false"/>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

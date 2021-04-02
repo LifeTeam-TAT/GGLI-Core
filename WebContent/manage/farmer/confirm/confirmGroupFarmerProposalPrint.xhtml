@@ -1,0 +1,282 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Group Farmer Porposal Confirmation" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="proposalReceiiptEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" escape="false" />
+			<p:panel>
+				<table>
+				<tr>
+						<td />
+						<td>
+							<p:message for="totalSI" />
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 150px;">
+							<h:outputText styleClass="input-label" value="Total SI" />
+						</td>
+						<td>
+							<p:inputText id="totalSI" readonly="true" style="width:250px; text-align: right;" value="#{AddNewGroupFarmerReceiptActionBean.groupFarmerProposal.totalSI}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td />
+						<td>
+							<p:message for="premium" />
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 150px;">
+							<h:outputText styleClass="input-label" value="Premium" />
+						</td>
+						<td>
+							<p:inputText id="premium" readonly="true" style="width:250px; text-align: right;" value="#{AddNewGroupFarmerReceiptActionBean.groupFarmerProposal.premium}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					
+					<tr height="3" />
+				
+					<tr height="3" />
+					<tr>
+						<td />
+						<td>
+							<p:message for="totalPremium" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Total Premium" />
+						</td>
+						<td>
+							<p:inputText id="totalPremium" readonly="true" style="width:250px; text-align: right;" value="#{AddNewGroupFarmerReceiptActionBean.groupFarmerProposal.premium}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td>
+							<h:outputText value="" />
+						</td>
+						<td>
+							<p:message for="totalTermPremium" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Term Premium" />
+						</td>
+						<td>
+							<p:inputText id="totalTermPremium" readonly="true" style="width:250px; text-align: right;" value="#{AddNewGroupFarmerReceiptActionBean.groupFarmerProposal.totalTermPremium}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td />
+						<td>
+							<p:message for="amount" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Discount Percent" />
+						</td>
+						<td>
+							<p:inputText id="amount" style="width:250px; text-align: right;" value="#{AddNewGroupFarmerReceiptActionBean.payment.discountPercent}" disabled="true">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+								<f:validateDoubleRange minimum="0" maximum="100" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td />
+						<td>
+							<p:message for="additionalCharges" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Service Charges" />
+						</td>
+						<td>
+							<p:inputText id="additionalCharges" style="width:250px; text-align: right;" value="#{AddNewGroupFarmerReceiptActionBean.payment.servicesChargesNum}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+								<f:validateDoubleRange minimum="0" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td />
+						<td>
+							<p:message for="stampFees" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Policy Stamp Fees" />
+						</td>
+						<td>
+							<p:inputText disabled="true" id="stampFees" style="width:250px; text-align: right;" value="#{AddNewGroupFarmerReceiptActionBean.payment.stampFees}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+								<f:validateDoubleRange minimum="0" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td />
+						<td>
+							<p:message for="paymentChannel" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Payment Channel" />
+						</td>
+						<td>
+							<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="paymentChannel" required="true" value="#{AddNewGroupFarmerReceiptActionBean.payment.paymentChannel}">
+								<f:selectItems itemLabel="#{c.label}" itemValue="#{c}" value="#{AddNewGroupFarmerReceiptActionBean.paymentChannels}" var="c" />
+								<p:ajax event="valueChange" listener="#{AddNewGroupFarmerReceiptActionBean.changePaymentChannel}" update=":proposalReceiiptEntryForm:chequeEntryTable" />
+							</p:selectOneRadio>
+						</td>
+					</tr>
+				</table>
+				<p:outputPanel id="chequeEntryTable">
+					<table>
+						<tr>
+							<td />
+							<td>
+								<p:message for="accountBankName" id="accountBankMessage"/>
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 150px;">
+								<h:outputText rendered="#{AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'CHEQUE'}" styleClass="input-label" value="GGLI Account Bank" />
+								<h:outputText rendered="#{AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="GGLI Account Bank" />
+								<h:outputText rendered="#{AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'SUNDRY'}" styleClass="input-label" value="GGLI Account Bank" />
+							</td>
+							<td>
+								<h:panelGrid columns="3" id="accountBankPanelGroup" rendered="#{AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'CHEQUE' or AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'TRANSFER' or  AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'SUNDRY'}">
+									<p:inputText id="accountBankName" readonly="#{AddNewGroupFarmerReceiptActionBean.payment.accountBank == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" style="width:250px;margin-left:-4px;"
+										value="#{AddNewGroupFarmerReceiptActionBean.payment.accountBank == null ? '' : AddNewGroupFarmerReceiptActionBean.payment.accountBank.name}"  required="true"/>
+									<p:commandLink actionListener="#{AddNewGroupFarmerReceiptActionBean.selectAccountBank()}" id="selectAccountBankDialogLink" immediate="true">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										<p:ajax event="dialogReturn" listener="#{AddNewGroupFarmerReceiptActionBean.returnAccountBank}" update="accountBankPanelGroup" />
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="bankName" id="bankMessage" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText rendered="#{AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'CHEQUE'}" styleClass="input-label" value="Cheque Received Bank" />
+								<h:outputText rendered="#{AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="Customer's Transfer Bank" />
+							</td>
+							<td>
+								<h:panelGrid columns="3" id="bankPanelGroup" rendered="#{AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'CHEQUE' || AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}">
+									<p:inputText id="bankName" readonly="#{AddNewGroupFarmerReceiptActionBean.payment.bank == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" style="width:250px;margin-left:-4px;"
+										value="#{AddNewGroupFarmerReceiptActionBean.payment.bank == null ? '' : AddNewGroupFarmerReceiptActionBean.payment.bank.name}"  required="true" />
+									<p:commandLink actionListener="#{AddNewGroupFarmerReceiptActionBean.selectBank()}" id="selectBankDialogLink" immediate="true">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										<p:ajax event="dialogReturn" listener="#{AddNewGroupFarmerReceiptActionBean.returnBank}" update="bankPanelGroup" />
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="chequeNo" id="chequeNoMessage"/>
+								<p:message for="poNo" id="poNoMessage"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText rendered="#{AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'CHEQUE'}" styleClass="input-label" value="PO / Account No." />
+								<h:outputText rendered="#{AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="Transfer No." />
+							</td>
+							<td>
+								<p:inputText id="chequeNo" rendered="#{AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'CHEQUE'}" style="width:250px;margin-left:-2px;"
+									value="#{AddNewGroupFarmerReceiptActionBean.payment.chequeNo}" required="true"/>
+								<p:inputText id="poNo" rendered="#{AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}"  style="width:250px;margin-left:-2px;"
+									value="#{AddNewGroupFarmerReceiptActionBean.payment.poNo}"  required="true"/>
+							</td>
+						</tr>
+						<tr>
+							<td/>
+							<td>
+								<p:message for="bankWallet" id="MsgBankWallet" display="text" />
+								<p:message for="bankCharges" id="bankChargesAmt" />
+							</td>
+						</tr>
+						<tr>
+						<td>
+								<h:outputText rendered="#{AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="Bank Wallet" />
+							</td>
+							<td>
+								<p:panelGrid styleClass="ui-panelgrid-blank" rendered="#{AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}">
+									<div style="width: 275px; margin-left: -9px;" class="ui-g ui-fluid">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewGroupFarmerReceiptActionBean.selectBankWallets()}" id="selectBankWalletLink"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{AddNewGroupFarmerReceiptActionBean.returnBankWallet}" update="bankWallet bankCharges" />
+											</p:commandButton>
+											<p:inputText id="bankWallet" readonly="#{AddNewGroupFarmerReceiptActionBean.bankCharges.name == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{AddNewGroupFarmerReceiptActionBean.bankCharges.name}" >
+												 <f:ajax execute="@this" render="@this bankCharges" ></f:ajax> 
+												</p:inputText>
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewGroupFarmerReceiptActionBean. removeBankWallet()}" process="@this" update="bankWallet bankCharges" />
+										</div>
+									</div>
+								</p:panelGrid>
+							</td>
+							</tr>
+						<tr>
+						<td>
+							<h:outputText rendered="#{AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="Charges" />
+							</td>
+							<td>
+								<p:inputText id="bankCharges" required="true" readonly="true" rendered="#{AddNewGroupFarmerReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}"
+									style="width: 250px; margin-left: -4px;" value="#{AddNewGroupFarmerReceiptActionBean.charges}">
+									<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+								</p:inputText>
+							</td>
+						</tr>
+					</table>
+				</p:outputPanel>
+			</p:panel>
+			<br />
+			<p:commandButton action="#{AddNewGroupFarmerReceiptActionBean.addNewGroupFarmerProposalReceiptInfo}" disabled="#{AddNewGroupFarmerReceiptActionBean.atualPayment}"
+				id="addBtn" style="width: 65px;" update=":proposalReceiiptEntryForm" value=" OK " />
+			<p:spacer width="10" />
+			<p:commandButton style="width: 65px;" action="confirmMedicalProposal" id="cancelBtn" value="Cancel" immediate="true"
+				rendered="#{!AddNewGroupFarmerReceiptActionBean.atualPayment}" />
+			<p:commandButton style="width: 65px;" action="dashboard" id="cancelBtn1" value="Cancel" immediate="true" rendered="#{AddNewGroupFarmerReceiptActionBean.atualPayment}" />
+			<p:spacer width="10" />
+			<p:commandButton action="#{AddNewGroupFarmerReceiptActionBean.generateReport()}" icon="ui-icon-print" value="Print Preview"
+				disabled="#{!AddNewGroupFarmerReceiptActionBean.atualPayment}" oncomplete="PF('issuePolicyPDFDialogSingle').show()" update=":pdfPrintForm:printPannel" />
+		</h:form>
+		<h:form enctype="multipart/form-data" id="pdfPrintForm">
+			<p:dialog appendTo="@(body)" dynamic="true" height="550" id="issuePolicyPDFDialogSingle" resizable="false" widgetVar="issuePolicyPDFDialogSingle" width="1024">
+				<p:ajax event="close" update=":pdfPrintForm :proposalReceiiptEntryForm" listener="#{AddNewGroupFarmerReceiptActionBean.handleClose}" />
+				<p:outputPanel id="printPannel">
+					<p:media height="550" id="pdfPlayer" player="pdf" value="#{AddNewGroupFarmerReceiptActionBean.reportStream}" width="1000"  cache="false"/>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

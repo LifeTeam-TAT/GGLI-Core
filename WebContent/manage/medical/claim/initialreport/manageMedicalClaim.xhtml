@@ -1,0 +1,115 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Claim Initial Report" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form enctype="multipart/form-data" id="medicalClaimInitialForm">
+		<f:event listener="#{ManageMedicalClaimInitialReportActionBean.checkMessage}" type="preRenderView" />
+			<p:growl globalOnly="true" id="messages" showDetail="true" />
+					<h:panelGrid columns="2" >
+						<h:panelGrid columns="1">
+							<p:outputLabel/>
+							<p:message for="startDate" display="text"/>
+							<h:outputText value="Start Date" />
+							<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}" size="30"
+								value="#{ManageMedicalClaimInitialReportActionBean.criteria.startDate}" />
+							<p:outputLabel/>
+							<p:message for="product" display="text"/>
+							<h:outputText value="#{label['ADMIN_LEFT_CLAIM_PRODUCT_LABEL']}" />
+							<p:selectOneMenu converter="omnifaces.SelectItemsIndexConverter" id="product" required="true" style="height:24px;width: 250px;" value="#{ManageMedicalClaimInitialReportActionBean.product}">
+								<f:selectItem itemLabel="Selected Claim Product " />
+								<f:selectItems value="#{ManageMedicalClaimInitialReportActionBean.productList}" />
+								<p:ajax event="valueChange" listener="#{ManageMedicalClaimInitialReportActionBean.changeProduct}" update="@form" />
+							</p:selectOneMenu>
+							<p:outputLabel />
+							<p:message for="policyNo" display="text"/>
+							<h:outputText value="Policy No" />
+							<h:panelGrid columns="3" id="MedicalPolicyNoPanel">
+								<p:inputText id="policyNo" style="width:250px;margin-left:-4px;"
+									value="#{ManageMedicalClaimInitialReportActionBean.criteria.policyNo == null ? '' : ManageMedicalClaimInitialReportActionBean.criteria.policyNo}"
+									readonly="#{ManageMedicalClaimInitialReportActionBean.criteria.policyNo == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true" />
+								<p:commandLink actionListener="#{ManageMedicalClaimInitialReportActionBean.selectMedicalPolicyNo()}" id="selectMedicalPolicyNoDialogLink" immediate="true">
+									<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+									<p:ajax event="dialogReturn" listener="#{ManageMedicalClaimInitialReportActionBean.returnMedicalPolicyNo}" update="policyNo" />
+								</p:commandLink>
+							</h:panelGrid>
+							
+						</h:panelGrid>
+					
+						<h:panelGrid columns="1">
+							<p:outputLabel />
+						<h:outputText value="End Date" />
+							<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" size="30" showOn="button"
+								value="#{ManageMedicalClaimInitialReportActionBean.criteria.endDate}" />
+							<p:outputLabel />
+							<p:outputLabel />
+							<h:outputText value="Reporter Name" />
+							<p:inputText id="reportName" style="width:250px;margin-left:-4px;" value="#{ManageMedicalClaimInitialReportActionBean.criteria.reporterName}" />
+				            <p:outputLabel />
+				            <p:outputLabel />
+							<h:outputText value="Cliam Initial Report No" />
+							<p:inputText id="reportNo" style="width:250px;margin-left:-4px;" value="#{ManageMedicalClaimInitialReportActionBean.criteria.claimInitialReportNo}" >
+							  <p:ajax />
+							</p:inputText>
+							
+							
+						</h:panelGrid>
+			</h:panelGrid>
+			
+			<p:commandButton value="Search" actionListener="#{ManageMedicalClaimInitialReportActionBean.search}" update="@form" process="@this" />
+			<p:spacer  width="20px" />
+			<p:commandButton value="Cancel" actionListener="#{ManageMedicalClaimInitialReportActionBean.resetCriteria}" update="@form" process="@this"/>
+			
+			<br />
+			<br />
+			<p:separator style="height:5px;" />
+			<p:commandLink id="btnNewClaimInitialReport" action="medicalClaimInitialReport" immediate="true">
+				<h:panelGrid columns="2">
+					<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+					<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+				</h:panelGrid>
+			</p:commandLink>
+			<p:dataTable id="claimInitialReportTable" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+				rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageMedicalClaimInitialReportActionBean.claimInitialReportList}" var="initialReport"
+				widgetVar="claimInitialReportTable">
+				<p:column headerText="Policy No">
+					<h:outputText value="#{initialReport.policyNo}" />
+				</p:column>
+				<p:column headerText="Cliam Initial Report No">
+					<h:outputText value="#{initialReport.claimReportNo}" />
+				</p:column>
+				<p:column headerText="Unit">
+					<h:outputText value="#{initialReport.policyInsuredPerson.totalUnit}" />
+				</p:column>
+				<p:column headerText="Insured Person Name">
+					<h:outputText value="#{initialReport.policyInsuredPerson.customer.fullName}" />
+				</p:column>
+				<p:column headerText="Sale Person">
+					<h:outputText value="#{initialReport.salePersonName}" />
+				</p:column>
+				<p:column headerText="Reporter Name">
+					<h:outputText value="#{initialReport.claimInitialReporter.name}" />
+				</p:column>
+				<p:column headerText="Report Date">
+					<h:outputText value="#{initialReport.reportDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:50px; text-align: center;" headerText="Claim">
+					<p:commandLink immediate="true" id="btnConfigClaimInitialReport" action="#{ManageMedicalClaimInitialReportActionBean.submitClaimRequest(initialReport)}"
+						update=":medicalClaimInitialForm" disabled="#{initialReport.applied}">
+						<p:graphicImage styleClass="#{ApplicationSetting.configStyleClass}" value="#{ApplicationSetting.configIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="width:50px;  text-align: center;" headerText="Edit">
+					<p:commandLink id="btnEditClaimInitialReport" action="#{ManageMedicalClaimInitialReportActionBean.prepareUpdateClaimInitialReport(initialReport)}"
+						update=":medicalClaimInitialForm">
+						<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

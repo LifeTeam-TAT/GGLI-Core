@@ -1,0 +1,143 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Import TLF" />
+	<ui:param name="headerRendered" value="true" />
+	<!-- <f:metadata>
+	    <f:event type="preRenderView" listener="#{ManageTlfImportActionBean.loginCheck}"
+	</f:metadata> -->
+	<!-- <script type="text/javascript">
+	window.onbeforeunload = function (e) {
+	    e = e || window.event;
+
+	    // For IE and Firefox prior to version 4
+	    if (e) {
+	        e.returnValue = 'Sure?';
+	    }
+
+	    // For Safari
+	    return 'Sure?';
+	};
+	</script> -->
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form enctype="multipart/form-data" id="TlfImportForm">
+			<!-- <p:growl globalOnly="true" id="messages" showDetail="true" /> -->
+			<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+			<div style="padding-left: 15px;">
+				<h:outputText value="#{label['MANAGE_TLF_IMPORT']}" styleClass="table-title" style="padding-top:-10px;" />
+				<table>
+					<tr>
+						<td>
+							<h:outputText value="" />
+						</td>
+						<td style="width: 115px;">
+							<p:message id="msgActionDate" for="actionDate" />
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 115px;">
+							<h:outputText value="*" style="color:red;" />
+							<h:outputText value="#{label['TLF_IMPORT_ACC_DATE']}" styleClass="input-label" />
+						</td>
+						<td>
+							<p:calendar id="actionDate" showOn="button" value="#{ManageTlfImportActionBean.actionDate}" pattern="#{ApplicationSetting.dateFormat}"
+								timeZone="#{ApplicationSetting.timeZone}" mindate="#{ManageTlfImportActionBean.minDate}" maxdate="#{ManageTlfImportActionBean.maxDate}">
+								<p:ajax event="dateSelect" update="@this" />
+							</p:calendar>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value="" />
+						</td>
+						<td style="width: 115px;">
+							<p:message id="msgFileUpload" for="fileUpload" />
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 115px;">
+							<h:outputText value="*" style="color:red;" />
+							<h:outputText value="#{label['TLF_IMPORT_FILE']}" styleClass="input-label" />
+						</td>
+						<td>
+							<p:fileUpload auto="true" fileUploadListener="#{ManageTlfImportActionBean.handleFileUpload}" fileLimit="1" mode="advanced" sizeLimit="100000000"
+								allowTypes="/(\.|\/)(xls|xlsx)$/" id="fileUpload" update="@form" style="min-width:550px;" required="true" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value="" />
+						</td>
+						<td>
+							<h:panelGrid columns="3" id="removeUploadedFileLink" rendered="#{ManageTlfImportActionBean.fileUploaded}">
+								<p:commandLink action="#{ManageTlfImportActionBean.removeUploadedFile}" id="removeUploadedFileBTN" update=":TlfImportForm" process="@this">
+									<h:graphicImage value="#{ApplicationSetting.deleteIcon}" styleClass="#{ApplicationSetting.deleteStyleClass}" />
+								</p:commandLink>
+								<h:outputText value=" - " />
+								<h:outputText id="uploadedFileName" value="#{ManageTlfImportActionBean.uploadedFileName}" />
+							</h:panelGrid>
+						</td>
+						<td></td>
+					</tr>
+					<ui:repeat var="var" value="#{ManageTlfImportActionBean.convertableFiles}">
+						<tr>
+							<td>
+								<h:outputText id="convertableFiles" value="#{var} #{label['TLF_FILE_CONVERT_TEXT']}" />
+							</td>
+						</tr>
+					</ui:repeat>
+					<tr>
+						<td>
+							<h:panelGrid columns="3" cellpadding="8">
+								<p:commandButton value="#{label['TLF_FILE_IMPORT_BTN']}" style="width:110px !important;" action="#{ManageTlfImportActionBean.importFile}" update="@form"
+									disabled="#{ManageTlfImportActionBean.imported}" />
+								<p:commandButton value="#{label['TLF_FILE_CONVERT_BTN']}" style="width:110px !important;" update=":confirmDialogForm"
+									disabled="#{ManageTlfImportActionBean.convertableFiles.size() == 0}" actionListener="#{ManageTlfImportActionBean.openConfirmDialog()}" />
+								<p:commandButton value="#{label['COMMON_CANCEL_BTN']}" update="@form">
+									<p:confirm header="Confirmation" message="Are you sure to reset form?" icon="ui-icon-alert" />
+								</p:commandButton>
+								<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+									<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="tlfImport" />
+									<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+								</p:confirmDialog>
+							</h:panelGrid>
+						</td>
+					</tr>
+					<!-- 
+					<tr>
+						<td>
+							<h:panelGrid columns="3" cellpadding="8" rendered="#{ManageTlfImportActionBean.errorExcelGenerated}">
+								<p:commandButton value="#{label['COMMON_DOWNLOAD_BTN']}" style="width:110px !important;" immediate="true" ajax="false" update="@form"
+									actionListener="#{ManageTlfImportActionBean.handleDownload()}" />
+							</h:panelGrid>
+						</td>
+					</tr> 
+					-->
+				</table>
+			</div>
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			<br />
+			<p:separator style="height:5px;" />
+		</h:form>
+		<p:dialog id="confirmDialog" header="Confirmation" widgetVar="confirmDialog" appendTo="@(body)" dynamic="true" hideEffect="fade" resizable="false" showEffect="fade" modal="true">
+			<h:form id="confirmDialogForm">
+				<h:panelGroup id="confirmationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText value="#{ManageTlfImportActionBean.convertConfirmMessage}" escape="false" style="padding-top:-10px;text-decoration: none;font-size: 12px;" />
+							</td>
+						</tr>
+					</table>
+					<br />
+					<p:commandButton action="#{ManageTlfImportActionBean.convertFile()}" oncomplete="PF('PF('confirmDialog').hide()"  update=":TlfImportForm"
+						value="Yes"/>
+					<p:commandButton value="No" oncomplete="PF('PF('confirmDialog').hide()" />
+				</h:panelGroup>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

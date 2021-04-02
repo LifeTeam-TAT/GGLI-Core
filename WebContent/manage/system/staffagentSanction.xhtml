@@ -1,0 +1,129 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Staff Agent Sanction Management" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<style>
+			.ui-panelgrid tr, .ui-panelgrid td {
+				border: none !important;
+			}
+		</style>
+		<h:form id="staffList">
+			<p:growl globalOnly="true" id="messages" showDetail="true" />
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						
+						<h:outputText for="startDate" value="Start Date" />
+						<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}" value="#{StaffAgentSanctionReportActionBean.criteria.startDate}" />
+						
+						<h:outputText for="currencyType" value="Currency Type" />
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="currencyType" value="#{StaffAgentSanctionReportActionBean.criteria.currency}">
+							<f:selectItems value="#{StaffAgentSanctionReportActionBean.currencyList}" itemValue="#{currency}" var="currency" itemLabel="#{currency.description}" />
+						</p:selectOneMenu>
+						
+						 <h:outputText for="bmpsReceiptNo" value="BMPS ReceiptNo" />
+						<p:inputText value="#{StaffAgentSanctionReportActionBean.criteria.bpmsReceiptNo}" id="bmpsReceiptNo"/>
+						
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						
+						<h:outputText for="endDate" value="End Date" />
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}" value="#{StaffAgentSanctionReportActionBean.criteria.endDate}" />
+						
+						<h:outputText for="receiptNo" value="Receipt No" />
+						<p:inputText value="#{StaffAgentSanctionReportActionBean.criteria.receiptNo}" id="receiptNo"/>
+						
+						<h:outputText styleClass="input-label" value="Staff" />
+						<h:panelGrid columns="3" id="staffPanelGroup">
+							<p:inputText id="staff" readonly="true" style="width:200px;margin-left:-4px;"
+								value="#{StaffAgentSanctionReportActionBean.criteria.staff == null ? '' : StaffAgentSanctionReportActionBean.criteria.staff.fullName}" />
+							<p:commandLink actionListener="#{StaffAgentSanctionReportActionBean.selectStaff()}" id="selectAgentDialogLink" immediate="true">
+								<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+								<p:ajax event="dialogReturn" listener="#{StaffAgentSanctionReportActionBean.returnAgent}" update="staffPanelGroup" />
+							</p:commandLink>
+						</h:panelGrid>
+						
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						
+						<h:outputText for="insuranceType" value="Insurance Type" />
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuranceType"  value="#{StaffAgentSanctionReportActionBean.criteria.insuranceType}">
+							<f:selectItems value="#{StaffAgentSanctionReportActionBean.insuranceTypes}" />
+						</p:selectOneMenu>
+						
+						<h:outputText for="policyNo" value="Policy No" />
+						<p:inputText value="#{StaffAgentSanctionReportActionBean.criteria.policyNo}" id="policyNo"/>
+						
+					</p:panelGrid>
+					
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton style="width: 65px;" action="#{StaffAgentSanctionReportActionBean.filter}" update=":staffList:staffTablePanel" value="Search" />
+				<p:commandButton action="#{StaffAgentSanctionReportActionBean.reset()}" style="width: 65px;" disabled="#{!StaffAgentSanctionReportActionBean.sanction}" 
+					id="btnReset" process="@form" value="Reset" update="@form" />
+			</h:panelGrid>
+			<br/>
+			<h:panelGroup id="staffTablePanel">
+				<p:dataTable id="agentTable" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+					rowIndexVar="rowIndex" rows="10" rowsPerPageTemplate="10,20, 30" selection="#{StaffAgentSanctionReportActionBean.selectedList}"
+					paginatorPosition="bottom" value="#{StaffAgentSanctionReportActionBean.agentSanctionList}" rowKey="#{staff.id}" var="staff">
+					<p:column selectionMode="multiple" style="width:3%" />
+					<p:column headerText="No" width="2%">
+						<h:outputText value="#{rowIndex + 1}" />
+					</p:column>
+					<p:column headerText="Name" width="13%">
+						<h:outputText value="#{staff.agentName}" />
+					</p:column>
+					<p:column headerText="Policy No" width="13%">
+						<h:outputText value="#{staff.policyNo}" />
+					</p:column>
+					<p:column headerText="Receipt No" width="12%">
+						<h:outputText value="#{staff.cashReceiptNo}" />
+					</p:column>
+					<p:column headerText="BPMS Receipt No" width="12%">
+						<h:outputText value="#{staff.bpmsReceiptNo}" />
+					</p:column>
+					<p:column headerText="Policy Issuing Location">
+						<h:outputText value="#{staff.branchName}"/>
+					</p:column>
+					<p:column headerText="Phone No">
+						<h:outputText value="#{staff.mobile}" />
+					</p:column>
+					<p:column headerText="Address" width="18%">
+						<h:outputText value="#{staff.address}">
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Reference Type">
+						<h:outputText value="#{staff.referenceType.label}">
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Comission">
+						<h:outputText value="#{staff.totalComission}" style="float:right">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+				<br />
+				<p:commandButton action="#{StaffAgentSanctionReportActionBean.sanctionAgent()}" disabled="#{!StaffAgentSanctionReportActionBean.sanction}" id="sanctionBtn"
+					update=":staffList:staffTablePanel :staffList:sanctionBtn :staffList:pdfSingleBtn :staffList:btnReset :staffList:messages" value="Sanction" />
+				<p:spacer width="10px;" />
+				<p:commandButton action="#{StaffAgentSanctionReportActionBean.generateAgentComission()}" disabled="#{StaffAgentSanctionReportActionBean.sanction}" icon="ui-icon-print" id="pdfSingleBtn"
+					oncomplete="PF('pdfPreviewDialog').show()" update=":pdfPrintForm:pdfPreviewDialog" value="Preview" />
+				<p:spacer width="10px;" />
+			</h:panelGroup>
+		</h:form>
+		<!-- PDF Preview Form -->
+		<h:form enctype="multipart/form-data" id="pdfPrintForm">
+			<p:dialog appendTo="@(body)" dynamic="true" modal="true" header="Print Preview (PDF)" width="1070" height="505" hideEffect="fade" id="pdfPreviewDialog" resizable="false"
+				showEffect="fade" widgetVar="pdfPreviewDialog">
+				<p:media width="1050" height="500" id="pdfPlayer" player="pdf" value="#{StaffAgentSanctionReportActionBean.stream}"  cache="false"/>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

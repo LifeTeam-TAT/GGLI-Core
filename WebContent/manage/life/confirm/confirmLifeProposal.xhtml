@@ -1,0 +1,110 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{AddNewLifeConfirmationActionBean.getPageHeader()}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<h:form id="lifeConfirmaitonForm">
+			<p:panel>
+				<table>
+					<tr>
+						<td style="width: 150px;">
+							<h:outputText styleClass="input-label" value="Proposal No"/>
+						</td>
+						<td>
+							<h:panelGrid columns="2">
+								<p:inputText id="proposalNo" readonly="true" style="width:250px; margin-left:-4px;" value="#{AddNewLifeConfirmationActionBean.lifeProposal.proposalNo}"/>
+								<p:commandLink id="detailsProposal" immediate="true" oncomplete="PF('lifeProposalDetailsDialog').show()">
+									<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}"/>
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+					<p:outputPanel rendered="#{AddNewLifeConfirmationActionBean.farmer}">
+					<tr height="5" />
+					<tr >
+						<td>
+							<h:outputText styleClass="input-label" value="Is skip payment?"/>
+						</td>
+						<td>
+							<p:selectBooleanCheckbox value="#{AddNewLifeConfirmationActionBean.lifeProposal.skipPaymentTLF}">
+								<p:ajax event="valueChange" listener="#{AddNewLifeConfirmationActionBean.setResponsiblePerson(null)}" update="responsiblePersonPanel"/>
+							</p:selectBooleanCheckbox>
+						</td>
+					</tr>
+					<tr height="5" />
+					</p:outputPanel>
+					<tr>
+						<td>
+							<h:outputText value=""/>
+						</td>
+						<td>
+							<p:message for="remark"/>
+						</td>
+					</tr>
+					<tr>
+						<td valign="top">
+							<h:outputText styleClass="input-label" value="Remark"/>
+						</td>
+						<td valign="top">
+							<p:inputTextarea autoResize="true" id="remark" rows="7" style="width:400px;" value="#{AddNewLifeConfirmationActionBean.remark}">
+								<f:validateLength maximum="8000"/>
+							</p:inputTextarea>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value=""/>
+						</td>
+						<td style="width: 115px;">
+							<p:message for="responsiblePerson" display="text"/>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 115px;">
+							<h:outputText style="color:red;" value="*"/>
+							<h:outputText styleClass="input-label" value="Accountant"/>
+						</td>
+						<td>
+							<h:panelGrid columns="3" id="responsiblePersonPanel">
+								<p:inputText id="responsiblePerson" required="true" readonly="#{AddNewLifeConfirmationActionBean.responsiblePerson == null ?  facesContext.currentPhaseId.ordinal eq 6 : true}" 
+									style="width:250px;margin-left:-4px;" value="#{AddNewLifeConfirmationActionBean.responsiblePerson == null ? '' : AddNewLifeConfirmationActionBean.responsiblePerson.name}"/>
+								<p:commandLink actionListener="#{AddNewLifeConfirmationActionBean.selectUser()}" disabled="#{!AddNewLifeConfirmationActionBean.approvedProposal}" id="selectUserDialogLink" immediate="true">
+									<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}"/>
+									<p:ajax event="dialogReturn" listener="#{AddNewLifeConfirmationActionBean.returnUser}" update="responsiblePersonPanel"/>
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+				</table>
+			</p:panel>
+			<p:commandButton style="width: 80px;" action="#{AddNewLifeConfirmationActionBean.confirmLifeProposal()}" disabled="#{(!AddNewLifeConfirmationActionBean.approvedProposal) or (AddNewLifeConfirmationActionBean.excessSISportMan)}"  id="addBtn" value="Confirm" update="lifeConfirmaitonForm"/>
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" action="#{AddNewLifeConfirmationActionBean.editLifeProposal()}" immediate="true" id="editBtn" value="Edit"/>
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" action="#{AddNewLifeConfirmationActionBean.denyLifeProposal()}" immediate="true" id="denyBtn" value="Deny"/>
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" action="dashboard" id="cancelBtn" immediate="true" value="Cancel"/>
+			<br/>
+			<br/>
+			<h:outputText rendered="#{AddNewLifeConfirmationActionBean.excessSISportMan}" style="color: red" value="#{AddNewLifeConfirmationActionBean.sportManMessage}"/>
+		</h:form>
+		<p:dialog appendTo="@(body)" dynamic="true" modal="true" header="Life Proposal Details" height="550" hideEffect="explode" id="lifeProposalDetailsDialog" resizable="false" showEffect="explode" widgetVar="lifeProposalDetailsDialog" width="1200">
+			<h:form id="lifeProposalDetailsForm">
+				<ui:include src="/manage/life/lifeProposalInfoTemplate.xhtml">
+					<ui:param name="lifePolicySummary" value="#{AddNewLifeConfirmationActionBean.lifePolicySummary}" />
+					<ui:param name="isEndorse" value="#{AddNewLifeConfirmationActionBean.isEndorse}" />
+					<ui:param name="lifePolicyList" value="#{AddNewLifeConfirmationActionBean.lifePolicyList}" />
+					<ui:param name="lifePolicyHistoryList" value="#{AddNewLifeConfirmationActionBean.lifePolicyHistoryList}" />
+					<ui:param name="endorseInfo" value="#{AddNewLifeConfirmationActionBean.lifeEndorseInfo}" />
+					<ui:param name="lifeProposal" value="#{AddNewLifeConfirmationActionBean.lifeProposal}"/>
+					<ui:param name="bancaassuranceProposal" value="#{AddNewLifeConfirmationActionBean.bancaassuranceProposal}" />
+					<ui:param name="keyfactor" value="#{AddNewLifeConfirmationActionBean.keyFactor}" />
+					<ui:param name="isSimpleLife" value="#{AddNewLifeConfirmationActionBean.isSimpleLife}" />
+					<ui:param name="showPolicy" value="#{false}"/>
+					<ui:param name="workFlowList" value="#{AddNewLifeConfirmationActionBean.workFlowList}"/>
+				</ui:include>
+			</h:form>
+		</p:dialog>
+		<!--  Responsible Person Dialog -->
+	</ui:define>
+</ui:composition>

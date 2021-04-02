@@ -1,0 +1,332 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Product Group Management"/>
+	<ui:param name="headerRendered" value="true"/>
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<h:form id="pGroupEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true"/> 
+			<div style="padding-left: 15px;">
+				<h:outputText rendered="#{ManageProductGroupActionBean.createNew}" style="padding-top:-10px;" styleClass="table-title" value="#{label['MANAGE_PRODUCTGROUP_ADDNEW_LABEL']}" />
+				<h:outputText rendered="#{!ManageProductGroupActionBean.createNew}" style="padding-top:-10px;" styleClass="table-title" value="#{label['MANAGE_PRODUCTGROUP_EDIT_LABEL']}" />
+				<table>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 150px;">
+										<p:message for="name" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 150px;">
+										<h:outputText style="color:red;" value="*" />
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_PRODUCTGROUP_NAME_LABEL']}" />
+									</td>
+									<td>
+										<p:inputText id="name" required="true" style="width:250px;" value="#{ManageProductGroupActionBean.productGroup.name}">
+											<f:validateLength maximum="50" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 150px;">
+										<p:message for="policyNoPrefix" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 150px;">
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_PRODUCTGROUP_POLICYNOPREFIX_LABEL']}" />
+									</td>
+									<td>
+										<p:inputText id="policyNoPrefix" style="width:250px;" value="#{ManageProductGroupActionBean.productGroup.policyNoPrefix}">
+											<f:validateLength maximum="50" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 150px;">
+										<p:message for="proposalNoPrefix" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 150px;">
+										<h:outputText styleClass="input-label" value="Proposal No Prefix" />
+									</td>
+									<td>
+										<p:inputText id="proposalNoPrefix" style="width:250px;" value="#{ManageProductGroupActionBean.productGroup.proposalNoPrefix}">
+											<f:validateLength maximum="50" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 150px;">
+										<p:message for="undersession13" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 150px;">
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_PRODUCTGROUP_UDSESSION13_LABEL']}" />
+									</td>
+									<td>
+										<p:inputText id="undersession13" style="width:250px;" value="#{ManageProductGroupActionBean.productGroup.underSession13}">
+											<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 150px;">
+										<p:message for="undersession25" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 150px;">
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_PRODUCTGROUP_UDSESSION25_LABEL']}" />
+									</td>
+									<td>
+										<p:inputText id="undersession25" style="width:250px;" value="#{ManageProductGroupActionBean.productGroup.underSession25}">
+											<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+										</p:inputText>
+									</td>
+								</tr>
+							</table>
+						</td>
+						<td valign="top">
+							<table>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 150px;">
+										<p:message for="maxSumInsured" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 150px;">
+										<h:outputText style="color:red;" value="*" />
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_PRODUCTGROUP_MAXSUMINSURED_LABEL']}" />
+									</td>
+									<td>
+										<p:inputText id="maxSumInsured" style="width:250px;" required="true"   onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"  value="#{ManageProductGroupActionBean.productGroup.maxSumInsured}">
+											<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 150px;">
+										<p:message for="accountCode" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 150px;">
+										<h:outputText style="color:red;" value="*" />
+										<h:outputText styleClass="input-label" value="Account Code" />
+									</td>
+									<td>
+										<p:inputText id="accountCode" required="true" style="width:250px;" value="#{ManageProductGroupActionBean.productGroup.accountCode}" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 150px;">
+										<p:message for="description" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 150px;" valign="top">
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_PRODUCTGROUP_NAME_DESC']}" />
+									</td>
+									<td>
+										<p:inputTextarea id="description" style="width:250px;" value="#{ManageProductGroupActionBean.productGroup.description}">
+											<f:validateLength maximum="300" />
+										</p:inputTextarea>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 150px;" valign="top">
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_PRODUCTGROUP_GROUPTYPE_LABEL']}" />
+									</td>
+									<td>
+										<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="idType" style="height:24px;width: 258px;"
+											value="#{ManageProductGroupActionBean.productGroup.groupType}">
+											<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{ManageProductGroupActionBean.productGroupTypeSelectItemList}" var="type" />
+										</p:selectOneMenu>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<p:outputPanel id="ncbSettingPanel">
+								<fieldset style="width: 70%;">
+									<legend>
+										<h:outputText value="NCB Percentage Setting" />
+									</legend>
+									<table width="100%">
+										<tr>
+											<td>
+												<h:outputText styleClass="input-label" value="Insured Year" />
+											</td>
+											<td>
+												<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="idNcbYearType" style="height:24px;width: 258px;"
+													value="#{ManageProductGroupActionBean.ncbRate.ncbYear}">
+													<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{ManageProductGroupActionBean.ncbYearSelectItemList}" var="type" />
+												</p:selectOneMenu>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText styleClass="input-label" value="No Claim Bonus Percentage" />
+											</td>
+											<td>
+												<p:inputText id="ncbPercentage" style="width:250px;" value="#{ManageProductGroupActionBean.ncbRate.ncbPercentage}" />
+												<p:spacer width="20" />
+												<p:commandButton action="#{ManageProductGroupActionBean.addNewNcbRate}" id="addNcbBtn" rendered="#{ManageProductGroupActionBean.crateNewNcbRate}"
+													update=":pGroupEntryForm:ncbSettingPanel" value="#{label['COMMON_ADDNEW_BTN']}" />
+												<p:commandButton action="#{ManageProductGroupActionBean.updateNcbRate}" id="editNcbBtn" rendered="#{!ManageProductGroupActionBean.crateNewNcbRate}"
+													update=":pGroupEntryForm:ncbSettingPanel" value="#{label['COMMON_UPDATE_BTN']}" />
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<p:outputPanel id="ncbRateTablePanel">
+													<p:dataTable id="ncbRateTable" rowIndexVar="index" style="width:100%;" value="#{ManageProductGroupActionBean.productGroup.ncbRates}" var="ncbRate">
+														<p:column>
+															<h:outputText value="#{index + 1}" />
+														</p:column>
+														<p:column headerText="Insured Year">
+															<h:outputText value="#{ncbRate.ncbYear.label}" />
+														</p:column>
+														<p:column headerText="NCB Percentage">
+															<h:outputText value="#{ncbRate.ncbPercentage}">
+																<f:convertNumber pattern="#{ApplicationSetting.percentFormat}" />
+															</h:outputText>
+														</p:column>
+														<p:column style="width:50px;">
+															<p:commandLink action="#{ManageProductGroupActionBean.prepareUpdateNcbRate(ncbRate)}" update=":pGroupEntryForm:ncbSettingPanel">
+																<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+															</p:commandLink>
+														</p:column>
+														<p:column style="width:50px;">
+															<p:commandLink action="#{ManageProductGroupActionBean.deleteNcbRate(ncbRate)}" update=":pGroupEntryForm:ncbSettingPanel">
+																<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+															</p:commandLink>
+														</p:column>
+													</p:dataTable>
+												</p:outputPanel>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</p:outputPanel>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p:commandButton action="#{ManageProductGroupActionBean.addNewProductGroup}" id="addBtn" rendered="#{ManageProductGroupActionBean.createNew}" style="width: 80px;"
+								update="pGroupEntryForm :pGroupTableForm" value="#{label['COMMON_ADDNEW_BTN']}" />
+							<p:commandButton action="#{ManageProductGroupActionBean.updateProductGroup}" id="editBtn" rendered="#{!ManageProductGroupActionBean.createNew}"
+								update="pGroupEntryForm :pGroupTableForm" value="#{label['COMMON_UPDATE_BTN']}" />
+						</td>
+					</tr>
+				</table>
+			</div>
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			<br />
+			<p:separator style="height:5px;" />
+		</h:form>
+		<h:form id="pGroupTableForm">
+			<h:commandLink action="#{ManageProductGroupActionBean.createNewProductGroup}">
+				<h:panelGrid columns="2">
+					<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+					<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+				</h:panelGrid>
+			</h:commandLink>
+			<p:outputPanel id="listPanel">
+				<p:dataTable id="pGroupTable" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+					rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageProductGroupActionBean.productGroupList}" var="pGroup" widgetVar="pGroupTable">
+					<p:column headerText="#{label['MANAGE_PRODUCTGROUP_NAME_LABEL']}">
+						<h:outputText value="#{pGroup.name}" />
+					</p:column>
+					<p:column headerText="Proposal No Prefix">
+						<h:outputText value="#{pGroup.proposalNoPrefix}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_PRODUCTGROUP_POLICYNOPREFIX_LABEL']}">
+						<h:outputText value="#{pGroup.policyNoPrefix}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_PRODUCTGROUP_UDSESSION13_LABEL']}">
+						<h:outputText value="#{pGroup.underSession13}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="#{label['MANAGE_PRODUCTGROUP_UDSESSION25_LABEL']}">
+						<h:outputText value="#{pGroup.underSession25}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="#{label['MANAGE_PRODUCTGROUP_GROUPTYPE_LABEL']}">
+						<h:outputText value="#{pGroup.groupType}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_PRODUCTGROUP_NAME_DESC']}">
+						<h:outputText value="#{pGroup.description}" />
+					</p:column>
+					<p:column style="width:50px;" headerText="Edit">
+						<p:commandLink action="#{ManageProductGroupActionBean.prepareUpdateProductGroup(pGroup)}" update=":pGroupEntryForm">
+							<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width:50px;" headerText="Delete">
+						<p:commandLink id="deleteGroupLink" oncomplete="PF('confirmationDialog').show()">
+							<f:setPropertyActionListener target="#{ManageProductGroupActionBean.productGroup}" value="#{pGroup}" />
+							<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<h:form id="confiationForm">
+			<p:dialog header="#{label['MANAGE_PRODUCTGROUP_DELETE_CONFIRM']}" height="100" hideEffect="explode" id="confirmationDialog" resizable="false" showEffect="explode"
+				widgetVar="confirmationDialog" width="250">
+				<h:panelGroup id="confirmationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" />
+							</td>
+						</tr>
+					</table>
+					<br />
+					<p:commandButton action="#{ManageProductGroupActionBean.deleteProductGroup}" immediate="true" oncomplete="PF('confirmationDialog').hide();"
+						update=":pGroupEntryForm :pGroupTableForm" value="#{label['COMMON_YES_BTN']}" />
+					<p:commandButton immediate="true" oncomplete="PF('confirmationDialog').hide()" value="#{label['COMMON_NO_BTN']}" />
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,87 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<p:tab id="proposalInfo" title="Proposal Info">
+			<p:panel header="Proposal Info" style="min-height:280px;">
+				<table>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td width="120px;">
+										<h:outputText value="#{label['ADDNEWLIFEOPOSAL_PROPOSALNO_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{travelProposal.proposalNo}" style="width:250px;" id="detailsProposalNo" readonly="true" />
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<table border="0">
+					<tr>
+						<td valign="top">
+							<h:panelGroup>
+								<fieldset>
+									<legend>
+										<h:outputText value="Express Detail" styleClass="input-label" />
+									</legend>
+									<table border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+										<tr>
+											<td align="center" style="height: 25px; width: 50px;">
+												<font style="font-size: 11px; font-weight: bold;">No.</font>
+											</td>
+											<td align="center" style="width: 200px;">
+												<font style="font-size: 11px; font-weight: bold;">Name</font>
+											</td>
+											<td align="center" style="width: 120px;">
+												<font style="font-size: 11px; font-weight: bold;">NoOfPassenger</font>
+											</td>
+											<td align="center" style="width: 100px;">
+												<font style="font-size: 11px; font-weight: bold;">NoOfUnit</font>
+											</td>
+											<td align="center" style="width: 160px;">
+												<font style="font-size: 11px; font-weight: bold;">NetPremium</font>
+											</td>
+										</tr>
+										<ui:repeat value="#{travelProposal.expressList}" var="travelExpress" varStatus="loop">
+											<tr>
+												<td align="center">  
+													<h:outputText value="#{loop.index + 1}. " />
+												</td>
+												<td align="center">
+													<h:outputText value="#{travelExpress.express.name} " />
+												</td>
+												<td align="center">
+													<h:outputText value="#{travelExpress.noOfPassenger}" />
+												</td >
+												<td align="center">
+													<h:outputText value="#{travelExpress.noOfUnit} " />
+												</td>
+												<td align="center">
+													<h:outputText value="#{travelExpress.netPremium} " >
+														<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+													</h:outputText>
+												</td>
+											</tr>
+										</ui:repeat>
+										<tr>
+											<td colspan="4" style="height: 25px;" align="center">
+												<b>Total NetPremium</b>
+											</td>
+											<td align="center">
+												<h:outputText value="#{travelProposal.totalNetPremium}">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</h:panelGroup>
+						</td>
+					</tr>
+				</table>
+			</p:panel>
+		</p:tab>
+</ui:composition>

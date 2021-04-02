@@ -1,0 +1,176 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Short Term Endowment Life Proposal Enquiry" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="farmerEquiryForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="startDate" value="Start Date" />
+						<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{ShortEndowLifeProposalEnquiryActionBean.criteria.startDate}" />
+						<h:outputText value="Customer" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectCustomerPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectCustomerPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ShortEndowLifeProposalEnquiryActionBean.selectCustomer()}" id="selectCustomerDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{ShortEndowLifeProposalEnquiryActionBean.returnCustomer}" update="customer" />
+									</p:commandButton>
+									<p:inputText id="customer" readonly="true"
+										value="#{ShortEndowLifeProposalEnquiryActionBean.criteria.customer == null ? '' : ShortEndowLifeProposalEnquiryActionBean.criteria.customer.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ShortEndowLifeProposalEnquiryActionBean.criteria.setCustomer(null)}" process="@this"
+										update="customer" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="endDate" value="End Date" />
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{ShortEndowLifeProposalEnquiryActionBean.criteria.endDate}" />
+						<h:outputText value="Organization" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectOrganizationPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectOrganizationPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ShortEndowLifeProposalEnquiryActionBean.selectOrganization()}"
+										id="selectOrganizationDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{ShortEndowLifeProposalEnquiryActionBean.returnOrganization}" update="organization" />
+									</p:commandButton>
+									<p:inputText id="organization" readonly="true"
+										value="#{ShortEndowLifeProposalEnquiryActionBean.criteria.organization == null ? '' : ShortEndowLifeProposalEnquiryActionBean.criteria.organization.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ShortEndowLifeProposalEnquiryActionBean.criteria.setOrganization(null)}" process="@this"
+										update="organization" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectBranchPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectBranchPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" disabled="#{!ShortEndowLifeProposalEnquiryActionBean.accessBranches}" icon="fa fa-search"
+										actionListener="#{ShortEndowLifeProposalEnquiryActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+										<p:ajax event="dialogReturn" disabled="#{!ShortEndowLifeProposalEnquiryActionBean.accessBranches}" listener="#{ShortEndowLifeProposalEnquiryActionBean.returnBranch}"
+											update="branch" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true"
+										value="#{ShortEndowLifeProposalEnquiryActionBean.criteria.branch == null ? '' : ShortEndowLifeProposalEnquiryActionBean.criteria.branch.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{!ShortEndowLifeProposalEnquiryActionBean.accessBranches}" icon="fa fa-times" action="#{ShortEndowLifeProposalEnquiryActionBean.criteria.setOrganization(null)}" process="@this"
+										update="branch" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText for="proposalNo" value="Proposal No." />
+						<p:inputText id="proposalNo" value="#{ShortEndowLifeProposalEnquiryActionBean.criteria.number}" />
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton style="width: 80px;" id="searchBtn" action="#{ShortEndowLifeProposalEnquiryActionBean.findShortEndowLifeProposalList}" update=":farmerEquiryForm"
+					value="Search" />
+				<p:commandButton style="width: 80px;" action="#{ShortEndowLifeProposalEnquiryActionBean.resetCriteria}" update=":farmerEquiryForm" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="farmerProposalTable" paginator="true" rowIndexVar="indexVar"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+				rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ShortEndowLifeProposalEnquiryActionBean.shortEndowLifeProposalList}" var="shortEndowLifeProposal">
+				<p:column headerText="No." style="width:3%;" styleClass="fixed-size">
+					<h:outputText value="#{indexVar + 1}." style="float: right;" />
+				</p:column>
+				<p:column headerText="Proposal No." width="11%" styleClass="fixed-size">
+					<h:outputText value="#{shortEndowLifeProposal.proposalNo}" />
+				</p:column>
+				<p:column headerText="Sale Person" width="10%">
+					<h:outputText value="#{shortEndowLifeProposal.salePersonName}" />
+				</p:column>
+				<p:column headerText="Customer Name" width="9%">
+					<h:outputText value="#{shortEndowLifeProposal.customerName}" />
+				</p:column>
+				<p:column headerText="Branch" width="9%">
+					<h:outputText value="#{shortEndowLifeProposal.branch}" />
+				</p:column>
+				<p:column headerText="Total Premium" width="9%" styleClass="fixed-size">
+					<h:outputText value="#{shortEndowLifeProposal.premium}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Total SumInsured" width="10%" styleClass="fixed-size">
+					<h:outputText value="#{shortEndowLifeProposal.sumInsured}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Payment Type" width="8%" styleClass="fixed-size">
+					<h:outputText value="#{shortEndowLifeProposal.paymentType}" />
+				</p:column>
+				<p:column headerText="Submitted Date" width="11%" styleClass="fixed-size">
+					<h:outputText pattern="#{ApplicationSetting.dateFormat}" value="#{shortEndowLifeProposal.submittedDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width: 5%; text-align: center;" headerText="Detail" styleClass="fixed-size">
+					<p:commandLink action="#{ShortEndowLifeProposalEnquiryActionBean.showDetailLifeProposal(shortEndowLifeProposal)}" id="detailsProposal" immediate="true"
+						oncomplete="PF('farmerProposalDetailsDialog').show()" update=":farmerProposalDetailsForm:detailPannel">
+						<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="width: 4%; text-align: center;" headerText="Edit" styleClass="fixed-size">
+					<p:commandLink id="editLink" action="#{ShortEndowLifeProposalEnquiryActionBean.editLifeProposal(shortEndowLifeProposal)}" update=":informationForm">
+						<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column width="11%" headerText="Print">
+					<p:splitButton value="Document" icon="ui-icon-disk">
+						<p:menuitem value="Sanction" actionListener="#{ShortEndowLifeProposalEnquiryActionBean.generateSanction(shortEndowLifeProposal)}" immediate="true"
+							update=":informationForm :pdfForm" icon="ui-icon-print" />
+						<p:menuitem value="Accepted Letter" actionListener="#{ShortEndowLifeProposalEnquiryActionBean.printAcceptedLetter(shortEndowLifeProposal)}" immediate="true"
+							update=":informationForm :pdfForm" icon="ui-icon-print" />
+						<p:menuitem value="Cash Receipt" actionListener="#{ShortEndowLifeProposalEnquiryActionBean.generateCashReceipt(shortEndowLifeProposal)}" immediate="true"
+							update=":informationForm :pdfForm" icon="ui-icon-print" />
+						<p:menuitem value="Policy Issue" actionListener="#{ShortEndowLifeProposalEnquiryActionBean.printIssuePolicy(shortEndowLifeProposal)}" immediate="true"
+							update=":informationForm :pdfForm" icon="ui-icon-print" />
+					</p:splitButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<p:dialog appendTo="@(body)" dynamic="true" header="Farmer Proposal Details" height="550" hideEffect="explode" id="farmerProposalDetailsDialog" resizable="false"
+			showEffect="explode" widgetVar="farmerProposalDetailsDialog" width="1200">
+			<h:form id="farmerProposalDetailsForm">
+				<p:outputPanel id="detailPannel">
+					<ui:include src="/manage/life/lifeProposalInfoTemplate.xhtml">
+						<ui:param name="lifeProposal" value="#{ShortEndowLifeProposalEnquiryActionBean.lifeProposal}" />
+						<ui:param name="workFlowList" value="#{ShortEndowLifeProposalEnquiryActionBean.workFlowList}" />
+						<ui:param name="showPolicy" value="#{false}" />
+					</ui:include>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+		<p:dialog appendTo="@(body)" dynamic="true" modal="true" height="550" id="pdfDialog" resizable="false" widgetVar="pdfDialog" width="1024">
+			<p:ajax event="close" listener="#{ShortEndowLifeProposalEnquiryActionBean.handleCloseEvent}" />
+			<h:form enctype="multipart/form-data" id="pdfForm">
+				<p:media height="550" id="pdfPlayer" player="pdf" value="#{ShortEndowLifeProposalEnquiryActionBean.reportStream}" width="1000" cache="false" />
+			</h:form>
+		</p:dialog>
+		<h:form id="informationForm">
+			<p:dialog header="Proposal Information" height="100" hideEffect="explode" id="informationDialog" resizable="false" showEffect="explode" widgetVar="informationDialog" width="250">
+				<h:panelGroup id="informationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="#{ShortEndowLifeProposalEnquiryActionBean.message}" />
+							</td>
+						</tr>
+					</table>
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

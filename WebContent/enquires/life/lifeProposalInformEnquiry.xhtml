@@ -1,0 +1,134 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:p="http://primefaces.org/ui" xmlns:cyc="http://www.cycdemo.com/java" template="/common/commonLayout.xhtml">
+   <ui:param name="leftMenu" value="/common/enquiresLeft.xhtml" />
+   <ui:param name="rendered" value="true" />
+   <ui:define name="content">
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <table width="100%">
+         <tr>
+            <td colspan="6">
+               <h:outputText value="Life Proposal Enquiry" styleClass="table-title" />
+               <p:separator />
+            </td>
+         </tr>
+         <tr>
+            <td>
+               <h:form id="informLifeProposalForm">
+                  <p:fieldset legend="Life Approval Print">
+                     <table>
+                        <tr>
+                           <td style="width: 130px;">
+                              <h:outputText value="Proposal No" styleClass="input-label" />
+                           </td>
+                           <td align="left">
+                              <h:panelGrid columns="2">
+                                 <p:inputText value="#{LProposalInformEnquiryActionBean.lifeProposal.proposalNo}" style="width:250px; margin-left:-2px;" id="proposalNo" readonly="true" />
+                                 <p:commandLink id="detailsProposal" oncomplete="PF('lifeProposalDetailsDialog').show()" immediate="true">
+                                    <h:graphicImage url="#{ApplicationSetting.detailIcon}" styleClass="#{ApplicationSetting.detailStyleClass}" />
+                                 </p:commandLink>
+                              </h:panelGrid>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <h:outputText value="" />
+                           </td>
+                           <td>
+                              <p:message for="totalPremium" />
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <h:outputText value="Total Premium" styleClass="input-label" />
+                           </td>
+                           <td>
+                              <p:inputText value="#{LProposalInformEnquiryActionBean.acceptedInfo.totalPremium}" style="width:250px; text-align: right;" id="totalPremium" readonly="true">
+                                 <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+                              </p:inputText>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <h:outputText value="" />
+                           </td>
+                           <td>
+                              <p:message for="amount" />
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <h:outputText value="Discount Percent" styleClass="input-label" />
+                           </td>
+                           <td>
+                              <p:inputText value="#{LProposalInformEnquiryActionBean.acceptedInfo.discountPercent}" style="width:250px; text-align: right;" id="amount" readonly="true">
+                                 <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+                                 <f:validateDoubleRange maximum="100" />
+                              </p:inputText>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <h:outputText value="" />
+                           </td>
+                           <td>
+                              <p:message for="additionalCharges" />
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <h:outputText value="Service Charges" styleClass="input-label" />
+                           </td>
+                           <td>
+                              <p:inputText value="#{LProposalInformEnquiryActionBean.acceptedInfo.servicesCharges}" style="width:250px; text-align: right;" id="additionalCharges" readonly="true">
+                                 <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+                              </p:inputText>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <h:outputText value="" />
+                           </td>
+                           <td>
+                              <p:message for="stampFees" />
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <h:outputText value="Policy Stamp Fees" styleClass="input-label" />
+                           </td>
+                           <td>
+                              <p:inputText value="#{LProposalInformEnquiryActionBean.acceptedInfo.stampFees}" style="width:250px; text-align: right;" id="stampFees" readonly="true">
+                                 <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+                              </p:inputText>
+                           </td>
+                        </tr>
+                     </table>
+                  </p:fieldset>
+                  <p:commandButton style="width: 80px;" id="cancelBtn" value="Back" action="lifeProposalEnquiry" immediate="true" />
+                  <p:spacer width="5" />
+                  <p:commandButton style="width: 80px;" id="printApprovePreviewBtn" value="Print" oncomplete="PF('acceptedLetterDialog').show()" action="#{LProposalInformEnquiryActionBean.generateReport()}"
+                     update=":issuePolicyPrintForm:printPannel" icon="ui-icon-print" />
+               </h:form>
+            </td>
+         </tr>
+      </table>
+      <h:form id="issuePolicyPrintForm" enctype="multipart/form-data">
+         <p:dialog widgetVar="acceptedLetterDialog" resizable="false" id="acceptedLetterDialog" width="1050" height="500" appendTo="@(body)" dynamic="true">
+            <p:ajax event="close" update=":issuePolicyPrintForm :informLifeProposalForm" listener="#{LProposalInformEnquiryActionBean.handleCloseLifeAcceptedLetter}" />
+            <p:outputPanel id="printPannel">
+               <p:media id="pdfPlayer" value="#{LProposalInformEnquiryActionBean.reportStream}" player="pdf" width="1050" height="500"  cache="false"/>
+            </p:outputPanel>
+         </p:dialog>
+      </h:form>
+      <h:form id="lifeProposalDetailsForm">
+         <p:dialog header="Life Proposal Details" widgetVar="lifeProposalDetailsDialog" resizable="false" width="1050" height="500" showEffect="explode" hideEffect="explode"
+            id="lifeProposalDetailsDialog" appendTo="@(body)" dynamic="true">
+            <ui:include src="/manage/life/lifeProposalInfoTemplate.xhtml">
+               <ui:param name="lifeProposal" value="#{LProposalInformEnquiryActionBean.lifeProposal}" />
+               <ui:param name="showPolicy" value="#{false}" />
+               <ui:param name="workFlowList" value="#{LProposalInformEnquiryActionBean.workFlowList}" />
+            </ui:include>
+         </p:dialog>
+      </h:form>
+   </ui:define>
+</ui:composition>

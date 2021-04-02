@@ -1,0 +1,218 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['MANAGE_HOSPITAL_TITLE']}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="hospitalEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" />
+			<div style="padding-left: 15px;">
+				<h:outputText value="#{label['MANAGE_HOSPITAL_ADDNEW_LABEL']}" styleClass="table-title" style="padding-top:-10px;" rendered="#{ManageHospitalActionBean.createNew}" />
+				<h:outputText value="#{label['MANAGE_HOSPITAL_EDIT_LABEL']}" styleClass="table-title" style="padding-top:-10px;" rendered="#{!ManageHospitalActionBean.createNew}" />
+				<table>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 115px;">
+										<p:message for="name" display="text"/>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;">
+										<h:outputText value="*" style="color:red;" />
+										<h:outputText value="#{label['MANAGE_HOSPITAL_NAME_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{ManageHospitalActionBean.hospital.name}" style="width:250px;" id="name" required="true">
+											<f:validateLength maximum="50" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 115px;">
+										<p:message for="phone" display="text"/>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;">
+										<h:outputText value="*" style="color:red;" />
+										<h:outputText value="#{label['MANAGE_HOSPITAL_PHONE_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText id="phone" style="width:250px;" required="true" value="#{ManageHospitalActionBean.hospital.contentInfo.phone}" validatorMessage="Character does not allow and comma use when u adding one more." >
+											<f:validateLength maximum="50" />
+											<f:validateRegex pattern="\b\d[\d,-]*\b" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 115px;">
+										<p:message for="address" display="text"/>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;">
+										<h:outputText style="color:red;" value="#{label['STAR_SIGN_LABEL']}" />
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_HOSPITAL_ADDRESS_LABEL']}" />
+									</td>
+									<td>
+										<p:inputText id="address" required="true" style="width:250px;" value="#{ManageHospitalActionBean.hospital.address.permanentAddress}">
+											<f:validateLength maximum="200" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 115px;">
+										<p:message for="township" display="text"/>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;">
+										<h:outputText style="color:red;" value="#{label['STAR_SIGN_LABEL']}" />
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_COMPANY_TOWNSHIP_LABEL']}" />
+									</td>
+									<td>
+										<h:panelGrid columns="3" id="townshipPanelGroup">
+											<p:inputText rendered="true" id="township" readonly="#{ManageHospitalActionBean.hospital.address.township == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												required="true" style="width:250px;margin-left:-4px;"
+												value="#{ManageHospitalActionBean.hospital.address.township == null ? '' : ManageHospitalActionBean.hospital.address.township.name}" />
+											<p:commandLink actionListener="#{ManageHospitalActionBean.selectTownship()}" id="selectTownshipDialogLink" immediate="true">
+												<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+												<p:ajax event="dialogReturn" listener="#{ManageHospitalActionBean.returnTownship}" update="townshipPanelGroup" />
+											</p:commandLink>
+										</h:panelGrid>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 115px;">
+										<p:message for="fax" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;">
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_HOSPITAL_FAX_LABEL']}" />
+									</td>
+									<td>
+										<p:inputText id="fax" style="width:250px;" value="#{ManageHospitalActionBean.hospital.contentInfo.fax}" validatorMessage="Character does not allow and comma use when u adding one more." >
+											<f:validateLength maximum="200" />
+											<f:validateRegex pattern="(\b\d[\d,-]*\b)?" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 115px;">
+										<p:message for="description" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;" valign="top">
+										<h:outputText value="#{label['MANAGE_HOSPITAL_DESCRIPTION_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputTextarea value="#{ManageHospitalActionBean.hospital.description}" style="width:250px;" id="description" rows="5" autoResize="true">
+											<f:validateLength maximum="300" />
+										</p:inputTextarea>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p:commandButton id="addBtn" value="#{label['COMMON_ADDNEW_BTN']}" action="#{ManageHospitalActionBean.addNewHospital}" rendered="#{ManageHospitalActionBean.createNew}"
+								update=":hospitalEntryForm :hospitalTableForm:hospitalTable" style="width: 80px;" oncomplete="PF('hospitalTable').filter();" />
+							<p:commandButton id="editBtn" value="#{label['COMMON_UPDATE_BTN']}" action="#{ManageHospitalActionBean.updateHospital}" rendered="#{!ManageHospitalActionBean.createNew}"
+								update=":hospitalEntryForm :hospitalTableForm:hospitalTable" oncomplete="PF('hospitalTable').filter();" />
+						</td>
+					</tr>
+				</table>
+			</div>
+			<h:outputText value="#{label['COMMON_MSG_MANDATORY_LABEL']}" style="color:red;" />
+			<br />
+			<p:separator style="height:5px;" />
+		</h:form>
+		<h:form id="hospitalTableForm">
+			<h:panelGrid columns="1">
+			<h:commandLink action="#{ManageHospitalActionBean.createNewHospital}">
+				<h:panelGrid columns="2">
+					<h:graphicImage value="#{ApplicationSetting.addIcon}" styleClass="#{ApplicationSetting.addStyleClass}" />
+					<h:outputText value="#{label['COMMON_ADDNEW_LINK']}" styleClass="command-link" />
+				</h:panelGrid>
+			</h:commandLink>
+			</h:panelGrid>
+			<p:outputPanel id="listPanel">
+				<table>
+					<tr>
+						<td>
+							<h:outputText value="Name" />
+						</td>
+						<td>
+							<p:inputText id="townshipCriteria" style="height:20px;width: 200px;" value="#{ManageHospitalActionBean.criteria}" />
+						</td>
+						<td>
+							<p:commandButton action="#{ManageHospitalActionBean.search}" id="searchButtonBtn" update="hospitalTableForm:hospitalTable" value="Search"  oncomplete="PF('hospitalTable').filter();" />
+						</td>
+						<td>
+							<p:commandButton action="#{ManageHospitalActionBean.reset}" id="resetButtonBtn" update=" :hospitalEntryForm :hospitalTableForm" value="Reset" />
+						</td>
+					</tr>
+				</table>
+				<p:dataTable var="hospital" value="#{ManageHospitalActionBean.hospitalList}" id="hospitalTable" paginator="true" rows="10" style="width:100%;" widgetVar="hospitalTable"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10, 15"
+					rowKey="index">
+					<p:column headerText="#{label['MANAGE_HOSPITAL_NAME_LABEL']}" filterMatchMode="contains" filterBy="#{hospital.name}">
+						<h:outputText value="#{hospital.name}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_HOSPITAL_PHONE_LABEL']}" filterMatchMode="contains" filterBy="#{hospital.name}">
+						<h:outputText value="#{hospital.contentInfo.phone}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_HOSPITAL_ADDRESS_LABEL']}" filterMatchMode="contains" filterBy="#{hospital.name}">
+						<h:outputText value="#{hospital.address.permanentAddress}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_COMPANY_TOWNSHIP_LABEL']}" filterMatchMode="contains" filterBy="#{hospital.name}">
+						<h:outputText value="#{hospital.address.township.name}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_HOSPITAL_DESCRIPTION_LABEL']}">
+						<h:outputText value="#{hospital.description}" />
+					</p:column>
+					<p:column style="width:50px;">
+						<p:commandLink action="#{ManageHospitalActionBean.prepareUpdateHospital(hospital)}" update=":hospitalEntryForm">
+							<p:graphicImage value="#{ApplicationSetting.editIcon}" styleClass="#{ApplicationSetting.editStyleClass}" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width:50px;">
+						<p:commandLink  id="deleteGroupLink" oncomplete="PF('hospitalTable').filter();"  action="#{ManageHospitalActionBean.deleteHospital(hospital)}" update=":hospitalEntryForm" >
+						    <p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+							<p:graphicImage value="#{ApplicationSetting.deleteIcon}" styleClass="#{ApplicationSetting.deleteStyleClass}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<!-- Confirmation Dialog -->
+	  <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		 	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check"/>
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+	  </p:confirmDialog> 
+	</ui:define>
+</ui:composition>

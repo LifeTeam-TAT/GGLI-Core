@@ -1,0 +1,83 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Authority Setting for #{AuthorityConfigActionBean.user.name}"/>
+	<ui:param name="headerRendered" value="true"/>
+	<ui:define name="content">
+		<h:form id="authorityConfigForm">
+			<p:messages globalOnly="true" id="messages" showDetail="true" />
+			<p:panel>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid styleClass="ui-panelgrid-blank ui-fluid">
+							
+						<p:fieldset legend="Task Permission" style="min-height: 250px;">
+							<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel/>
+								<p:message for="insuranceType" display="text"/>
+								<h:outputText styleClass="input-label mandatory" value="Insurance Type"/>
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuranceType" required="true" value="#{AuthorityConfigActionBean.workFlowType}">
+									<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{AuthorityConfigActionBean.workFlowTypes}" var="type" />
+								</p:selectOneMenu>
+								
+							</p:panelGrid>
+							
+						</p:fieldset>
+					</p:panelGrid>
+					<p:panelGrid columns="1" columnClasses="ui-grid-col-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							
+							<p:fieldset legend="Workflow Permission" style="min-height: 250px;">
+							
+								<p:message for="permissson" display="text"/>
+								<p:pickList id="permissson" itemLabel="#{permission}" required="true" itemValue="#{permission}" showCheckbox="true"
+									value="#{AuthorityConfigActionBean.permissionDualListModel}" var="permission">
+									<p:column style="width:80%">
+							            <p:outputLabel value="#{permission}"/>
+							        </p:column>
+								</p:pickList>
+								
+							</p:fieldset>
+							
+					</p:panelGrid>
+					
+				</p:panelGrid>
+			</p:panel>
+			<br/>
+			<p:panelGrid styleClass="ui-panelgrid-blank ui-fluid">
+				<p:commandButton action="#{AuthorityConfigActionBean.addAuthority}" style="width: 80px;" update="authorityConfigForm" value="Apply" />
+			</p:panelGrid>
+			
+			<p:separator style="height:2px" />
+			<p:dataTable id="authorityTable" paginator="true" paginatorPosition="bottom" rowIndexVar="index"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+				rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{AuthorityConfigActionBean.authorityDTOList}" var="authority">
+				<p:column headerText="No." width="5%">
+					<h:outputText value="#{index +1}" />
+				</p:column>
+				<p:column headerText="Insurance Type" width="20%">
+					<h:outputText value="#{authority.workFlowType.label}" />
+				</p:column>
+				<p:column headerText="Persmission">
+					<ui:repeat value="#{authority.permissionList}" var="permisson" varStatus="status">
+						<h:outputText value="#{permisson}" />
+						<h:outputText rendered="#{status.index + 1 == authority.permissionList.size() ? false : true}" value=", " />
+					</ui:repeat>
+				</p:column>
+				<p:column style="width:4%;" headerText="Edit">
+				   <p:commandButton styleClass="green-button" icon="fa fa-paint-brush" action="#{AuthorityConfigActionBean.prepareEditAuthority(authority)}" process="@this" update="@form"/>
+				</p:column>
+				<p:column style="width:4%;" headerText="Delete">
+				    <p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AuthorityConfigActionBean.deleteAuthority(authority)}" process="@this" update="@form">
+				    	<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+				    </p:commandButton>
+				</p:column>
+			</p:dataTable>
+			<br/>
+			<p:commandButton action="#{AuthorityConfigActionBean.applyAuthority()}" immediate="true" value="Apply" />
+			<p:commandButton action="manageUser" value="Cancel" immediate="true"/>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		 	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+				<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+		</p:confirmDialog>
+	</ui:define>
+</ui:composition>

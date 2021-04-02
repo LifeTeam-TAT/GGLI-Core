@@ -1,0 +1,868 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<!-- <script type="text/javascript">
+							jQuery(document).ready(function($) {
+								jQuery('[id$="_next"]').css('right', 1080);
+							});
+						</script> -->
+		<h:form enctype="multipart/form-data" id="snakeBiteEntryForm">
+			<table width="100%">
+				<tr>
+					<td>
+						<h:outputText styleClass="table-title" value="Add Snake Bite Policy" />
+					</td>
+					<td align="center" width="70%">
+						<div style="z-index: 100; position: fixed; margin-top: -30px; width: 800px;">
+							<p:messages globalOnly="true" id="messages" showDetail="true" />
+						</div>
+					</td>
+				</tr>
+			</table>
+			<p:separator style="height:5px" />
+			<div style="padding-left: 15px;">
+				<p:wizard flowListener="#{AddNewSnakeBiteActionBean.onFlowProcess}" style="margin-bottom: 10px;" widgetVar="wiz">
+					<p:tab id="proposalInfo" title="Policy Info">
+						<p:panel header="Policy Info" id="proposalInfoWizardPanel" style="min-height:270px;">
+							<table width="1100px">
+								<tr>
+									<td valign="top">
+										<table>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td>
+													<p:message for="snakeBitePolicyNo" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText styleClass="input-label" value="Policy No" />
+												</td>
+												<td>
+													<h:panelGrid columns="4" id="policyPanelGroup">
+														<p:inputText id="snakeBitePolicyNo" readonly="true" style="width:250px;margin-left:-4px;"
+															value="#{AddNewSnakeBiteActionBean.policyNo == null ? '' : AddNewSnakeBiteActionBean.policyNo}" />
+														<p:commandLink actionListener="#{AddNewSnakeBiteActionBean.selectSnakeBitePolicyNo()}" id="selectSnakeBtiePolicyDialogLink" immediate="true">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{AddNewSnakeBiteActionBean.returnSnakeBitePolicyNo}" update="snakeBiteEntryForm" />
+														</p:commandLink>
+														<p:commandLink action="#{AddNewSnakeBiteActionBean.reset()}" update="snakeBiteEntryForm:proposalInfoWizardPanel :beneficiaryInfoEntryForm">
+															<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+														</p:commandLink>
+													</h:panelGrid>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td>
+													<p:message for="customer" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="#{label['ADDNEWLIFEPROPOSAL_CUSTOMER_LABEL']}" />
+												</td>
+												<td>
+													<h:panelGrid columns="3" id="customerPanelGroup">
+														<p:inputText id="customer" readonly="true" style="width:250px;margin-left:-4px;"
+															value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.customer.fullName == null ? '' : AddNewSnakeBiteActionBean.snakeBitePolicy.customer.fullName}" />
+														<p:watermark for="customer" value="Select Customer" />
+														<p:commandLink actionListener="#{AddNewSnakeBiteActionBean.selectCustomer()}" id="selectCustomerDialogLink" immediate="true">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{AddNewSnakeBiteActionBean.returnCustomer}" update="customerPanelGroup" />
+														</p:commandLink>
+													</h:panelGrid>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td>
+													<p:message for="paymentType" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="#{label['ADDNEWLIFEROPOSAL_PAYMENTTYPE_LABEL']}" />
+												</td>
+												<td>
+													<h:panelGrid columns="3" id="paymentTypePanelGroup">
+														<p:inputText id="paymentType" readonly="true" style="width:250px;margin-left:-4px;"
+															value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.paymentType == null ? '' : AddNewSnakeBiteActionBean.snakeBitePolicy.paymentType.description}" />
+														<p:commandLink actionListener="#{AddNewSnakeBiteActionBean.selectPaymentType()}" id="selectPaymentTypeDialogLink" immediate="true">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{AddNewSnakeBiteActionBean.returnPaymentType}" update="paymentTypePanelGroup" />
+														</p:commandLink>
+													</h:panelGrid>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td>
+													<p:message for="branch" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="#{label['ADDNEWLIFEPROPOSAL_BRANCH_LABEL']}" />
+												</td>
+												<td>
+													<h:panelGrid columns="3" id="branchPanelGroup">
+														<p:inputText id="branch" readonly="true" style="width:250px;margin-left:-4px;"
+															value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.branch == null ? '' : AddNewSnakeBiteActionBean.snakeBitePolicy.branch.name}" />
+														<p:commandLink actionListener="#{AddNewSnakeBiteActionBean.selectBranch()}" id="selectBranchDialogLink" immediate="true">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{AddNewSnakeBiteActionBean.returnBranch}" update="branchPanelGroup" />
+														</p:commandLink>
+													</h:panelGrid>
+												</td>
+											</tr>
+											<tr>
+												<td style="padding-top: 8px;" valign="top">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="Sale Person" />
+												</td>
+												<td valign="top">
+													<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="saleUserType" style="width:130px;" value="#{AddNewSnakeBiteActionBean.userType}">
+														<f:selectItem itemLabel="Agent" itemValue="AGENT" />
+														<f:selectItem itemLabel="Saleman" itemValue="SALEMAN" />
+														<f:selectItem itemLabel="Referral" itemValue="REFERRAL" />
+														<p:ajax event="valueChange" listener="#{AddNewSnakeBiteActionBean.changeSaleEvent}" update=":snakeBiteEntryForm:salePersonPanelGroup" />
+													</p:selectOneRadio>
+													<br />
+													<p:message for="userType" />
+													<h:panelGrid columns="3" id="salePersonPanelGroup">
+														<p:inputText id="userType" readonly="true" style="width:250px;margin-left:-4px;" value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.salePersonName}" />
+														<p:watermark for="userType" value="Select Sale Person" />
+														<p:commandLink actionListener="#{AddNewSnakeBiteActionBean.selectAgent()}" id="selectAgentDialogLink" immediate="true"
+															rendered="#{AddNewSnakeBiteActionBean.userType eq 'AGENT'}">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{AddNewSnakeBiteActionBean.returnAgent}" update="salePersonPanelGroup" />
+														</p:commandLink>
+														<p:commandLink actionListener="#{AddNewSnakeBiteActionBean.selectSaleMan()}" id="selectSaleManDialogLink" immediate="true"
+															rendered="#{AddNewSnakeBiteActionBean.userType eq 'SALEMAN'}">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{AddNewSnakeBiteActionBean.returnSaleMan}" update="salePersonPanelGroup" />
+														</p:commandLink>
+														<p:commandLink actionListener="#{AddNewSnakeBiteActionBean.selectReferral()}" id="selectReferralDialogLink" immediate="true"
+															rendered="#{AddNewSnakeBiteActionBean.userType eq 'REFERRAL'}">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{AddNewSnakeBiteActionBean.returnReferral}" update="salePersonPanelGroup" />
+														</p:commandLink>
+													</h:panelGrid>
+												</td>
+											</tr>
+										</table>
+									</td>
+									<td valign="top">
+										<table align="top" cellspacing="4" width="100%">
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="bookNo" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="Book No" />
+												</td>
+												<td>
+													<p:inputText id="bookNo" style="width:250px;" value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.bookNo}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="poliyNo" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="Policy No" />
+												</td>
+												<td>
+													<p:inputText id="poliyNo" style="width:250px;" value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.snakeBitePolicyNo}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td>
+													<p:message for="sumInsuredInfo" />
+												</td>
+											</tr>
+											<tr>
+												<td valign="top">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="Sum Insured" />
+												</td>
+												<td>
+													<p:inputText id="sumInsuredInfo" style="width:250px;" value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.sumInsured}">
+														<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<!-- <td>
+													<p:message for="product"/>
+												</td> -->
+											</tr>
+											<tr>
+												<td style="width: 100px;" valign="top">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="Product" />
+												</td>
+												<td>
+													<p:selectOneMenu converter="omnifaces.SelectItemsConverter" disabled="true" id="product" style="height:24px;width: 280px;"
+														value="#{AddNewSnakeBiteActionBean.selectedProductId}">
+														<f:selectItems value="#{AddNewSnakeBiteActionBean.productSelectItems}" />
+														<p:ajax event="valueChange" />
+													</p:selectOneMenu>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 130px;">
+													<p:message for="submittedDate" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="Policy Start Date" />
+												</td>
+												<td>
+													<p:calendar id="submittedDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" size="30" style="width:250px;" timeZone="#{ApplicationSetting.timeZone}"
+														value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.policyStartDate}" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td>
+													<p:message for="periodOfInsurance" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="Period of Insurance (Years)" />
+												</td>
+												<td valign="top">
+													<h:panelGrid columns="2">
+														<p:inputText id="periodOfInsurance" style="width:250px;" value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.periodOfYear}" />
+													</h:panelGrid>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText style="color: red;" value="*" />
+													<h:outputText value="Sale Point" />
+												</td>
+												<td>
+													<h:panelGrid columns="3" id="salePontPanelGroup">
+														<p:inputText id="salePoint" style="width:250px;margin-left:-4px;margin-right: 3px;" readonly="true" required="true"
+															value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.salePoint == null ? '' : AddNewSnakeBiteActionBean.snakeBitePolicy.salePoint.name}" />
+														<p:commandLink actionListener="#{AddNewSnakeBiteActionBean.selectSalePoint()}" id="selectSalePointDialogLink" immediate="true"
+															>
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{AddNewSnakeBiteActionBean.returnSalePoint}" update="salePontPanelGroup" />
+														</p:commandLink>
+													</h:panelGrid>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</p:panel>
+					</p:tab>
+					<p:tab id="InsuredPersonInfo" title="Customer Info">
+						<p:panel header="InsuredPerson Information" id="insuredPersonInfoWizardPanel" style="min-height:270px;">
+							<table width="1000px">
+								<tr>
+									<td valign="top">
+										<table cellspacing="5">
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="initialId" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_INITIALID_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="initialId" readonly="true" style="width:250px;" value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.customer.initialId}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="firstName" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_FIRSTNAME_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="firstName" readonly="true" style="width:250px;" value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.customer.name.firstName}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="middleName" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_MIDDLENAME_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="middleName" readonly="true" style="width:250px;" value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.customer.name.middleName}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="lastName" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_LASTNAME_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="lastName" readonly="true" style="width:250px;" value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.customer.name.lastName}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="fatherName" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText styleClass="input-label" value="Father Name" />
+												</td>
+												<td>
+													<p:inputText id="fatherName" readonly="true" style="width:250px;" value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.customer.fatherName}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 150px;">
+													<p:message for="idType" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 150px;">
+													<h:outputText styleClass="input-label" value="ID Type" />
+												</td>
+												<td>
+													<p:inputText id="idType" readonly="true" style="width:250px;" value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.customer.idType}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="idNo" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_IDNO_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="idNo" readonly="true" style="width:250px;" value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.customer.idNo}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td>
+													<p:message for="dateOfBirth" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText styleClass="input-label" value="DateOfBirth" />
+												</td>
+												<td>
+													<p:inputMask id="dateOfBirth" mask="99-99-9999" readonly="true" style="width:250px;" value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.customer.dateOfBirth}">
+														<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+													</p:inputMask>
+												</td>
+											</tr>
+										</table>
+									</td>
+									<td valign="top">
+										<table align="top" width="100%">
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="resident" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText styleClass="input-label" value="Resident Address" />
+												</td>
+												<td>
+													<p:inputTextarea id="resident" readonly="true" style="width:250px;" value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.customer.residentAddress.residentAddress}">
+														<f:validateLength maximum="500" />
+													</p:inputTextarea>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="townShip" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText styleClass="input-label" value="Resident TownShip" />
+												</td>
+												<td>
+													<p:inputText id="townShip" readonly="true" style="width:250px;" value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.customer.residentAddress.township.name}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="occupation" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText styleClass="input-label" value="Occupation" />
+												</td>
+												<td>
+													<p:inputText id="occupation" readonly="true" style="width:250px;" value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.customer.occupation.name}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 150px;">
+													<p:message for="gender" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 150px;">
+													<h:outputText styleClass="input-label" value="Gender" />
+												</td>
+												<td>
+													<p:inputText id="gender" readonly="true" style="width:250px;" value="#{AddNewSnakeBiteActionBean.snakeBitePolicy.customer.gender}">
+														<f:validateLength maximum="50" />
+													</p:inputText>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td align="left" colspan="2" width="100%">
+										<p:message for="beneficiariesInfoTablePanel" />
+										<h:panelGroup id="beneficiariesInfoTablePanel" style="width:100%">
+											<fieldset>
+												<legend>
+													<table>
+														<tr>
+															<td>
+																<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIESINFO_LABLE']}" />
+															</td>
+															<td>
+																<p:commandLink id="selectBeneficiariesInfo" action="#{AddNewSnakeBiteActionBean.prepareAddNewBeneficiariesInfo()}" immediate="true"
+																	oncomplete="PF('beneficiariesInfoEntryDialog').show()" update=":beneficiaryInfoEntryForm">
+																	<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+																</p:commandLink>
+															</td>
+														</tr>
+													</table>
+												</legend>
+												<p:dataTable id="beneficiaryPersonTable" style="width:100%" value="#{AddNewSnakeBiteActionBean.beneficiariesInfoDTOList}" var="beneficiary">
+													<p:column headerText="Beneficiary">
+														<h:outputText value="#{beneficiary.fullName}" />
+													</p:column>
+													<p:column headerText="Age">
+														<h:outputText value="#{beneficiary.age}" />
+													</p:column>
+													<p:column headerText="Gender">
+														<h:outputText value="#{beneficiary.gender}" />
+													</p:column>
+													<p:column headerText="ID NO.">
+														<h:outputText value="#{beneficiary.idNo}" />
+													</p:column>
+													<p:column headerText="Resident TownShip">
+														<h:outputText value="#{beneficiary.residentAddress.township.name}" />
+													</p:column>
+													<p:column headerText="Beneficiary Percentage">
+														<h:outputText value="#{beneficiary.percentage}%" />
+													</p:column>
+													<p:column headerText="Relationship">
+														<h:outputText value="#{beneficiary.relationship.name}" />
+													</p:column>
+													<p:column style="width:50px;">
+														<p:commandLink action="#{AddNewSnakeBiteActionBean.prepareEditBeneficiariesInfo(beneficiary)}" id="editBeneficiaryLink" immediate="true"
+															oncomplete="PF('beneficiariesInfoEntryDialog').show()" update=":beneficiaryInfoEntryForm">
+															<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+														</p:commandLink>
+													</p:column>
+													<p:column style="width:50px;">
+														<p:commandLink action="#{AddNewSnakeBiteActionBean.removeBeneficiariesInfo(beneficiary)}" id="removeBeneficiaryLink"
+															update=":snakeBiteEntryForm:beneficiariesInfoTablePanel">
+															<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+														</p:commandLink>
+													</p:column>
+												</p:dataTable>
+											</fieldset>
+										</h:panelGroup>
+									</td>
+								</tr>
+							</table>
+							<p:commandButton action="#{AddNewSnakeBiteActionBean.addNewSnakeBitePolicy}" id="addInsuredPersonInfoBtn" update=":snakeBiteEntryForm:insuredPersonInfoWizardPanel"
+								value="Submit Policy" />
+						</p:panel>
+					</p:tab>
+				</p:wizard>
+				<p:commandButton action="dashboard" immediate="true" value="#{label['COMMON_CANCEL_BTN']}" />
+			</div>
+			<br />
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			<br />
+		</h:form>
+		<!--  Input Selection Dialog -->
+		<!--  Referral Dialog -->
+		<h:form id="beneficiaryInfoEntryForm">
+			<p:dialog header="#{label['MANAGE_INSUREDPERSON_BENEFICIARIESINFO_LABLE']}" hideEffect="explode" id="beneficiariesInfoEntryDialog" resizable="false" showEffect="explode"
+				visible="#{facesContext.validationFailed}" widgetVar="beneficiariesInfoEntryDialog">
+				<h:panelGroup id="beneficiariesInfoPanel">
+					<table cellspacing="5">
+						<tr>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="initialId" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="Initial ID" />
+										</td>
+										<td>
+											<p:inputText id="initialId" style="width:250px;" value="#{AddNewSnakeBiteActionBean.beneficiariesInfoDTO.initialId}">
+												<f:validateLength maximum="50" />
+											</p:inputText>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="firstName" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="First Name" />
+										</td>
+										<td>
+											<p:inputText id="firstName" style="width:250px;" value="#{AddNewSnakeBiteActionBean.beneficiariesInfoDTO.name.firstName}">
+												<f:validateLength maximum="50" />
+											</p:inputText>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="middleName" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="Middle Name" />
+										</td>
+										<td>
+											<p:inputText id="middleName" style="width:250px;" value="#{AddNewSnakeBiteActionBean.beneficiariesInfoDTO.name.middleName}">
+												<f:validateLength maximum="50" />
+											</p:inputText>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="lastName" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="Last Name" />
+										</td>
+										<td>
+											<p:inputText id="lastName" style="width:250px;" value="#{AddNewSnakeBiteActionBean.beneficiariesInfoDTO.name.lastName}">
+												<f:validateLength maximum="50" />
+											</p:inputText>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="idType" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="IdType" />
+										</td>
+										<td>
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="idType" style="height:24px;width: 258px;"
+												value="#{AddNewSnakeBiteActionBean.beneficiariesInfoDTO.idType}">
+												<f:selectItems value="#{AddNewSnakeBiteActionBean.idTypes}" />
+											</p:selectOneMenu>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="idNo" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="ID NO" />
+										</td>
+										<td>
+											<p:inputText id="idNo" style="width:250px;" value="#{AddNewSnakeBiteActionBean.beneficiariesInfoDTO.idNo}" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="gender" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="Gender" />
+										</td>
+										<td>
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="gender" style="height:24px;width: 258px;"
+												value="#{AddNewSnakeBiteActionBean.beneficiariesInfoDTO.gender}">
+												<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{AddNewSnakeBiteActionBean.gender}" var="type" />
+											</p:selectOneMenu>
+										</td>
+									</tr>
+								</table>
+							</td>
+							<td valign="top">
+								<table>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 115px;">
+											<p:message for="townShip" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 115px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="Resident TownShip" />
+										</td>
+										<td>
+											<h:panelGrid columns="3" id="townShipPanelGroup">
+												<p:inputText id="townShip" readonly="true" style="width:250px;margin-left:-4px;"
+													value="#{AddNewSnakeBiteActionBean.beneficiariesInfoDTO.residentAddress.township == null ? '' : AddNewSnakeBiteActionBean.beneficiariesInfoDTO.residentAddress.township.name}">
+													<f:validateLength maximum="50" />
+												</p:inputText>
+												<p:commandLink actionListener="#{AddNewSnakeBiteActionBean.selectBeneficiariesTownship()}" id="selectTownShipDialogLink" immediate="true">
+													<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+													<p:ajax event="dialogReturn" listener="#{AddNewSnakeBiteActionBean.returnTownShip}" update="townShipPanelGroup" />
+												</p:commandLink>
+											</h:panelGrid>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="address" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="Resident Address" />
+										</td>
+										<td>
+											<p:inputTextarea id="address" style="width:250px;" value="#{AddNewSnakeBiteActionBean.beneficiariesInfoDTO.residentAddress.residentAddress}">
+												<f:validateLength maximum="500" />
+											</p:inputTextarea>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="percentage" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_PERCENTAGE_LABEL']}" />
+										</td>
+										<td>
+											<p:inputText id="percentage" style="width:250px;" value="#{AddNewSnakeBiteActionBean.beneficiariesInfoDTO.percentage}" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="benificiaryAge" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_AGE_LABEL']}" />
+										</td>
+										<td>
+											<p:inputText id="benificiaryAge" style="width:250px;" value="#{AddNewSnakeBiteActionBean.beneficiariesInfoDTO.age}" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td>
+											<div style="width: 270px; margin-left: -5px;">
+												<p:message for="beneficiaryRelationShip" />
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_RELATIONSHIP_LABEL']}" />
+										</td>
+										<td>
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="beneficiaryRelationShip" style="height:24px;width: 258px;"
+												value="#{AddNewSnakeBiteActionBean.beneficiaryRelationShipId}">
+												<f:selectItem itemLabel="Select" />
+												<f:selectItems value="#{AddNewSnakeBiteActionBean.relationShipItemList}" />
+											</p:selectOneMenu>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<p:commandButton id="selectSaveBeneficiariesInfo" action="#{AddNewSnakeBiteActionBean.saveBeneficiariesInfo()}"
+												update=":snakeBiteEntryForm:beneficiariesInfoTablePanel beneficiariesInfoPanel" value="Save" />
+											<p:commandButton immediate="true" oncomplete="PF('beneficiariesInfoEntryDialog').hide()" value="Cancel" />
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

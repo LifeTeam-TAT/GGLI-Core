@@ -1,0 +1,97 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fu="http://java.sun.com/jsf/fileUpload" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="schedulerForm">
+		<p:growl escape="false" globalOnly="true" life="8000" showDetail="true" />
+		<style>
+			.ui-datepicker-title, .ui-datepicker-header, .ui-datepicker th{
+			display: none!important;
+			}
+			.ui-message-error{
+				width: 150px!important;
+			}
+		</style>
+			<p:panel header="Scheduler" style="margin-bottom:20px;">
+				<table>
+					<tr>
+						<td colspan="2">
+							<h:outputText value="#{BatchSchedulerActionBean.message}" />
+						</td>
+					</tr>
+					<tr>
+						<td />
+						<td>
+							<p:message for="type" />
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 100px;">
+							<p:outputLabel for="type" value="Type" />
+						</td>
+						<td>
+							<p:selectOneMenu required="true" id="type" value="#{BatchSchedulerActionBean.type}" style="width:166px">
+								<f:selectItem itemLabel="Select One" itemValue="" noSelectionOption="true" />
+								<f:selectItems value="#{BatchSchedulerActionBean.scheduleTypes()}" />
+								<p:ajax event="change" listener="#{BatchSchedulerActionBean.valueChangEvent(event)}" update=":schedulerForm" />
+							</p:selectOneMenu>
+						</td>
+					</tr>
+					<p:column rendered="#{BatchSchedulerActionBean.dateFlag}">
+					<tr>
+						<td />
+						<td>
+							<p:message for="date" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p:outputLabel for="date" value="Date" />
+						</td>
+						<td>
+							<p:calendar required="true" pattern="dd" id="date" value="#{BatchSchedulerActionBean.date}" style="width:145px"
+								readonlyInput="true" showOn="button" timeZone="#{ApplicationSetting.timeZone}" />
+						</td>
+					</tr>
+					</p:column>
+					<p:column rendered="#{BatchSchedulerActionBean.dayFlag}">
+					<tr>
+						<td />
+						<td>
+							<p:message for="day" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p:outputLabel for="day" value="Day" />
+						</td>
+						<td>
+							<p:selectOneMenu required="true" rendered="#{BatchSchedulerActionBean.dayFlag}" id="day" value="#{BatchSchedulerActionBean.day}" style="width:166px">
+								<f:selectItem itemLabel="Select day" itemValue="" noSelectionOption="true" />
+								<f:selectItems value="#{BatchSchedulerActionBean.scheduleDays()}"/>
+							</p:selectOneMenu>
+						</td>
+					</tr>
+					</p:column>
+					<tr>
+						<td />
+						<td>
+							<p:message for="time" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p:outputLabel for="time" value="Time" />
+						</td>
+						<td>
+							<p:calendar id="time" required="true" value="#{BatchSchedulerActionBean.time}" pattern="HH:mm" showButtonPanel="true" readonlyInput="true" timeOnly="true"
+								timeZone="#{ApplicationSetting.timeZone}" />
+						</td>
+					</tr>
+				</table>
+				<p:separator />
+				<p:commandButton value="Submit" update="schedulerForm" actionListener="#{BatchSchedulerActionBean.submit()}" icon="ui-icon-check" />
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

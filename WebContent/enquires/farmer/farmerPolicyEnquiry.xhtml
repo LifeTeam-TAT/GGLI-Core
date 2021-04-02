@@ -1,0 +1,144 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Farmer Policy Enquiry" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="farmerEquiryForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="startDate" value="Start Date" />
+						<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{FarmerPolicyEnquiryActionBean.criteria.startDate}" />
+						<h:outputText value="Customer" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectCustomerPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectCustomerPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{FarmerPolicyEnquiryActionBean.selectCustomer()}" id="selectCustomerDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{FarmerPolicyEnquiryActionBean.returnCustomer}" update="customer" />
+									</p:commandButton>
+									<p:inputText id="customer" readonly="true"
+										value="#{FarmerPolicyEnquiryActionBean.criteria.customer == null ? '' : FarmerPolicyEnquiryActionBean.criteria.customer.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{LifeEnquiryActionBean.criteria.setAgent(null)}" process="@this" update="customer" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="endDate" value="End Date" />
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{FarmerPolicyEnquiryActionBean.criteria.endDate}" />
+						<h:outputText value="Organization" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectOrganizationPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectOrganizationPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{FarmerPolicyEnquiryActionBean.selectOrganization()}" id="selectOrganizationDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{FarmerPolicyEnquiryActionBean.returnOrganization}" update="organization" />
+									</p:commandButton>
+									<p:inputText id="organization" readonly="true"
+										value="#{FarmerPolicyEnquiryActionBean.criteria.organization == null ? '' : FarmerPolicyEnquiryActionBean.criteria.organization.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{FarmerPolicyEnquiryActionBean.criteria.setOrganization(null)}" process="@this" update="organization" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectBranchPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectBranchPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton disabled="#{!FarmerPolicyEnquiryActionBean.isAccessBranches}" styleClass="green-button" icon="fa fa-search"
+										actionListener="#{FarmerPolicyEnquiryActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{FarmerPolicyEnquiryActionBean.returnBranch}" update="branch" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true"
+										value="#{FarmerPolicyEnquiryActionBean.criteria.branch == null ? '' : FarmerPolicyEnquiryActionBean.criteria.branch.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{!FarmerPolicyEnquiryActionBean.isAccessBranches}" icon="fa fa-times" action="#{FarmerPolicyEnquiryActionBean.criteria.setOrganization(null)}" process="@this" update="branch" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText for="policyNo" value="Policy No." />
+						<p:inputText id="policyNo" value="#{FarmerPolicyEnquiryActionBean.criteria.number}" />
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton style="width:80px;" id="searchBtn" action="#{FarmerPolicyEnquiryActionBean.findFarmerPolicyListByEnquiryCriteria}" update=":farmerEquiryForm" value="Search" />
+				<p:commandButton style="width:80px;" action="#{FarmerPolicyEnquiryActionBean.resetCriteria}" update=":farmerEquiryForm" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="farmerPolicyTable" paginator="true" style="width:100%;"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+				rowsPerPageTemplate="5,10, 15" value="#{FarmerPolicyEnquiryActionBean.farmerPolicyList}" var="farmerPolicy">
+				<p:column headerText="Policy No." style="width:12%;">
+					<h:outputText value="#{farmerPolicy.policyNo}" />
+				</p:column>
+				<p:column headerText="Proposal No." style="width:12%;">
+					<h:outputText value="#{farmerPolicy.proposalNo}" />
+				</p:column>
+				<p:column headerText="Customer" style="width:12%;">
+					<h:outputText value="#{farmerPolicy.customer}" />
+				</p:column>
+				<p:column headerText="Branch" style="width:11%;">
+					<h:outputText value="#{farmerPolicy.branch}" />
+				</p:column>
+				<p:column headerText="Total Premium" style="width:10%;">
+					<h:outputText value="#{farmerPolicy.premium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Total Sum Insured" style="width:10%;">
+					<h:outputText style="float: left;" value="#{farmerPolicy.sumInsured}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="PaymentType" style="width:8%;">
+					<h:outputText value="#{farmerPolicy.paymentType}" />
+				</p:column>
+				<p:column headerText="Commenmance Date" style="width:10%;text-align: center;">
+					<h:outputText value="#{farmerPolicy.commenmanceDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:5%;" headerText="Detail">
+					<p:commandLink action="#{FarmerPolicyEnquiryActionBean.ShowDetailFarmerPolicy(farmerPolicy.id)}" id="detailsProposal" immediate="true"
+						oncomplete="PF('farmerPolicyDetailsDialog').show()" update=":farmerPolicyDetailsForm:detailPannel">
+						<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="width:5%;" headerText="Edit">
+					<p:commandLink id="editLink" action="#{FarmerPolicyEnquiryActionBean.editFarmerPolicy(farmerPolicy.id)}">
+						<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="width:5%;" headerText="Attachment">
+					<p:commandLink action="#{FarmerPolicyEnquiryActionBean.getPagePolicy(farmerPolicy.id)}" id="policyAttachment">
+						<p:graphicImage styleClass="#{ApplicationSetting.attachStyleClass}" value="#{ApplicationSetting.attachIcon}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<h:form enctype="multipart/form-data" id="documentPrintForm">
+			<p:dialog appendTo="@(body)" dynamic="true" height="500" id="premiumLedgerPrintDailog" resizable="false" widgetVar="premiumLedgerPrintDailog" width="1050">
+				<p:ajax event="close" update=":documentPrintForm :farmerEquiryForm" listener="#{FarmerPolicyEnquiryActionBean.handleClosePremiumLedger}" />
+				<p:media height="500" id="pdfPlayer" player="pdf" value="#{FarmerPolicyEnquiryActionBean.stream}" width="1050" cache="false"/>
+			</p:dialog>
+		</h:form>
+		<h:form id="farmerPolicyDetailsForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Farmer Policy Details" height="500" hideEffect="explode" id="farmerPolicyDetailsDialog" resizable="false"
+				showEffect="explode" widgetVar="farmerPolicyDetailsDialog" width="1050">
+				<p:outputPanel id="detailPannel">
+					<ui:include src="/enquires/life/lifePolicyEnquiryTemplate.xhtml">
+						<ui:param name="lifePolicy" value="#{FarmerPolicyEnquiryActionBean.lifePolicy}" />
+						<ui:param name="workFlowList" value="#{FarmerPolicyEnquiryActionBean.workFlowList}" />
+					</ui:include>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

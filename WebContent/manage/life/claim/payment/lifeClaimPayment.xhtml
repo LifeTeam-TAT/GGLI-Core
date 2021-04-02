@@ -1,0 +1,161 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:define name="content">
+		<h:form id="lifeClaimPaymentForm" enctype="multipart/form-data">
+			<fieldset>
+				<legend>
+					<h:outputText value="Life Claim Payment" styleClass="table-title" />
+				</legend>
+				<div style="padding-left: 15px;">
+					<table>
+						<tbody>
+							<tr>
+								<td style="width: 130px;">
+									<h:outputText value="#{label['LIFEDISABILITYCLAIMCUSTOMERINFORM_CLAIM_REFUND_LABEL']}" styleClass="input-label" />
+								</td>
+								<td style="width: 250px;">
+									<h:panelGrid columns="2" id="lifeClaimMethodPanelGroup">
+										<p:inputText value="#{LifeClaimPaymentActionBean.claimBeneficiary.refundNo}" style="width:250px;margin-left:-4px;" id="lifeClaimMethod" readonly="true" />
+										<p:commandLink id="lifeClaimDetail" action="#{LifeClaimPaymentActionBean.loadWorkflow}" oncomplete="PF('lifeClaimInformDetailsDialog').show()"
+											update=":lifeClaimDetailsForm:lifeClaimDetailsPanel">
+											<h:graphicImage url="#{ApplicationSetting.detailIcon}" styleClass="#{ApplicationSetting.detailStyleClass}" />
+										</p:commandLink>
+									</h:panelGrid>
+								</td>
+								<td>
+									<p:spacer width="20px" />
+								</td>
+								<td style="width: 120px;">
+									<h:outputText value="Deficit Premium" styleClass="input-label" />
+								</td>
+								<td style="width: 260px;">
+									<p:inputText value="#{LifeClaimPaymentActionBean.claimBeneficiary.deficitPremium}" styleClass="input-label" id="deficitPremium" readonly="true" style="width:250px;">
+										<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+									</p:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText value="#{label['LIFEDISABILITYCLAIMCUSTOMERINFORM_LIABILITIES_AMOUNT_LABEL']}" styleClass="input-label" />
+								</td>
+								<td>
+									<p:inputText value="#{LifeClaimPaymentActionBean.payment.claimAmount}" styleClass="input-label" id="netAmount" readonly="true" style="width:250px;">
+										<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+									</p:inputText>
+								</td>
+								<td>
+									<p:spacer width="20px" />
+								</td>
+								<td style="width: 120px;">
+									<h:outputText value="#{label['LIFEDISABILITYCLAIMCUSTOMERINFORM_SERVICE_CHARGES_LABEL']}" styleClass="input-label" />
+								</td>
+								<td style="width: 260px;">
+									<p:inputText value="#{LifeClaimPaymentActionBean.payment.servicesCharges}" styleClass="input-label" id="serviceCharges" readonly="true" style="width:250px;">
+										<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+									</p:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText value="#{label['LIFEDISABILITYCLAIMCUSTOMERINFORM_LOAN_AMOUNT_LABEL']}" styleClass="input-label" />
+								</td>
+								<td>
+									<p:inputText value="#{LifeClaimPaymentActionBean.claimBeneficiary.loanAmount}" styleClass="input-label" id="loanAmount" readonly="true" style="width:250px;">
+										<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+									</p:inputText>
+								</td>
+								<td>
+									<p:spacer width="20px" />
+								</td>
+								<h:panelGroup id="chequeGroup" rendered="#{LifeClaimPaymentActionBean.paymentDTO.paymentChannel=='CHEQUE'? true : false}">
+									<td>
+										<h:outputText value="*" style="color:red;" />
+										<h:outputText value="#{label['LIFEDISABILITYCLAIMCUSTOMERINFORM_CHEQUE_NO_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:message for="chequeNo" />
+										<p:inputText style="width:250px;" value="#{LifeClaimPaymentActionBean.paymentDTO.chequeNo}" styleClass="input-label" id="chequeNo" required="true" />
+									</td>
+								</h:panelGroup>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText value="#{label['LIFEDISABILITYCLAIMCUSTOMERINFORM_LOAN_INTEREST_LABEL']}" styleClass="input-label" />
+								</td>
+								<td>
+									<p:inputText value="#{LifeClaimPaymentActionBean.claimBeneficiary.loanInterest}" styleClass="input-label" id="loanInterest" readonly="true" style="width:250px;">
+										<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+									</p:inputText>
+								</td>
+								<td>
+									<p:spacer width="20px" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText value="#{label['LIFEDISABILITYCLAIMCUSTOMERINFORM_RENEWAL_AMOUNT_LABEL']}" styleClass="input-label" />
+								</td>
+								<td>
+									<p:inputText value="#{LifeClaimPaymentActionBean.claimBeneficiary.renewelAmount}" styleClass="input-label" id="renewelAmount" readonly="true" style="width:250px;">
+										<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+									</p:inputText>
+								</td>
+								<td>
+									<p:spacer width="20px" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText value="#{label['LIFEDISABILITYCLAIMCUSTOMERINFORM_RENEWAL_INTEREST_LABEL']}" styleClass="input-label" />
+								</td>
+								<td>
+									<p:inputText value="#{LifeClaimPaymentActionBean.claimBeneficiary.renewelInterest}" styleClass="input-label" id="renewelInterest" readonly="true" style="width:250px;">
+										<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+									</p:inputText>
+								</td>
+								<td>
+									<p:spacer width="20px" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText value="#{label['LIFEDISABILITYCLAIMCUSTOMERINFORM_NET_CLAIM_AMOUNT_LABEL']}" styleClass="input-label" />
+								</td>
+								<td>
+									<p:inputText value="#{LifeClaimPaymentActionBean.payment.netClaimAmount}" styleClass="input-label" id="netClaimAmount" readonly="true" style="width:250px;">
+										<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+									</p:inputText>
+								</td>
+								<td>
+									<p:spacer width="20px" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</fieldset>
+			<table width="100%">
+				<tr>
+					<td valign="top">
+						<p:commandButton id="confirmBtn" action="#{LifeClaimPaymentActionBean.lifeDisabilityClaimPaymentConfirm()}" value="#{label['LIFEDISABILITYCLAIMCUSTOMERINFORM_CONFIRM_BTN']}"
+							update=":lifeClaimPaymentForm" style="width: 70px; height:30px;" />
+						<p:commandButton action="dashboard" value="#{label['LIFEDISABILITYCLAIMCUSTOMERINFORM_CANCEL_BTN']}" immediate="true" style="width: 70px; height:30px;" />
+					</td>
+				</tr>
+			</table>
+		</h:form>
+		
+		<!--  LifeClaimDetails Dialog -->
+		<h:form id="lifeClaimDetailsForm">
+			<p:dialog header="Life Claim Detail" widgetVar="lifeClaimInformDetailsDialog" resizable="false" width="1000" height="563" showEffect="explode" hideEffect="explode"
+				id="lifeClaimInformDetailsDialog" appendTo="@(body)" dynamic="true">
+				<p:outputPanel id="lifeClaimDetailsPanel">
+					<ui:include src="/manage/life/claim/lifeClaimInfoTemplate.xhtml">
+						<ui:param name="lifeClaim" value="#{LifeClaimPaymentActionBean.claim}" />
+						<ui:param name="workFlowList" value="#{LifeClaimPaymentActionBean.workFlowList}" />
+					</ui:include>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

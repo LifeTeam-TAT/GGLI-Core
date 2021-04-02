@@ -1,0 +1,207 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Role Management" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="roleEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" />
+			<div style="padding-left: 15px;">
+				<h:outputText rendered="#{ManageRoleActionBean.createNew}" style="padding-top:-10px;" styleClass="table-title" value="#{label['MANAGE_ROLE_ADDNEW_LABEL']}" />
+				<h:outputText rendered="#{!ManageRoleActionBean.createNew}" style="padding-top:-10px;" styleClass="table-title" value="#{label['MANAGE_ROLE_EDIT_LABEL']}" />
+				<table>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td colspan="2" style="width: 115px;">
+										<p:message for="name" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;">
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_ROLE_NAME_LABEL']}" />
+									</td>
+									<td colspan="2">
+										<p:inputText id="name" required="true" style="width:250px;" value="#{ManageRoleActionBean.role.name}" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;" valign="top">
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_ROLE_RESOURCEITEM_LABEL']}" />
+									</td>
+									<td>
+										<p:commandLink id="resourceItemLink" oncomplete="PF('resourceItemDialog').show()" >
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										</p:commandLink>
+									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td>
+										<p:dataTable id="selectedResourceItemTable" paginator="true" rows="10" rowsPerPageTemplate="10, 20, 30, 40, 50, 100, 200, 300, 400, 500" value="#{ManageRoleActionBean.role.resourceItemList}"
+											var="resourceItem">
+											<p:column headerText="Name">
+												<h:outputText value="#{resourceItem.name}" />
+											</p:column>
+											<p:column headerText="Page URL">
+												<h:outputText value="#{resourceItem.url}" />
+											</p:column>
+											<p:column headerText="Type">
+												<h:outputText value="#{resourceItem.itemType}" />
+											</p:column>
+											<p:column style="width:50px;">
+												<p:commandLink action="#{ManageRoleActionBean.role.removeResourceItem(resourceItem)}" id="removeEditVehicleInfoLink" immediate="true"
+													update=":roleEntryForm:selectedResourceItemTable">
+													<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+												</p:commandLink>
+											</p:column>
+										</p:dataTable>
+									</td>
+									<td>
+										<p:commandLink action="#{ManageRoleActionBean.removeAllResourceItems()}" id="removeAllResourceItemsLink" immediate="true"
+											update=":roleEntryForm:selectedResourceItemTable">
+											<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+										</p:commandLink>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p:commandButton action="#{ManageRoleActionBean.addNewRole}" ajax="true" id="addBtn" rendered="#{ManageRoleActionBean.createNew}" style="width: 80px;"
+								update="roleEntryForm :roleTableForm :resourceItemForm" value="#{label['COMMON_ADDNEW_BTN']}" />
+							<p:commandButton action="#{ManageRoleActionBean.updateRole}" ajax="true" id="editBtn" rendered="#{!ManageRoleActionBean.createNew}"
+								update="roleEntryForm :roleTableForm :resourceItemForm" value="#{label['COMMON_UPDATE_BTN']}" />
+						</td>
+					</tr>
+				</table>
+			</div>
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			<br />
+			<p:separator style="height:5px" />
+		</h:form>
+		<h:form id="roleTableForm">
+			<h:commandLink action="#{ManageRoleActionBean.createNewRole}">
+				<h:panelGrid columns="2">
+					<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+					<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+				</h:panelGrid>
+			</h:commandLink>
+			<p:outputPanel id="listPanel">
+				<table>
+					<tr>
+						<td>
+							<h:outputText value="Role" />
+						</td>
+						<td>
+							<p:inputText id="roleCriteria" style="height:20px;width: 200px;" value="#{ManageRoleActionBean.criteria}" />
+						</td>
+						<td>
+							<p:commandButton action="#{ManageRoleActionBean.searchRole}" id="searchRoleBtn" update=":roleTableForm" value="Search" />
+						</td>
+						<td>
+							<p:commandButton action="#{ManageRoleActionBean.init()}" id="resetRoleBtn" update=":roleTableForm" value="Reset" />
+						</td>
+					</tr>
+				</table>
+				<p:dataTable id="rowTable" lazy="true" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+					rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageRoleActionBean.lazyModel}" var="role">
+					<p:column headerText="#{label['MANAGE_ROLE_NAME_LABEL']}">
+						<h:outputText value="#{role.name}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_ROLE_RESOURCRITEM_LABEL']}">
+						<ui:repeat value="#{role.resourceItemList}" var="resourceItem" varStatus="status">
+							<h:outputText value="#{resourceItem.name}" />
+							<h:outputText rendered="#{status.index + 1 == role.resourceItemList.size() ? false : true}" value=", " />
+						</ui:repeat>
+						<h:outputText rendered="#{role.resourceItemList.size() == 0}" value="There is no ResourceItem" />
+					</p:column>
+					<p:column style="width:50px;">
+						<p:commandLink action="#{ManageRoleActionBean.prepareUpdateRole(role)}" update=":roleEntryForm">
+							<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width:50px;">
+						<p:commandLink id="deleteGroupLink" oncomplete="PF('confirmationDialog').show()">
+							<f:setPropertyActionListener target="#{ManageRoleActionBean.role}" value="#{role}" />
+							<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		<!-- Resource Dialog -->
+		
+			<p:dialog height="300" hideEffect="explode"  appendTo="@(body)" modal="true" id="resourceItemDialog" resizable="false" showEffect="explode" widgetVar="resourceItemDialog" width="900">
+				<h:form id="resourceItemForm">
+				<h:panelGroup id="resourceItemPanel">
+					<br />
+					<table>
+						<tr>
+							<td>
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="selectCustomerCriteria" value="#{ManageRoleActionBean.selectedCriteria}">
+									<f:selectItem itemLabel="Select Criteria" />
+									<f:selectItems value="#{ManageRoleActionBean.resourceItemCriteriaItemList}" var="criteriaItem" />
+								</p:selectOneMenu>
+							</td>
+							<td>
+								<p:inputText id="resourceItemCriteria" style="height:20px;width: 200px;" value="#{ManageRoleActionBean.resourceItemCriteria.criteriaValue}" />
+							</td>
+							<td>
+								<p:commandButton action="#{ManageRoleActionBean.searchResourceItem}" id="searchResourceItemButtonBtn" update=":resourceItemForm:resourceTable" value="Search" />
+							</td>
+							<td>
+								<p:commandButton action="#{ManageRoleActionBean.resetUserCriteria()}" id="resetResourceItem" update=":resourceItemForm:resourceTable" value="Reset" />
+							</td>
+						</tr>
+					</table>
+					<br />
+					<p:dataTable id="resourceTable" paginator="true" rows="10" rowsPerPageTemplate="10, 20, 30, 40, 50, 100, 200, 300, 400, 500" value="#{ManageRoleActionBean.resourceItemDataModel}"
+						selection="#{ManageRoleActionBean.selectedResourceItemList}" var="resourceItems" style="width:100%">
+						<p:column selectionMode="multiple" style="width:16px;text-align:center" />
+						<p:column headerText="Name" style="width:25%">
+							<h:outputText value="#{resourceItems.name}" />
+						</p:column>
+						<p:column headerText="Page URL" style="width:50%" >
+							<h:outputText value="#{resourceItems.url}" />
+						</p:column>
+						<p:column filterBy="#{resourceItems.itemType}" style="width:25%" filterMatchMode="contains" headerText="Type">
+							<h:outputText value="#{resourceItems.itemType}" />
+						</p:column>
+					</p:dataTable>
+					<p:commandButton action="#{ManageRoleActionBean.addResourceItem}" ajax="true" oncomplete="PF('resourceItemDialog').hide()" update=":roleEntryForm:selectedResourceItemTable"
+						value="#{label['COMMON_ADDNEW_BTN']}" />
+				</h:panelGroup>
+			     </h:form>
+			</p:dialog>
+		
+		<!-- Confirmation Dialog -->
+		<h:form id="confiationForm">
+			<p:dialog header="#{label['MANAGE_ROLE_DELETE_CONFIRM']}" height="100" hideEffect="explode" id="confirmationDialog" resizable="false" showEffect="explode"
+				widgetVar="confirmationDialog" width="250">
+				<h:panelGroup id="confirmationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" />
+							</td>
+						</tr>
+					</table>
+					<br />
+					<p:commandButton action="#{ManageRoleActionBean.deleteRole}" ajax="true" immediate="true" oncomplete="PF('confirmationDialog').hide()" update=":roleEntryForm :roleTableForm"
+						value="#{label['COMMON_YES_BTN']}" />
+					<p:commandButton immediate="true" oncomplete="PF('confirmationDialog').hide()" value="#{label['COMMON_NO_BTN']}" />
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

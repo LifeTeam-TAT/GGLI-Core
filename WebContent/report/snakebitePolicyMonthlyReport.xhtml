@@ -1,0 +1,124 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:cyc="http://www.cycdemo.com/java" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/print.cs" />
+		<h:form id="monthlyReportForm">
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" showDetail="true" id="messages" />
+			</div>
+			<table cellspacing="5" width="100%">
+				<tr>
+					<td>
+						<h:outputText value="Snake Bite Monthly Report" styleClass="ui-widget ui-widget-header ui-corner-all submenu-title" style="float: left" />
+						<p:separator style="height:1px; margin-top:22px;" />
+					</td>
+				</tr>
+			</table>
+			<table cellspacing="5" width="100%">
+				<tr>
+					<td>
+						<h:outputLabel value="Start Date" for="startDate" />
+						<p:calendar showOn="button" pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}"
+							value="#{SnakeBitePolicyMonthlyReportActionBean.criteria.startDate}" id="startDate" />
+						<h:outputLabel value="    End Date" for="endDate" />
+						<p:calendar showOn="button" pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}"
+							value="#{SnakeBitePolicyMonthlyReportActionBean.criteria.endDate}" id="endDate" />
+						<p:commandButton value="Search" action="#{SnakeBitePolicyMonthlyReportActionBean.search}" update="monthlyReportForm:reportTable" />
+					</td>
+					<td align="right">
+						<p:commandLink oncomplete="PF('pdfPreviewDialog').show()" immediate="true" action="#{SnakeBitePolicyMonthlyReportActionBean.generateReport()}">
+							<h:graphicImage url="#{ApplicationSetting.printIcon}" styleClass="#{ApplicationSetting.printStyleClass}" title="PDF Print" />
+						</p:commandLink>
+					</td>
+				</tr>
+			</table>
+			<h:panelGroup id="reportTable">
+				<p:dataTable value="#{SnakeBitePolicyMonthlyReportActionBean.snakeBitePolicyMonthlyReportList}" id="report" var="report" paginator="true" rows="20" style="width:100%;"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="30,50,80"
+					rowKey="index" rowIndexVar="rowIndex">
+					<p:column headerText="No." style="width:50px;">
+						<h:outputText value="#{rowIndex + 1}" />
+					</p:column>
+					<p:column headerText="Certificate No.">
+						<h:outputText value="#{report.policyNo}" />
+					</p:column>
+					<p:column headerText="Insured Name">
+						<h:outputText value="#{report.customerName}" />
+					</p:column>
+					<p:column headerText="Registration No. (NRC)">
+						<h:outputText value="#{report.nrc}" />
+					</p:column>
+					<p:column headerText="Address">
+						<h:outputText value="#{report.address}" />
+					</p:column>
+					<p:column headerText="Receipt No / Payment Date">
+						<h:outputText value="#{report.receiptNo}" />
+						<h:outputText value="/" />
+						<br />
+						<h:outputText value="#{report.paymentDate}" />
+					</p:column>
+					<table>
+						<p:column headerText="Beneficiaries">
+							<table>
+								<tr>
+									<td align="center">
+										<h:outputText value="No." style="font-weight:bold;" />
+									</td>
+									<td align="center">
+										<h:outputText value="Name" style="font-weight:bold;" />
+									</td>
+									<td align="center">
+										<h:outputText value="NRC" style="font-weight:bold;" />
+									</td>
+									<td align="center">
+										<h:outputText value="Address" style="font-weight:bold;" />
+									</td>
+								</tr>
+								<ui:repeat var="be" value="#{report.beneList}" varStatus="status">
+									<tr>
+										<td align="center">
+											<h:outputText value="#{status.index + 1 }" />
+										</td>
+										<td align="center">
+											<h:outputText value="#{be.fullName}" />
+										</td>
+										<td align="center">
+											<h:outputText value="#{be.idNo}" />
+										</td>
+										<td align="center">
+											<h:outputText value="#{be.fullAddress}" />
+										</td>
+									</tr>
+								</ui:repeat>
+							</table>
+						</p:column>
+					</table>
+					<p:column headerText="Premium Income">
+						<h:outputText value="#{report.premium}">
+							<f:convertNumber pattern="#{ApplicationSetting.numberFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Services Charges">
+						<h:outputText value="#{report.serviceCharges}" />
+					</p:column>
+					<p:column headerText="Net Premium">
+						<h:outputText value="#{report.netpremium}" />
+					</p:column>
+					<p:column headerText="Remark">
+						<h:outputText value="#{report.remark}" />
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+		</h:form>
+		<!-- PDF Preview Form -->
+		<h:form id="pdfPreviewForm" enctype="multipart/form-data">
+			<p:dialog id="pdfPreviewDialog" widgetVar="pdfPreviewDialog" header="Print Preview (PDF)" appendTo="@(body)" dynamic="true" resizable="false" width="1070" height="505"
+				showEffect="fade" hideEffect="fade">
+				<p:media value="#{SnakeBitePolicyMonthlyReportActionBean.stream}" player="pdf" width="1050" height="500" cache="false"/>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

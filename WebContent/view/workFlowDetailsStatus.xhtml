@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:define name="content">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<table width="100%">
+			<tr>
+				<td width="100%" valign="top">
+					<h:form id="workStatusForm">
+						<h:outputText value="WorlFlow Details Status" styleClass="table-title" />
+						<p:separator />
+						<p:dataTable var="workflow" value="#{WorkFlowStatusDetailActionBean.workFlowList}" id="productTable" paginator="true" rows="50" style="width:100%;"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="50,100,150"
+							rowKey="index" rowIndexVar="rowIndex">
+							<p:column headerText="No" style="width:50px;">
+								<h:outputText value="#{rowIndex + 1}" />
+							</p:column>
+							<p:column headerText="Proposal No." style="width:250px;">
+								<h:outputText value="#{workflow.proposalNo}" />
+							</p:column>
+							<p:column headerText="Requestor">
+								<h:outputText value="#{workflow.reqUser}" />
+							</p:column>
+							<p:column headerText="Responsible Person">
+								<h:outputText value="#{workflow.respUser}" />
+							</p:column>
+							<p:column headerText="Pending Since">
+								<h:outputText value="#{workflow.pendingSinceDate}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateTimeFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</h:outputText>
+							</p:column>
+						</p:dataTable>
+					</h:form>
+				</td>
+			</tr>
+		</table>
+	</ui:define>
+</ui:composition>

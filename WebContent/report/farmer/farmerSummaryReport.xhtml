@@ -1,0 +1,134 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="farmerSummaryListForm">
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<table width="100%" style="margin-top: -8px;">
+				<tr>
+					<td>
+						<h:outputText id="title" styleClass="ui-widget ui-widget-header ui-corner-all submenu-title" value="Farmer Summary Report" />
+						<p:separator style="height:3px; margin-top:1px;" />
+					</td>
+				</tr>
+			</table>
+			<p:panel>
+				<p:panelGrid columns="3" id="farmerSummaryPanelGroup" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel styleClass="input-label" value="Start Date" />
+						<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{FarmerSummaryReportActionBean.criteria.startDate}"
+							timeZone="#{ApplicationSetting.timeZone}" required="true" />
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel styleClass="input-label" value="End Date" />
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{FarmerSummaryReportActionBean.criteria.endDate}"
+							timeZone="#{ApplicationSetting.timeZone}" required="true" />
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText value="Entity" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectEntityPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectBranchPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" disabled="#{!FarmerSummaryReportActionBean.accessBranches}"
+										actionListener="#{FarmerSummaryReportActionBean.selectEntity()}" id="selectEntityDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{FarmerSummaryReportActionBean.returnEntity}" update="entity selectBranchPanelGrid salePontPanelGroup" />
+									</p:commandButton>
+									<p:inputText id="entity" readonly="true"
+										value="#{FarmerSummaryReportActionBean.criteria.entity == null ? '--Select Entity--' : FarmerSummaryReportActionBean.criteria.entity.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{!FarmerSummaryReportActionBean.accessBranches}" icon="fa fa-times"
+										action="#{FarmerSummaryReportActionBean.removeEntity}" process="@this" update="entity selectBranchPanelGrid salePontPanelGroup" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="selectBranchPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{FarmerSummaryReportActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this"
+										disabled="#{!FarmerSummaryReportActionBean.accessBranches || FarmerSummaryReportActionBean.criteria.entity==null?true:false}">
+										<p:ajax event="dialogReturn" listener="#{FarmerSummaryReportActionBean.returnBranch}" update="branch salePontPanelGroup" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true"
+										value="#{FarmerSummaryReportActionBean.criteria.branch == null ? '--Select Branch--' : FarmerSummaryReportActionBean.criteria.branch.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{!FarmerSummaryReportActionBean.accessBranches || FarmerSummaryReportActionBean.criteria.entity==null?true:false}"
+										icon="fa fa-times" action="#{FarmerSummaryReportActionBean.clearBranch}" process="@this" update="branch salePontPanelGroup" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText styleClass="input-label" value="Sale Point" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{FarmerSummaryReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+										process="@this" disabled="#{FarmerSummaryReportActionBean.criteria.branch==null?true:false}">
+										<p:ajax event="dialogReturn" listener="#{FarmerSummaryReportActionBean.returnSalePoint}" update="salePoint" />
+									</p:commandButton>
+									<p:inputText id="salePoint" readonly="true" value="#{FarmerSummaryReportActionBean.criteria.salePoint == null ? '' :FarmerSummaryReportActionBean.criteria.salePoint.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{FarmerSummaryReportActionBean.criteria.branch==null?true:false}" icon="fa fa-times"
+										action="#{FarmerSummaryReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salePoint" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<p:spacer width="5px;" />
+			<p:commandButton action="#{FarmerSummaryReportActionBean.filter}" update="farmerSummaryListForm:farmerSummaryListTable" value="Search" style="margin-top:5px;margin-bottom:5px;" />
+			<p:spacer width="5px;" />
+			<p:commandButton action="#{FarmerSummaryReportActionBean.resetCriteria}" process="@this" update="farmerSummaryListForm" value="Reset" />
+			<p:dataTable id="farmerSummaryListTable" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex"
+				rowKey="index" rows="10" rowsPerPageTemplate="5,10,15" style="width:100%;" value="#{FarmerSummaryReportActionBean.farmerSummaryReportList}" var="report">
+				<f:facet name="header">
+					<h:commandLink action="#{FarmerSummaryReportActionBean.exportExcel}" immediate="true">
+						<p:graphicImage style="width: 30px; height: 30px;" styleClass="#{ApplicationSetting.excelStyleClass}" value="#{ApplicationSetting.excelIcon}" />
+					</h:commandLink>
+					<p:message for="farmerSummaryListTable" />
+				</f:facet>
+				<p:column headerText="No." style="width:20px;">
+					<h:outputText value="#{rowIndex + 1}" />
+				</p:column>
+				<p:column headerText="Date" style="width:80px;text-align:center;">
+					<h:outputText value="#{report.date}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Number Of Policy" style="width:80px;text-align:center;">
+					<h:outputText value="#{report.numberOfPolicy}" />
+				</p:column>
+				<p:column headerText="Sum Insured" style="width:150px;">
+					<h:outputText style="float:right;" value="#{report.sumInsured}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Premium" style="width:120px;">
+					<h:outputText style="float:right;" value="#{report.premium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Commission" style="width:100px;">
+					<h:outputText style="float:right;" value="#{report.commission}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Remark" style="width:120px;">
+					<h:outputText value="#{report.remark}" />
+				</p:column>
+				<p:column headerText="Branch Name" style="width:120px;">
+					<h:outputText value="#{report.branch}" />
+				</p:column>
+				<p:column headerText="Sale Point Name" style="width:120px;">
+					<h:outputText value="#{report.salepoint}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

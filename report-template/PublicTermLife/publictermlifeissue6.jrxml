@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="publictermlifeissue6" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0529c455-4dd9-495c-9fc3-f0aa53737283">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="802" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="435" uuid="50411f7f-99db-4bbb-8c39-9a4d9ae5d45e"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[(င) မူးယစ္ေဆး၀ါး သို့မဟုတ္ ေဘးအႏၠရာယ္ျဖစ္ေစေသာ ေဆးကို သံုးစြဲျခင္း
+(စ) HIV/AIDS
+(ဆ)စစ္ပြဲ၊ အၾကမ္းဖက္ဖ်က္စီးျခင္း၊ အဓိကရုဏ္း၊ ၄င္းတို့နွင့္ အလားတူ ျဖစ္ရပ္မ်ား
+(ဇ) အာမခံ၀ယ္ယူစဥ္က ေဖာ္ျပရန္ထိန္ခ်န္ခဲ့ေသာ ရွိရင္းစြဲေရာဂါမ်ား
+    • အာမခံထားသူသည္ ေအာက္ေဖာ္ျပပါ အေၾကာင္းကိစၥရပ္တစ္ခုခုေၾကာင့္ သတ္မွတ္ထားေသာ ထိခိုက္ဒဏ္ရာရရွိမႈ အက်ိဳးခံစားခြင့္ကို မေပးေခ်ပါ။
+(က) ေပၚလစီရွင္၏ တမင္ရည္ရြယ္လုပ္ေဆာင္မႈျဖစ္ျခင္း သို႔မဟုတ္ ၾကီးမားေသာ ေပါ့ဆမႈျဖစ္ျခင္း။
+(ခ) အာမခံထားသူ၏ တမင္ရည္ရြယ္လုပ္ေဆာင္မႈျဖစ္ျခင္း သို႔မဟုတ္ ၾကီးမားေသာ ေပါ့ဆမႈျဖစ္ျခင္း။
+(ဂ) အာမခံထားသူက ရာဇ၀တ္မႈက်ဴးလြန္ျခင္း၊ ဥပေဒခ်ိဳးေဖာက္ျခင္း
+(ဃ) အာမခံထားသူ၏ စိတ္ေရာဂါေ၀ဒနာေၾကာင့္ ျဖစ္သည့္ မေတာ္တဆမႈ
+(င) ငလ်င္လႈပ္ျခင္း၊ မီးေတာင္ေပါက္ကြဲျခင္း သို့မဟုတ္ ဆူနာမီျဖစ္ျခင္း
+(စ) စစ္ပြဲ၊ အၾကမ္းဖက္ဖ်က္စီးျခင္း၊ အဓိကရုဏ္း၊ ၄င္းတို့ႏွင့္ အလားတူ ျဖစ္ရပ္မ်ား
+(ဆ) မူးယစ္ေဆး၀ါး သို့မဟုတ္ ေဘးအႏၠရာယ္ျဖစ္ေစေသာေဆးကို သံုးစြဲျခင္း
+
+(၄) ေပၚလစီ စည္းကမ္းခ်က္မ်ား
+
+  (က) ပရီမီယံေပးသြင္းျခင္း
+    • ပရီမီယံကို ႏွစ္စဥ္ေပးစနစ္ျဖင့္သာ ေပးသြင္းႏိုင္ပါသည္။
+    • ပရီမီယံကို ကုမၸဏီရံုးခ်ဳပ္^ရံုးခြဲမ်ားတြင္ျဖစ္ေစ၊ ဘဏ္မ်ားမွ တစ္ဆင့္ ျဖစ္ေစ၊ ေငြသားျဖင့္ ျဖစ္ေစ၊ ခ်က္လက္မွတ္ျဖင့္ ျဖစ္ေစ၊ စာရင္းလႊဲေျပာင္းျခင္းျဖင့္ ျဖစ္ေစ ေပးသြင္းနို္င္ပါသည္။
+(ခ) ေပၚလစီရွင္
+    • ေပၚလစီရွင္ ဆုိသည္မွာ စာခ်ဳပ္ကို ခ်ဳပ္ဆိုနိုင္သည့္ လူပုဂၢိဳလ္ တစ္ဦး တစ္ေယာက္ကို ရည္ညႊန္းပါသည္။
+    • ေပၚလစီရွင္သည္ ပရီမီယံေၾကး ေပးေဆာင္သည့္ တာ၀န္ယူရမည္။
+
+
+(ဂ) အာမခံထားသူ
+    • အာမခံထားသူ ဆိုသည္မွာ အာမခံေပၚလစီ စည္းကမ္းခ်က္မ်ားႏွင့္အညီ အာမခံအကာအကြယ္ကို ရရွိမည့္ လူပုဂၢိဳလ္ တစ္ဦးတစ္ေယာက္ကုိ ရည္ညႊန္းပါသည္။
+    • အာမခံထားသူသည္ အာမခံထားသည့္အခ်ိန္တြင္ အသက္လ(၁၈) ႏွစ္မွ (၇၅) ႏွစ္ အထိရွိသူ ျဖစ္ရပါမည္။
+(ဃ) အာမခံထားႏိုင္သည့္ ေငြပမာဏ
+    • အနည္းဆံုး က်ပ္ (၁) သိန္းမွ အမ်ားဆံုး က်ပ္သိန္း (၂၀၀) အထိ အာမခံထားႏုိင္ပါသည္။
+
+    (င) က်န္းမာေရးစစ္ေဆးျခင္း
+    •  အာမခံထားသူ၏ အသက္ႏွင့္ အာမခံထားေငြ ေပၚမူတည္၍ က်န္းမာေရး စစ္ေဆးမႈကို ခံယူရန္ လိုအပ္ပါသည္။]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="458" width="203" height="20" uuid="30c24e67-6a25-4715-a168-2f3739e620e5"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အာမခံထားသူ အသက္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="239" y="458" width="258" height="20" uuid="b9a02016-a95d-48aa-963d-188b95931163"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အာမခံထားေငြပမာဏ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="478" width="203" height="20" uuid="f4739164-cf4d-43be-af3f-c701ff6faf8b"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[၁၈ ႏွစ္မွ ၆၀ ႏွစ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="239" y="478" width="258" height="20" uuid="c4e225db-5cb5-486f-ba4e-616bf0449541"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[က်ပ္သိန္း ၅၀ ႏွင့္ အထက္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="498" width="203" height="20" uuid="d1ec4e43-f317-4553-980d-9d7434907732"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[၆၁ ႏွစ္မွ ၇၅ ႏွစ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="239" y="498" width="258" height="20" uuid="23efe8d7-372a-40f7-aebe-85f02ab33b1b"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[က်ပ္သိန္း ၃၀ ႏွင့္ အထက္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="532" width="555" height="115" uuid="fe135fea-0dd1-404e-aa0f-b579afa6be71"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[    • က်န္းမာေရးႏွင့္ အားကစား၀န္ၾကီးဌာနက အသိအမွတ္ျပဳသည့္ ေဆးရုံ^ေဆးခန္းမ်ားမွ ဆရာ၀န္မ်ားျဖင့္ က်န္းမာေရးစစ္ေဆးမႈမ်ားကို ခံယူရန္ လိုအပ္ပါသည္။
+(စ) ေပၚလစီတည္ျမဲျခင္း
+အာမခံစာခ်ဳပ္ခ်ဳပ္ဆိုရန္ အဆိုျပဳျခင္းကို အာမခံကုမၸဏီက သေဘာတူ လက္ခံလိုက္ပါက ပရီမီယံေၾကးကို ေပးသြင္းသည့္ေန့မွစ၍ ေပၚလစီသည္ စတင္တည္ျမဲလာျပီး ေအာက္ပါ က မွ ဃ အထိ္တြင္ ေဖာ္ျပထားသည့္ ေန့ရက္အခ်ိန္အတိုင္း ေပၚလစီသည္ ဆက္လက္တည္ျမဲေနပါသည္။
+(က) အာမခံေပၚလစီတြင္ သတ္မွတ္ထားေသာ အာမခံသက္တမ္းေစ့ျခင္း။
+(ခ) ေပၚလစီရွင္က ေပၚလစီကို ဖ်က္သိမ္းျခင္း။]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="647" width="545" height="155" uuid="2718d37a-1102-4d85-ade5-11df579dd42b"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[(ဂ) အာမခံ ကုမၸဏီက ေပၚလစီကို ပယ္ဖ်က္ျခင္း။
+(ဃ) ေသဆံုးမႈ အက်ိဳးခံစားခြင့္ သို့မဟုတ္ ထာ၀စဥ္မသန္စြမ္း အက်ိဳးခံစားခြင့္ကို ထုတ္ေပးျခင္း။
+ဥို့ေသာ္ အာမခံထားေငြ၏ ၁၀၀ ရာခိုင္ႏႈန္းအျပည့္ ေပးေလ်ာ္ျပီးပါက ေပၚလစီ အလုိအေလ်ာက္ ပ်က္ျပယ္မည္။
+(ဆ) အာမခံ အက်ိဳးခံစားခြင့္ လႊဲေျပာင္းျခင္းခံရသူ
+    • ေသဆံုးမႈ အက်ိဳးခံစားခြင့္ လႊဲေျပာင္းျခင္းခံရသူ ဆိုသည္မွာ အာမခံထားသူက ေသဆံုးသည့္အခါတြင္ ေပးေခ်မည့္ အက်ိဳးခံစားခြင့္ကို တရား၀င္ ထုတ္ယူခံစားနိုင္ခြင့္ ရွိေၾကာင္း အာမခံေပၚလစီတြင္ ေရးသားေဖာ္ျပထားသည့္ လူပုဂၢိဳလ္ကို ရည္ညႊန္းပါသည္။
+    • အာမခံထားသူက ထာ၀စဥ္မသန္စြမ္းျဖစ္ျခင္းႏွင့္ သတ္မွတ္ထားေသာ ထိခိုက္ဒဏ္ရာရရွိမႈ အေျခအေနမ်ားႏွင့္ ကိုက္ညီပါက ေပးေခ်မည့္ ထာ၀စဥ္မသန္စြမ္း အက်ိဳးခံစားခြင့္ႏွင့္ ထိခုိက္ဒဏ္ရာရရွိမႈ အက်ိဳးခံစားခြင့္ကို ထုတ္ယူခံစားခြင့္ရွိသူမွာ အာမခံထားသူျဖစ္ပါသည္။]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

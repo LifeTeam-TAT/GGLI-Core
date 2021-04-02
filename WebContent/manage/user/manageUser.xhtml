@@ -1,0 +1,174 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+   <ui:param name="header" value="#{label['MANAGE_USER_TITLE']}" />
+   <ui:param name="headerRendered" value="true" />
+   <ui:define name="content">
+      <h:form id="userEntryForm">
+         <p:growl globalOnly="true" id="messages" showDetail="true" />
+         <p:panel>
+            <h:outputText rendered="#{ManageUserActionBean.createNew}" style="padding-top:-10px;" styleClass="table-title" value="#{label['MANAGE_USER_ADDNEW_LABEL']}" />
+            <h:outputText rendered="#{!ManageUserActionBean.createNew}" style="padding-top:-10px;" styleClass="table-title" value="#{label['MANAGE_USER_EDIT_LABEL']}" />
+            
+            <p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					
+					<p:outputLabel/>
+					<p:message for="name" display="text"/>
+                    <h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_USER_NAME_LABEL']}" />
+                    <p:inputText id="name" required="true" value="#{ManageUserActionBean.user.name}">
+                       <f:validateLength maximum="50" />
+                    </p:inputText>
+                    
+                    <p:outputLabel/>
+					<p:message for="usercode" display="text"/>
+                    <h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_USER_CODE_LABEL']}" />
+                    <p:inputText id="usercode" required="true"  validatorMessage="Invalid username.(No whitespace, No Capital Latter and at least 3 Characters)" value="#{ManageUserActionBean.user.usercode}">
+                       <f:validateRegex pattern="^[a-z0-9_-]{3,20}$" />
+                    </p:inputText>
+                    
+                    <p:outputLabel/>
+					<p:message for="password" display="text"/>  
+                    <h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_USER_PASSWORD_LABEL']}" />
+                    <p:password id="password" redisplay="true" required="true" value="#{ManageUserActionBean.user.password}" />
+                    
+                    <p:outputLabel/>
+					<p:message for="branch" display="text"/>  
+                    <h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_BRANCH_LABEL']}" />
+                    <p:panelGrid styleClass="ui-panelgrid-blank" id="branchPanelGroup">
+						<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="branchPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ManageUserActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{ManageUserActionBean.returnBranch}" update="branch" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="#{ManageUserActionBean.user.branch == null? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true"
+									value="#{ManageUserActionBean.user.branch == null ? '' : ManageUserActionBean.user.branch.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ManageUserActionBean.removeUser()}" process="@this" update="branch salePoint" />
+							</div>
+						</div>
+					</p:panelGrid>
+				
+					<p:outputLabel/>
+					<p:message for="authority" display="text"/>  
+                    <h:outputText styleClass="input-label" value="#{label['MANAGE_USER_AUTHORITY_LABEL']}" />
+                    <p:inputNumber id="authority" value="#{ManageUserActionBean.user.authority}" decimalPlaces="2" maxValue="999999999999">
+                    </p:inputNumber>
+                      
+                    
+                    <p:outputLabel/>
+					<p:message for="ClaimAuthority" display="text"/>   
+                    <h:outputText styleClass="input-label" value="#{label['MANAGE_USER_CLAIM_AUTHORITY_LABEL']}" />
+                    <p:inputNumber id="ClaimAuthority"  value="#{ManageUserActionBean.user.claimAuthority}" decimalPlaces="2" maxValue="999999999999">
+                    </p:inputNumber>
+          
+          
+        			<p:outputLabel/>
+                    <p:message for="access" display="text"/>
+                    <h:outputText styleClass="input-label" value="Is access all branch?" />
+                    <p:selectBooleanCheckbox id="access" value="#{ManageUserActionBean.user.accessAllBranch}" />
+                    
+          			<p:outputLabel/>
+                    <p:message for="salePoint" display="text"/>
+                    <h:outputText styleClass="input-label mandatory" value="Sale Point" />
+                    <p:panelGrid styleClass="ui-panelgrid-blank" id="salePontPanelGroup">
+						<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="salePontPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ManageUserActionBean.selectSalePoint()}" id="selectSalePointDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{ManageUserActionBean.returnSalePoint}" update="salePoint" />
+								</p:commandButton>
+								<p:inputText id="salePoint" readonly="#{ManageUserActionBean.user.salePoint ==null ? facesContext.currentPhaseId.ordinal eq 6 : true }" required="true"
+										value="#{ManageUserActionBean.user.salePoint == null ? '' : ManageUserActionBean.user.salePoint.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ManageUserActionBean.user.setSalePoint(null)}" process="@this" update="salePoint" />
+							</div>
+						</div>
+					</p:panelGrid>
+					
+					<p:outputLabel/>
+					<p:message for="disable" display="text"/>
+					<h:outputText value="Status" />
+					<p:selectBooleanCheckbox id="disable" required="true" value="#{ManageUserActionBean.user.disabled}" />
+				
+				</p:panelGrid>
+				<p:panelGrid columns="1" columnClasses="ui-grid-col-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:message for="role" display="text"/>
+					<p:fieldset legend="#{label['MANAGE_USER_ROLE_LABEL']}" style="width:100%">
+						<p:pickList id="role" itemLabel="#{role}" itemValue="#{role}" required="true" value="#{ManageUserActionBean.dualListModel}" var="role">
+                         </p:pickList>
+					</p:fieldset>
+				
+				</p:panelGrid>
+				
+			</p:panelGrid>
+         </p:panel>
+         <h:panelGrid columns="2">
+     		 <p:commandButton action="#{ManageUserActionBean.addNewUser}" id="addBtn" rendered="#{ManageUserActionBean.createNew}" style="width: 80px;"
+               		 update="userEntryForm :userTableForm" value="#{label['COMMON_ADDNEW_BTN']}" />
+             <p:commandButton action="#{ManageUserActionBean.updateUser}" id="editBtn" oncomplete="PF('userTable').filter();" rendered="#{!ManageUserActionBean.createNew}"
+               		 update="@form" value="#{label['COMMON_UPDATE_BTN']}" />
+         </h:panelGrid>
+         <h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+         <br />
+         <p:separator style="height:2px" />
+      </h:form>
+      <h:form id="userTableForm">
+         <h:commandLink action="#{ManageUserActionBean.createNewUser}">
+            <h:panelGrid columns="2">
+               <h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+               <h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+            </h:panelGrid>
+         </h:commandLink>
+         <p:outputPanel id="listPanel">
+            <p:dataTable id="userTable" paginator="true" paginatorPosition="bottom" rowIndexVar="index"
+               paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+               rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageUserActionBean.userList}" var="user" widgetVar="userTable">
+               <p:column headerText="No." width="5%">
+                  <h:outputText value="#{index +1}" />
+               </p:column>
+               <p:column filterBy="#{user.name}" filterMatchMode="contains" headerText="#{label['MANAGE_USER_NAME_LABEL']}">
+                  <h:outputText value="#{user.name}" />
+               </p:column>
+               <p:column filterBy="#{user.usercode}" filterMatchMode="contains" headerText="#{label['MANAGE_USER_CODE_LABEL']}">
+                  <h:outputText value="#{user.usercode}" />
+               </p:column>
+               <p:column filterBy="#{user.branch.name}" filterMatchMode="contains" headerText="#{label['MANAGE_BRANCH_LABEL']}">
+                  <h:outputText value="#{user.branch.name}" />
+               </p:column>
+               <p:column filterBy="#{user.salePoint.name}" filterMatchMode="contains"  headerText="Sale Point">
+                   <h:outputText value="#{user.salePoint.name}" />
+               </p:column>
+               <p:column  filterBy="#{user.disabled}"  headerText="#{label['MANAGE_USER_DISABLED_LABEL']}">
+               	   <f:facet name="filter">
+		                <p:selectOneButton onchange="PF('userTable').filter();" styleClass="custom-filter">
+		                    <f:converter converterId="javax.faces.Boolean" />
+		                    <f:selectItem itemLabel="All" itemValue="" />
+		                    <f:selectItem itemLabel="Yes" itemValue="true" />
+		                    <f:selectItem itemLabel="No" itemValue="false" />
+		                </p:selectOneButton>
+		            </f:facet>
+                  <h:outputText value="#{user.disabled ? 'Yes' : 'No'}"/>
+               </p:column>
+               <p:column headerText="#{label['MANAGE_USER_DISABLED_DATE_LABEL']}">
+                  <h:outputText value="#{empty user.disabledDate ? '' : user.disabledDate}">
+                     <f:convertDateTime pattern="#{ApplicationSetting.dateTimeFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+                  </h:outputText>
+               </p:column>
+               <p:column style="width:4%;" headerText="Setting">
+				   <p:commandButton styleClass="green-button" icon="fa fa-wrench" action="#{ManageUserActionBean.prepareEditUserAuthority(user)}" immediate="true"/>
+			   </p:column>
+               <p:column style="width:4%;" headerText="Edit">
+				   <p:commandButton styleClass="green-button" icon="fa fa-paint-brush" action="#{ManageUserActionBean.prepareUpdateUser(user)}" update=":userEntryForm :userEntryForm:password"/>
+				</p:column>
+				<p:column style="width:4%;" headerText="Delete">
+				    <p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ManageUserActionBean.deleteUser(user)}" oncomplete="PF('userTable').filter();" update=":userEntryForm">
+				    	<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+				    </p:commandButton>
+				</p:column>
+            </p:dataTable>
+         </p:outputPanel>
+      </h:form>
+     <!-- Confirmation Dialog -->
+	  <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		 	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check"/>
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+	  </p:confirmDialog> 
+   </ui:define>
+</ui:composition>

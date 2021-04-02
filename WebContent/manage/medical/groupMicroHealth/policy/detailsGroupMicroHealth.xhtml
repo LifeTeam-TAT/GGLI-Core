@@ -1,0 +1,121 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui"
+	template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Add New Group Micro Health Proposal" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="detailsForm">
+		<p:panel>
+		<table>
+				<tr>
+					<td width="80px;"><h:outputText for="proposalNo" value="Proposal No." /></td>
+					<td><p:inputText id="proposalNo" style="width:205px;" value="#{DetailsGroupMicroHealthActionBean.criteria.proposalNo}" /></td>
+					<td width="80px;"><h:outputLabel for="startDate" value="Start Date" /></td>
+					<td width="280px;"><p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{DetailsGroupMicroHealthActionBean.criteria.startDate}" />
+					</td>
+					<td width="80px;"><h:outputLabel for="endDate" value="End Date" /></td>
+					<td width="280px;"><p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{DetailsGroupMicroHealthActionBean.criteria.endDate}" /></td>
+					<td><p:commandButton action="#{DetailsGroupMicroHealthActionBean.loadGroupMicroHealthDTO()}" update=":detailsForm" value="Search" /></td>
+					<td><p:commandButton action="#{DetailsGroupMicroHealthActionBean.resetCriteria()}" update=":detailsForm" value="Reset" style="margin-right:-20px;" /></td>
+				</tr>
+		</table>
+		<br/>
+			<p:message for="groupMicroHealthTable" display="text"></p:message>
+			<p:dataTable id="groupMicroHealthTable" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowKey="index" rows="10" rowsPerPageTemplate="5,10, 15"
+				style="width:100%;"
+				value="#{DetailsGroupMicroHealthActionBean.groupMicroHealthDTOList}"
+				rowIndexVar="rowIndex" var="groupMicroHealthDTO"
+				widgetVar="groupMicroHealthTable">
+				<p:column style="width: 3%;">
+					<p:rowToggler />
+				</p:column>
+				<p:column headerText="Proprosal No" >
+					<h:outputText value="#{groupMicroHealthDTO.proposalNo}" />
+				</p:column>
+				<p:column headerText="Start Date">
+					<h:outputText value="#{groupMicroHealthDTO.startDate}">
+					 <f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Number Of InsredPerson">
+					<h:outputText value="#{groupMicroHealthDTO.numberOfInsuredPerson}" />
+				</p:column>
+				<p:column headerText="Number Of Unit">
+					<h:outputText value="#{groupMicroHealthDTO.numberOfUnit}" />
+				</p:column>
+				<p:column headerText="Sale Person">
+					<h:outputText value="#{groupMicroHealthDTO.salePersonName}" />
+				</p:column>
+				<p:column headerText="Sale Point">
+					<h:outputText value="#{groupMicroHealthDTO.salePoint.name}" />
+				</p:column>
+				<p:column headerText="Total Proposal Premium">
+					<h:outputText value="#{groupMicroHealthDTO.totalPremium}" >
+						  <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:rowExpansion>
+					<p:dataTable id="medProposalTable" rowIndexVar="index" value="#{groupMicroHealthDTO.medicalProposalList}" var="medProposal">
+						<p:column headerText="No" style="width: 3%;">
+							<h:outputText value="#{index + 1}" />
+						</p:column>
+						<p:column headerText="Proposal No" style="width: 20%;">
+							<h:outputText value="#{medProposal.proposalNo}" />
+						</p:column>
+						<p:column headerText="Customer" style="width: 20%;">
+							<h:outputText value="#{medProposal.customer.name.fullName}" />
+						</p:column>
+						<p:column headerText="Sale Man" style="width: 20%;">
+							<h:outputText value="#{medProposal.salePersonName}" />
+						</p:column>
+						<p:column headerText="Submitted Date" style="width: 20%;">
+							<h:outputText value="#{medProposal.submittedDate}">
+								 <f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Total Premium" style="width: 20%;">
+							<h:outputText value="#{medProposal.termPremium}" >
+							  <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Edit" style="width:50px; text-align:center;">
+							<h:commandLink action="#{DetailsGroupMicroHealthActionBean.prepareEditMicroHealthProposal(medProposal,groupMicroHealthDTO)}" id="editInsuredPersonInfoLink"     update="@form" >
+								<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+							</h:commandLink>
+			 			</p:column>
+						<p:column style="width: 5%;text-align: center;">
+							<p:commandLink action="#{DetailsGroupMicroHealthActionBean.generatePolicyIssue(medProposal)}" immediate="true" disabled="#{!groupMicroHealthDTO.showIssueButton}" update=":pdfForm">
+								<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" url="#{ApplicationSetting.printIcon}" />
+							</p:commandLink>
+						</p:column>
+					</p:dataTable>
+					<br/>
+					<p:commandButton value="Policy Issue" action="#{DetailsGroupMicroHealthActionBean.confirmCompleteProcess(groupMicroHealthDTO)}" update="@form"  disabled="#{groupMicroHealthDTO.showIssueButton}"></p:commandButton>
+				</p:rowExpansion>
+				
+				<p:column>
+					<p:commandLink action="#{DetailsGroupMicroHealthActionBean.createNewMedProposal(groupMicroHealthDTO)}" id="createMedProposal" immediate="true">
+									<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" url="#{ApplicationSetting.addIcon}" />
+					</p:commandLink>
+				</p:column>
+				</p:dataTable>
+		</p:panel>
+		</h:form>
+		<h:form id="pdfForm" enctype="multipart/form-data">
+			<p:dialog appendTo="@(body)" dynamic="true" modal="true" widgetVar="pdfDialog" resizable="false" id="pdfDialog" width="1050" height="500">
+					<p:ajax event="close" update=":pdfForm :detailsForm" listener="#{DetailsGroupMicroHealthActionBean.handleClose}" />
+					<p:outputPanel id="printPannel">
+						<p:media id="pdfPlayer" value="#{DetailsGroupMicroHealthActionBean.stream}" player="pdf" width="1050" height="500"  cache="false"/>
+					</p:outputPanel>
+			</p:dialog>
+		</h:form>
+				
+
+	</ui:define>
+</ui:composition>

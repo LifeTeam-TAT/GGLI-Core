@@ -1,0 +1,159 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:param name="header" value="Medical Claim Payment Report" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<h:form id="hdList">
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<p:panelGrid columns="3" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="startDate" value="From Date" />
+					<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{MedicalClaimPaymentReportActionBean.criteria.startDate}" />
+					<h:outputText value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" disabled="#{!MedicalClaimPaymentReportActionBean.accessBranches}" icon="fa fa-search" actionListener="#{MedicalClaimPaymentReportActionBean.selectEntity()}" id="entityDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{MedicalClaimPaymentReportActionBean.returnEntity}" update="entity branchPanelGroup salePanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true"
+									value="#{MedicalClaimPaymentReportActionBean.criteria.entity == null ? '' : MedicalClaimPaymentReportActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{!MedicalClaimPaymentReportActionBean.accessBranches}" icon="fa fa-times" action="#{MedicalClaimPaymentReportActionBean.setEntityNull() }" process="@this"
+									update="entity branchPanelGroup salePanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="endDate" value="To Date" />
+					<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{MedicalClaimPaymentReportActionBean.criteria.endDate}" />
+					<p:outputLabel />
+					<!-- Branch -->
+					<p:message for="branch" id="MsgBranch" display="text" />
+					<h:outputText styleClass="input-label " value="Branch" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{MedicalClaimPaymentReportActionBean.selectBranch()}" id="selectBranchDialogLink"
+									process="@this" disabled="#{!MedicalClaimPaymentReportActionBean.accessBranches || MedicalClaimPaymentReportActionBean.criteria.entity==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{MedicalClaimPaymentReportActionBean.returnBranch}" update="branch salePanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true"
+									value="#{MedicalClaimPaymentReportActionBean.criteria.branch == null ? '' : MedicalClaimPaymentReportActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{!MedicalClaimPaymentReportActionBean.accessBranches || MedicalClaimPaymentReportActionBean.criteria.entity==null?true:false}" icon="fa fa-times"
+									action="#{MedicalClaimPaymentReportActionBean.setBranchNull}" process="@this" update="branch salePanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText styleClass="input-label" value="#{label['MANAGE_MOTORPROPOSAL_CUSTOMER_LABEL']}" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="customerPanelGroup">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="customerPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{MedicalClaimPaymentReportActionBean.selectCustomer()}" id="selectCustomerDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{MedicalClaimPaymentReportActionBean.returnCustomer}" update="customer" />
+								</p:commandButton>
+								<p:inputText id="customer" readonly="true"
+									value="#{MedicalClaimPaymentReportActionBean.criteria.customer == null ? '' : MedicalClaimPaymentReportActionBean.criteria.customer.name.fullName}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{MedicalClaimPaymentReportActionBean.criteria.setCustomer(null)}" process="@this" update="customer" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<!-- SalePoint -->
+					<p:outputLabel />
+					<p:message for="salePoint" />
+					<h:outputText styleClass="input-label" value="Sale Point" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{MedicalClaimPaymentReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+									process="@this" disabled="#{MedicalClaimPaymentReportActionBean.criteria.branch==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{MedicalClaimPaymentReportActionBean.returnSalePoint}" update="salePoint" />
+								</p:commandButton>
+								<p:inputText id="salePoint" readonly="true"
+									value="#{MedicalClaimPaymentReportActionBean.criteria.salePoint == null ? '' : MedicalClaimPaymentReportActionBean.criteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{MedicalClaimPaymentReportActionBean.criteria.branch==null?true:false}" icon="fa fa-times"
+									action="#{MedicalClaimPaymentReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salePoint" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panelGrid>
+			<p:commandButton style="width: 85px;" action="#{MedicalClaimPaymentReportActionBean.filter}" update=":hdList:hdTablePanel" value="Search" />
+			<p:spacer width="5" />
+			<p:commandButton style="width: 85px;" action="#{MedicalClaimPaymentReportActionBean.init()}" update=":hdList" value="Reset" />
+			<h:panelGroup id="hdTablePanel">
+				<p:dataTable id="customerTable" lazy="true" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex"
+					rowKey="index" rows="10" rowsPerPageTemplate="5,10,15" style="width:100%;" value="#{MedicalClaimPaymentReportActionBean.lazyModel}" var="hddto">
+					<f:facet name="header">
+						<p:commandLink title="Excel Report" id="generateExcelId" immediate="true" ajax="false" action="#{MedicalClaimPaymentReportActionBean.exportHealthDailyReport()}"
+							update=":hdList">
+							<p:graphicImage style="width: 25px; height: 25px;" styleClass="#{ApplicationSetting.excelStyleClass}" value="#{ApplicationSetting.excelIcon}" />
+						</p:commandLink>
+						<p:messages for="customerTable" />
+					</f:facet>
+					<p:column headerText="No." style="width:25px;">
+						<h:outputText style="float: right;" value="#{rowIndex + 1}." />
+					</p:column>
+					<p:column style="width: 150px;" headerText="Policy No">
+						<h:outputText value="#{hddto.policyNo}" />
+					</p:column>
+					<p:column style="width: 150px;" headerText="Claim Request No">
+						<h:outputText value="#{hddto.claimRequestId}" />
+					</p:column>
+					<p:column style="width: 200px;" headerText="Customer Name">
+						<h:outputText value="#{hddto.customerName}" />
+					</p:column>
+					<p:column style="width: 200px;" headerText="Customer ID No">
+						<h:outputText value="#{hddto.nrc}" />
+					</p:column>
+					<p:column style="width: 200px;" headerText="Insured Person Name">
+						<h:outputText value="#{hddto.policyInsuredPersonName}" />
+					</p:column>
+					<p:column style="width: 200px;" headerText="Father Name">
+						<h:outputText value="#{hddto.fatherName}" />
+					</p:column>
+					<p:column style="width: 200px;" headerText="Cash Receipt No">
+						<h:outputText value="#{hddto.cashReceiptNo}" />
+					</p:column>
+					<p:column style="width: 50px; text-align: center;" headerText="Payment Date">
+						<h:outputText value="#{hddto.submittedDate}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width: 25px;" headerText="Hospitalized Claim Amount">
+						<h:outputText style="float: right;" value="#{hddto.hospitalizedAmount}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width: 25px;" headerText="Disability Claim Amount">
+						<h:outputText style="float: right;" value="#{hddto.disabilityAmount}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width: 25px;" headerText="Operation Claim Amount">
+						<h:outputText style="float: right;" value="#{hddto.operationAmount}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width: 25px;" headerText="Death Claim Amount">
+						<h:outputText style="float: right;" value="#{hddto.deathAmount}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width: 30px; text-align: center;" headerText="Branch">
+						<h:outputText value="#{hddto.branch}" />
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>

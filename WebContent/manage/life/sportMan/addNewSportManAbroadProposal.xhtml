@@ -1,0 +1,512 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/userLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<h:form id="lifePolicyForm">
+			<table width="100%">
+				<tr>
+					<td>
+						<h:outputText styleClass="ui-widget ui-widget-header ui-corner-all submenu-title" value="Sport Man Abord Proposal " />
+					</td>
+				</tr>
+			</table>
+			<p:separator style="height:3px; margin-top:-1px;" />
+			<table width="100%">
+				<tr>
+					<td colspan="2"></td>
+					<td align="center" width="70%">
+						<div style="z-index: 100; position: fixed; margin-top: -30px; width: 800px;">
+							<p:messages globalOnly="true" id="messages" showDetail="true" />
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td width="60px;">
+						<h:outputText value="" />
+					</td>
+					<td>
+						<p:message for="lifePolicy" id="lifePolicyMsg" />
+					</td>
+				</tr>
+				<tr height="20px;">
+					<td width="140px;">
+						<h:outputText value="Life Policy No : " />
+					</td>
+					<td>
+						<h:panelGrid cellpadding="7" columns="2" id="selectLifePolicyPanelGrid">
+							<p:inputText id="lifePolicy" style="width:250px;margin-left:-4px;" value="#{SportManAbroadProposalActionBean.policyNo}" />
+							<p:commandLink actionListener="#{SportManAbroadProposalActionBean.selectLifePolicyNo()}" id="selectLifePolicyDialogLink" immediate="true">
+								<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+								<p:ajax event="dialogReturn" listener="#{SportManAbroadProposalActionBean.returnLifePolicy}" update="selectLifePolicyPanelGrid" />
+							</p:commandLink>
+						</h:panelGrid>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td colspan="2">
+						<h:panelGrid cellpadding="5" columns="2">
+							<p:commandButton action="#{SportManAbroadProposalActionBean.search}" id="searchBtn" update=":personForm" value="Search" />
+							<p:commandButton action="#{SportManAbroadProposalActionBean.reset()}" id="resetBtn" update=":personForm :lifePolicyForm :beneficiaryInfoEntryForm " value="Reset" />
+						</h:panelGrid>
+					</td>
+				</tr>
+			</table>
+			<p:separator style="height:3px; margin-top:-1px;" />
+		</h:form>
+		<h:form id="personForm">
+			<table id="insuredPersonTable">
+				<tr>
+					<td>
+						<table id="subTable1">
+							<tr>
+								<td>
+									<h:outputText styleClass="input-label" value="#{label['ADDNEWSPORTMAN_NAME_LABEL']}" />
+								</td>
+								<td>
+									<p:spacer width="20px;" />
+								</td>
+								<td>
+									<p:inputText id="name" style="width:250px;" value="#{SportManAbroadProposalActionBean.insuredPersonInfoDTO.fullName}">
+									</p:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText styleClass="input-label" value="#{label['ADDNEWSPORTMAN_TOS_LABEL']}" />
+								</td>
+								<td>
+									<p:spacer width="20px;" />
+								</td>
+								<td>
+									<p:inputText id="typesOfSport" style="width:250px;" value="#{SportManAbroadProposalActionBean.insuredPersonInfoDTO.typesOfSport.name}">
+									</p:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText styleClass="input-label" value="#{label['ADDNEWSPORTMAN_FATHERNAME_LABEL']}" />
+								</td>
+								<td>
+									<p:spacer width="20px;" />
+								</td>
+								<td>
+									<p:inputText id="fatherName" style="width:250px;" value="#{SportManAbroadProposalActionBean.insuredPersonInfoDTO.fatherName}">
+									</p:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText styleClass="input-label" value="#{label['ADDNEWSPORTMAN_PASSPORT_LABEL']}" />
+								</td>
+								<td>
+									<p:spacer width="20px;" />
+								</td>
+								<td>
+									<p:inputText id="passport" style="width:250px;" value="#{SportManAbroadProposalActionBean.insuredPersonInfoDTO.idNo}">
+									</p:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText styleClass="input-label" value="#{label['ADDNEWSPORTMAN_NRC_LABEL']}" />
+								</td>
+								<td>
+									<p:spacer width="20px;" />
+								</td>
+								<td>
+									<p:inputText id="nrc" style="width:250px;" value="#{SportManAbroadProposalActionBean.insuredPersonInfoDTO.idNo}">
+									</p:inputText>
+								</td>
+							</tr>
+							<td>
+								<h:outputText styleClass="input-label" value="#{label['ADDNEWSPORTMAN_TRIP_LABEL']} #{label['ADDNEWSPORTMAN_FROM_LABEL']}" />
+							</td>
+							<td>
+								<p:spacer width="20px;" />
+							</td>
+							<td>
+								<p:inputText id="fromTrip" style="width:250px;" value="#{SportManAbroadProposalActionBean.insuredPersonInfoDTO.typesOfSport.name}" />
+							</td>
+						</table>
+					</td>
+					<td>
+						<table id="subTable2">
+							<tr>
+								<td>
+									<h:outputText styleClass="input-label" value="#{label['ADDNEWSPORTMAN_PERIOD_LABEL']}" />
+								</td>
+								<td>
+									<p:spacer width="20px;" />
+								</td>
+								<td>
+									<p:inputText id="period" style="width:250px;" value="#{SportManAbroadProposalActionBean.insuredPersonInfoDTO.periodOfYears}">
+									</p:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText styleClass="input-label" value="#{label['ADDNEWSPORTMAN_SI_LABEL']}" />
+								</td>
+								<td>
+									<p:spacer width="20px;" />
+								</td>
+								<td>
+									<p:inputText id="sumInsured" style="width:250px;" value="#{SportManAbroadProposalActionBean.insuredPersonInfoDTO.sumInsuredInfo}">
+									</p:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText styleClass="input-label" value="#{label['ADDNEWSPORTMAN_PREMIUM_LABEL']}" />
+								</td>
+								<td>
+									<p:spacer width="20px;" />
+								</td>
+								<td>
+									<p:inputText id="premium" style="width:250px;" value="#{SportManAbroadProposalActionBean.insuredPersonInfoDTO.premium}">
+									</p:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText styleClass="input-label" value="#{label['ADDNEWSPORTMAN_ADDRESS_LABEL']}" />
+								</td>
+								<td>
+									<p:spacer width="20px;" />
+								</td>
+								<td>
+									<p:inputTextarea id="address" style="width:250px;" value="#{SportManAbroadProposalActionBean.insuredPersonInfoDTO.residentAddress.fullResidentAddress}">
+										<f:validateLength maximum="200" />
+									</p:inputTextarea>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText styleClass="input-label" value="#{label['ADDNEWSPORTMAN_TO_LABEL']}" />
+								</td>
+								<td>
+									<p:spacer width="20px;" />
+								</td>
+								<td>
+									<p:inputText id="toTrip" style="width:250px;" value="#{SportManAbroadProposalActionBean.insuredPersonInfoDTO.typesOfSport.name}" />
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<p:message for="beneficiariesInfoTablePanel" />
+						<h:panelGroup id="beneficiariesInfoTablePanel" style="width:100%">
+							<fieldset>
+								<legend>
+									<table>
+										<tr>
+											<td>
+												<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIESINFO_LABLE']}" />
+											</td>
+											<td>
+												<p:commandLink action="#{SportManAbroadProposalActionBean.prepareAddNewBeneficiariesInfo()}" immediate="true" oncomplete="PF('beneficiariesInfoEntryDialog').show()"
+													update=":beneficiaryInfoEntryForm">
+													<h:graphicImage style="height:22px;width:22px;" url="/images/add.png" />
+												</p:commandLink>
+											</td>
+										</tr>
+									</table>
+								</legend>
+								<p:dataTable id="beneficiaryPersonTable" style="width:100%" value="#{SportManAbroadProposalActionBean.insuredPersonInfoDTO.beneficiariesInfoDTOList}" var="beneficiary">
+									<p:column headerText="Beneficiary">
+										<h:outputText value="#{beneficiary.fullName}" />
+									</p:column>
+									<p:column headerText="Age">
+										<h:outputText value="#{beneficiary.age}" />
+									</p:column>
+									<p:column headerText="Gender">
+										<h:outputText value="#{beneficiary.gender}" />
+									</p:column>
+									<p:column headerText="ID NO.">
+										<h:outputText value="#{beneficiary.idNo}" />
+									</p:column>
+									<p:column headerText="Resident TownShip">
+										<h:outputText value="#{beneficiary.residentAddress.township.name}" />
+									</p:column>
+									<p:column headerText="Beneficiary Percentage">
+										<h:outputText value="#{beneficiary.percentage}%" />
+									</p:column>
+									<p:column headerText="Relationship">
+										<h:outputText value="#{beneficiary.relationship.name}" />
+									</p:column>
+									<p:column style="width:50px;">
+										<p:commandLink action="#{SportManAbroadProposalActionBean.prepareEditBeneficiariesInfo(beneficiary)}" id="editBeneficiaryLink" immediate="true"
+											oncomplete="PF('beneficiariesInfoEntryDialog').show()" update=":beneficiaryInfoEntryForm">
+											<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+										</p:commandLink>
+									</p:column>
+									<p:column style="width:50px;">
+										<p:commandLink action="#{SportManAbroadProposalActionBean.removeBeneficiariesInfo(beneficiary)}" id="removeBeneficiaryLink" immediate="true"
+											update=":personForm:beneficiariesInfoTablePanel">
+											<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+										</p:commandLink>
+									</p:column>
+								</p:dataTable>
+							</fieldset>
+						</h:panelGroup>
+					</td>
+				</tr>
+			</table>
+		</h:form>
+		<!-- Life Policy Dialog -->
+		<h:form id="beneficiaryInfoEntryForm">
+			<p:dialog header="#{label['MANAGE_INSUREDPERSON_BENEFICIARIESINFO_LABLE']}" hideEffect="explode" id="beneficiariesInfoEntryDialog" resizable="false" showEffect="explode"
+				widgetVar="beneficiariesInfoEntryDialog">
+				<h:panelGroup id="beneficiariesInfoPanel">
+					<table cellspacing="5">
+						<tr>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="initialId" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="Initial ID" />
+										</td>
+										<td>
+											<p:inputText id="initialId" style="width:250px;" value="#{SportManAbroadProposalActionBean.beneficiariesInfoDTO.initialId}">
+											</p:inputText>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="firstName" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="First Name" />
+										</td>
+										<td>
+											<p:inputText id="firstName" style="width:250px;" value="#{SportManAbroadProposalActionBean.beneficiariesInfoDTO.name.firstName}">
+											</p:inputText>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="middleName" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="Middle Name" />
+										</td>
+										<td>
+											<p:inputText id="middleName" style="width:250px;" value="#{SportManAbroadProposalActionBean.beneficiariesInfoDTO.name.middleName}">
+											</p:inputText>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="lastName" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="Last Name" />
+										</td>
+										<td>
+											<p:inputText id="lastName" style="width:250px;" value="#{SportManAbroadProposalActionBean.beneficiariesInfoDTO.name.lastName}">
+											</p:inputText>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="idType" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="IdType" />
+										</td>
+										<td>
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="idType" style="height:24px;width: 258px;"
+												value="#{SportManAbroadProposalActionBean.beneficiariesInfoDTO.idType}">
+												<f:selectItems value="#{SportManAbroadProposalActionBean.idTypes}" />
+											</p:selectOneMenu>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="idNo" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="ID NO" />
+										</td>
+										<td>
+											<p:inputText id="idNo" style="width:250px;" value="#{SportManAbroadProposalActionBean.beneficiariesInfoDTO.idNo}" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="gender" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="Gender" />
+										</td>
+										<td>
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="gender" style="height:24px;width: 258px;"
+												value="#{SportManAbroadProposalActionBean.beneficiariesInfoDTO.gender}">
+												<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{SportManAbroadProposalActionBean.gender}" var="type" />
+											</p:selectOneMenu>
+										</td>
+									</tr>
+								</table>
+							</td>
+							<td valign="top">
+								<table>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 115px;">
+											<p:message for="townShip" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 115px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="Resident TownShip" />
+										</td>
+										<td>
+											<h:panelGrid columns="3" id="townShipPanelGroup">
+												<p:inputText id="townShip" readonly="true" style="width:250px;margin-left:-4px;"
+													value="#{SportManAbroadProposalActionBean.beneficiariesInfoDTO.residentAddress.township == null ? '' : SportManAbroadProposalActionBean.beneficiariesInfoDTO.residentAddress.township.name}">
+												</p:inputText>
+												<p:commandLink actionListener="#{SportManAbroadProposalActionBean.selectTownShip()}" id="selectTownShipDialogLink" immediate="true">
+													<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+													<p:ajax event="dialogReturn" listener="#{SportManAbroadProposalActionBean.returnTownShip}" update="townShipPanelGroup" />
+												</p:commandLink>
+											</h:panelGrid>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="address" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="Resident Address" />
+										</td>
+										<td>
+											<p:inputTextarea id="address" style="width:250px;" value="#{SportManAbroadProposalActionBean.beneficiariesInfoDTO.residentAddress.residentAddress}">
+											</p:inputTextarea>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="percentage" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_PERCENTAGE_LABEL']}" />
+										</td>
+										<td>
+											<p:inputText id="percentage" style="width:250px;" value="#{SportManAbroadProposalActionBean.beneficiariesInfoDTO.percentage}" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="benificiaryAge" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_AGE_LABEL']}" />
+										</td>
+										<td>
+											<p:inputText id="benificiaryAge" style="width:250px;" value="#{SportManAbroadProposalActionBean.beneficiariesInfoDTO.age}" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td>
+											<div style="width: 270px; margin-left: -5px;">
+												<p:message for="beneficiaryRelationShip" />
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_RELATIONSHIP_LABEL']}" />
+										</td>
+										<td>
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="beneficiaryRelationShip" style="height:24px;width: 258px;"
+												value="#{SportManAbroadProposalActionBean.beneficiaryRelationShipId}">
+												<f:selectItem itemLabel="Select" />
+												<f:selectItems value="#{SportManAbroadProposalActionBean.relationshipList}" />
+											</p:selectOneMenu>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<p:commandButton style="width: 80px;" action="#{SportManAbroadProposalActionBean.saveBeneficiariesInfo()}" update=":personForm:beneficiariesInfoTablePanel beneficiariesInfoPanel"
+												value="Save" />
+											<p:spacer width="5" />
+											<p:commandButton style="width: 80px;" immediate="true" oncomplete="PF('beneficiariesInfoEntryDialog').hide()" value="Cancel" />
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

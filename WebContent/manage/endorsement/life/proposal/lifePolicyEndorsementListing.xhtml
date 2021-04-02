@@ -1,0 +1,90 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Life Policy Endorsement Managment"/>
+	<ui:param name="headerRendered" value="true"/>
+	<ui:define name="content">
+		<h:form id="LifePolicyEndorsementForm">
+			<p:panelGrid columns="2" columnClasses="ui-grid-col-8,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-3,ui-grid-col-3,ui-grid-col-3" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:message for="selectPolicyCriteria" id="lifePolicyMsgSelect" />
+					<p:message for="policyCriteria" id="lifePolicyMsg" />
+					<p:outputLabel/>
+					
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="selectPolicyCriteria" value="#{LifePolicyEndorsementActionBean.policyCriteria.policyCriteria}">
+						<f:selectItem itemLabel="Select Criteria" />
+						<f:selectItems value="#{LifePolicyEndorsementActionBean.policyCriteria.policyCriteriaItemList}" />
+					</p:selectOneMenu>
+					<p:inputText id="policyCriteria" value="#{LifePolicyEndorsementActionBean.policyCriteria.criteriaValue}" />
+					<h:panelGrid columns="2">
+						<p:commandButton action="#{LifePolicyEndorsementActionBean.search}" id="searchBtn" update="lifePolicyTablePanel lifePolicyMsg lifePolicyMsgSelect" value="Search"/>
+						<p:commandButton action="#{LifePolicyEndorsementActionBean.reset()}" id="resetBtn" update="LifePolicyEndorsementForm" value="Reset"/>
+					</h:panelGrid>
+					
+				</p:panelGrid>
+			</p:panelGrid>
+			
+			<p:outputPanel id="lifePolicyTablePanel">
+				<p:dataTable id="lifePolicyTable" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10" rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{LifePolicyEndorsementActionBean.lifePolicyList}" var="lifePolicy">
+					<p:column headerText="Policy No." style="width:190px;">
+						<h:outputText value="#{lifePolicy.policyNo}"/>
+					</p:column>
+					<p:column headerText="Saleman">
+						<h:outputText value="#{lifePolicy.saleMan}"/>
+					</p:column>
+					<p:column headerText="Agent">
+						<h:outputText value="#{lifePolicy.agent}"/>
+					</p:column>
+					<p:column headerText="Customer" width="20%">
+						<h:outputText value="#{lifePolicy.customer}"/>
+					</p:column>
+					<p:column headerText="PaymentType">
+						<h:outputText value="#{lifePolicy.paymentType}"/>
+					</p:column>
+					<p:column headerText="Total Discount">
+					</p:column>
+					<p:column headerText="Total Premium">
+						<h:outputText style="float: right;" value="#{lifePolicy.premium}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}"/>
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Total Sum Insured">
+						<h:outputText style="float: right;" value="#{lifePolicy.sumInsured}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}"/>
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Branch">
+						<h:outputText value="#{lifePolicy.branch}"/>
+					</p:column>
+					<p:column headerText="Endorse" style="width:50px; text-align: center;">
+						<p:commandLink action="#{LifePolicyEndorsementActionBean.handlePolicyEndorse(lifePolicy)}"  update="informationForm">
+							<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}"/>
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+			</h:form>
+		<!-- Life Policy Dialog -->
+		
+		<h:form id="informationForm">
+			<p:dialog header="Endrosement Confirmation" height="200" hideEffect="explode" id="informationDialog" resizable="false" showEffect="explode" widgetVar="informationDialog" width="400">
+			   <h:outputText  value="Are You Sure Want to Endorse This Policy" />
+					<br/>
+					<br/>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							    <h:outputText  value="Policy Start Date:"  />
+							    <h:outputText  value="#{LifePolicyEndorsementActionBean.policyStartDate}" style="float:left;"  >
+								  <f:convertDateTime pattern="#{ApplicationSetting.dateFormat}"/>
+								</h:outputText>
+						
+								 <h:outputText  value="Policy End Date :"   />
+						    	 <h:outputText   value="#{LifePolicyEndorsementActionBean.policyEndDate}"  style="float:left;"  >
+									 <f:convertDateTime pattern="#{ApplicationSetting.dateFormat}"/>
+								</h:outputText>
+						
+					 </p:panelGrid>
+					 <br/>
+						<p:commandButton value="Yes" action="#{LifePolicyEndorsementActionBean.editLifePolicy}" styleClass="ui-confirmdialog-yes" icon="pi pi-check"  disabled="#{!LifePolicyEndorsementActionBean.endorse}"  process="@this" />
+				
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

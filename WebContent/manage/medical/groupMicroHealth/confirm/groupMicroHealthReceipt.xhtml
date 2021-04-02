@@ -1,0 +1,145 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui"
+	template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Group Micro Health Confirmation " />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="inputForm">
+			<p:panel>
+				<table>
+					<tr>
+						<td><p:outputLabel>Start Date</p:outputLabel></td>
+						<td><p:calendar value="#{GroupMicroHealthReceiptActionBean.groupMicroHealth.startDate}" pattern="#{ApplicationSetting.dateFormat}"
+								id="startDate" timeZone="#{ApplicationSetting.timeZone}"
+								showOn="button" required="true"
+								requiredMessage="Start Date is required!" style="width:250px;" readonly="true"/>
+							<p:message for="startDate" display="text"></p:message></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel>Number Of Insured Person</p:outputLabel></td>
+						<td><p:inputText id="noOfInsuredPerson" value="#{GroupMicroHealthReceiptActionBean.groupMicroHealth.numberOfInsuredPerson}" required="true"
+								requiredMessage="Number Of Insured Person is required!"
+								style="width:250px;" readonly="true">
+								<f:convertNumber integerOnly="true" type="number" />
+							</p:inputText> <p:message for="noOfInsuredPerson" display="text" /></td>
+					</tr>
+					<!-- <tr>
+						<td><p:outputLabel>Number Of unit</p:outputLabel></td>
+						<td><p:inputText id="noOfUnit" value="#{GroupMicroHealthReceiptActionBean.groupMicroHealth.numberOfUnit}" required="true"
+								requiredMessage="Number Of Unit is required!"
+								style="width:250px;" readonly="true">
+								<f:convertNumber integerOnly="true" type="number" />
+							</p:inputText> <p:message for="noOfUnit" display="text" /></td>
+					</tr> -->
+					<tr>
+						<td><p:outputLabel>Total Premium</p:outputLabel></td>
+						<td><p:inputText id="totalPremium" value="#{GroupMicroHealthReceiptActionBean.groupMicroHealth.totalPremium}" required="true"
+								requiredMessage="Total Premium is required!"
+								style="width:250px;" readonly="true">
+								<f:convertNumber type="number" />
+							</p:inputText> <p:message for="totalPremium" display="text" /></td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Payment Channel" />
+						</td>
+						<td>
+							<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="paymentChannel" required="true" value="#{GroupMicroHealthReceiptActionBean.payment.paymentChannel}">
+								<f:selectItems itemLabel="#{c.label}" itemValue="#{c}" value="#{GroupMicroHealthReceiptActionBean.paymentChannels}" var="c" />
+								<p:ajax event="valueChange" listener="#{GroupMicroHealthReceiptActionBean.changePaymentChannel}" update=":inputForm:chequeEntryTable" />
+							</p:selectOneRadio>
+						</td>
+					</tr>
+				</table>
+				<p:outputPanel id="chequeEntryTable">
+					<table>
+						<tr>
+							<td />
+							<td>
+								<p:message for="accountBankName" id="accountBankMessage"/>
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 150px;">
+								<h:outputText rendered="#{GroupMicroHealthReceiptActionBean.payment.paymentChannel eq 'CHEQUE'}" styleClass="input-label" value="Account Bank" />
+								<h:outputText rendered="#{GroupMicroHealthReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="Account Clearing Bank" />
+								<h:outputText rendered="#{GroupMicroHealthReceiptActionBean.payment.paymentChannel eq 'SUNDRY'}" styleClass="input-label" value="Account Clearing Bank" />
+							</td>
+							<td>
+								<h:panelGrid columns="3" id="accountBankPanelGroup" rendered="#{GroupMicroHealthReceiptActionBean.payment.paymentChannel eq 'CHEQUE' or GroupMicroHealthReceiptActionBean.payment.paymentChannel eq 'TRANSFER' or  GroupMicroHealthReceiptActionBean.payment.paymentChannel eq 'SUNDRY'}">
+									<p:inputText id="accountBankName" readonly="true" style="width:250px;margin-left:-4px;"
+										value="#{GroupMicroHealthReceiptActionBean.payment.accountBank == null ? '' : GroupMicroHealthReceiptActionBean.payment.accountBank.name}" />
+									<p:commandLink actionListener="#{GroupMicroHealthReceiptActionBean.selectAccountBank()}" id="selectAccountBankDialogLink" immediate="true">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										<p:ajax event="dialogReturn" listener="#{GroupMicroHealthReceiptActionBean.returnAccountBank}" update="accountBankPanelGroup" />
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="bankName" id="bankMessage" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText rendered="#{GroupMicroHealthReceiptActionBean.payment.paymentChannel eq 'CHEQUE'}" styleClass="input-label" value="Bank" />
+								<h:outputText rendered="#{GroupMicroHealthReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="Cheque Received Bank" />
+							</td>
+							<td>
+								<h:panelGrid columns="3" id="bankPanelGroup" rendered="#{GroupMicroHealthReceiptActionBean.payment.paymentChannel eq 'CHEQUE' || GroupMicroHealthReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}">
+									<p:inputText id="bankName" readonly="true" style="width:250px;margin-left:-4px;"
+										value="#{GroupMicroHealthReceiptActionBean.payment.bank == null ? '' : GroupMicroHealthReceiptActionBean.payment.bank.name}" />
+									<p:commandLink actionListener="#{GroupMicroHealthReceiptActionBean.selectBank()}" id="selectBankDialogLink" immediate="true">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										<p:ajax event="dialogReturn" listener="#{GroupMicroHealthReceiptActionBean.returnBank}" update="bankPanelGroup" />
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="chequeNo" id="chequeNoMessage"/>
+								<p:message for="poNo" id="poNoMessage"/>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText rendered="#{GroupMicroHealthReceiptActionBean.payment.paymentChannel eq 'CHEQUE'}" styleClass="input-label" value="PO / Account No." />
+								<h:outputText rendered="#{GroupMicroHealthReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}" styleClass="input-label" value="Transfer No." />
+							</td>
+							<td>
+								<p:inputText id="chequeNo" rendered="#{GroupMicroHealthReceiptActionBean.payment.paymentChannel eq 'CHEQUE'}" style="width:250px;margin-left:-2px;"
+									value="#{GroupMicroHealthReceiptActionBean.payment.chequeNo}" />
+								<p:inputText id="poNo" rendered="#{GroupMicroHealthReceiptActionBean.payment.paymentChannel eq 'TRANSFER'}"  style="width:250px;margin-left:-2px;"
+									value="#{GroupMicroHealthReceiptActionBean.payment.poNo}" />
+							</td>
+						</tr>
+					</table>
+				</p:outputPanel>
+			</p:panel>
+			<br />
+			<p:commandButton action="#{GroupMicroHealthReceiptActionBean.addNewGroupMicroHealthReceiptInfo}" disabled="#{GroupMicroHealthReceiptActionBean.actualPayment}" 
+				id="addBtn" style="width: 65px;" value=" OK " update="@form" />
+			<p:spacer width="10" />
+			<p:commandButton style="width: 65px;" action="dashboard" rendered="#{!GroupMicroHealthReceiptActionBean.actualPayment}" id="cancelBtn1" value="Cancel" immediate="true" />
+			<p:spacer width="10" />
+			<p:commandButton action="#{GroupMicroHealthReceiptActionBean.generateReport()}" icon="ui-icon-print" value="Print Preview"
+				disabled="#{!GroupMicroHealthReceiptActionBean.actualPayment}" oncomplete="PF('issuePolicyPDFDialogSingle').show()" update=":pdfPrintForm:printPannel" />
+		</h:form>
+		<h:form enctype="multipart/form-data" id="pdfPrintForm">
+			<p:dialog appendTo="@(body)" dynamic="true" height="550" id="issuePolicyPDFDialogSingle" resizable="false" widgetVar="issuePolicyPDFDialogSingle" width="1024">
+				<p:ajax event="close" update=":pdfPrintForm :inputForm" listener="#{GroupMicroHealthReceiptActionBean.handleClose}" />
+				<p:outputPanel id="printPannel">
+					<p:media height="550" id="pdfPlayer" player="pdf" value="#{GroupMicroHealthReceiptActionBean.reportStream}" width="1000" cache="false" />
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

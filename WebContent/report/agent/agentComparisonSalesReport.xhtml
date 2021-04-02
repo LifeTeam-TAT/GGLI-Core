@@ -1,0 +1,199 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Comparison Sales Report by Independent Agents" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="agentReportForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="month" value="#{label['MONTH_CRITERIA_LBL']}" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="month" value="#{AgentComparisonSalesReportActionBean.criteria.month}">
+						<f:selectItems value="#{AgentComparisonSalesReportActionBean.monthSet}" var="month" itemLabel="#{month}" itemValue="#{month.value}" />
+					</p:selectOneMenu>
+					<h:outputLabel/>
+					<h:outputLabel/>
+					<h:outputText styleClass="input-label" value="#{label['CURRENCY_CRITERIA_LBL']}" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="currency" value="#{AgentComparisonSalesReportActionBean.criteria.currencyType}">
+						<f:selectItem itemLabel="ALL" />
+						<f:selectItems value="#{AgentComparisonSalesReportActionBean.currencyList}" itemValue="#{currency}" var="currency" itemLabel="#{currency.description}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="year" value="#{label['YEAR_CRITERIA_LBL']}" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="year" value="#{AgentComparisonSalesReportActionBean.criteria.year}">
+						<f:selectItems value="#{AgentComparisonSalesReportActionBean.years}" />
+					</p:selectOneMenu>
+					<h:outputLabel/>
+					<h:outputLabel/>
+					<h:outputText styleClass="input-label" value="#{label['BRANCH_CRITERIA_LBL']}" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="branchPannelGroup">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectBranchPanelGrid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentComparisonSalesReportActionBean.selectBranch()}" id="selectBranchDialogLink"
+									process="@this" disabled="#{!AgentComparisonSalesReportActionBean.accessBranch}">
+									<p:ajax event="dialogReturn" listener="#{AgentComparisonSalesReportActionBean.returnBranch}" update="branch salePoint" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true"
+									value="#{AgentComparisonSalesReportActionBean.criteria.branch == null ? '' : AgentComparisonSalesReportActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AgentComparisonSalesReportActionBean.removeBranch()}" process="@this" update="branch salePoint"
+									disabled="#{!AgentComparisonSalesReportActionBean.accessBranch}" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel />
+					<p:message for="salePoint" />
+					<h:outputText styleClass="input-label mandatory" value="Sale Point" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="salePontPanelGroup">
+						<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="salePontPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentComparisonSalesReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{AgentComparisonSalesReportActionBean.returnSalePoint}" update="salePoint" />
+								</p:commandButton>
+								<p:inputText id="salePoint" required="true" readonly="#{AgentComparisonSalesReportActionBean.criteria.salePoint == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+									value="#{AgentComparisonSalesReportActionBean.criteria.salePoint == null ? '' :AgentComparisonSalesReportActionBean.criteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AgentComparisonSalesReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salePoint" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton style="width: 70px;" action="#{AgentComparisonSalesReportActionBean.report()}" update=":agentReportForm:comparisonTablePanel"
+					value="#{label['SEARCH_BTN_LABEL']}" />
+				<p:commandButton style="width: 70px;" action="#{AgentComparisonSalesReportActionBean.resetCriteria()}" update=":agentReportForm" value="#{label['RESET_BTN_LABEL']}" />
+			</h:panelGrid>
+			<h:panelGroup id="comparisonTablePanel">
+				<p:dataTable id="comparisonTable" style="width: 100%" rowIndexVar="index" value="#{AgentComparisonSalesReportActionBean.reportList}" var="agentReport">
+					<f:facet name="header">
+						<p:column rendered="#{AgentComparisonSalesReportActionBean.reportList.size() lt 1 ? false : true}">
+							<h:commandLink action="#{AgentComparisonSalesReportActionBean.exportExcel()}" immediate="true" style="text-align:right;">
+								<p:graphicImage style="widht:30px;height:30px;" value="/images/excel.png" />
+							</h:commandLink>
+						</p:column>
+						<p:column rendered="#{AgentComparisonSalesReportActionBean.reportList.size() lt 1 ? true : false}">
+							<p:commandLink disabled="true">
+								<p:graphicImage style="widht:30px;height:30px;" value="/images/excel.png" />
+							</p:commandLink>
+						</p:column>
+						<p:commandLink disabled="#{AgentComparisonSalesReportActionBean.reportList.size() lt 1 ? true : false}" action="#{AgentComparisonSalesReportActionBean.previewReport()}"
+							immediate="true" update=":agentReportForm :agentComparisonSalesReportForm" style="text-align:right;">
+							<p:graphicImage style="widht:30px;height:30px;" styleClass="#{ApplicationSetting.printStyleClass}" title="PDF Print" url="#{ApplicationSetting.printIcon}" />
+						</p:commandLink>
+					</f:facet>
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column rowspan="2" headerText="Grand Total" />
+							<p:column colspan="2" headerText="Fire Insurance" />
+							<p:column colspan="2" headerText="Motor Insurance" />
+							<p:column colspan="2" headerText="MarineCargo Insurance" />
+							<p:column colspan="2" headerText="Total" />
+							<p:column rowspan="2" headerText="Remarks" />
+						</p:row>
+						<p:row>
+							<p:column headerText="No. of Policy" />
+							<p:column headerText="Premium(Kyat)" />
+							<p:column headerText="No. of Policy" />
+							<p:column headerText="Premium(Kyat)" />
+							<p:column headerText="No. of Policy" />
+							<p:column headerText="Premium(Kyat)" />
+							<p:column headerText="No. of Policy" />
+							<p:column headerText="Premium(Kyat)" />
+						</p:row>
+					</p:columnGroup>
+					<p:column>
+						<h:outputText value="#{agentReport.proposalType} BUSINESS" />
+					</p:column>
+					<p:column style="text-align:right;">
+						<h:outputText value="#{agentReport.firePolicy}" />
+					</p:column>
+					<p:column style="text-align:right;">
+						<h:outputText value="#{agentReport.firePremium}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column style="text-align:right;">
+						<h:outputText value="#{agentReport.motorPolicy}" />
+					</p:column>
+					<p:column style="text-align:right;">
+						<h:outputText value="#{agentReport.motorPremium}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column style="text-align:right;">
+						<h:outputText value="#{agentReport.cargoPolicy}" />
+					</p:column>
+					<p:column style="text-align:right;">
+						<h:outputText value="#{agentReport.cargoPremium}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column style="text-align:right;">
+						<h:outputText value="#{agentReport.noOfTotalpolicy}" />
+					</p:column>
+					<p:column style="text-align:right;">
+						<h:outputText value="#{agentReport.totalPremium}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:columnGroup type="footer">
+						<p:row>
+							<p:column footerText="Total" />
+							<p:column footerText="#{AgentComparisonSalesReportActionBean.firePolicy}" style="text-align:right;" />
+							<p:column style="text-align:right;">
+								<f:facet name="footer">
+									<h:outputText value="#{AgentComparisonSalesReportActionBean.firePremium}">
+										<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+									</h:outputText>
+								</f:facet>
+							</p:column>
+							<p:column footerText="#{AgentComparisonSalesReportActionBean.motorPolicy}" style="text-align:right;" />
+							<p:column style="text-align:right;">
+								<f:facet name="footer">
+									<h:outputText value="#{AgentComparisonSalesReportActionBean.motorPremium}">
+										<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+									</h:outputText>
+								</f:facet>
+							</p:column>
+							<p:column footerText="#{AgentComparisonSalesReportActionBean.cargoPolicy}" style="text-align:right;" />
+							<p:column style="text-align:right;">
+								<f:facet name="footer">
+									<h:outputText value="#{AgentComparisonSalesReportActionBean.cargoPremium}">
+										<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+									</h:outputText>
+								</f:facet>
+							</p:column>
+							<p:column footerText="#{AgentComparisonSalesReportActionBean.noOfTotalPolicy}" style="text-align:right;" />
+							<p:column style="text-align:right;">
+								<f:facet name="footer">
+									<h:outputText value="#{AgentComparisonSalesReportActionBean.totalPremium}">
+										<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+									</h:outputText>
+								</f:facet>
+							</p:column>
+							<p:column footerText="" />
+						</p:row>
+					</p:columnGroup>
+				</p:dataTable>
+			</h:panelGroup>
+		</h:form>
+		<h:form id="agentComparisonSalesReportForm" enctype="multipart/form-data">
+			<p:dialog appendTo="@(body)" dynamic="true" height="550" id="agentComparisonSalesDialog" resizable="false" draggable="false" widgetVar="agentComparisonSalesDialog" width="1050"
+				modal="true">
+				<p:media height="540" id="pdfPlayer" player="pdf" value="#{AgentComparisonSalesReportActionBean.stream}" width="1040" cache="false" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

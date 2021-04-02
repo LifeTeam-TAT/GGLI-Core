@@ -1,0 +1,717 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+ xmlns:fu="http://java.sun.com/jsf/fileUpload" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:jsf="http://xmlns.jcp.org/jsf"
+ template="/common/commonLayout.xhtml">
+ <ui:param name="header" value="#{label['MEDICAL_CLAIMREQUEST_CLAIM_INFO_FORM_TITLE']}" />
+ <ui:param name="headerRendered" value="true" />
+ <ui:define name="content">
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  <h:form enctype="multipart/form-data" id="medicalClaimRequestForm">
+   <STYLE type="text/css">
+.ui-panelgrid td, .ui-panelgrid tr {
+	border-style: none !important
+}
+
+.ui-separator {
+	margin-top: 10px !important;
+}
+</STYLE>
+   <p:growl life="8000" globalOnly="true" showDetail="true" escape="false" />
+   <p:wizard flowListener="#{MedicalClaimRequestActionBean.onFlowProcess}" widgetVar="wiz">
+    <p:tab id="claimProposal" title="Claim Proposal">
+     <p:panel id="claimProposalPanel">
+      <p:panelGrid columns="2" columnClasses="ui-grid-col-5,ui-grid-col-5" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+       <p:panelGrid style="margin:10px;" columns="2" columnClasses="ui-grid-col-3,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+        <h:outputText styleClass="input-label" value="Noficication No:" />
+        <p:inputText id="claimReportNo" value="#{MedicalClaimRequestActionBean.medicalClaimProposal.claimReportNo}" readonly="true" />
+        <p:outputLabel />
+        <p:outputLabel />
+        <h:outputText styleClass="input-label" value="#{label['MEDICALHOSP_CLAIMREQUEST_POLICY_NO_LABEL']}" />
+        <p:inputText id="policyNo" value="#{MedicalClaimRequestActionBean.medicalClaimProposal.policyNo}" readonly="true" />
+        <p:outputLabel />
+        <p:message for="submittedDate" />
+        <h:outputText styleClass="input-label mandatory" value="#{label['MEDICALDEATH_CLAIMREQUEST_SUBMITTED_DATE_LABEL']}" />
+        <p:calendar id="submittedDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+         value="#{MedicalClaimRequestActionBean.medicalClaimProposal.submittedDate}" mindate="new Date()" required="true" />
+       </p:panelGrid>
+       <p:panelGrid style="margin:10px;" columns="2" columnClasses="ui-grid-col-3,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+        <p:outputLabel />
+        <p:message for="branch" id="MsgBranch" />
+        <h:outputText styleClass="input-label mandatory" value="#{label['MEDICALDEATH_CLAIMREQUEST_BRANCH_LABEL']}" />
+        <h:panelGrid columns="3" id="selectBranchPanelGrid">
+         <p:inputText id="branch" style="width:250px;"
+          value="#{MedicalClaimRequestActionBean.medicalClaimProposal.branch == null ? '' : MedicalClaimRequestActionBean.medicalClaimProposal.branch.name}"
+          readonly="#{MedicalClaimRequestActionBean.medicalClaimProposal.branch == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true" />
+         <p:commandLink actionListener="#{MedicalClaimRequestActionBean.selectBranch()}" id="selectBranchDialogLink" immediate="true">
+          <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+          <p:ajax event="dialogReturn" listener="#{MedicalClaimRequestActionBean.returnBranch}" update="selectBranchPanelGrid MsgBranch" />
+         </p:commandLink>
+        </h:panelGrid>
+        <p:outputLabel />
+        <p:message for="salePerson" />
+        <h:outputText styleClass="input-label mandatory" value="Sale Person" />
+        <p:selectOneRadio value="#{MedicalClaimRequestActionBean.saleMan}" style="width:200px;">
+         <f:selectItem itemLabel="SaleMan" itemValue="false" />
+         <f:selectItem itemLabel="Agent" itemValue="true" />
+         <p:ajax immediate="true" update="selectSalePersonPanelGrid" event="valueChange" listener="#{MedicalClaimRequestActionBean.changeSaleMan}" />
+        </p:selectOneRadio>
+        <p:outputLabel />
+        <h:panelGrid columns="3" id="selectSalePersonPanelGrid">
+         <p:watermark for="salePerson" value="Select Sale Person" />
+         <p:inputText id="salePerson" style="width:250px; margin-left: -4px;" value="#{MedicalClaimRequestActionBean.medicalClaimProposal.salePersonName}"
+          readonly="#{(MedicalClaimRequestActionBean.medicalClaimProposal.salePersonName eq null or MedicalClaimRequestActionBean.medicalClaimProposal.salePersonName.isEmpty()) ? false : true}"
+          required="true" />
+         <p:commandLink actionListener="#{MedicalClaimRequestActionBean.selectSaleMan()}" id="selectSaleManDialogLink" immediate="true"
+          rendered="#{MedicalClaimRequestActionBean.saleMan}">
+          <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+          <p:ajax event="dialogReturn" listener="#{MedicalClaimRequestActionBean.returnSaleMan}" update="selectSalePersonPanelGrid" />
+         </p:commandLink>
+         <p:commandLink actionListener="#{MedicalClaimRequestActionBean.selectAgent()}" id="selectAgentDialogLink" immediate="true"
+          rendered="#{!MedicalClaimRequestActionBean.saleMan}">
+          <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+          <p:ajax event="dialogReturn" listener="#{MedicalClaimRequestActionBean.returnAgent}" update="selectSalePersonPanelGrid" />
+         </p:commandLink>
+        </h:panelGrid>
+        <p:outputLabel />
+        <p:message for="selectClaimType" />
+        <h:outputText styleClass="input-label mandatory" value="Claim Type" />
+        <p:selectManyCheckbox id="selectClaimType" value="#{MedicalClaimRequestActionBean.selectedClaimTypes}" required="true" style="width: 250px;"
+         requiredMessage="#{label['CLAIMTYPE_IS_REQUIRED']}">
+         <f:selectItems value="#{MedicalClaimRequestActionBean.claimTypes}" var="types" itemLabel="#{types.label}" />
+         <p:ajax update="generalInfo accPanel" event="valueChange" listener="#{MedicalClaimRequestActionBean.changeClaimType}" />
+        </p:selectManyCheckbox>
+       </p:panelGrid>
+      </p:panelGrid>
+      <br />
+      <p:message for="medicalPolicyTable" />
+      <p:dataTable id="medicalPolicyTable" style="width: 100%;" value="#{MedicalClaimRequestActionBean.policyInsuredPersonList}" var="insuredperson">
+       <p:column headerText="Name" style="width: 25%;">
+        <h:outputText value="#{insuredperson.fullName}" />
+       </p:column>
+       <p:column headerText="Age (Next Year)" style="width: 12%;">
+        <h:outputText value="#{insuredperson.age}" />
+       </p:column>
+       <p:column headerText="Commencement Date" style="width: 10%;">
+        <h:outputText value="#{insuredperson.startDate}">
+         <f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+        </h:outputText>
+       </p:column>
+       <p:column headerText="Unit" style="width: 10%;">
+        <h:outputText value="#{insuredperson.totalUnit}">
+        </h:outputText>
+       </p:column>
+       <p:column headerText="Premium" style="width: 10%;">
+        <h:outputText value="#{insuredperson.totalPremium}">
+        </h:outputText>
+       </p:column>
+       <p:column headerText="Peroid Of Insurance(Month)" style="width: 10%;">
+        <h:outputText value="#{insuredperson.periodMonth}">
+        </h:outputText>
+       </p:column>
+       <p:column headerText="Product type" style="width: 25%;">
+        <h:outputText value="#{insuredperson.product.name}" />
+       </p:column>
+      </p:dataTable>
+     </p:panel>
+    </p:tab>
+    <p:tab id="generalInfo" title="General Claim Info">
+     <p:panel id="generalClaimInfoPanel">
+      <p:panelGrid columns="2">
+       <h:outputText styleClass="input-label" value="#{label['MEDICALDEATH_CLAIMREQUEST_HOSP_PERSON_NAME_LABEL']}" />
+       <p:inputText id="insuredPersonName" style="width:250px;margin-left:-4px;"
+        value="#{MedicalClaimRequestActionBean.medicalClaimProposal.policyInsuredPerson.fullName == null ? '' : MedicalClaimRequestActionBean.medicalClaimProposal.policyInsuredPerson.fullName}"
+        readonly="true" />
+       <p:outputLabel />
+       <p:selectOneRadio style="width: 150px;" value="#{MedicalClaimRequestActionBean.death}">
+        <f:selectItem itemLabel="Alive" itemValue="false" itemDisabled="#{MedicalClaimRequestActionBean.death}" />
+        <f:selectItem itemLabel="Death" itemValue="true" itemDisabled="#{!MedicalClaimRequestActionBean.death}" />
+       </p:selectOneRadio>
+      </p:panelGrid>
+      <p:accordionPanel activeIndex="5" id="accPanel" style="width:80%;margin-bottom:3px;">
+       <p:tab title="Hospitalized Claim Information" rendered="#{MedicalClaimRequestActionBean.medicalClaimProposal.hospitalized}">
+        <p:panelGrid columns="2">
+         <p:outputLabel />
+         <p:message for="startDate" />
+         <h:outputText styleClass="input-label mandatory" value="Hospitalized Start Date" />
+         <p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" size="25" timeZone="#{ApplicationSetting.timeZone}"
+          value="#{MedicalClaimRequestActionBean.hospitalizedClaim.hospitalizedStartDate}" required="true" readonly="#{facesContext.currentPhaseId.ordinal eq 6}">
+          <p:ajax event="dateSelect" listener="#{MedicalClaimRequestActionBean.calculateHospitalFee}" update="hospitalAmt" />
+         </p:calendar>
+         <p:outputLabel />
+         <p:message for="endDate" />
+         <h:outputText styleClass="input-label mandatory" value="Hospitalized End Date" />
+         <p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" size="25" timeZone="#{ApplicationSetting.timeZone}"
+          value="#{MedicalClaimRequestActionBean.hospitalizedClaim.hospitalizedEndDate}" required="true" readonly="#{facesContext.currentPhaseId.ordinal eq 6}">
+          <p:ajax event="dateSelect" listener="#{MedicalClaimRequestActionBean.calculateHospitalFee}" update="hospitalAmt" />
+         </p:calendar>
+         <h:outputText styleClass="input-label mandatory" value="Claim Amount" />
+         <p:inputText id="hospitalAmt" style="width:250px;" value="#{MedicalClaimRequestActionBean.hospitalizedClaim.hospitalizedAmount}" />
+         <h:outputText styleClass="input-label" value="Medical Place" />
+         <h:panelGrid columns="3" id="medcialPlaceGrid">
+          <p:inputText id="medicalPlace" readonly="true" style="width:250px;margin-left:-4px;"
+           value="#{MedicalClaimRequestActionBean.hospitalizedClaim.medicalPlace == null ? '' : MedicalClaimRequestActionBean.hospitalizedClaim.medicalPlace.name}" />
+          <p:commandLink actionListener="#{MedicalClaimRequestActionBean.selectHospital()}" id="selectMedicalPlaceDialogLink" immediate="true">
+           <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+           <p:ajax event="dialogReturn" listener="#{MedicalClaimRequestActionBean.returnMedicalPlaceDialog}" update="medcialPlaceGrid" />
+          </p:commandLink>
+         </h:panelGrid>
+         <h:outputText styleClass="input-label" value="Hospitalized Address" />
+         <p:inputTextarea id="mpAddress" rows="3" readonly="true" style="width:250px;"
+          value="#{MedicalClaimRequestActionBean.hospitalizedClaim.medicalPlace == null ? '' : MedicalClaimRequestActionBean.hospitalizedClaim.medicalPlace.address.fullAddress}">
+         </p:inputTextarea>
+         <h:outputText styleClass="input-label" value="Free Notes" />
+         <p:inputTextarea styleClass="input-label" rows="3" style="width:250px;" value="#{MedicalClaimRequestActionBean.hospitalizedClaim.reason}" />
+        </p:panelGrid>
+        <p:outputLabel />
+        <p:message for="iCD10HospitalizedListPanelGroup" id="MsgHospitalizedReason" />
+        <fieldset style="width: 90%" id="hospitalizedReason">
+         <legend>
+          <table>
+           <tr>
+            <td>
+             <h:outputText style="color:red;" value="*" />
+             <h:outputText styleClass="input-label" value="#{label['MEDICALHOSP_CLAIMREQUEST_HOSP_REASON_LABEL']}" />
+            </td>
+            <td>
+             <p:commandLink id="selectICD10HospitalizedListLink" immediate="true" oncomplete="PF('ICD10ListHospitalizedDialog').show()">
+              <h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+             </p:commandLink>
+            </td>
+           </tr>
+          </table>
+         </legend>
+         <h:panelGroup id="iCD10HospitalizedListPanelGroup">
+          <h:outputText rendered="#{empty MedicalClaimRequestActionBean.hospitalizedReasonList}" styleClass="input-label" value="There is no selected reasons." />
+          <p:dataTable style="width: 100%;" rendered="#{!empty MedicalClaimRequestActionBean.hospitalizedReasonList}"
+           value="#{MedicalClaimRequestActionBean.hospitalizedReasonList}" var="icdInit">
+           <p:column headerText="Code" style="width: 25%;">
+            <h:outputText value="#{icdInit.code}" />
+           </p:column>
+           <p:column headerText="Disease" style="width: 65%;">
+            <h:outputText value="#{icdInit.description}" />
+           </p:column>
+           <p:column style="width: 10%; text-align: center;" headerText="Delete">
+            <p:commandLink action="#{MedicalClaimRequestActionBean.removeHospitalizedList(icdInit)}" id="removeHosptializedICDListLink" immediate="true"
+             update=":medicalClaimRequestForm:accPanel">
+             <p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+            </p:commandLink>
+           </p:column>
+          </p:dataTable>
+         </h:panelGroup>
+        </fieldset>
+       </p:tab>
+       <p:tab title="Death Claim Information" rendered="#{MedicalClaimRequestActionBean.medicalClaimProposal.death}">
+        <p:panelGrid columns="2">
+         <p:outputLabel />
+         <p:selectOneRadio style="width: 250px;">
+          <f:selectItem itemLabel="Accident" itemValue="false" />
+          <f:selectItem itemLabel="Not Accident" itemValue="true" />
+         </p:selectOneRadio>
+         <p:outputLabel />
+         <p:message for="deathDate" />
+         <h:outputText styleClass="input-label mandatory" value="Death Date" />
+         <p:calendar id="deathDate" pattern="#{ApplicationSetting.dateFormat}" size="30" showOn="button" maxdate="new Date()" timeZone="#{ApplicationSetting.timeZone}"
+          value="#{MedicalClaimRequestActionBean.deathClaim.deathDate}" required="true" styleClass="#{facesContext.validationFailed ?'white':'custom'}"
+          readonly="#{facesContext.currentPhaseId.ordinal eq 6}">
+          <p:ajax event="dateSelect" update="deathDate" />
+          <p:ajax event="change" update="deathDate" />
+         </p:calendar>
+         <h:outputText styleClass="input-label mandatory" value="Death Claim Amount" />
+         <p:inputText value="#{MedicalClaimRequestActionBean.deathClaim.deathClaimAmount}" style="width:250px" required="true"/>
+         <h:outputText styleClass="input-label mandatory" value=" Death Place" />
+         <p:selectOneMenu id="selectDeathPlace" value="#{MedicalClaimRequestActionBean.deathClaim.deathPlace}" style="width: 250px;">
+          <f:selectItem itemLabel="At Hospital" itemValue="At Hospital" />
+          <f:selectItem itemLabel="At Home" itemValue="At Home" />
+          <f:selectItem itemLabel="At Office" itemValue="At Office" />
+          <f:selectItem itemLabel="At Job" itemValue="At Job" />
+          <f:selectItem itemLabel="Other" itemValue="Other" />
+          <!-- <p:ajax listener="#{MedicalClaimRequestActionBean.selectedDeathPlace()}" update="medicalClaimRequestForm:otherGrid" /> -->
+         </p:selectOneMenu>
+         <h:outputText styleClass="input-label" value="Death Reason" />
+         <h:panelGrid columns="3" id="selectDeathICDPanelGrid">
+          <p:inputText id="deathIcd" style="width:250px;margin-left:-5px;"
+           value="#{MedicalClaimRequestActionBean.deathClaim.deathReason == null ? '' : MedicalClaimRequestActionBean.deathClaim.deathReason.description}"
+           readonly="#{MedicalClaimRequestActionBean.deathClaim.deathReason == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true" />
+          <p:commandLink actionListener="#{MedicalClaimRequestActionBean.selectICD10()}" id="selectDeathICDDialogLink" immediate="true">
+           <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+           <p:ajax event="dialogReturn" listener="#{MedicalClaimRequestActionBean.returnDeathICD}" update="selectDeathICDPanelGrid" />
+          </p:commandLink>
+         </h:panelGrid>
+         <h:outputText styleClass="input-label" value="Free Notes" />
+         <p:inputTextarea styleClass="input-label" rows="3" style="width:250px;" value="#{MedicalClaimRequestActionBean.deathClaim.reason}" />
+        </p:panelGrid>
+       </p:tab>
+       <p:tab title="Operation Claim Information" rendered="#{MedicalClaimRequestActionBean.medicalClaimProposal.operation}">
+        <p:panelGrid columns="2">
+         <p:outputLabel />
+         <p:message for="operationDate" />
+         <h:outputText styleClass="input-label mandatory" value="Operation Date" />
+         <p:calendar id="operationDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" maxdate="new Date()" size="30" timeZone="#{ApplicationSetting.timeZone}"
+          value="#{MedicalClaimRequestActionBean.operationClaim.operationDate}" required="true" styleClass="#{facesContext.validationFailed ?'white':'custom'}"
+          readonly="#{facesContext.currentPhaseId.ordinal eq 6}">
+          <p:ajax event="dateSelect" update="operationDate" />
+          <p:ajax event="change" update="operationDate" />
+         </p:calendar>
+         <h:outputText styleClass="input-label" value="Operation Fees" />
+         <p:inputText id="actualOperationAmt" style="width:250px; text-align: right;" value="#{MedicalClaimRequestActionBean.operationClaim.operationFee}">
+          <f:convertNumber pattern="#{ApplicationSetting.percentFormat}" />
+         </p:inputText>
+         <h:outputText styleClass="input-label" value="Operation Reason" />
+         <h:panelGrid columns="3" id="selectOperationICDPanelGrid">
+          <p:inputText id="operationIcd" style="width:250px;;margin-left:-5px;"
+           value="#{MedicalClaimRequestActionBean.operationClaim.operationReason == null ? '' : MedicalClaimRequestActionBean.operationClaim.operationReason.description}"
+           readonly="#{MedicalClaimRequestActionBean.operationClaim.operationReason == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true" />
+          <p:commandLink actionListener="#{MedicalClaimRequestActionBean.selectICD10()}" id="selectOperationICDDialogLink" immediate="true">
+           <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+           <p:ajax event="dialogReturn" listener="#{MedicalClaimRequestActionBean.returnOperationICD}" update="selectOperationICDPanelGrid" />
+          </p:commandLink>
+         </h:panelGrid>
+         <h:outputText styleClass="input-label" value="Is Abortion" />
+         <p:selectBooleanCheckbox value="#{MedicalClaimRequestActionBean.abortion}">
+          <p:ajax event="valueChange" update="abortionAmt lblAbortionAmt" listener="#{MedicalClaimRequestActionBean.calculateAbortionAmt}" />
+         </p:selectBooleanCheckbox>
+         <h:outputText id="lblAbortionAmt" styleClass="input-label" value="Abortion Amount" />
+         <p:inputText id="abortionAmt" readonly="true" value="#{MedicalClaimRequestActionBean.operationClaim.abortionAmount}"
+          style="width:250px;" />
+         <h:outputText styleClass="input-label" value="Free Notes" />
+         <p:inputTextarea styleClass="input-label" rows="3" style="width:250px;" value="#{MedicalClaimRequestActionBean.operationClaim.operationRemark}" />
+        </p:panelGrid>
+       </p:tab>
+       <p:tab title="Medication Claim Information" rendered="#{MedicalClaimRequestActionBean.medicalClaimProposal.medication}">
+        <p:panelGrid columns="2">
+         <h:outputText styleClass="input-label mandatory" value="Medication Times" />
+         <p:inputText value="#{MedicalClaimRequestActionBean.medicationClaim.noOfTimes}" style="width:250px">
+          <p:ajax update="medicationFee" event="valueChange" listener="#{MedicalClaimRequestActionBean.calculateMedicationFee}" />
+         </p:inputText>
+         <h:outputText styleClass="input-label mandatory" value="Medication Fees" />
+         <p:inputText id="medicationFee" value="#{MedicalClaimRequestActionBean.medicationClaim.medicationFee}" style="width:250px" />
+         <h:outputText styleClass="input-label" value="Medication Reason" />
+         <h:panelGrid columns="3" id="selectMedicationICDPanelGrid">
+          <p:inputText id="medicationIcd" style="width:250px;;margin-left:-5px;"
+           value="#{MedicalClaimRequestActionBean.medicationClaim.medicationReason == null ? '' : MedicalClaimRequestActionBean.medicationClaim.medicationReason.description}"
+           readonly="#{MedicalClaimRequestActionBean.medicationClaim.medicationReason == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true" />
+          <p:commandLink actionListener="#{MedicalClaimRequestActionBean.selectICD10()}" id="selectMedicationICDDialogLink" immediate="true">
+           <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+           <p:ajax event="dialogReturn" listener="#{MedicalClaimRequestActionBean.returnMedicationICD}" update="selectMedicationICDPanelGrid" />
+          </p:commandLink>
+         </h:panelGrid>
+         <h:outputText styleClass="input-label" value="Free Notes" />
+         <p:inputTextarea styleClass="input-label" rows="3" style="width:250px;" value="#{MedicalClaimRequestActionBean.medicationClaim.medication}" />
+        </p:panelGrid>
+       </p:tab>
+      </p:accordionPanel>
+     </p:panel>
+    </p:tab>
+    <p:tab id="beneficiaryClaimInfo" title="Beneficiary Claim Info">
+     <p:panel id="beneficiaryClaimInfoPanel">
+      <p:fieldset legend="Beneficiary_InsuredPerson" styleClass="input-label" rendered="#{!MedicalClaimRequestActionBean.child and !MedicalClaimRequestActionBean.death}">
+       <table>
+        <tr style="height: 30px;">
+         <td style="width: 130px;">
+          <h:outputText styleClass="input-label" value="#{label['MEDICALDEATH_CLAIMREQUEST_HOSP_PERSON_NAME_LABEL']}" />
+         </td>
+         <td>
+          <p:inputText id="insuredPersonBeneficiaryName" style="width:250px;margin-left:-4px;"
+           value="#{MedicalClaimRequestActionBean.medicalClaimProposal.policyInsuredPerson.fullName == null ? '' : MedicalClaimRequestActionBean.medicalClaimProposal.policyInsuredPerson.fullName}"
+           readonly="true" />
+         </td>
+        </tr>
+        <tr style="height: 30px;">
+         <td style="width: 130px;">
+          <h:outputText styleClass="input-label" value="NRC No" />
+         </td>
+         <td>
+          <p:inputText id="insuredPersonBeneficiaryNRCNo" style="width:250px;margin-left:-4px;"
+           value="#{MedicalClaimRequestActionBean.medicalClaimProposal.policyInsuredPerson.customer.fullIdNo == null ? '' : MedicalClaimRequestActionBean.medicalClaimProposal.policyInsuredPerson.customer.fullIdNo}"
+           readonly="true" />
+         </td>
+        </tr>
+        <tr style="height: 30px;">
+         <td style="width: 130px;">
+          <h:outputText styleClass="input-label" value="Relationship" />
+         </td>
+         <td>
+          <p:inputText id="relationship" style="width:250px;margin-left:-4px;" value="Self" readonly="true" />
+         </td>
+        </tr>
+       </table>
+      </p:fieldset>
+      <p:fieldset legend="Beneficiary-Gurdian" rendered="#{MedicalClaimRequestActionBean.child}">
+       <table>
+        <tr style="height: 30px;">
+         <td style="width: 130px;">
+          <h:outputText styleClass="input-label" value="Gurdian Name" />
+         </td>
+         <td>
+          <p:inputText id="gurdianName" style="width:250px;margin-left:-4px;"
+           value="#{MedicalClaimRequestActionBean.medicalClaimProposal.policyInsuredPerson.guardian.customer.fullName == null ? '' : MedicalClaimRequestActionBean.medicalClaimProposal.policyInsuredPerson.guardian.customer.fullName}"
+           readonly="true" />
+         </td>
+        </tr>
+        <tr style="height: 30px;">
+         <td style="width: 130px;">
+          <h:outputText styleClass="input-label" value="NRC No" />
+         </td>
+         <td>
+          <p:inputText id="gurdianNRCNo" style="width:250px;margin-left:-4px;"
+           value="#{MedicalClaimRequestActionBean.medicalClaimProposal.policyInsuredPerson.guardian.customer.idNo == null ? '' : MedicalClaimRequestActionBean.medicalClaimProposal.policyInsuredPerson.guardian.customer.idNo}"
+           readonly="true" />
+         </td>
+        </tr>
+        <tr style="height: 30px;">
+         <td style="width: 130px;">
+          <h:outputText styleClass="input-label" value="Relationship" />
+         </td>
+         <td>
+          <p:inputText id="gurdianRelationship" style="width:250px;margin-left:-4px;"
+           value="#{MedicalClaimRequestActionBean.medicalClaimProposal.policyInsuredPerson.guardian.relationship == null ? '' : MedicalClaimRequestActionBean.medicalClaimProposal.policyInsuredPerson.guardian.relationship.name}"
+           readonly="true" />
+         </td>
+        </tr>
+        <tr style="height: 30px;">
+         <td />
+         <td>
+          <p:selectOneRadio value="#{MedicalClaimRequestActionBean.medicalClaimProposal.policyInsuredPerson.guardian.death}">
+           <f:selectItem itemLabel="Alive" itemValue="flase" />
+           <f:selectItem itemLabel="Death" itemValue="true" />
+           <p:ajax update="beneficiaryClaimInfoPanel" listener="#{MedicalClaimRequestActionBean.changeGuardian}" event="valueChange" />
+          </p:selectOneRadio>
+         </td>
+        </tr>
+       </table>
+      </p:fieldset>
+      <br />
+      <p:fieldset id="policyInsuredPersonBeneficiariesFieldSet" legend="#{label['MEDICAL_CLAIMREQUEST_BENEFICIARY_LIST_LABEL']}"
+       rendered="#{(MedicalClaimRequestActionBean.death and !MedicalClaimRequestActionBean.child) or MedicalClaimRequestActionBean.medicalClaimProposal.policyInsuredPerson.guardian.death}">
+       <p:message for="policyInsuredPersonBeneficiariesTable" />
+       <p:dataTable id="policyInsuredPersonBeneficiariesTable" style="width:100%" value="#{MedicalClaimRequestActionBean.policyInsuredPersonBeneficiaryList}" var="beneficiary">
+        <p:column style="width:20px;">
+         <p:selectBooleanCheckbox disabled="#{beneficiary.claimStatus=='PAID'? true : beneficiary.claimStatus=='WAITING' ? true: false}" value="#{beneficiary.claimBeneficiary}">
+          <p:ajax update=":medicalClaimRequestForm:successorBenePanel policyInsuredPersonBeneficiariesTable" event="valueChange"
+           listener="#{MedicalClaimRequestActionBean.changeSelectedBeneficiaryEvent}" />
+         </p:selectBooleanCheckbox>
+        </p:column>
+        <p:column headerText="#{label['MEDICALDEATH_CLAIMREQUEST_BENEFICIARY_NO_LABEL']}">
+         <h:outputText value="#{beneficiary.beneficiaryNo}" />
+        </p:column>
+        <p:column headerText="#{label['MEDICALDEATH_CLAIMREQUEST_BENEFICIARY_NAME_LABEL']}">
+         <h:outputText value="#{beneficiary.getFullName()}" />
+        </p:column>
+        <p:column headerText="#{label['MEDICALDEATH_CLAIMREQUEST_BENEFICIARY_GENDER_LABEL']}">
+         <h:outputText value="#{beneficiary.gender}" />
+        </p:column>
+        <p:column headerText="#{label['MEDICALDEATH_CLAIMREQUEST_BENEFICIARY_NRCNO_LABEL']}">
+         <h:outputText value="#{beneficiary.idNo}" />
+        </p:column>
+        <p:column headerText="#{label['MEDICALDEATH_CLAIMREQUEST_RELATIONSHIP_LABEL']}">
+         <h:outputText value="#{beneficiary.relationship.name}" />
+        </p:column>
+        <p:column headerText="#{label['MEDICALDEATH_CLAIMREQUEST_PERCENTAGE_LABEL']}">
+         <h:outputText value="#{beneficiary.percentage}%" />
+        </p:column>
+        <p:column headerText="Claim Status">
+         <h:outputText
+          value="#{beneficiary.claimStatus == 'WAITING' ? 'WAITING' : beneficiary.claimStatus == 'PAID' ? 'PAID' :  beneficiary.claimStatus == NULL ? '---' : beneficiary.claimStatus}" />
+        </p:column>
+        <p:column style="text-align: center;">
+         <p:commandLink disabled="#{!beneficiary.claimBeneficiary}" action="#{MedicalClaimRequestActionBean.prepareEditDeathBeneficiary(beneficiary)}"
+          id="beneficiaryDeathDialogLink" oncomplete="PF('beneficiaryDeathDialog').show()" update=":beneficiaryDeathDialogForm" process="@this">
+          <p:graphicImage styleClass="#{ApplicationSetting.configStyleClass}" value="#{ApplicationSetting.configIcon}" />
+         </p:commandLink>
+        </p:column>
+       </p:dataTable>
+      </p:fieldset>
+      <br />
+      <h:panelGroup id="successorBenePanel">
+       <p:fieldset legend="Successor Information"
+        rendered="#{MedicalClaimRequestActionBean.selectedBeneficiary.death or MedicalClaimRequestActionBean.medicalClaimBeneficiary.death}">
+        <table>
+         <tr>
+          <td />
+          <td style="width: 130px;">
+           <p:message for="successorName" />
+          </td>
+         </tr>
+         <tr style="height: 30px;">
+          <td style="width: 130px;">
+           <h:outputText style="color:red;" value="*" />
+           <h:outputText styleClass="input-label" value="Successor Name" />
+          </td>
+          <td>
+           <p:inputText id="successorName" style="width:250px;margin-left:-4px;" value="#{MedicalClaimRequestActionBean.medicalClaimBeneficiary.name}" required="true" />
+          </td>
+         </tr>
+         <tr>
+          <td />
+          <td style="width: 130px;">
+           <p:message for="nrcNo" />
+          </td>
+         </tr>
+         <tr style="height: 30px;">
+          <td style="width: 130px;">
+           <h:outputText style="color:red;" value="*" />
+           <h:outputText styleClass="input-label" value="#{label['MEDICALHOSP_CLAIMREQUEST_NRC_NO_LABEL']} " />
+          </td>
+          <td>
+           <p:inputText id="nrcNo" style="width:250px;margin-left:-4px;" value="#{MedicalClaimRequestActionBean.medicalClaimBeneficiary.nrc}" required="true" />
+          </td>
+         </tr>
+         <tr>
+          <td />
+          <td style="width: 130px;">
+           <p:message for="successorRelationship" />
+          </td>
+         </tr>
+         <tr style="height: 30px;">
+          <td style="width: 130px;">
+           <h:outputText style="color:red;" value="*" />
+           <h:outputText styleClass="input-label" value="#{label['MEDICALHOSP_CLAIMREQUEST_RELATIONSHIP_LABEL']}" />
+          </td>
+          <td>
+           <p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="successorRelationship" style="height:24px;width: 258px;margin-left:-4px;" styleClass="#{'menu'}"
+            value="#{MedicalClaimRequestActionBean.medicalClaimBeneficiary.relationShip}">
+            <f:selectItems value="#{MedicalClaimRequestActionBean.relationShipList}" var="successorRelationship" itemLabel="#{successorRelationship.name}"
+             itemValue="#{successorRelationship}" />
+            <p:ajax update="@this" />
+           </p:selectOneMenu>
+          </td>
+         </tr>
+         <tr style="height: 30px;">
+          <td style="width: 130px;">
+           <h:outputText styleClass="input-label" value="Percentage" />
+          </td>
+          <td>
+           <p:inputText id="percentage" style="width:250px;margin-left:-4px;" value="#{MedicalClaimRequestActionBean.medicalClaimBeneficiary.percentage}" readonly="true" />
+          </td>
+         </tr>
+        </table>
+       </p:fieldset>
+      </h:panelGroup>
+     </p:panel>
+    </p:tab>
+    <p:tab id="workFlow" title="Work Flow">
+     <p:panel>
+      <table>
+       <tr>
+        <td />
+        <td style="width: 130px;">
+         <p:message for="remark" />
+        </td>
+       </tr>
+       <tr>
+        <td style="width: 130px;" valign="top">
+         <h:outputText styleClass="input-label" value="#{label['MEDICALDEATH_CLAIMREQUEST_REMARK_LABEL']}" />
+        </td>
+        <td>
+         <p:inputTextarea autoResize="true" id="remark" rows="7" style="width:250px;" value="#{MedicalClaimRequestActionBean.remark}">
+          <p:ajax global="false" update="remark" />
+          <f:validateLength maximum="8000" />
+         </p:inputTextarea>
+        </td>
+       </tr>
+       <tr>
+        <td />
+        <td style="width: 130px;">
+         <p:message for="responsiblePerson" id="MsgResponsiblePerson" />
+        </td>
+       </tr>
+       <tr style="height: 30px;">
+        <td style="width: 130px;">
+         <h:outputText style="color:red;" value="*" />
+         <h:outputText styleClass="input-label" value="#{label['MEDICALDEATH_CLAIMREQUEST_RESPONSIBLE_PERSON_LABEL']}" />
+        </td>
+        <td valign="top">
+         <h:panelGrid columns="3" id="responsiblePersonPanel">
+          <p:inputText id="responsiblePerson" style="width:250px;margin-left:-4px;"
+           readonly="#{MedicalClaimRequestActionBean.responsiblePerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+           value="#{MedicalClaimRequestActionBean.responsiblePerson == null ? '' : MedicalClaimRequestActionBean.responsiblePerson.name}" required="true" />
+          <p:commandLink actionListener="#{MedicalClaimRequestActionBean.selectUser()}" id="selectUserDialogLink" immediate="true">
+           <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+           <p:ajax event="dialogReturn" listener="#{MedicalClaimRequestActionBean.returnUser}" update="responsiblePersonPanel MsgResponsiblePerson" />
+          </p:commandLink>
+         </h:panelGrid>
+        </td>
+       </tr>
+       <tr>
+        <td colspan="2" style="height: 60px;" valign="bottom">
+         <p:commandButton action="#{MedicalClaimRequestActionBean.submitClaimInfo}" update=":medicalClaimRequestForm"
+          value="#{label['MEDICALDEATH_CLAIMREQUEST_SUBMIT_CLAIM_FORM_LABEL']}" />
+        </td>
+       </tr>
+      </table>
+     </p:panel>
+    </p:tab>
+   </p:wizard>
+   <br />
+   <h:outputText value="*-mandatory fields" style="color:red;" />
+   <br />
+   <br />
+   <p:commandButton id="cancelBtn" value="Cancel" action="dashboard" immediate="true" />
+  </h:form>
+  <h:form id="beneficiaryDeathDialogForm">
+   <p:dialog header="Beneficiary Death Information" hideEffect="explode" id="beneficiaryDeathDialog" resizable="false" showEffect="explode" widgetVar="beneficiaryDeathDialog">
+    <h:panelGroup id="beneficiaryDeathPanel">
+     <table>
+      <tr>
+       <td style="width: 130px;">
+        <h:outputText value="Is Death Beneficiary?" />
+       </td>
+       <td>
+        <p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="deathBeneficiary" style="width:130px;" value="#{MedicalClaimRequestActionBean.selectedBeneficiary.death}">
+         <p:ajax update="beneficiaryDeathPanel" event="valueChange" listener="#{MedicalClaimRequestActionBean.resetDeathBeneficiaryEvent}" />
+         <f:selectItem itemLabel="#{label['BOOLEAN_YES_LABEL']}" itemValue="true" />
+         <f:selectItem itemLabel="#{label['BOOLEAN_NO_LABEL']}" itemValue="false" />
+        </p:selectOneRadio>
+       </td>
+      </tr>
+      <tr>
+       <td />
+       <td>
+        <p:message for="benDeathDate" id="benDeathDateMsg" />
+       </td>
+      </tr>
+      <tr>
+       <td>
+        <h:outputText style="color:red;" value="*" />
+        <h:outputText styleClass="input-label" value="Death Date" />
+       </td>
+       <td>
+        <p:calendar id="benDeathDate" disabled="#{!MedicalClaimRequestActionBean.selectedBeneficiary.death}" maxdate="new Date()" pattern="#{ApplicationSetting.dateFormat}"
+         showOn="button" size="18" timeZone="#{ApplicationSetting.timeZone}" styleClass="#{MedicalClaimRequestActionBean.validDeathBeneficiary ?'white':'custom'}"
+         value="#{MedicalClaimRequestActionBean.selectedBeneficiary.deathDate}" />
+       </td>
+      </tr>
+      <tr>
+       <td />
+       <td>
+        <p:message for="benDeathReason" id="benDeathReasonMsg" />
+       </td>
+      </tr>
+      <tr>
+       <td style="width: 115px;" valign="top">
+        <h:outputText style="color:red;" value="*" />
+        <h:outputText styleClass="input-label" value="Death Reason" />
+       </td>
+       <td>
+        <p:inputTextarea autoResize="true" id="benDeathReason" disabled="#{!MedicalClaimRequestActionBean.selectedBeneficiary.death}" rows="7" style="width:250px;"
+         value="#{MedicalClaimRequestActionBean.selectedBeneficiary.deathReason}">
+         <f:validateLength maximum="250" />
+        </p:inputTextarea>
+       </td>
+      </tr>
+      <tr>
+       <td colspan="2">
+        <p:commandButton id="btnDeathBeneUpdate" action="#{MedicalClaimRequestActionBean.updateDeathBeneficiary}"
+         update=":medicalClaimRequestForm:beneficiaryClaimInfoPanel beneficiaryDeathPanel" value="Update" />
+       </td>
+      </tr>
+     </table>
+    </h:panelGroup>
+   </p:dialog>
+  </h:form>
+  <p:dialog header="ICD10 List" height="300" hideEffect="explode" id="ICD10ListHospitalizedDialog" showEffect="fade" widgetVar="ICD10ListHospitalizedDialog" width="700"
+   dynamic="true" modal="true" appendTo="@(body)">
+   <h:form>
+    <p:dataTable id="iCDHospitalizedListTable" rowKey="#{icd.id}" paginator="true" rows="5" selection="#{MedicalClaimRequestActionBean.selectedHospitalizedList}"
+     paginatorPosition="top" value="#{MedicalClaimRequestActionBean.icd10List}" var="icd" widgetVar="iCDHospitalizedListTable">
+     <p:column selectionMode="multiple" style="width:2%" />
+     <p:column headerText="Code">
+      <h:outputText value="#{icd.code}" />
+     </p:column>
+     <p:column headerText="Disease">
+      <h:outputText value="#{icd.description}" />
+     </p:column>
+     <f:facet name="footer">
+      <p:commandLink id="addHospReasonLink" action="#{MedicalClaimRequestActionBean.addNewHospitalizedICD10(icd)}" oncomplete="PF('ICD10ListHospitalizedDialog').hide()"
+       update=":medicalClaimRequestForm:accPanel">
+       <h:graphicImage styleClass="#{ApplicationSetting.selectStyleClass}" value="#{ApplicationSetting.selectIcon}" />
+      </p:commandLink>
+     </f:facet>
+    </p:dataTable>
+   </h:form>
+  </p:dialog>
+  <p:dialog header="ICD10 List" height="300" hideEffect="explode" id="ICD10DeathListDialog" showEffect="fade" widgetVar="ICD10DeathListDialog" width="700" dynamic="true"
+   modal="true" appendTo="@(body)">
+   <h:form>
+    <p:dataTable id="iCDDeathListTable" paginator="true" rows="5" paginatorPosition="top" selection="#{MedicalClaimRequestActionBean.selectedDeathList}"
+     value="#{MedicalClaimRequestActionBean.icd10List}" var="icd" widgetVar="iCDDeathListTable" rowKey="#{icd.id}">
+     <p:column selectionMode="multiple" style="width:2%" />
+     <p:column headerText="Code">
+      <h:outputText value="#{icd.code}" />
+     </p:column>
+     <p:column headerText="Disease">
+      <h:outputText value="#{icd.description}" />
+     </p:column>
+     <f:facet name="footer">
+      <p:commandLink id="addDeathReasonLink" action="#{MedicalClaimRequestActionBean.addNewDeathICD10(icd)}" oncomplete="PF('ICD10DeathListDialog').hide()"
+       update=":medicalClaimRequestForm:accPanel">
+       <h:graphicImage styleClass="#{ApplicationSetting.selectStyleClass}" value="#{ApplicationSetting.selectIcon}" />
+      </p:commandLink>
+     </f:facet>
+    </p:dataTable>
+   </h:form>
+  </p:dialog>
+  <p:dialog header="ICD10 List" height="300" hideEffect="explode" id="ICD10OperationListDialog" showEffect="fade" widgetVar="ICD10OperationListDialog" width="700" dynamic="true"
+   modal="true" appendTo="@(body)">
+   <h:form>
+    <p:dataTable id="iCDOperationListTable" paginator="true" rows="5" paginatorPosition="top" selection="#{MedicalClaimRequestActionBean.selectedOperationList}"
+     value="#{MedicalClaimRequestActionBean.icd10List}" var="icd" widgetVar="iCDOperationListTable" rowKey="#{icd.id}">
+     <p:column selectionMode="multiple" style="width:2%" />
+     <p:column headerText="Code">
+      <h:outputText value="#{icd.code}" />
+     </p:column>
+     <p:column headerText="Disease">
+      <h:outputText value="#{icd.description}" />
+     </p:column>
+     <f:facet name="footer">
+      <p:commandLink id="addOperationReasonLink" action="#{MedicalClaimRequestActionBean.addNewOperationICD10(icd)}" oncomplete="PF('ICD10OperationListDialog').hide()"
+       update=":medicalClaimRequestForm:accPanel">
+       <h:graphicImage styleClass="#{ApplicationSetting.selectStyleClass}" value="#{ApplicationSetting.selectIcon}" />
+      </p:commandLink>
+     </f:facet>
+    </p:dataTable>
+   </h:form>
+  </p:dialog>
+  <p:dialog header="ICD10 List" height="300" hideEffect="explode" id="ICD10AbortionListDialog" showEffect="fade" widgetVar="ICD10AbortionListDialog" width="700" dynamic="true"
+   modal="true" appendTo="@(body)">
+   <h:form>
+    <p:dataTable id="iCDAbortionListTable" paginator="true" rows="5" paginatorPosition="top" selection="#{MedicalClaimRequestActionBean.selectedAbortionList}"
+     value="#{MedicalClaimRequestActionBean.icd10List}" var="icd" widgetVar="iCDAbortionListTable" rowKey="#{icd.id}">
+     <p:column selectionMode="multiple" style="width:2%" />
+     <p:column headerText="Code">
+      <h:outputText value="#{icd.code}" />
+     </p:column>
+     <p:column headerText="Disease">
+      <h:outputText value="#{icd.description}" />
+     </p:column>
+     <f:facet name="footer">
+      <p:commandLink id="addAbortionReasonLink" action="#{MedicalClaimRequestActionBean.addNewAbortionICD10(icd)}" oncomplete="PF('ICD10AbortionListDialog').hide()"
+       update=":medicalClaimRequestForm:accPanel">
+       <h:graphicImage styleClass="#{ApplicationSetting.selectStyleClass}" value="#{ApplicationSetting.selectIcon}" />
+      </p:commandLink>
+     </f:facet>
+    </p:dataTable>
+   </h:form>
+  </p:dialog>
+  <p:dialog header="ICD10 List" height="300" hideEffect="explode" id="ICD10DisabilityListDialog" showEffect="fade" widgetVar="ICD10DisabilityListDialog" width="700" dynamic="true"
+   modal="true" appendTo="@(body)">
+   <h:form>
+    <p:dataTable id="iCDDisabilityListTable" paginator="true" rows="5" paginatorPosition="top" selection="#{MedicalClaimRequestActionBean.selectedDisabilityList}"
+     value="#{MedicalClaimRequestActionBean.icd10List}" var="icd" widgetVar="iCDDisabilityListTable" rowKey="#{icd.id}">
+     <p:column selectionMode="multiple" style="width:2%" />
+     <p:column headerText="Code">
+      <h:outputText value="#{icd.code}" />
+     </p:column>
+     <p:column headerText="Disease">
+      <h:outputText value="#{icd.description}" />
+     </p:column>
+     <f:facet name="footer">
+      <p:commandLink id="addDisabilityReasonLink" action="#{MedicalClaimRequestActionBean.addNewDisabilityICD10(icd)}" oncomplete="PF('ICD10DisabilityListDialog').hide()"
+       update=":medicalClaimRequestForm:iCD10DisabilityListPanelGroup">
+       <h:graphicImage styleClass="#{ApplicationSetting.selectStyleClass}" value="#{ApplicationSetting.selectIcon}" />
+      </p:commandLink>
+     </f:facet>
+    </p:dataTable>
+   </h:form>
+  </p:dialog>
+ </ui:define>
+</ui:composition>

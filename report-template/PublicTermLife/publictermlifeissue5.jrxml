@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="publictermlifeissue5" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0ef931f6-b91c-4c15-af8e-5007ae6f39c1">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="802" splitType="Stretch">
+			<staticText>
+				<reportElement x="7" y="0" width="544" height="175" uuid="273beafa-d0eb-43b7-a06e-ac8bbfb30b57"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[- မ်က္စိတစ္ဖက္ လံုး၀ကြယ္ျခင္းနွင့္ လက္ေကာက္၀တ္ အထက္ပိုင္းမွ လက္တစ္ဖက္လံုး၀ျပတ္ ျခင္း^ လံုး၀ အသံုးျပဳ၍ မရျခင္း။
+- ေဆးကုသျခင္းကို တာ၀န္ယူခဲ့သည့္ အထူးကု ဆရာ၀န္က ထုတ္ေပးသည့္ ထာ၀စဥ္မသန္စြမ္း ျဖစ္ေၾကာင္း ေထာက္ခံခ်က္။ သို့ေသာ္ လုိအပ္ပါက အာမခံကုမၸဏီက ေရြးခ်ယ္ေပးေသာ ဆရာ၀န္ (၂) ဦးက ထုတ္ေပးသည့္ ထာ၀စဥ္မသန္စြမ္းျဖစ္ေၾကာင္း ေထာက္ခံခ်က္ကိုလည္း ပူးတြဲတင္ျပရမည္။
+
+(ဂ) ထိခုိက္ဒဏ္ရာ ရရွိမႈ အက်ိဳးခံစားခြင့္
+    •  အာမခံသက္တမ္းတြင္ အာမခံထားသူသည္ မေမွ်ာ္လင့္ထားေသာ မေတာ္တဆမႈေၾကာင့္ ေအာက္ပါ ဇယားတြင္ သတ္မွတ္ေဖာ္ျပထား ေသာ ထိခိုက္ဒဏ္ရာရရွိမႈ အေျခအေနျဖစ္ပါက သတ္မွတ္ေဖာ္ျပ ထားသည့္ အာမခံထားသူ၏ အသက္အရြယ္အလိုက္ ေအာက္ပါ ဇယားတြင္ သတ္မွတ္ေဖာ္ျပထားသည့္အတိုင္း အသက္အရြယ္ေပၚမူတည့္သည့္ အက်ိဳးခံစားခြင့္ ရာခုိင္နႈန္းအခ်ိဳးအစား (ထာ၀စဥ္မသန္စြမ္း အက်ိဳးခံစားခြင့္ေပၚမူတည္ျပီး တြက္ခ်က္သည့္ ရာခုိင္ႏႈန္းအခ်ိဳးအစား) ျဖင့္ ထိခိုက္ဒဏ္ရာရရွိ္မွု အက်ိဳးခံစားခြင့္ ကို တစ္လံုးတည္းထုတ္ေပးပါမည္။ သို့ေသာ္ အာမခံထားေငြ ၁၀၀ ရာခိုင္ႏႈန္း အျပည့္ ေပးျပီးပါက ေပၚလစီသည္ အလိုအေလ်ာက္ ပ်က္ျပယ္မည္။]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="44" y="186" width="161" height="32" uuid="12727daa-2e68-49fc-b003-02071b80c3d2"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="205" y="186" width="146" height="32" uuid="fbb86910-979d-4bcf-a42e-a65735d7794e"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အသက္ ၁၈ ႏွစ္ မွ
+အသက္ ၆၀ ႏွစ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="351" y="186" width="146" height="32" uuid="f2bb5988-3e8e-46a7-9708-fc99bcff1adb"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အသက္ ၆၁ ႏွစ္မွ
+အသက္ ၇၅ နွစ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="44" y="218" width="161" height="20" uuid="78710a43-0b0b-44bb-b33a-c369bea71e80"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[မ်က္စိ တစ္ဖက္ လံုး၀ကြယ္ျခင္း]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="44" y="238" width="161" height="20" uuid="225f60a2-a4d4-47e8-b23b-40afe7b8b041"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[နားတစ္ဖက္ လံုး၀ပင္းျခင္း]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="44" y="258" width="161" height="20" uuid="852e76a7-811c-40e1-9db8-7e2859c6aec2"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[လက္တစ္ဖက္ လံုး၀ျပတ္ျခင္း]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="44" y="278" width="161" height="20" uuid="5c4a3108-ca17-44e8-be36-fca1f33cce0e"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ေျခတစ္ဖက္ လံုး၀ျပတ္ျခင္း]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="44" y="298" width="161" height="20" uuid="a91a67f8-0553-4a6c-aa20-3dc690634e46"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[လက္တစ္ဖက္ က်ိဳးျခင္း]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="44" y="318" width="161" height="20" uuid="cd1602db-9b6b-4e08-93f1-77bcd324037d"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ဗျခတစ္ဖက္ က်ိဳးျခင္း]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="205" y="238" width="292" height="20" uuid="9850799a-e483-4a26-8cf3-c170b40addf7"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[၂၅ %]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="205" y="218" width="292" height="20" uuid="9764f519-f8ef-46fd-8942-840015012b78"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[၅၀ %]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="205" y="258" width="292" height="20" uuid="c409d802-2d41-4645-88c8-522cbbe39f33"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[၅၀%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="351" y="298" width="146" height="20" uuid="a9877311-ec11-4a8c-8c8c-41d3bb4d342a"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[၅ %]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="351" y="318" width="146" height="20" uuid="48af83dc-7893-41f9-a734-fc9e2d98d2b8"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[၅ %]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="205" y="318" width="146" height="20" uuid="b533d3e0-4360-4824-8ca4-14611fbf0e73"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[၁၀ %]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="205" y="278" width="292" height="20" uuid="2b8b6831-4ead-4bb8-bb77-385225c32e8b"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[၅၀%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="205" y="298" width="146" height="20" uuid="fbe37b51-72cb-4c5f-a929-6f9fa7db3921"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[၁၀ %]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="353" width="544" height="449" uuid="ff8f3f32-6f1d-4576-90c5-482bcfe81a2b"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ သတ္မွတ္ထားေသာ ထိခိုက္ဒဏ္ရာရရွိမႈ ျဖစ္ပြားခ်ိန္နွင့္ တစ္ခ်ိန္တည္းတြင္ ေသဆံုးျခင္း သုိ့မဟုတ္ ထာ၀စဥ္မသန္စြမ္း ျဖစ္ပြားခဲ့ပါက ထိခိုက္ဒဏ္ရာရရွိမႈ အက်ိဳးခံစားခြင့္ကို မေပးေခ်ပါ။
+    • ထိခိုက္ဒဏ္ရာရရွိမႈ အေျခအေန ၂ ခုနွင့္ အထက္ ကိုက္ညီေနပါက အသီးသီးေသာ ထိခိုက္ဒဏ္ရာရရွိမႈ အေျခအေန နွင့္ ကိုက္ညီသည့္ အက်ိဳးခံစားခြင့္ ရာခိုင္ႏႈန္း အခ်ိဳးအစားျဖင့္ ထိခိုက္ဒဏ္ရာရရွိမႈ အက်ိဴးခံစားခြင့္ကို ထုတ္ေပးပါမည္။
+    • ထိခိုက္ဒဏ္ရာရရွိမႈ အက်ိဳးခံစားခြင့္ကို ထုတ္ယူရန္အတြက္ လုိအပ္ေသာ စာရြက္စာတမ္းမ်ားမွာ ေအာက္ပါအတိုင္းျဖစ္ပါသည္။
+-အာမခံေပၚလစီမူရင္း
+-ေဆးကုသျခင္းကို တာ၀န္ယူခဲ့သည့္ အထူးကုဆရာ၀န္က ထုတ္ေပးသည့္ ထိခုိက္ဒဏ္ရာရရွိမႈ အေျခအေန ေထာက္ခံခ်က္
+- က်န္းမာေရးနွင့္ အားကစား၀န္ၾကီးဌာနက အသိအမွတ္ျပဳထားသည့္ ေဆးရုံ^ေဆးခန္းမ်ားက ထုတ္ေပးသည့္ ေဆးကုသမႈမွတ္တမ္း
+-အက်ိဳးခံစားခြင့္ေတာင္းခံလႊာ
+
+၂။ စာခ်ဴပ္ဖ်က္သိမ္းအမ္းေငြ
+    • စာခ်ဳပ္ဖ်က္သိမ္းအမ္းေငြ မရွိပါ။
+
+၃။ အက်ိဳးခံစားခြင့္ မရရွိနိုင္သည့္ ကိစၥမ်ား
+    • အာမခံထားသူသည္ ေအာက္ေဖာ္ျပပါ အေၾကာင္းကိစၥရပ္ တစ္ခုခုေၾကာင့္ ေသဆံုးပါက ေသဆံုးမႈ အက်ိဳးခံစားခြင့္ကို မေပးေခ်ပါ
+
+(က) မိမိကိုယ္ကို သတ္ေသျခင္း။
+(ခ) ေပၚလစီရွင္၏ တမင္ရည္ရြယ္လုပ္ေဆာင္မႈျဖစ္ျခင္း။
+(ဂ) အာမခံထားသူက ရာဇ၀တ္မႈက်ဴးလြန္ျခင္း၊ ဥပေဒခ်ိဳးေဖာက္ျခင္း။
+(ဃ) ေသဆံုးမႈ အကိ်ဴးခံစားခြင့္ လႊဲေျပာင္းျခင္းခံရသူ၏ တမင္ရည္ရြယ္ လုပ္ေဆာင္မႈ ျဖစ္ျခင္း။
+(င) မူးယစ္ေဆး၀ါး သို့မဟုတ္ ေဘးအႏၱရာယ္ျဖစ္ေစေသာ ေဆးကို သံုးစြဲျခင္း။
+(စ) ဗႈီွ။ံႈဠ
+(ဆ) စစ္ပြဲ၊ အၾကမ္းဖက္ဖ်က္စီးျခင္း၊ အဓိကရုဏ္း၊ ၄င္းတို့ႏွင့္ အလားတူ ျဖစ္ရပ္မ်ား
+(ဇ) အာမခံ၀ယ္ယူစဥ္က ေဖာ္ျပရန္ ထိ္န္ခ်န္ခဲ့ေသာ ရွိရင္းစြဲေရာဂါမ်ား
+    • အာမခံထားသူသည္ ေအာက္ေဖာ္ျပပါ အေၾကာင္းကိစၥရပ္ တစ္ခုခုေၾကာင့္ ထာ၀စဥ္်မသန္စြမ္း ျဖစ္ပါက ထာ၀စဥ္မသန္စြမ္း အက်ိဳးခံစားခြင့္ကို မေပးေခ်ပါ။
+(က) ေပၚလစီရွင္၏ တမင္ရည္ရြယ္ခ်က္ လုပ္ေဆာင္မႈျဖစ္ျခင္း။
+(ခ) အာမခံထားသူ၏ တမင္ရည္ရြယ္လုပ္ေဆာင္မႈျဖစ္ျခင္း။
+(ဂ) အာမခံထားသူက ရာဇ၀တ္မႈက်ဴးလြန္ျခင္း၊ ဥပေဒ ခ်ိဳးေဖာက္ျခင္း။
+(ဃ) မိမိကိုယ္ကို သတ္ေသရန္ ၾကိဳးစားခဲ့ေသာ္လည္း မေသဆံုးခဲ့ျခင္း။]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

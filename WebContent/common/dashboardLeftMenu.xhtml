@@ -1,0 +1,2574 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/#{ApplicationSetting.cssFilePath}" />
+	<h:form id="dashBoardLeftMenuForm">
+		<br />
+		<table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<!-- Underwriting -->
+			
+			<!-- Group Micro Health -->
+			<!-- Approval -->
+			<c:if test="#{DashBoard.groupMicroHealthApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.groupMicroHealthApprovalCount gt 0}">
+							<p:commandLink id="groupMicroHealthApprovalLink" styleClass="container" value="#{DashBoard.groupMicroHealthApproval}" update=":dashBoardForm" action="#{DashBoard.loadGroupMicroHealthApproval}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.groupMicroHealthApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- confirmation -->
+			<c:if test="#{DashBoard.groupMicroHealthConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.groupMicroHealthConfirmationCount gt 0}">
+							<p:commandLink id="criticalIllnessConfirmationLink" styleClass="container" value="#{DashBoard.groupMicroHealthConfirmation}" update=":dashBoardForm" action="#{DashBoard.loadGroupMicroHealthConfirm}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.groupMicroHealthConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- Payment -->
+			<c:if test="#{DashBoard.groupMicroHealthPaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.groupMicroHealthPaymentCount gt 0}">
+							<p:commandLink id="groupMicroHealthPaymentLink" styleClass="container" value="#{DashBoard.groupMicroHealthPayment}" update=":dashBoardForm" action="#{DashBoard.loadGroupMicroHealthPayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.groupMicroHealthPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<!-- CRITICAL_ILLNESS_PROPOSAL -->
+			<!-- Survey -->
+			<c:if test="#{DashBoard.criticalIllnessSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.criticalIllnessSurveyCount gt 0}">
+							<p:commandLink id="criticalIllnessSurveyLink" styleClass="container" value="#{DashBoard.criticalIllnessSurvey}" update=":dashBoardForm" action="#{DashBoard.loadCriticalIllnessSurvey}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.criticalIllnessSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- Approve -->
+			<c:if test="#{DashBoard.criticalIllnessApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.criticalIllnessApprovalCount gt 0}">
+							<p:commandLink id="criticalIllnessApprovalLink" styleClass="container" value="#{DashBoard.criticalIllnessApproval}" update=":dashBoardForm" action="#{DashBoard.loadCriticalIllnessApprove}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.criticalIllnessApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- Inform -->
+			<c:if test="#{DashBoard.criticalIllnessInformCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.criticalIllnessInformCount gt 0}">
+							<p:commandLink id="criticalIllnessInformLink" styleClass="container" value="#{DashBoard.criticalIllnessInform}" update=":dashBoardForm" action="#{DashBoard.loadCriticalIllnessInform}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.criticalIllnessInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- Confirmation -->
+			<c:if test="#{DashBoard.criticalIllnessConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.criticalIllnessConfirmationCount gt 0}">
+							<p:commandLink id="criticalIllnessConfirmationLink" styleClass="container" value="#{DashBoard.criticalIllnessConfirmation}" update=":dashBoardForm" action="#{DashBoard.loadCriticalIllnessConfirm}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.criticalIllnessConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- Payment -->
+			<c:if test="#{DashBoard.criticalIllnessPaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.criticalIllnessPaymentCount gt 0}">
+							<p:commandLink id="criticalIllnessPaymentLink" styleClass="container" value="#{DashBoard.criticalIllnessPayment}" update=":dashBoardForm" action="#{DashBoard.loadCriticalIllnessPayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.criticalIllnessPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<!-- Issuing -->
+			
+			<c:if test="#{DashBoard.criticalIllnessIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.criticalIllnessIssueCount gt 0}">
+							<p:commandLink id="criticalIllnessIssueLink" styleClass="container" value="#{DashBoard.criticalIllnessIssuing}" update=":dashBoardForm" action="#{DashBoard.loadCriticalIllnessIssue}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.criticalIllnessIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<!-- Health Insurance -->
+			<!-- Survey -->
+			<c:if test="#{DashBoard.healthSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.healthSurveyCount gt 0}">
+							<p:commandLink id="healthSurveyLink" styleClass="container" value="#{DashBoard.healthSurvey}" update=":dashBoardForm" action="#{DashBoard.loadHealthSurvey}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.healthSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- Approve -->
+			<c:if test="#{DashBoard.healthApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.healthApprovalCount gt 0}">
+							<p:commandLink id="healthApprovalLink" styleClass="container" value="#{DashBoard.healthApproval}" update=":dashBoardForm" action="#{DashBoard.loadHealthApprove}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.healthApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- Inform -->
+			<c:if test="#{DashBoard.healthInformCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.healthInformCount gt 0}">
+							<p:commandLink id="healthInformLink" styleClass="container" value="#{DashBoard.healthInform}" update=":dashBoardForm" action="#{DashBoard.loadHealthInform}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.healthInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- Confirmation -->
+			<c:if test="#{DashBoard.healthConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.healthConfirmationCount gt 0}">
+							<p:commandLink id="healthConfirmationLink" styleClass="container" value="#{DashBoard.healthConfirmation}" update=":dashBoardForm" action="#{DashBoard.loadHealthConfirm}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.healthConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- Payment -->
+			<c:if test="#{DashBoard.healthPaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.healthPaymentCount gt 0}">
+							<p:commandLink id="healthPaymentLink" styleClass="container" value="#{DashBoard.healthPayment}" update=":dashBoardForm" action="#{DashBoard.loadHealthPayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.healthPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<!-- Issuing -->
+			
+			<c:if test="#{DashBoard.healthIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.healthIssueCount gt 0}">
+							<p:commandLink id="healthIssueLink" styleClass="container" value="#{DashBoard.healthIssuing}" update=":dashBoardForm" action="#{DashBoard.loadHealthIssue}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.healthIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<!-- Micro Health -->
+			<!-- Survey -->
+			<c:if test="#{DashBoard.microHealthSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.microHealthSurveyCount gt 0}">
+							<p:commandLink id="microHealthSurveyLink" styleClass="container" value="#{DashBoard.microHealthSurvey}" update=":dashBoardForm" action="#{DashBoard.loadMicroHealthSurvey}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.microHealthSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- Approve -->
+			<c:if test="#{DashBoard.microHealthApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.microHealthApprovalCount gt 0}">
+							<p:commandLink id="microHealthApprovalLink" styleClass="container" value="#{DashBoard.microHealthApproval}" update=":dashBoardForm" action="#{DashBoard.loadMicroHealthApprove}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.microHealthApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- Inform -->
+			<c:if test="#{DashBoard.microHealthInformCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.microHealthInformCount gt 0}">
+							<p:commandLink id="microHealthInformLink" styleClass="container" value="#{DashBoard.microHealthInform}" update=":dashBoardForm" action="#{DashBoard.loadMicroHealthInform}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.microHealthInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- Confirmation -->
+			<c:if test="#{DashBoard.microHealthConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.microHealthConfirmationCount gt 0}">
+							<p:commandLink id="microHealthConfirmationLink" styleClass="container" value="#{DashBoard.microHealthConfirmation}" update=":dashBoardForm" action="#{DashBoard.loadMicroHealthConfirm}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.microHealthConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- Payment -->
+			<c:if test="#{DashBoard.microHealthPaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.microHealthPaymentCount gt 0}">
+							<p:commandLink id="microHealthPaymentLink" styleClass="container" value="#{DashBoard.microHealthPayment}" update=":dashBoardForm" action="#{DashBoard.loadMicroHealthPayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.microHealthPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<!-- Issuing -->
+			
+			<c:if test="#{DashBoard.microHealthIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.microHealthIssueCount gt 0}">
+							<p:commandLink id="microHealthIssueLink" styleClass="container" value="#{DashBoard.microHealthIssuing}" update=":dashBoardForm" action="#{DashBoard.loadMicroHealthIssue}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.microHealthIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+		
+			<!-- Medical Underwriting -->
+			<c:if test="#{DashBoard.medicalSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.medicalSurveyCount gt 0}">
+							<p:commandLink id="medicalSurveyLink" styleClass="container" value="#{DashBoard.medicalSurvey}" update=":dashBoardForm" action="#{DashBoard.loadMedicalSurvey}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.medicalApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.medicalApprovalCount gt 0}">
+							<p:commandLink id="medicalApprovalLink" styleClass="container" value="#{DashBoard.medicalApproval}" update=":dashBoardForm" action="#{DashBoard.loadMedicalApproval}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.medicalInformCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.medicalInformCount gt 0}">
+							<p:commandLink id="medicalInformLink" styleClass="container" value="#{DashBoard.medicalInform}" update=":dashBoardForm" action="#{DashBoard.loadMedicalInform}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.medicalConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.medicalConfirmationCount gt 0}">
+							<p:commandLink id="medicalConfirmationLink" styleClass="container" value="#{DashBoard.medicalConfirmation}" update=":dashBoardForm"
+								action="#{DashBoard.loadMedicalConfirmation}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.medicalPaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.medicalPaymentCount gt 0}">
+							<p:commandLink id="medicalPaymentLink" styleClass="container" value="#{DashBoard.medicalPayment}" update=":dashBoardForm" action="#{DashBoard.loadMedicalPayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.medicalIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.medicalIssueCount gt 0}">
+							<p:commandLink id="medicalIssueLink" styleClass="container" value="#{DashBoard.medicalIssue}" update=":dashBoardForm" action="#{DashBoard.loadMedicalIssue}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End of Medical Underwriting -->
+			<!-- Medical Renewal -->
+			<c:if test="#{DashBoard.medicalRenewalSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.medicalRenewalSurveyCount gt 0}">
+							<p:commandLink id="medicalRenewalSurveyLink" styleClass="container" value="#{DashBoard.medicalRenewalSurvey}" update=":dashBoardForm" action="#{DashBoard.loadMedicalRenewalSurvey}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalRenewalSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.medicalRenewalApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.medicalRenewalApprovalCount gt 0}">
+							<p:commandLink id="medicalRenewalApprovalLink" styleClass="container" value="#{DashBoard.medicalRenewalApproval}" update=":dashBoardForm" action="#{DashBoard.loadMedicalRenewalApproval}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalRenewalApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.medicalRenewalInformCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.medicalRenewalInformCount gt 0}">
+							<p:commandLink id="medicalRenewalInformLink" styleClass="container" value="#{DashBoard.medicalRenewalInform}" update=":dashBoardForm" action="#{DashBoard.loadMedicalRenewalInform}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalRenewalInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.medicalRenewalConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.medicalRenewalConfirmationCount gt 0}">
+							<p:commandLink id="medicalRenewalConfirmationLink" styleClass="container" value="#{DashBoard.medicalRenewalConfirm}" update=":dashBoardForm"
+								action="#{DashBoard.loadMedicalRenewalConfirm}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalRenewalConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.medicalRenewalPaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.medicalRenewalPaymentCount gt 0}">
+							<p:commandLink id="medicalRenewalPaymentLink" styleClass="container" value="#{DashBoard.medicalRenewalPayment}" update=":dashBoardForm" action="#{DashBoard.loadMedicalRenewalPayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalRenewalPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.medicalRenewalIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.medicalRenewalIssueCount gt 0}">
+							<p:commandLink id="medicalRenewalIssueLink" styleClass="container" value="#{DashBoard.medicalRenewalIssue}" update=":dashBoardForm" action="#{DashBoard.loadMedicalRenewalIssue}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalRenewalIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End of Medical Renewal -->
+			
+			<!-- Life -->
+			<c:if test="#{DashBoard.lifeSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeSurveyCount gt 0}">
+							<p:commandLink id="lifeSurveyLink" styleClass="container" value="#{DashBoard.lifeSurvey}" update=":dashBoardForm" action="#{DashBoard.loadLifeSurvey}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeApprovalCount gt 0}">
+							<p:commandLink id="lifeApprovalLink" styleClass="container" value="#{DashBoard.lifeApproval}" update=":dashBoardForm" action="#{DashBoard.loadLifeApproval}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeInformCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeInformCount gt 0}">
+							<p:commandLink id="lifeinformLink" styleClass="container" value="#{DashBoard.lifeInform}" update=":dashBoardForm" action="#{DashBoard.loadLifeInform}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeConfirmationCount gt 0}">
+							<p:commandLink id="lifeConfirmLink" styleClass="container" value="#{DashBoard.lifeConfirmation}" update=":dashBoardForm" action="#{DashBoard.loadLifeConfirmation}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifePaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifePaymentCount gt 0}">
+							<p:commandLink id="lifePaymentLink" styleClass="container" value="#{DashBoard.lifePayment}" update=":dashBoardForm" action="#{DashBoard.loadLifePayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifePaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeIssueCount gt 0}">
+							<p:commandLink id="lifeIssueLink" styleClass="container" value="#{DashBoard.lifeIssue}" update=":dashBoardForm" action="#{DashBoard.loadLifeIssue()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End Life -->
+			<!-- Farmer Underwriting -->
+			<c:if test="#{DashBoard.farmerSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.farmerSurveyCount gt 0}">
+							<p:commandLink id="farmerSurveyLink" styleClass="container" value="#{DashBoard.farmerSurvey}" update=":dashBoardForm" action="#{DashBoard.loadFarmerSurvey}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.farmerSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.farmerApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.farmerApprovalCount gt 0}">
+							<p:commandLink id="farmerApprovalLink" styleClass="container" value="#{DashBoard.farmerApproval}" update=":dashBoardForm" action="#{DashBoard.loadFarmerApproval}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.farmerApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.farmerInformCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.farmerInformCount gt 0}">
+							<p:commandLink id="farmerinformLink" styleClass="container" value="#{DashBoard.farmerInform}" update=":dashBoardForm" action="#{DashBoard.loadFarmerInform}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.farmerInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.farmerConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.farmerConfirmationCount gt 0}">
+							<p:commandLink id="farmerConfirmLink" styleClass="container" value="#{DashBoard.farmerConfirmation}" update=":dashBoardForm" action="#{DashBoard.loadFarmerConfirmation}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.farmerConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.farmerPaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.farmerPaymentCount gt 0}">
+							<p:commandLink id="farmerPaymentLink" styleClass="container" value="#{DashBoard.farmerPayment}" update=":dashBoardForm" action="#{DashBoard.loadFarmerPayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.farmerPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.farmerIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.farmerIssueCount gt 0}">
+							<p:commandLink id="farmerIssueLink" styleClass="container" value="#{DashBoard.farmerIssue}" update=":dashBoardForm" action="#{DashBoard.loadFarmerIssue()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.farmerIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End Farmer Underwriting -->
+			
+			<!-- SnakeBite -->
+			<c:if test="#{DashBoard.snakeBitePaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.snakeBitePaymentCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.snakeBitePayment}" update=":dashBoardForm" action="#{DashBoard.loadSnakeBitePayment()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.snakeBitePaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End SnakeBite -->
+			<!-- End of Underwriting -->
+			<!-- Life -->
+			<c:if test="#{DashBoard.lifeEndorseSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeEndorseSurveyCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.lifeEndorsementSurvey}" update=":dashBoardForm" action="#{DashBoard.loadLifeEndorsementSurvey()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeEndorseSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeEndorseApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeEndorseApprovalCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.lifeEndorsementApproval}" update=":dashBoardForm" action="#{DashBoard.loadLifeEndorsementApproval()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeEndorseApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeEndorseConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.lifeEndorseConfirmationCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.lifeEndorsementConfirmation}" update=":dashBoardForm" action="#{DashBoard.loadLifeEndorsementConfirmation()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeEndorseConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeEndorsePaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeEndorsePaymentCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.lifeEndorsementPayment}" update=":dashBoardForm" action="#{DashBoard.loadLifeEndorsementPayment()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeEndorsePaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeEndorseIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeEndorseIssueCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.lifeEndorsementIssue}" update=":dashBoardForm" action="#{DashBoard.loadLifeEndorsementIssue()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeEndorseIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End Life -->
+			<!-- End of Endorsement -->
+			
+			<!-- GroupLife -->
+			<c:if test="#{DashBoard.lifeRenewalSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeRenewalSurveyCount gt 0}">
+							<p:commandLink id="groupLifeSurveyLink" styleClass="container" value="#{DashBoard.lifeRenewalSurvey}" update=":dashBoardForm" action="#{DashBoard.loadLifeRenewalSurvey()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeRenewalSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeRenewalApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeRenewalApprovalCount gt 0}">
+							<p:commandLink id="groupLifeApprovalLink" styleClass="container" value="#{DashBoard.lifeRenewalApproval}" update=":dashBoardForm"
+								action="#{DashBoard.loadLifeRenewalApproval()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeRenewalApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeRenewalInformCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeRenewalInformCount gt 0}">
+							<p:commandLink id="groupLifeInfromLink" styleClass="container" value="#{DashBoard.lifeRenewalInform}" update=":dashBoardForm" action="#{DashBoard.loadLifeRenewalInform()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeRenewalInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeRenewalConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeRenewalConfirmationCount gt 0}">
+							<p:commandLink id="groupLifeConfirmLink" styleClass="container" value="#{DashBoard.lifeRenewalConfirmation}" update=":dashBoardForm"
+								action="#{DashBoard.loadLifeRenewalConfirmation()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeRenewalConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeRenewalPaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeRenewalPaymentCount gt 0}">
+							<p:commandLink id="groupLifePaymentLink" styleClass="container" value="#{DashBoard.lifeRenewalPayment}" update=":dashBoardForm"
+								action="#{DashBoard.loadLifeRenewalPayment()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeRenewalPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeRenewalIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeRenewalIssueCount gt 0}">
+							<p:commandLink id="groupLifeIssueLink" styleClass="container" value="#{DashBoard.lifeRenewalIssue}" update=":dashBoardForm" action="#{DashBoard.loadLifeRenewalIssue()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeRenewalIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End GroupLife -->
+			<!-- Claim -->
+			<!-- Start Damaged Vehicle -->
+			
+			<!-- End Damaged Vehicle -->
+			<!-- Start ThirdPartyProperty -->
+		
+			<!-- End of ThirdPartyProperty Damage -->
+			<!-- Start WindScreen-->
+			
+			<!-- End WindScreen-->
+			<!-- Start Towing -->
+			
+			<!-- End Towing -->
+			<!-- Start PersonCasualty -->
+			
+			<!-- End PersonCasualty -->
+			<!-- Start MedicalExpense -->
+			
+			<!-- End MedicalExpense -->
+			<!-- Fire Claim-->
+			
+			
+			
+			
+			
+			<!-- End of Fire Claim-->
+			<!-- Life Claim-->
+			<c:if test="#{DashBoard.lifeClaimRequestCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeClaimRequestCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.lifeClaimRequest}" update=":dashBoardForm" action="#{DashBoard.loadLifeClaimRequest()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeClaimRequestCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+   <c:if test="#{DashBoard.lifeClaimSurveyCount gt 0}">
+    <tr height="22px;">
+     <td>
+      <p:outputPanel rendered="#{DashBoard.lifeClaimSurveyCount gt 0}">
+       <p:commandLink id="lifeClaimSurveyLink" styleClass="container" value="#{DashBoard.lifeClaimSurvey}" update=":dashBoardForm"
+        action="#{DashBoard.loadLifeClaimSurvey()}" />
+       <h:outputText styleClass="box circle" value="#{DashBoard.lifeClaimSurveyCount}" />
+      </p:outputPanel>
+     </td>
+    </tr>
+    <tr>
+     <td>
+      <p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+     </td>
+    </tr>
+   </c:if>
+   
+			<c:if test="#{DashBoard.lifeClaimApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeClaimApprovalCount gt 0}">
+							<p:commandLink id="deathClaimApprovalLink" styleClass="container" value="#{DashBoard.lifeClaimApproval}" update=":dashBoardForm"
+								action="#{DashBoard.loadLifeClaimApproval()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeClaimApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeClaimInformCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeClaimInformCount gt 0}">
+							<p:commandLink id="deathClaimInformLink" styleClass="container" value="#{DashBoard.lifeClaimInform}" update=":dashBoardForm" action="#{DashBoard.loadLifeClaimInform()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeClaimInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeClaimConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeClaimConfirmationCount gt 0}">
+							<p:commandLink id="deathClaimConfirmLink" styleClass="container" value="#{DashBoard.lifeClaimConfirmation}" update=":dashBoardForm"
+								action="#{DashBoard.loadLifeClaimConfirmation()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeClaimConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeClaimPaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.lifeClaimPaymentCount gt 0}">
+							<p:commandLink id="deathClaimPaymentLink" styleClass="container" value="#{DashBoard.lifeClaimPayment}" update=":dashBoardForm" action="#{DashBoard.loadLifeClaimPayment()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeClaimPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End of Life Claim -->
+			<!-- Life Disability Claim -->
+			<c:if test="#{DashBoard.lifeDisabilityClaimRequestCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.lifeDisabilityClaimRequestCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.lifeDisabilityClaimRequest}" update=":dashBoardForm" action="#{DashBoard.loadLifeDisabilityClaimRequest()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeDisabilityClaimRequestCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeDisabilityClaimApprovalCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.lifeDisabilityClaimApprovalCount gt 0}">
+							<p:commandLink id="disabilityClaimApprovalLink" styleClass="container" value="#{DashBoard.lifeDisabilityClaimApproval}" update=":dashBoardForm"
+								action="#{DashBoard.loadLifeDisabilityClaimApproval()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeDisabilityClaimApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeDisabilityClaimInformCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.lifeDisabilityClaimInformCount gt 0}">
+							<p:commandLink id="disabilityClaimInformLink" styleClass="container" value="#{DashBoard.lifeDisabilityClaimInform}" update=":dashBoardForm"
+								action="#{DashBoard.loadLifeDisabilityClaimInform()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeDisabilityClaimInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeDisabilityClaimConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.lifeDisabilityClaimConfirmationCount gt 0}">
+							<p:commandLink id="disabilityClaimConfirmLink" styleClass="container" value="#{DashBoard.lifeDisabilityClaimConfirmation}" update=":dashBoardForm"
+								action="#{DashBoard.loadLifeDisabilityClaimConfirmation()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeDisabilityClaimConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeDisabilityClaimPaymentCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.lifeDisabilityClaimPaymentCount gt 0}">
+							<p:commandLink id="disabilityClaimPaymentLink" styleClass="container" value="#{DashBoard.lifeDisabilityClaimPayment}" update=":dashBoardForm"
+								action="#{DashBoard.loadLifeDisabilityClaimPayment()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeDisabilityClaimPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End of Life Disability Claim -->
+			<!-- Life Surrender Proposal -->
+			<c:if test="#{DashBoard.lifeSurrenderApprovalCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.lifeSurrenderApprovalCount gt 0}">
+							<p:commandLink id="surrenderApprovalLink" styleClass="container" value="#{DashBoard.lifeSurrenderApproval}" update=":dashBoardForm"
+								action="#{DashBoard.loadLifeSurrenderApproval()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeSurrenderApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeSurrenderInformCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.lifeSurrenderInformCount gt 0}">
+							<p:commandLink id="surrenderInformLink" styleClass="container" value="#{DashBoard.lifeSurrenderInform}" update=":dashBoardForm"
+								action="#{DashBoard.loadLifeSurrenderInform()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeSurrenderInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeSurrenderConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.lifeSurrenderConfirmationCount gt 0}">
+							<p:commandLink id="surrenderConfirmationLink" styleClass="container" value="#{DashBoard.lifeSurrenderConfirmation}" update=":dashBoardForm"
+								action="#{DashBoard.loadLifeSurrenderConfirmation()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeSurrenderConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeSurrenderPaymentCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.lifeSurrenderPaymentCount gt 0}">
+							<p:commandLink id="surrenderPaymentLink" styleClass="container" value="#{DashBoard.lifeSurrenderPayment}" update=":dashBoardForm"
+								action="#{DashBoard.loadLifeSurrenderPayment()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeSurrenderPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifeSurrenderIssueCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.lifeSurrenderIssueCount gt 0}">
+							<p:commandLink id="surrenderIssueLink" styleClass="container" value="#{DashBoard.lifeSurrenderIssue}" update=":dashBoardForm" action="#{DashBoard.loadLifeSurrenderIssue()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifeSurrenderIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<!-- ShortTerm Life Surrender Proposal -->
+			<c:if test="#{DashBoard.shortTermLifeSurrenderApprovalCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.shortTermLifeSurrenderApprovalCount gt 0}">
+							<p:commandLink id="shortTermSurrenderApprovalLink" styleClass="container" value="#{DashBoard.shortTermLifeSurrenderApproval}" update=":dashBoardForm"
+								action="#{DashBoard.loadShortTermLifeSurrenderApproval()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortTermLifeSurrenderApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.shortTermLifeSurrenderInformCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.shortTermLifeSurrenderInformCount gt 0}">
+							<p:commandLink id="shortTermsurrenderInformLink" styleClass="container" value="#{DashBoard.shortTermLifeSurrenderInform}" update=":dashBoardForm"
+								action="#{DashBoard.loadShortTermLifeSurrenderInform()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortTermLifeSurrenderInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.shortTermLifeSurrenderConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.shortTermLifeSurrenderConfirmationCount gt 0}">
+							<p:commandLink id="shortTermSurrenderConfirmationLink" styleClass="container" value="#{DashBoard.shortTermLifeSurrenderConfirmation}" update=":dashBoardForm"
+								action="#{DashBoard.loadShortTermLifeSurrenderConfirmation()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortTermLifeSurrenderConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.shortTermLifeSurrenderPaymentCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.shortTermLifeSurrenderPaymentCount gt 0}">
+							<p:commandLink id="shortTermSurrenderPaymentLink" styleClass="container" value="#{DashBoard.shortTermLifeSurrenderPayment}" update=":dashBoardForm"
+								action="#{DashBoard.loadShortTermLifeSurrenderPayment()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortTermLifeSurrenderPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.shortTermLifeSurrenderIssueCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.shortTermLifeSurrenderIssueCount gt 0}">
+							<p:commandLink id="shortTermSurrenderIssueLink" styleClass="container" value="#{DashBoard.shortTermLifeSurrenderIssue}" update=":dashBoardForm" action="#{DashBoard.loadShortTermLifeSurrenderIssue()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortTermLifeSurrenderIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End of Life Surrender Proposal -->
+			<!-- Life PaidUp Proposal -->
+			<c:if test="#{DashBoard.lifePaidUpApprovalCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.lifePaidUpApprovalCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.lifePaidUpApproval}" update=":dashBoardForm" action="#{DashBoard.loadLifePaidUpApproval()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifePaidUpApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifePaidUpInformCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.lifePaidUpInformCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.lifePaidUpInform}" update=":dashBoardForm" action="#{DashBoard.loadLifePaidUpInform()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifePaidUpInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.lifePaidUpConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.lifePaidUpConfirmationCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.lifePaidUpConfirmation}" update=":dashBoardForm" action="#{DashBoard.loadLifePaidUpConfirmation()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.lifePaidUpConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End Of Life PaidUp Proposal -->
+			
+			
+				<!--ShortTerm Life PaidUp Proposal -->
+			<c:if test="#{DashBoard.shortTermLifePaidUpApprovalCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.shortTermLifePaidUpApprovalCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.shortTermLifePaidUpApproval}" update=":dashBoardForm" action="#{DashBoard.loadShortTermLifePaidUpApproval()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortTermLifePaidUpApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.shortTermLifePaidUpInformCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.shortTermLifePaidUpInformCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.shortTermLifePaidUpInform}" update=":dashBoardForm" action="#{DashBoard.loadShortTermLifePaidUpInform()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortTermLifePaidUpInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<c:if test="#{DashBoard.shortTermLifePaidUpConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.shortTermLifePaidUpConfirmationCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.shortTermLifePaidUpConfirmation}" update=":dashBoardForm" action="#{DashBoard.loadShortTermLifePaidUpConfirmation()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortTermLifePaidUpConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End Of ShortTerm Life PaidUp Proposal -->
+			
+			
+			
+			<!-- Co_insurance -->
+			<c:if test="#{DashBoard.coinsuranceFromConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.coinsuranceFromConfirmationCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.coinsuranceFromConfirmation}" update=":dashBoardForm"
+								action="#{DashBoard.loadCoinsuranceFromOtherCompanyConfirmation()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.coinsuranceFromConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.coinsuranceFromPaymentCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.coinsuranceFromPaymentCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.coinsuranceFromPayment}" update=":dashBoardForm" action="#{DashBoard.loadCoinsuranceFromOtherCompanyPayment()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.coinsuranceFromPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.coinsuranceToPaymentCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.coinsuranceToPaymentCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.coinsuranceToPayment}" update=":dashBoardForm" action="#{DashBoard.loadCoinsuranceToOtherCompanyPayment()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.coinsuranceToPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End of Co_insurance -->
+			<!-- Agent Commission -->
+			<c:if test="#{DashBoard.agentCommissionPaymentCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.agentCommissionPaymentCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.agentCommissionPayment}" update=":dashBoardForm" action="#{DashBoard.loadAgentCommissionPayment()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.agentCommissionPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<c:if test="#{DashBoard.staffCommissionPaymentCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.staffCommissionPaymentCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.staffCommissionPayment}" update=":dashBoardForm" action="#{DashBoard.loadStaffCommissionPayment()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.staffCommissionPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<!-- End of Agent Commission -->
+			<!-- Travel Proposal Confirmation -->
+			<c:if test="#{DashBoard.travelProposalConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.travelProposalConfirmationCount gt 0}">
+							<p:commandLink id="travelComfirmLink" styleClass="container" value="#{DashBoard.travelProposalConfirmation}" update=":dashBoardForm"
+								action="#{DashBoard.loadTravelProposalConfrimation()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.travelProposalConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<!-- End of Travel Proposal Confirmation -->
+			<!-- Travel Proposal Payment -->
+			<c:if test="#{DashBoard.travelProposalPaymentCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.travelProposalPaymentCount gt 0}">
+							<p:commandLink id="travelPaymentLink" styleClass="container" value="#{DashBoard.travelProposalPayment}" update=":dashBoardForm"
+								action="#{DashBoard.loadTravelProposalPayment()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.travelProposalPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End of Travel Proposal Payment -->
+			
+			<!--  Start for medical -->
+			<c:if test="#{DashBoard.medicalProposalSurveyCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.medicalProposalSurveyCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.medicalSurvey}" update=":dashBoardForm" action="#{DashBoard.loadMedicalSurvey()}" id="medicalSurveyLink" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalProposalSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.medicalProposalApproveCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.medicalProposalApproveCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.medicalProposalApprove}" update=":dashBoardForm" action="#{DashBoard.loadMedicalApprove()}"
+								id="approveMedicalProposalLink" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalProposalApproveCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.medicalClaimSurveyCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.medicalClaimSurveyCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.medicalClaimSurvey}" update=":dashBoardForm" action="#{DashBoard.loadMedicalClaimSurvey()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalClaimSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.medicalClaimApproveCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.medicalClaimApproveCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.medicalClaimApprove}" update=":dashBoardForm" action="#{DashBoard.loadMedicalClaimApprove()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalClaimApproveCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.medicalClaimInformCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.medicalClaimInformCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.medicalClaimInfrom}" update=":dashBoardForm" action="#{DashBoard.loadMedicalClaimInform()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalClaimInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.medicalClaimConfirmCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.medicalClaimConfirmCount gt 0}">
+							<p:commandLink id="medicalClaimConfirmationLink" styleClass="container" value="#{DashBoard.medicalClaimConfirm}" update=":dashBoardForm"
+								action="#{DashBoard.loadMedicalClaimConfirm}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalClaimConfirmCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.medicalClaimPaymentCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.medicalClaimPaymentCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.medicalClaimPayment}" update=":dashBoardForm" action="#{DashBoard.loadMedicalClaimPayment()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.medicalClaimPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- Cash in safe claim -->
+			
+			
+			<!-- Personal Accident -->
+			<c:if test="#{DashBoard.paSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.paSurveyCount gt 0}">
+							<p:commandLink id="paSurveyLink" styleClass="container" value="#{DashBoard.getPASurvey()}" update=":dashBoardForm" action="#{DashBoard.loadPASurvey}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.paSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.paApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.paApprovalCount gt 0}">
+							<p:commandLink id="paApprovalLink" styleClass="container" value="#{DashBoard.getPAApproval()}" update=":dashBoardForm" action="#{DashBoard.loadPAApproval}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.paApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.paInformCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.paInformCount gt 0}">
+							<p:commandLink id="painformLink" styleClass="container" value="#{DashBoard.getPAInform()}" update=":dashBoardForm" action="#{DashBoard.loadPAInform}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.paInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.paConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.paConfirmationCount gt 0}">
+							<p:commandLink id="paConfirmLink" styleClass="container" value="#{DashBoard.getPAConfirmation()}" update=":dashBoardForm" action="#{DashBoard.loadPAConfirmation}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.paConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.paPaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.paPaymentCount gt 0}">
+							<p:commandLink id="paPaymentLink" styleClass="container" value="#{DashBoard.getPAPayment()}" update=":dashBoardForm" action="#{DashBoard.loadPAPayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.paPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.paIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.paIssueCount gt 0}">
+							<p:commandLink id="paIssueLink" styleClass="container" value="#{DashBoard.getPAIssue()}" update=":dashBoardForm" action="#{DashBoard.loadPAIssue()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.paIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End Personal Accident -->
+			<!-- Person Travel -->
+			<c:if test="#{DashBoard.personTravelConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.personTravelConfirmationCount gt 0}">
+							<p:commandLink id="personTravelConfirmLink" styleClass="container" value="#{DashBoard.getPersonTravelConfirmation()}" update=":dashBoardForm" action="#{DashBoard.loadPersonTravelConfirmation}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.personTravelConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.personTravelPaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.personTravelPaymentCount gt 0}">
+							<p:commandLink id="personTravelPaymentLink" styleClass="container" value="#{DashBoard.getPersonTravelPayment()}" update=":dashBoardForm" action="#{DashBoard.loadPersonTravelPayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.personTravelPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.personTravelIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.personTravelIssueCount gt 0}">
+							<p:commandLink id="personTravelIssueLink" styleClass="container" value="#{DashBoard.getPersonTravelIssue()}" update=":dashBoardForm" action="#{DashBoard.loadPersonTravelIssue()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.personTravelIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End Personal Travel -->
+			<!-- Short Term Endowment Life -->
+			<c:if test="#{DashBoard.shortEndowmentSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.shortEndowmentSurveyCount gt 0}">
+							<p:commandLink id="stendowSurveyLink" styleClass="container" value="#{DashBoard.shortEndowmentSurvey}" update=":dashBoardForm" action="#{DashBoard.loadShortEndowmentSurvey}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortEndowmentSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.shortEndowmentApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.shortEndowmentApprovalCount gt 0}">
+							<p:commandLink id="stendowApprovalLink" styleClass="container" value="#{DashBoard.shortEndowmentApproval}" update=":dashBoardForm" action="#{DashBoard.loadShortEndowmentApproval}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortEndowmentApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.shortEndowmentInformCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.shortEndowmentInformCount gt 0}">
+							<p:commandLink id="stendowInformLink" styleClass="container" value="#{DashBoard.shortEndowmentInform}" update=":dashBoardForm" action="#{DashBoard.loadShortEndowmentInform}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortEndowmentInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.shortEndowmentConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.shortEndowmentConfirmationCount gt 0}">
+							<p:commandLink id="stendowConfirmLink" styleClass="container" value="#{DashBoard.shortEndowmentConfirmation}" update=":dashBoardForm" action="#{DashBoard.loadShortEndowmentConfirmation}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortEndowmentConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.shortEndowmentPaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.shortEndowmentPaymentCount gt 0}">
+							<p:commandLink id="stendowPaymentLink" styleClass="container" value="#{DashBoard.shortEndowmentPayment}" update=":dashBoardForm" action="#{DashBoard.loadShortEndowmentPayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortEndowmentPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.shortEndowmentIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.shortEndowmentIssueCount gt 0}">
+							<p:commandLink id="stendowIssueLink" styleClass="container" value="#{DashBoard.shortEndowmentIssue}" update=":dashBoardForm" action="#{DashBoard.loadShortEndowmentIssue}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortEndowmentIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- Short Term Endowment Endorsement -->
+			<c:if test="#{DashBoard.shortEndowmentEndorsementSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.shortEndowmentEndorsementSurveyCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.shortTermEndowmentEndorsementSurvey}" update=":dashBoardForm" action="#{DashBoard.loadShortTermEndowmentEndorsementSurvey()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortEndowmentEndorsementSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.shortEndowmentEndorsementApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.shortEndowmentEndorsementApprovalCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.shortTermEndowmentEndorsementApproval}" update=":dashBoardForm" action="#{DashBoard.loadShortTermEndowmentEndorsementApproval()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortEndowmentEndorsementApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<c:if test="#{DashBoard.shortEndowmentEndorsementConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.shortEndowmentEndorsementConfirmationCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.shortTermEndowmentEndorsementConfirmation}" update=":dashBoardForm" action="#{DashBoard.loadShortTermEndowmentEndorsementConfirmation()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortEndowmentEndorsementConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.shortEndowmentEndorsementPaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.shortEndowmentEndorsementPaymentCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.shortTermEndowmentEndorsementPayment}" update=":dashBoardForm" action="#{DashBoard.loadShortTermEndowmentEndorsementPayment()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortEndowmentEndorsementPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.shortEndowmentEndorsementIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.shortEndowmentEndorsementIssueCount gt 0}">
+							<p:commandLink styleClass="container" value="#{DashBoard.shortTermEndowmentEndorsementIssue}" update=":dashBoardForm" action="#{DashBoard.loadShortTermEndowmentEndorsementIssue()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortEndowmentEndorsementIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End Personal Travel -->
+			
+			<!-- Travel Proposal Confirmation -->
+			<c:if test="#{DashBoard.groupFarmerConfirmCount gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.groupFarmerConfirmCount gt 0}">
+							<p:commandLink id="groupFarmerComfirmLink" styleClass="container" value="#{DashBoard.groupFarmerConfirmation}" update=":dashBoardForm"
+								action="#{DashBoard.loadGroupFarmerConfirmation()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.groupFarmerConfirmCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<!-- End of Group Farmer Confirmation -->
+			<!--Group Farmer Proposal Payment -->
+			<c:if test="#{DashBoard.groupFarmerPaymentCount  gt 0}">
+				<tr height="22px;">
+					<td style="padding-top: 3px;">
+						<p:outputPanel rendered="#{DashBoard.groupFarmerPaymentCount  gt 0}">
+							<p:commandLink id="groupFPaymentLink" styleClass="container" value="#{DashBoard.groupFarmerPayment}" update=":dashBoardForm"
+								action="#{DashBoard.loadGroupFarmerPayment()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.groupFarmerPaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End of Group Farmer Payment-->
+			
+			<!-- Student Life Approval survey -->
+			<c:if test="#{DashBoard.studentLifeSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.studentLifeSurveyCount gt 0}">
+							<p:commandLink id="studentLifeSurveyLink" styleClass="container" value="#{DashBoard.studentLifeSurvey}" update=":dashBoardForm" action="#{DashBoard.loadStudentLifeSurvey}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.studentLifeSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.studentLifeApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.studentLifeApprovalCount gt 0}">
+							<p:commandLink id="studentLifeApprovalLink" styleClass="container" value="#{DashBoard.studentLifeApproval}" update=":dashBoardForm" action="#{DashBoard.loadStudentLifeApproval}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.studentLifeApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End Of Student Life Approval -->
+			
+			<!-- Student Life Inform -->
+			<c:if test="#{DashBoard.studentLifeInformCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.studentLifeInformCount gt 0}">
+							<p:commandLink id="studentLifeInformLink" styleClass="container" value="#{DashBoard.studentLifeInform}" update=":dashBoardForm" action="#{DashBoard.loadStudentLifeInform}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.studentLifeInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!--End Of Student Life Inform -->
+			
+			<!-- Student Life Confirmation-->
+			<c:if test="#{DashBoard.studentLifeConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.studentLifeConfirmationCount gt 0}">
+							<p:commandLink id="studentLifeConfirmLink" styleClass="container" value="#{DashBoard.studentLifeConfirmation}" update=":dashBoardForm" action="#{DashBoard.loadStudentLifeConfirmation}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.studentLifeConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!--End Of Student Life Confirmation-->
+			
+			<!--Student Life Payment-->
+			<c:if test="#{DashBoard.studentLifePaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.studentLifePaymentCount gt 0}">
+							<p:commandLink id="studentLifePaymentLink" styleClass="container" value="#{DashBoard.studentLifePayment}" update=":dashBoardForm" action="#{DashBoard.loadStudentLifePayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.studentLifePaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!--End of Student Life Payment-->
+			
+			<!--Student Life Issue-->
+			<c:if test="#{DashBoard.studentLifeIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.studentLifeIssueCount gt 0}">
+							<p:commandLink id="studentLifeIssueLink" styleClass="container" value="#{DashBoard.studentLifeIssue}" update=":dashBoardForm" action="#{DashBoard.loadStudentLifeIssue()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.studentLifeIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End Of Student  Life Issue -->
+			
+			<!-- Public Term Life -->
+			<c:if test="#{DashBoard.publicTermlifeSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.publicTermlifeSurveyCount gt 0}">
+							<p:commandLink id="publicTermlifeSurveyLink" styleClass="container" value="#{DashBoard.publicTermLifeSurvey}" update=":dashBoardForm" action="#{DashBoard.publicTermloadLifeSurvey}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.publicTermlifeSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.publicTermlifeApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.publicTermlifeApprovalCount gt 0}">
+							<p:commandLink id="publicTermlifeApprovalLink" styleClass="container" value="#{DashBoard.publicTermLifeApproval}" update=":dashBoardForm" action="#{DashBoard.publicTermloadLifeApproval}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.publicTermlifeApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.publicTermlifeInformCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.publicTermlifeInformCount gt 0}">
+							<p:commandLink id="publicTermlifeinformLink" styleClass="container" value="#{DashBoard.publicTermLifeInform}" update=":dashBoardForm" action="#{DashBoard.publicTermloadLifeInform}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.publicTermlifeInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.publicTermlifeConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.publicTermlifeConfirmationCount gt 0}">
+							<p:commandLink id="publicTermlifeConfirmLink" styleClass="container" value="#{DashBoard.publicTermLifeConfirmation}" update=":dashBoardForm" action="#{DashBoard.publicTermloadLifeConfirmation}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.publicTermlifeConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.publicTermlifePaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.publicTermlifePaymentCount gt 0}">
+							<p:commandLink id="publicTermlifePaymentLink" styleClass="container" value="#{DashBoard.publicTermLifePayment}" update=":dashBoardForm" action="#{DashBoard.publicTermloadLifePayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.publicTermlifePaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.publicTermlifeIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.publicTermlifeIssueCount gt 0}">
+							<p:commandLink id="publicTermlifeIssueLink" styleClass="container" value="#{DashBoard.publicTermLifeIssue}" update=":dashBoardForm" action="#{DashBoard.publicTermloadLifeIssue()}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.publicTermlifeIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<!-- End Life -->
+			
+			<!-- Single Premium Endowment Life -->
+			
+			<c:if test="#{DashBoard.singlePremiumEndowmentlifeSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.singlePremiumEndowmentlifeSurveyCount gt 0}">
+							<p:commandLink id="singlePremiumEndowmentlifeSurveyLink" styleClass="container" value="#{DashBoard.singlePremiumEndowmentLifeSurvey}" update=":dashBoardForm" action="#{DashBoard.singlePremiumEndowmentloadLifeSurvey}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.singlePremiumEndowmentlifeSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+		 	<c:if test="#{DashBoard.singlePremiumEndowmentlifeApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.singlePremiumEndowmentlifeApprovalCount gt 0}">
+							<p:commandLink id="singlePremiumEndowmentlifeApprovalLink" styleClass="container" value="#{DashBoard.singlePremiumEndowmentLifeApproval}" update=":dashBoardForm" action="#{DashBoard.singlePremiumEndowmentloadLifeApproval}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.singlePremiumEndowmentlifeApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<c:if test="#{DashBoard.singlePremiumEndowmentlifeInformCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.singlePremiumEndowmentlifeInformCount gt 0}">
+							<p:commandLink id="singlePremiumEndowmentlifeinformLink" styleClass="container" value="#{DashBoard.singlePremiumEndowmentLifeInform}" update=":dashBoardForm" action="#{DashBoard.singlePremiumEndowmentloadLifeInform}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.singlePremiumEndowmentlifeInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<c:if test="#{DashBoard.singlePremiumEndowmentlifeConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.singlePremiumEndowmentlifeConfirmationCount gt 0}">
+							<p:commandLink id="singlePremiumEndowmentlifeConfirmLink" styleClass="container" value="#{DashBoard.singlePremiumEndowmentLifeConfirmation}" update=":dashBoardForm" action="#{DashBoard.singlePremiumEndowmentloadLifeConfirmation}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.singlePremiumEndowmentlifeConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.singlePremiumEndowmentlifePaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.singlePremiumEndowmentlifePaymentCount gt 0}">
+							<p:commandLink id="singlePremiumEndowmentlifePaymentLink" styleClass="container" value="#{DashBoard.singlePremiumEndowmentLifePayment}" update=":dashBoardForm" action="#{DashBoard.singlePremiumEndowmentloadLifePayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.singlePremiumEndowmentlifePaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+						<c:if test="#{DashBoard.singlePremiumEndowmentlifeIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.singlePremiumEndowmentlifeIssueCount gt 0}">
+							<p:commandLink id="singlePremiumEndowmentlifeIssueLink" styleClass="container" value="#{DashBoard.singlePremiumEndowmentLifeIssue}" update=":dashBoardForm" action="#{DashBoard.singlePremiumEndowmentloadLifeIssue}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.singlePremiumEndowmentlifeIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<!-- End Life -->
+			
+			<!-- Single Premium Credit Life -->
+			
+			<c:if test="#{DashBoard.singlePremiumCreditlifeSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.singlePremiumCreditlifeSurveyCount gt 0}">
+							<p:commandLink id="singlePremiumCreditlifeSurveyLink" styleClass="container" value="#{DashBoard.singlePremiumCreditLifeSurvey}" update=":dashBoardForm" action="#{DashBoard.singlePremiumCreditloadLifeSurvey}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.singlePremiumCreditlifeSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+		 	<c:if test="#{DashBoard.singlePremiumCreditlifeApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.singlePremiumCreditlifeApprovalCount gt 0}">
+							<p:commandLink id="singlePremiumCreditlifeApprovalLink" styleClass="container" value="#{DashBoard.singlePremiumCreditLifeApproval}" update=":dashBoardForm" action="#{DashBoard.singlePremiumCreditloadLifeApproval}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.singlePremiumCreditlifeApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<c:if test="#{DashBoard.singlePremiumCreditlifeInformCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.singlePremiumCreditlifeInformCount gt 0}">
+							<p:commandLink id="singlePremiumCreditlifeinformLink" styleClass="container" value="#{DashBoard.singlePremiumCreditLifeInform}" update=":dashBoardForm" action="#{DashBoard.singlePremiumCreditloadLifeInform}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.singlePremiumCreditlifeInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<c:if test="#{DashBoard.singlePremiumCreditlifeConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.singlePremiumCreditlifeConfirmationCount gt 0}">
+							<p:commandLink id="singlePremiumCreditlifeConfirmLink" styleClass="container" value="#{DashBoard.singlePremiumCreditLifeConfirmation}" update=":dashBoardForm" action="#{DashBoard.singlePremiumCreditloadLifeConfirmation}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.singlePremiumCreditlifeConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.singlePremiumCreditlifePaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.singlePremiumCreditlifePaymentCount gt 0}">
+							<p:commandLink id="singlePremiumCreditlifePaymentLink" styleClass="container" value="#{DashBoard.singlePremiumCreditLifePayment}" update=":dashBoardForm" action="#{DashBoard.singlePremiumCreditloadLifePayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.singlePremiumCreditlifePaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+						<c:if test="#{DashBoard.singlePremiumCreditlifeIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.singlePremiumCreditlifeIssueCount gt 0}">
+							<p:commandLink id="singlePremiumCreditlifeIssueLink" styleClass="container" value="#{DashBoard.singlePremiumCreditLifeIssue}" update=":dashBoardForm" action="#{DashBoard.singlePremiumCreditloadLifeIssue}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.singlePremiumCreditlifeIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<!-- End Single Premium Credit Life -->
+			
+			<!-- Short Term Single Premium Credit Life -->
+			
+			<c:if test="#{DashBoard.shortTermSinglePremiumCreditlifeSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.shortTermSinglePremiumCreditlifeSurveyCount gt 0}">
+							<p:commandLink id="shortTermSinglePremiumCreditlifeSurveyLink" styleClass="container" value="#{DashBoard.shortTermSinglePremiumCreditLifeSurvey}" update=":dashBoardForm" action="#{DashBoard.shortTermSinglePremiumCreditloadLifeSurvey}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortTermSinglePremiumCreditlifeSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+		 	<c:if test="#{DashBoard.shortTermSinglePremiumCreditlifeApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.shortTermSinglePremiumCreditlifeApprovalCount gt 0}">
+							<p:commandLink id="shortTermSinglePremiumCreditlifeApprovalLink" styleClass="container" value="#{DashBoard.shortTermSinglePremiumCreditLifeApproval}" update=":dashBoardForm" action="#{DashBoard.shortTermSinglePremiumCreditloadLifeApproval}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortTermSinglePremiumCreditlifeApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<c:if test="#{DashBoard.shortTermSinglePremiumCreditlifeInformCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.shortTermSinglePremiumCreditlifeInformCount gt 0}">
+							<p:commandLink id="shortTermSinglePremiumCreditlifeinformLink" styleClass="container" value="#{DashBoard.shortTermSinglePremiumCreditLifeInform}" update=":dashBoardForm" action="#{DashBoard.shortTermSinglePremiumCreditloadLifeInform}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortTermSinglePremiumCreditlifeInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<c:if test="#{DashBoard.shortTermSinglePremiumCreditlifeConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.shortTermSinglePremiumCreditlifeConfirmationCount gt 0}">
+							<p:commandLink id="shortTermSinglePremiumCreditlifeConfirmLink" styleClass="container" value="#{DashBoard.shortTermSinglePremiumCreditLifeConfirmation}" update=":dashBoardForm" action="#{DashBoard.shortTermSinglePremiumCreditloadLifeConfirmation}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortTermSinglePremiumCreditlifeConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.shortTermSinglePremiumCreditlifePaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.shortTermSinglePremiumCreditlifePaymentCount gt 0}">
+							<p:commandLink id="shortTermSinglePremiumCreditlifePaymentLink" styleClass="container" value="#{DashBoard.shortTermSinglePremiumCreditLifePayment}" update=":dashBoardForm" action="#{DashBoard.shortTermSinglePremiumCreditloadLifePayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortTermSinglePremiumCreditlifePaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.shortTermSinglePremiumCreditlifeIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.shortTermSinglePremiumCreditlifeIssueCount gt 0}">
+							<p:commandLink id="shortTermSinglePremiumCreditlifeIssueLink" styleClass="container" value="#{DashBoard.shortTermSinglePremiumCreditLifeIssue}" update=":dashBoardForm" action="#{DashBoard.shortTermSinglePremiumCreditloadLifeIssue}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.shortTermSinglePremiumCreditlifeIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<!-- End Short Term Single Premium Credit Life -->
+			
+			
+			<!-- Simple Life -->
+			
+			<c:if test="#{DashBoard.simplelifeSurveyCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.simplelifeSurveyCount gt 0}">
+							<p:commandLink id="simplelifeSurveyLink" styleClass="container" value="#{DashBoard.simpleLifeSurvey}" update=":dashBoardForm" action="#{DashBoard.simpleloadLifeSurvey}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.simplelifeSurveyCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+		 	<c:if test="#{DashBoard.simplelifeApprovalCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.simplelifeApprovalCount gt 0}">
+							<p:commandLink id="simplelifeApprovalLink" styleClass="container" value="#{DashBoard.simpleLifeApproval}" update=":dashBoardForm" action="#{DashBoard.simpleloadLifeApproval}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.simplelifeApprovalCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<c:if test="#{DashBoard.simplelifeInformCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.simplelifeInformCount gt 0}">
+							<p:commandLink id="simplelifeinformLink" styleClass="container" value="#{DashBoard.simpleLifeInform}" update=":dashBoardForm" action="#{DashBoard.simpleloadLifeInform}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.simplelifeInformCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<c:if test="#{DashBoard.simplelifeConfirmationCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.simplelifeConfirmationCount gt 0}">
+							<p:commandLink id="simplelifeConfirmLink" styleClass="container" value="#{DashBoard.simpleLifeConfirmation}" update=":dashBoardForm" action="#{DashBoard.simpleloadLifeConfirmation}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.simplelifeConfirmationCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+<!-- 			<c:if test="#{DashBoard.simplelifePaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.simplelifePaymentCount gt 0}">
+							<p:commandLink id="simplelifePaymentLink" styleClass="container" value="#{DashBoard.simpleLifePayment}" update=":dashBoardForm" action="#{DashBoard.simpleloadLifePayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.simplelifePaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if> -->
+			<c:if test="#{DashBoard.simplelifePaymentCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.simplelifePaymentCount gt 0}">
+							<p:commandLink id="simplelifePaymentLink" styleClass="container" value="#{DashBoard.simpleLifePayment}" update=":dashBoardForm" action="#{DashBoard.simpleloadLifePayment}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.simplelifePaymentCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			<c:if test="#{DashBoard.simplelifeIssueCount gt 0}">
+				<tr height="22px;">
+					<td>
+						<p:outputPanel rendered="#{DashBoard.simplelifeIssueCount gt 0}">
+							<p:commandLink id="simplelifeIssueLink" styleClass="container" value="#{DashBoard.simpleLifeIssue}" update=":dashBoardForm" action="#{DashBoard.simpleloadLifeIssue}" />
+							<h:outputText styleClass="box circle" value="#{DashBoard.simplelifeIssueCount}" />
+						</p:outputPanel>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:separator style="height: 1px;margin-top:1px;margin-bottom:2px;" />
+					</td>
+				</tr>
+			</c:if>
+			
+			<!-- End Simple Life -->
+		</table>
+	</h:form>
+</ui:composition>

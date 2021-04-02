@@ -1,0 +1,176 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:jsf="http://xmlns.jcp.org/jsf" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<h:form id="healthDailyReportListForm">
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<h:outputText styleClass="table-title" value="#{label['HEALTH_DAILY_INCOME_REPORT']}" />
+			<p:separator style="height:3px" />
+			<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="startDate" value="From Date" />
+					<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{HealthDailyIncomeReportActionBean.criteria.startDate}"
+						timeZone="#{ApplicationSetting.timeZone}" />
+					<h:outputLabel />
+			
+					<p:message for="branch" id="MsgBranch" display="text" />
+					<h:outputText styleClass="input-label " value="Branch" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" >
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{HealthDailyIncomeReportActionBean.selectBranch()}" id="selectBranchDialogLink"
+									process="@this" disabled="#{HealthDailyIncomeReportActionBean.criteria.entity==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{HealthDailyIncomeReportActionBean.returnBranch}" update="branch salePanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true" value="#{HealthDailyIncomeReportActionBean.criteria.branch==null?'':HealthDailyIncomeReportActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{HealthDailyIncomeReportActionBean.criteria.entity==null?true:false}" icon="fa fa-times" action="#{HealthDailyIncomeReportActionBean.removeBranch()}" process="@this" update="branch salePanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="endDate" value="To Date" />
+					<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{HealthDailyIncomeReportActionBean.criteria.endDate}"
+						timeZone="#{ApplicationSetting.timeZone}" />
+						<h:outputLabel />
+						<h:outputLabel />
+						<h:outputText value="Sale Point " />
+					<p:panelGrid styleClass="ui-panelgrid-blank" >
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{HealthDailyIncomeReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+									process="@this" disabled="#{HealthDailyIncomeReportActionBean.criteria.branch==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{HealthDailyIncomeReportActionBean.returnSalePoint}" update="salesPoints" />
+								</p:commandButton>
+								<p:inputText id="salesPoints" readonly="true"
+									value="#{HealthDailyIncomeReportActionBean.criteria.salePoint == null ? '' : HealthDailyIncomeReportActionBean.criteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{HealthDailyIncomeReportActionBean.criteria.branch==null?true:false}" icon="fa fa-times" action="#{HealthDailyIncomeReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salesPoints" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+								<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<h:outputText value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+						<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{HealthDailyIncomeReportActionBean.selectEntity()}" id="entityDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{HealthDailyIncomeReportActionBean.returnEntity}" update="entity branchPanelGroup salePanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true" value="#{HealthDailyIncomeReportActionBean.criteria.entity == null ? '' : HealthDailyIncomeReportActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{HealthDailyIncomeReportActionBean.removeEntity}" process="@this" update="entity branchPanelGroup salePanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+				
+				
+				
+				</p:panelGrid>
+			</p:panelGrid>
+			<h:panelGrid columns="3">
+				<p:commandButton style="width: 85px;" action="#{HealthDailyIncomeReportActionBean.filter}" update="@form:healthDailyListTable" value="Search" />
+				<p:commandButton style="width: 85px;" action="#{HealthDailyIncomeReportActionBean.resetCriteria}" update="@form" value="Reset" />
+			</h:panelGrid>
+
+			<p:dataTable id="healthDailyListTable" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="10"
+				rowsPerPageTemplate="5,10,15" style="width:120%;" value="#{HealthDailyIncomeReportActionBean.healthDailyReportList}" var="report">
+				<f:facet name="header">
+					<h:commandLink action="#{HealthDailyIncomeReportActionBean.exportHealthDailyReport}" immediate="true" title="Export Excel">
+						<p:graphicImage style="width: 30px; height: 30px;" styleClass="#{ApplicationSetting.excelStyleClass}" value="#{ApplicationSetting.excelIcon}" />
+					</h:commandLink>
+					<p:message for="healthDailyListTable" />
+				</f:facet>
+				<p:columnGroup type="header">
+					<p:row>
+						<p:column colspan="1" headerText="No." rowspan="2" style="width:20px;" />
+						<p:column colspan="1" headerText="Date" rowspan="2" style="width:80px;" />
+						<p:column colspan="1" headerText="Proposal No" rowspan="2" style="width:150px;" />
+						<p:column colspan="1" headerText="Policy No" rowspan="2" style="width:150px;" />
+						<p:column colspan="1" headerText="Insured Name" rowspan="2" style="width:200px;" />
+						<p:column colspan="1" headerText="Beneficiary Name" rowspan="2" style="width:150px;" />
+						<p:column colspan="4" headerText="Unit" style="width:300px" />
+						<p:column colspan="1" headerText="Total Premium" rowspan="2" style="width:120px;" />
+						<p:column colspan="1" headerText="Premium Mode" rowspan="2" style="width:80px;" />
+						<p:column colspan="1" headerText="Start Date" rowspan="2" style="width:80px;" />
+						<p:column colspan="1" headerText="End Date" rowspan="2" style="width:80px;" />
+						<p:column colspan="1" headerText="Agent Name" rowspan="2" style="width:200px;" />
+						<p:column colspan="1" headerText="Sale Point Name" rowspan="2" style="width:100px;" />
+						<p:column colspan="1" headerText="Branch Name" rowspan="2" style="width:100px;" />
+					</p:row>
+					<p:row>
+						<p:column headerText="Basic Units" style="width:70;" />
+						<p:column headerText="Additional Units" style="width:70px;" />
+						<p:column headerText="Option (I) Units" style="width:70px;" />
+						<p:column headerText="Option (II) Units" style="width:70px;" />
+					</p:row>
+				</p:columnGroup>
+				<p:column>
+					<h:outputText style="float: right;" value="#{rowIndex + 1}." />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.paymentDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.proposalNo}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.policyNo}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.insuredName}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.beneficiaryName}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.basicUnit}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.additionalUnit}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.option1Unit}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.option2Unit}" />
+				</p:column>
+				<p:column>
+					<h:outputText style="float: right;" value="#{report.premium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.premiumMode}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.startDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.endDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.agentName}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.salePointName}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{report.branchName}" />
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

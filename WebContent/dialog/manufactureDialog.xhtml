@@ -1,0 +1,40 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/dialog/dialogTemplate.xhtml">
+   <ui:define name="content">
+      <h:form id="manufactureTableForm">
+         <table>
+            <tr>
+               <td>
+                  <h:outputText value="Name" />
+               </td>
+               <td>
+                  <p:inputText id="manufactureCriteria" style="height:20px;width: 200px;" value="#{ManufactureDialogActionBean.criteria}" />
+               </td>
+               <td>
+                  <p:commandButton action="#{ManufactureDialogActionBean.search}" id="searchManufactureButtonBtn" update="manufactureTableForm" value="Search" />
+               </td>
+               <td>
+                  <p:commandButton action="#{ManufactureDialogActionBean.init()}" id="resetManufactureButtonBtn" update="manufactureTableForm" value="Reset" />
+               </td>
+            </tr>
+         </table>
+         <p:dataTable id="manufactureTable" paginator="true" rowIndexVar="index" rows="10" rowsPerPageTemplate="5,10, 15" style="width:100%;"
+            value="#{ManufactureDialogActionBean.manufactureList}" var="manufacture">
+            <p:column headerText="No" style="width:50px;">
+               <h:outputText value="#{index + 1}" />
+            </p:column>
+            <p:column headerText="Name">
+               <h:outputText value="#{manufacture.name}" />
+            </p:column>
+            <p:column headerText="Description">
+               <h:outputText value="#{manufacture.description}" />
+            </p:column>
+            <p:column style="width:30px;text-align: center;">
+               <p:commandLink id="selectManufacture" action="#{ManufactureDialogActionBean.selectManufacture(manufacture)}" immediate="true" update="manufactureTable">
+                  <h:graphicImage id="selectManufactureLink" styleClass="#{ApplicationSetting.selectStyleClass}" url="#{ApplicationSetting.selectIcon}" />
+               </p:commandLink>
+            </p:column>
+         </p:dataTable>
+      </h:form>
+   </ui:define>
+</ui:composition>

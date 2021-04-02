@@ -1,0 +1,119 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['MANAGE_SECURITYQUESTION_TITLE']}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="securityQuestionEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" />
+			<table>
+				<tr>
+					<td valign="top">
+						<table width="100%">
+							<tr>
+								<td>
+									<h:outputText value="" />
+								</td>
+								<td>
+									<p:message for="securityQuestion" />
+								</td>
+							</tr>
+							<tr>
+								<td style="width: 115px;">
+									<h:outputText style="color:red;" value="*" />
+									<h:outputText styleClass="input-label" value="#{label['MANAGE_SECURITYQUESTION_LABEL']}" />
+								</td>
+								<td>
+									<p:inputTextarea id="securityQuestion" required="true" style="width:450px;" value="#{SecurityQuestionActionBean.securityQuestion.securityQuestion}" />
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:commandButton action="#{SecurityQuestionActionBean.addNewSecurityQuestion()}" id="addBtn" rendered="#{SecurityQuestionActionBean.createNew}" style="width: 80px;"
+							update="securityQuestionEntryForm :securityQuestionTableForm" value="#{label['COMMON_ADDNEW_BTN']}" />
+						<p:commandButton action="#{SecurityQuestionActionBean.updateSecurityQuestion()}" id="editBtn" oncomplete="PF('securityQuestionTable.filter();"
+							rendered="#{!SecurityQuestionActionBean.createNew}" update="securityQuestionEntryForm :securityQuestionTableForm" value="#{label['COMMON_UPDATE_BTN']}" />
+					</td>
+				</tr>
+			</table>
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			<br />
+			<p:separator style="height:5px" />
+		</h:form>
+		<h:form id="securityQuestionTableForm">
+			<h:panelGrid style="margin-left: -5px;">
+				<h:commandLink action="#{SecurityQuestionActionBean.createNewSecurityQuestion()}">
+					<h:panelGrid columns="2">
+						<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+						<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+					</h:panelGrid>
+				</h:commandLink>
+			</h:panelGrid>
+			<p:outputPanel id="listPanel">
+				<br />
+				<table>
+					<tr>
+						<td>
+							<h:outputText value="#{label['MANAGE_SECURITYQUESTION_LABEL']}" />
+						</td>
+						<td>
+							<p:inputText id="securityQuestionCriteria" style="height:20px;width: 200px;" value="#{SecurityQuestionActionBean.criteria}" />
+						</td>
+						<td>
+							<p:commandButton action="#{SecurityQuestionActionBean.searchSecurityQuestion()}" id="searchSecurityQuestionButtonBtn" update="securityQuestionTableForm" value="Search" />
+						</td>
+						<td>
+							<p:commandButton action="#{SecurityQuestionActionBean.init()}" id="resetSecurityQuesitonButtonBtn" update="securityQuestionTableForm" value="Reset" />
+						</td>
+					</tr>
+				</table>
+				<br />
+				<p:dataTable id="securityQuestionTable" paginator="true" paginatorPosition="bottom" rowIndexVar="index"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+					rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{SecurityQuestionActionBean.securityQuestionList}" var="securityQuestion" widgetVar="securityQuestionTable">
+					<p:column headerText="No" style="width: 4%; text-align: center">
+						<h:outputText value="#{index + 1}." style="float: right;" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_SECURITYQUESTION_LABEL']}">
+						<h:outputText value="#{securityQuestion.securityQuestion}" />
+					</p:column>
+					<p:column headerText="Edit" style="width: 5%; text-align: center;">
+						<p:commandLink action="#{SecurityQuestionActionBean.prepareSecurityQuestion(securityQuestion)}" update=":securityQuestionEntryForm  :securityQuestionEntryForm">
+							<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+						</p:commandLink>
+					</p:column>
+					<p:column headerText="Delete" style="width: 5%; text-align: center;">
+						<p:commandLink id="deleteSecurityQuestionLink" oncomplete="PF('confirmationDialog').show()">
+							<f:setPropertyActionListener target="#{SecurityQuestionActionBean.securityQuestion.id}" value="#{securityQuestion.id}" />
+							<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<h:form id="confiationForm">
+			<p:dialog dynamic="true" header="#{label['MANAGE_SECURITYQUESTION_DELETE_CONFIRM']}" height="100" hideEffect="explode" id="confirmationDialog" resizable="false"
+				showEffect="explode" widgetVar="confirmationDialog" width="250">
+				<h:panelGroup id="confirmationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" />
+							</td>
+						</tr>
+					</table>
+					<br />
+					<p:commandButton action="#{SecurityQuestionActionBean.deleteSecurityQuestion()}" immediate="true" oncomplete="PF('confirmationDialog').hide();"
+						update=":securityQuestionEntryForm :securityQuestionTableForm" value="#{label['COMMON_YES_BTN']}" />
+					<p:commandButton immediate="true" action="#{SecurityQuestionActionBean.createNewSecurityQuestion()}" oncomplete="PF('confirmationDialog').hide()" value="#{label['COMMON_NO_BTN']}" />
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,250 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="BancaBRM Management" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="bancaBRMEntryForm">
+			<p:growl escape="false" globalOnly="true" life="5000" showDetail="true" />
+			<h:outputText value="#{label['MANAGE_BANCABRM_ADDNEW_LABEL']}" rendered="#{ManageBancaBRMActionBean.createNew}" styleClass="title" />
+			<h:outputText value="#{label['MANAGE_BANCABRM_EDIT_LABEL']}" rendered="#{!ManageBancaBRMActionBean.createNew}" styleClass="title" />
+			<p:message display="text" for="panelBancaBRM" />
+			<p:panel id="criteriaPanel">
+				<p:panelGrid id="panelBancaBRM" columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:message for="name" display="text" />
+						<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_BRANCH_NAME_LABEL']}" />
+						<p:inputText id="name" required="#{not empty param[isRequired.clientId]}" value="#{ManageBancaBRMActionBean.bancaBRM.name}">
+							<f:validateLength maximum="50" />
+						</p:inputText>
+						<p:outputLabel />
+						<p:message for="staffId" display="text" />
+						<h:outputText styleClass="input-label mandatory" value="Staff Id" />
+						<p:inputText id="staffId" required="#{not empty param[isRequired.clientId]}" value="#{ManageBancaBRMActionBean.bancaBRM.staffId}">
+							<f:validateLength maximum="50" />
+						</p:inputText>
+						<p:outputLabel />
+						<p:outputLabel />
+						<h:outputText styleClass="input-label mandatory" value="Gender" />
+						<p:selectOneMenu id="gender" required="#{not empty param[isRequired.clientId]}" value="#{ManageBancaBRMActionBean.bancaBRM.gender}">
+							<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{ManageBancaBRMActionBean.genderSelectItemList}" var="type" />
+						</p:selectOneMenu>
+						<p:outputLabel />
+						<p:message for="dob" display="text" />
+						<h:outputText styleClass="input-label mandatory" value="Date Of Birth" />
+						<p:inputMask id="dob" required="#{not empty param[isRequired.clientId]}" placeholder="dd-mm-yyyy" mask="99-99-9999" value="#{ManageBancaBRMActionBean.bancaBRM.dob}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</p:inputMask>
+						<p:outputLabel />
+						<p:message for="bancaDesignation" display="text" />
+						<h:outputText styleClass="input-label mandatory" value="Banca Designation" />
+						<p:inputText id="bancaDesignation" required="#{not empty param[isRequired.clientId]}" value="#{ManageBancaBRMActionBean.bancaBRM.bancaDesignation}">
+							<f:validateLength maximum="50" />
+						</p:inputText>
+						<p:outputLabel />
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:message for="phone_voice" display="text" />
+						<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_AGENT_PHONE1_LABEL']}" />
+						<p:inputText id="phone_voice" required="#{not empty param[isRequired.clientId]}" value="#{ManageBancaBRMActionBean.bancaBRM.phone}">
+							<f:validateLength maximum="20" />
+						</p:inputText>
+						<p:outputLabel />
+						<p:message for="phone_viber" display="text" />
+						<h:outputText styleClass="input-label" value="#{label['MANAGE_AGENT_PHONE3_LABEL']}" />
+						<p:inputText id="phone_viber" value="#{ManageBancaBRMActionBean.bancaBRM.phoneViber}">
+							<f:validateLength maximum="20" />
+						</p:inputText>
+						<p:outputLabel />
+						<p:message for="gginlJoindate" display="text" />
+						<h:outputText styleClass="input-label mandatory" value="GGINL JoinDate" />
+						<p:calendar id="gginlJoindate" pattern="#{ApplicationSetting.dateFormat}" required="#{not empty param[isRequired.clientId]}" showOn="button"
+							timeZone="#{ApplicationSetting.timeZone}" value="#{ManageBancaBRMActionBean.bancaBRM.gginlJoindate}" />
+						<p:outputLabel />
+						<p:message for="bancaJoindate" display="text" />
+						<h:outputText styleClass="input-label mandatory" value="Banca JoinDate" />
+						<p:calendar id="bancaJoindate" pattern="#{ApplicationSetting.dateFormat}" required="#{not empty param[isRequired.clientId]}" showOn="button"
+							timeZone="#{ApplicationSetting.timeZone}" value="#{ManageBancaBRMActionBean.bancaBRM.bancaJoindate}" />
+						<p:outputLabel />
+						<p:message for="cadre" display="text" />
+						<h:outputText styleClass="input-label mandatory" value="Cadre" />
+						<p:inputText id="cadre" required="#{not empty param[isRequired.clientId]}" value="#{ManageBancaBRMActionBean.bancaBRM.cadre}">
+							<f:validateLength maximum="50" />
+						</p:inputText>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						
+						<h:outputText styleClass="input-label mandatory" value="Status" />
+							<p:selectOneMenu required="#{not empty param[needRequired.clientId]}" converter="omnifaces.SelectItemsConverter" id="bancabrmStatus"
+								value="#{ManageBancaBRMActionBean.bancaBRM.status}">
+								<f:selectItem itemLabel=" -- Select Status --" noSelectionOption="true" />
+								<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{ManageBancaBRMActionBean.bancaStatus}" var="type" />
+						</p:selectOneMenu>
+						
+						<p:outputLabel />
+						<p:message for="remark" display="text" />
+						<h:outputText styleClass="input-label " value="Remark" />
+						<p:inputTextarea autoResize="true" id="remark" rows="5" value="#{ManageBancaBRMActionBean.bancaBRM.remark}">
+							<f:validateLength maximum="300" />
+						</p:inputTextarea>
+					</p:panelGrid>
+				</p:panelGrid>
+				<br />
+				
+				<p:outputPanel id="bancaInfoRecord">
+				<p:message for="bancaInfoRecord" display="text"/>
+					<p:panel header="BancaBRM Info" toggleable="true" collapsed="false">
+						<p:panel>
+							<p:panelGrid columns="4" columnClasses="ui-grid-col-3,ui-grid-col-3,ui-grid-col-4,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+									<p:outputLabel />
+									<p:message for="bancaBranch" display="text" />
+									<h:outputText styleClass="input-label mandatory" value="Banca Branch" />
+									<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGroup">
+										<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="entityPanelGroup">
+											<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+												<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ManageBancaBRMActionBean.selectBancaBranch()}" id="selectEnitysDialogLink"
+													process="@this">
+													<p:ajax event="dialogReturn" listener="#{ManageBancaBRMActionBean.returnBancaBranch}" update="bancaBranch" />
+												</p:commandButton>
+												<p:inputText id="bancaBranch"
+													readonly="#{not empty param[needRequired.clientId] and ManageBancaBRMActionBean.brmBranchInfo.bancaBranch == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+													required="#{not empty param[needRequired.clientId]}"
+													value="#{ManageBancaBRMActionBean.brmBranchInfo.bancaBranch == null ? '' : ManageBancaBRMActionBean.brmBranchInfo.bancaBranch.name}" />
+												<p:commandButton styleClass="red-button" icon="fa fa-times" process="@this" update="bancaBranch" />
+											</div>
+										</div>
+									</p:panelGrid>
+								</p:panelGrid>
+								<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+									<p:outputLabel />
+									<p:message for="startDate" display="text" />
+									<h:outputText styleClass="input-label mandatory" value="Start Date" />
+									<p:calendar required="#{not empty param[needRequired.clientId]}" id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button"
+										timeZone="#{ApplicationSetting.timeZone}" value="#{ManageBancaBRMActionBean.brmBranchInfo.startDate}">
+										<p:ajax event="change" update="startDate" />
+										<p:ajax event="dateSelect" update="startDate" />
+									</p:calendar>
+								</p:panelGrid>
+								<!-- <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		                      <p:outputLabel />
+							  <p:message for="endDate" display="text" />
+		                      <h:outputText styleClass="input-label mandatory" value="End Date" />
+		                      <p:calendar   required="#{not empty param[needRequired.clientId]}"  id="endDate" pattern="#{ApplicationSetting.dateFormat}"  showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+									value="#{ManageBancaBRMActionBean.brmBranchInfo.endDate}" >
+									<p:ajax event="change"  update="endDate" />
+						            <p:ajax event="dateSelect"  update="endDate" />
+									</p:calendar>
+						</p:panelGrid> -->
+								<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+									<h:outputText />
+									<p:message for="bancaStatus" />
+									<h:outputText styleClass="input-label mandatory" value="Status" />
+									<p:selectOneMenu required="#{not empty param[needRequired.clientId]}" converter="omnifaces.SelectItemsConverter" id="bancaStatus"
+										value="#{ManageBancaBRMActionBean.brmBranchInfo.status}">
+										<f:selectItem itemLabel=" -- Select Status --" noSelectionOption="true" />
+										<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{ManageBancaBRMActionBean.bancaStatus}" var="type" />
+									</p:selectOneMenu>
+								</p:panelGrid>
+							</p:panelGrid>
+						</p:panel>
+						<h:panelGrid columns="2">
+							<p:commandButton binding="#{needRequired}" value="#{!ManageBancaBRMActionBean.editBancaInfo ? label['COMMON_ADDNEW_BTN'] : label['COMMON_UPDATE_BTN']}"
+								actionListener="#{ManageBancaBRMActionBean.saveBrmBranchInfo}" update="bancaInfoRecord" process="@form" />
+							<p:commandButton value="reset" actionListener="#{ManageBancaBRMActionBean.resetBacaBranchInfo}" update="bancaInfoRecord" />
+						</h:panelGrid>
+						<br />
+						<p:dataTable id="infoTable" value="#{ManageBancaBRMActionBean.bancaBranchInfoList}" var="info">
+							<p:column headerText="Start Date">
+								<h:outputText value="#{info.startDate}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="End Date">
+								<h:outputText value="#{info.endDate}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Banca Branch">
+								<h:outputText value="#{info.bancaBranch.name}" />
+							</p:column>
+							<p:column headerText="Banca Branch">
+								<h:outputText value="#{info.status}" />
+							</p:column>
+							<p:column style="width:4%;" headerText="Edit">
+								<p:commandButton styleClass="green-button" icon="fa fa-paint-brush" action="#{ManageBancaBRMActionBean.prepareEditBrmBranchInfo(info)}" process="@this"
+									update="@form:bancaInfoRecord" id="editbancaInfoRecordLink" disabled="#{info.disable}">
+								</p:commandButton>
+							</p:column>
+							<p:column style="width:4%;" headerText="Delete">
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ManageBancaBRMActionBean.removeBancaBranchInfo(info)}" id="removebancaInfoRecordLink"
+									update="@form:bancaInfoRecord" disabled="#{info.disable}">
+									<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</p:panel>
+				</p:outputPanel>
+			</p:panel>
+			<br />
+			<p:commandButton id="addBtn" value="#{label['COMMON_ADDNEW_BTN']}" binding="#{isRequired}" action="#{ManageBancaBRMActionBean.addNewBancaBRM}"
+				rendered="#{ManageBancaBRMActionBean.createNew}" oncomplete="PF('bancaBRMTable').clearFilters();" update=":bancaBRMEntryForm" style="width:65px;" />
+			<p:commandButton id="editBtn" value="#{label['COMMON_UPDATE_BTN']}" action="#{ManageBancaBRMActionBean.updateBancaBRM}" rendered="#{!ManageBancaBRMActionBean.createNew}"
+				oncomplete="PF('bancaBRMTable').filter();" update="@form" style="width:70px;" />
+			<p:spacer width="15px;" />
+			<p:commandButton id="cancleButton" value="Cancel" immediate="true" process="@this" action="#{ManageBancaBRMActionBean.createNewBancaBRMInfo}" update=":bancaBRMEntryForm"
+				style="width:70px;margin-left:-8px;" />
+			<h:outputText value="#{label['COMMON_MSG_MANDATORY_LABEL']}" style="color:red;" styleClass="input-label" />
+			<br />
+			<p:separator style="height:3px;" />
+			<h:panelGrid>
+				<p:commandLink action="#{ManageBancaBRMActionBean.createNewBancaBRMInfo}" process="@this" update=":bancaBRMEntryForm">
+					<h:panelGrid columns="2">
+						<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+						<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+					</h:panelGrid>
+				</p:commandLink>
+			</h:panelGrid>
+			<p:dataTable var="bancaBRM" value="#{ManageBancaBRMActionBean.bancaBRMInfoList}" id="bancaBRMTable" paginator="true" rows="10" style="width:100%" widgetVar="bancaBRMTable"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,15"
+				rowKey="index" reflow="true" rowIndexVar="var" paginatorPosition="bottom">
+				<p:column headerText="No." width="2%">
+					<h:outputText value="#{var + 1}" />
+				</p:column>
+				<p:column filterBy="#{bancaBRM.name}" filterMatchMode="contains" headerText="#{label['MANAGE_BANCABRM_LABEL']}" width="10%">
+					<h:outputText value="#{bancaBRM.name}" />
+				</p:column>
+				<p:column headerText="Staff ID">
+					<h:outputText value="#{bancaBRM.staffId}" />
+				</p:column>
+				<p:column headerText="Date Of Birth">
+					<h:outputText value="#{bancaBRM.dob}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Gender">
+					<h:outputText value="#{bancaBRM.gender.label}" />
+				</p:column>
+				<p:column headerText="Phone Voice">
+					<h:outputText value="#{bancaBRM.phone}" />
+				</p:column>
+				<p:column style="width:4%;" headerText="Edit">
+					<p:commandButton styleClass="green-button" icon="fa fa-paint-brush" process="@this" action="#{ManageBancaBRMActionBean.prepareUpdateBancaBRM(bancaBRM)}"
+						update=":bancaBRMEntryForm" />
+				</p:column>
+				<p:column style="width:4%;" headerText="Delete">
+					<p:commandButton styleClass="red-button" icon="fa fa-times" process="@this" action="#{ManageBancaBRMActionBean.deleteBancaBRM(bancaBRM)}"
+						oncomplete="PF('bancaBRMTable').filter();" update=":bancaBRMEntryForm:bancaInfoRecord">
+						<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+		</p:confirmDialog>
+	</ui:define>
+</ui:composition>

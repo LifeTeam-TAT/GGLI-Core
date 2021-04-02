@@ -1,0 +1,558 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"  xmlns:jsf="http://xmlns.jcp.org/jsf">
+	<ui:param name="header" value="Customer Profile Management" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<style>
+			.fixed-size {
+				table-layout: fixed;
+				word-wrap: break-word;
+			}
+		</style>
+		<h:form id="customerEntryForm">
+			<p:growl id="growl" escape="false" globalOnly="true" life="8000" showDetail="true" />
+			<p:wizard flowListener="#{AddNewCustomerActionBean.onFlowProcess}" id="customerWizard" style="margin-bottom:10px;" widgetVar="wiz">
+				<p:tab id="personalInfo" title="Personal Info">
+					<p:panel header="Personal Info" style="min-height:300px;">
+						<p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel />
+								<p:message for="initialId" display="text" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_CUSTOMER_INITIALID_LABEL']}" />
+								<p:inputText onchange="this.value = this.value.trim()" id="initialId" required="true" value="#{AddNewCustomerActionBean.customer.initialId}" validatorMessage="Space does not dfsdf allow">
+									<f:validateLength maximum="36"  />
+								</p:inputText>
+								
+								<p:outputLabel />
+								<p:message for="firstName" display="text" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_CUSTOMER_FIRSTNAME_LABEL']}" />
+								<p:inputText id="firstName" onchange="this.value = this.value.trim()" required="true" value="#{AddNewCustomerActionBean.customer.name.firstName}">
+									<f:validateLength maximum="50" />
+								</p:inputText>
+								<p:outputLabel />
+								<p:message for="middleName" display="text" />
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_MIDDLENAME_LABEL']}" />
+								<p:inputText id="middleName" onchange="this.value = this.value.trim()" value="#{AddNewCustomerActionBean.customer.name.middleName}">
+									<f:validateLength maximum="50" />
+								</p:inputText>
+								<p:outputLabel />
+								<p:message for="lastName" display="text" />
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_LASTNAME_LABEL']}" />
+								<p:inputText id="lastName" onchange="this.value = this.value.trim()" value="#{AddNewCustomerActionBean.customer.name.lastName}">
+									<f:validateLength maximum="50" />
+								</p:inputText>
+								<p:outputLabel />
+								<p:message for="fatherName" display="text" />
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_FATHERNAME_LABEL']}" />
+								<p:inputText id="fatherName" onchange="this.value = this.value.trim()" value="#{AddNewCustomerActionBean.customer.fatherName}">
+									<f:validateLength maximum="50" />
+								</p:inputText>
+								<p:outputLabel />
+								<p:message for="gender" display="text" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_CUSTOMER_GENDER_LABEL']}" />
+								<p:selectOneMenu converter="omnifaces.SelectItemsIndexConverter" required="true" id="gender" value="#{AddNewCustomerActionBean.customer.gender}">
+									<f:selectItem itemLabel="Select" noSelectionOption="true" />
+									<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{AddNewCustomerActionBean.genderSelectItemList}" var="type" />
+								</p:selectOneMenu>
+							</p:panelGrid>
+							<p:panelGrid id="personInfoPanel" columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel />
+								<p:message for="dob" display="text" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_CUSTOMER_DOB_LABEL']}" />
+								<p:inputMask id="dob" placeholder="dd-mm-yyyy" mask="99-99-9999" required="true" value="#{AddNewCustomerActionBean.customer.dateOfBirth}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</p:inputMask>
+								<p:outputLabel />
+								<p:message for="birthMark" display="text" />
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_BIRTHMARK_LABEL']}" />
+								<p:inputText id="birthMark" value="#{AddNewCustomerActionBean.customer.birthMark}">
+									<f:validateLength maximum="100" />
+								</p:inputText>
+								<p:outputLabel />
+								<p:message for="maritalStatus" display="text" />
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_MARITALSTATUS_LABEL']}" />
+								<p:selectOneMenu converter="omnifaces.SelectItemsIndexConverter" id="maritalStatus" value="#{AddNewCustomerActionBean.customer.maritalStatus}">
+									<f:selectItem itemLabel="Select" noSelectionOption="true" />
+									<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{AddNewCustomerActionBean.maritalStatusSelectItemList}" var="type" />
+								</p:selectOneMenu>
+								<p:outputLabel />
+								<p:message for="custRegidType" display="text" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['ID_LABEL']}" />
+								<p:selectOneMenu required="true" id="custRegidType" value="#{AddNewCustomerActionBean.customer.idType}">
+									<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{AddNewCustomerActionBean.idTypeSelectItemList}" var="type" />
+									<p:ajax event="valueChange" listener="#{AddNewCustomerActionBean.changeCustomerIdType}" update="customerIdNoPanelGrid  idNoPanelGrid" />
+								</p:selectOneMenu>
+								<p:outputLabel rendered="#{AddNewCustomerActionBean.customer.idType ne 'STILL_APPLYING'}" />
+								<p:message rendered="#{AddNewCustomerActionBean.customer.idType ne 'STILL_APPLYING'}" for="nrcNo" display="text" />
+								<h:outputText />
+								<h:panelGrid columns="4" id="customerIdNoPanelGrid">
+									<p:selectOneMenu id="stateCode" converter="omnifaces.SelectItemsConverter" required="true" rendered="#{AddNewCustomerActionBean.customer.idType eq 'NRCNO'}"
+										style="width:60px;margin-left:-4px;" value="#{AddNewCustomerActionBean.customer.stateCode}">
+										<f:selectItem itemLabel="" noSelectionOption="true" />
+										<f:selectItems itemLabel="#{stateCode.codeNo}" itemValue="#{stateCode}" value="#{AddNewCustomerActionBean.stateCodeList}" var="stateCode" />
+										<p:ajax event="valueChange" listener="#{AddNewCustomerActionBean.changeStateCode}" update="customerIdNoPanelGrid" />
+									</p:selectOneMenu>
+									<p:selectOneMenu id="townshipCode" converter="omnifaces.SelectItemsConverter" required="true" rendered="#{AddNewCustomerActionBean.customer.idType eq 'NRCNO'}"
+										style="width:100px;margin-left:-4px;" filter="true" filterMatchMode="startsWith" value="#{AddNewCustomerActionBean.customer.townshipCode}">
+										<f:selectItem itemLabel="" noSelectionOption="true" />
+										<f:selectItems itemLabel="#{townshipCode.townshipcodeno}" itemValue="#{townshipCode}" value="#{AddNewCustomerActionBean.townshipCodeList}" var="townshipCode" />
+									</p:selectOneMenu>
+									<p:selectOneMenu id="idConditionType" required="true" rendered="#{AddNewCustomerActionBean.customer.idType eq 'NRCNO'}" style="width:60px;margin-left:-4px;"
+										value="#{AddNewCustomerActionBean.customer.idConditionType}">
+										<f:selectItem itemLabel="" />
+										<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{AddNewCustomerActionBean.idConditionTypeSelectItemList}" var="type" />
+									</p:selectOneMenu>
+									<p:inputText id="nrcNo" required="true" maxlength="7" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"
+										rendered="#{AddNewCustomerActionBean.customer.idType eq 'NRCNO'}" value="#{AddNewCustomerActionBean.customer.idNo}">
+										<f:validateLength maximum="7" minimum="6" />
+									</p:inputText>
+								</h:panelGrid>
+								<h:outputText />
+								<p:message for="IdNo" display="text" />
+								<h:outputText />
+								<h:panelGrid columns="1" width="100%" id="idNoPanelGrid">
+									<p:inputText id="IdNo" required="true" value="#{AddNewCustomerActionBean.customer.idNo}" maxlength="30"
+										rendered="#{AddNewCustomerActionBean.customer.idType ne 'NRCNO' and AddNewCustomerActionBean.customer.idType ne 'STILL_APPLYING' and AddNewCustomerActionBean.customer.idType ne null}" />
+								</h:panelGrid>
+							</p:panelGrid>
+						</p:panelGrid>
+					</p:panel>
+				</p:tab>
+				<p:tab id="generalInfo" title="General Info">
+					<p:panel header="General Info" style="min-height:300px;">
+						<p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel />
+								<p:message for="nationality" display="text" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_CUSTOMER_NATIONALITY_LABEL']}" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="nationalityPanelGroup">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="nationalityPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewCustomerActionBean.selectCountry()}" id="selectCountryDialogLink" process="@this">
+												<p:ajax event="dialogReturn" listener="#{AddNewCustomerActionBean.returnNationality}" update="nationality" />
+											</p:commandButton>
+											<p:inputText id="nationality" readonly="#{AddNewCustomerActionBean.customer.country == null? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true"
+												value="#{AddNewCustomerActionBean.customer.country == null ? '' : AddNewCustomerActionBean.customer.country.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewCustomerActionBean.customer.setCountry(null)}" process="@this" update="nationality" />
+										</div>
+									</div>
+								</p:panelGrid>
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_RELIGION_LABEL']}" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="religionPanelGroup">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="religionPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewCustomerActionBean.selectReligion()}" id="selectReligionDialogLink"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{AddNewCustomerActionBean.returnReligion}" update="religion" />
+											</p:commandButton>
+											<p:inputText id="religion" readonly="true" value="#{AddNewCustomerActionBean.customer.religion== null ? '' : AddNewCustomerActionBean.customer.religion.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewCustomerActionBean.customer.setReligion(null)}" process="@this" update="religion" />
+										</div>
+									</div>
+								</p:panelGrid>
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_QUALIFICATION_LABEL']}" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="qualificationPanelGroup">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="qualificationPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewCustomerActionBean.selectQualification()}" id="selectQualificationDialogLink"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{AddNewCustomerActionBean.returnQualification}" update="qualification" />
+											</p:commandButton>
+											<p:inputText id="qualification" readonly="true"
+												value="#{AddNewCustomerActionBean.customer.qualification == null ? '' : AddNewCustomerActionBean.customer.qualification.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewCustomerActionBean.customer.setQualification(null)}" process="@this" update="qualification" />
+										</div>
+									</div>
+								</p:panelGrid>
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_OCCUPATION_LABEL']}" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="occupationPanelGroup">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="occupationPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewCustomerActionBean.selectOccupation()}" id="selectOccupationDialogLink"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{AddNewCustomerActionBean.returnOccupation}" update="occupation" />
+											</p:commandButton>
+											<p:inputText id="occupation" readonly="true" value="#{AddNewCustomerActionBean.customer.occupation == null ? '' : AddNewCustomerActionBean.customer.occupation.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewCustomerActionBean.customer.setOccupation(null)}" process="@this" update="occupation" />
+										</div>
+									</div>
+								</p:panelGrid>
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_INDUSTRY_LABEL']}" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="industryPanelGroup">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="industryPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewCustomerActionBean.selectIndustry()}" id="selectIndustryDialogLink"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{AddNewCustomerActionBean.returnIndustry}" update="industry" />
+											</p:commandButton>
+											<p:inputText id="industry" readonly="true" value="#{AddNewCustomerActionBean.customer.industry== null ? '' : AddNewCustomerActionBean.customer.industry.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewCustomerActionBean.customer.setIndustry(null)}" process="@this" update="industry" />
+										</div>
+									</div>
+								</p:panelGrid>
+							</p:panelGrid>
+							<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								
+								<p:outputLabel />
+								<p:message for="entity" display="text" />
+								<h:outputText styleClass="input-label mandatory" value="Entity" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGroup">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="entityPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewCustomerActionBean.selectEntity()}" id="selectEntityDialogLink" process="@this" >
+												<p:ajax event="dialogReturn" listener="#{AddNewCustomerActionBean.returnEntity}" update="entity branchPanelGroup salePontPanelGroup" />
+											</p:commandButton>
+											<p:inputText id="entity" readonly="#{AddNewCustomerActionBean.entitys == null? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true"
+												value="#{AddNewCustomerActionBean.entitys== null ? '' : AddNewCustomerActionBean.entitys.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewCustomerActionBean.removeEntity()}" process="@this" update="entity branchPanelGroup salePontPanelGroup" />
+										</div>
+									</div>
+								</p:panelGrid>
+								
+								<p:outputLabel />
+								<p:message for="branch" display="text" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_CUSTOMER_BRANCH_LABEL']}" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" >
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewCustomerActionBean.selectBranchByEntity()}" id="selectBranchDialogLink" process="@this" disabled="#{AddNewCustomerActionBean.entitys==null?true:false}">
+												<p:ajax event="dialogReturn" listener="#{AddNewCustomerActionBean.returnBranch}" update="branch salePontPanelGroup" />
+											</p:commandButton>
+											<p:inputText id="branch" readonly="#{AddNewCustomerActionBean.customer.branch == null? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true"
+												value="#{AddNewCustomerActionBean.customer.branch == null ? '' : AddNewCustomerActionBean.customer.branch.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewCustomerActionBean.removeBranch()}" process="@this" update="branch salePontPanelGroup" />
+										</div>
+									</div>
+								</p:panelGrid>
+								<h:outputText/>
+								<p:message for="salePoint" />
+								<h:outputText styleClass="input-label mandatory" value="Sale Point" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" >
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewCustomerActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+												process="@this" disabled="#{AddNewCustomerActionBean.customer.branch==null?true:false}">
+												<p:ajax event="dialogReturn" listener="#{AddNewCustomerActionBean.returnSalePoint}" update="salePoint" />
+											</p:commandButton>
+											<p:inputText id="salePoint" required="true" readonly="#{AddNewCustomerActionBean.customer.salePoint == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{AddNewCustomerActionBean.customer.salePoint == null ? '' : AddNewCustomerActionBean.customer.salePoint.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewCustomerActionBean.customer.setSalePoint(null)}" process="@this" update="salePoint" />
+										</div>
+									</div>
+								</p:panelGrid>
+								
+							
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_BANKBRANCH_LABEL']}" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="bankBranchPanelGroup">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="bankBranchPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewCustomerActionBean.selectBankBranch()}" id="selectBankBranchDialogLink"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{AddNewCustomerActionBean.returnBankBranch}" update="bankBranch" />
+											</p:commandButton>
+											<p:inputText id="bankBranch" readonly="true" value="#{AddNewCustomerActionBean.customer.bankBranch== null ? '' : AddNewCustomerActionBean.customer.bankBranch.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewCustomerActionBean.customer.setBankBranch(null)}" process="@this" update="bankBranch" />
+										</div>
+									</div>
+								</p:panelGrid>
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_ACCOUNTNO_LABEL']}" />
+								<p:inputText id="bankAccountNo" value="#{AddNewCustomerActionBean.customer.bankAccountNo}">
+									<f:validateLength maximum="50" />
+								</p:inputText>
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_SALARY_LABLE']}" />
+								<p:inputText id="salary" value="#{AddNewCustomerActionBean.customer.salary}">
+									<f:validateLength maximum="18" />
+								</p:inputText>
+								
+								
+							</p:panelGrid>
+						</p:panelGrid>
+					</p:panel>
+				</p:tab>
+				<p:tab id="contactInfo" title="Contact Info">
+					<p:panel header="Contact Info" style="min-height:300px;">
+						<p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel />
+								<p:message for="permentAdd" display="text" />
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_PARMENTADD_LABEL']}" />
+								<p:inputText id="permentAdd" value="#{AddNewCustomerActionBean.customer.permanentAddress.permanentAddress}">
+									<f:validateLength maximum="300" />
+								</p:inputText>
+								<p:outputLabel />
+								<p:message for="parmanentTownId" display="text" />
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_PARMANENTTOWNID_LABEL']}" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="permanentPanelGroup">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="permanentPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewCustomerActionBean.selectTownship()}" id="selectPermanentTownshipDialogLink"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{AddNewCustomerActionBean.returnPermanentTownship}" update="parmanentTownId residentTownId" />
+											</p:commandButton>
+											<p:inputText id="parmanentTownId"
+												readonly="true"
+												value="#{AddNewCustomerActionBean.customer.permanentAddress.township== null ? '' : AddNewCustomerActionBean.customer.permanentAddress.township.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewCustomerActionBean.customer.permanentAddress.setTownship(null)}" process="@this"
+												update="parmanentTownId" />
+										</div>
+									</div>
+								</p:panelGrid>
+								<p:outputLabel />
+								<p:message for="residentAdd" display="text" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_CUSTOMER_RESIDENTADD_LABEL']}" />
+								<p:inputText id="residentAdd" required="true" value="#{AddNewCustomerActionBean.customer.residentAddress.residentAddress}">
+									<f:validateLength maximum="300" />
+								</p:inputText>
+								<p:outputLabel />
+								<p:message for="residentTownId" display="text" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_CUSTOMER_RESIDENTTOWNID_LABEL']}" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="residentPanelGroup">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="residentPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewCustomerActionBean.selectTownship()}" id="selectResidentTownshipDialogLink"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{AddNewCustomerActionBean.returnResidentTownship}" update="residentTownId" />
+											</p:commandButton>
+											<p:inputText id="residentTownId" required="true"
+												readonly="#{AddNewCustomerActionBean.customer.residentAddress.township == null? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{AddNewCustomerActionBean.customer.residentAddress.township == null ? '' :AddNewCustomerActionBean.customer.residentAddress.township.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewCustomerActionBean.customer.residentAddress.setTownship(null)}" process="@this"
+												update="residentTownId" />
+										</div>
+									</div>
+								</p:panelGrid>
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_OFFICEADD_LABEL']}" />
+								<p:inputText id="officeAdd" value="#{AddNewCustomerActionBean.customer.officeAddress.officeAddress}">
+									<f:validateLength maximum="300" />
+								</p:inputText>
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_OFFICETOWNID_LABEL']}" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="officePanelGroup">
+									<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="officePanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewCustomerActionBean.selectTownship()}" id="selectOfficeTownshipDialogLink"
+												process="@this">
+												<p:ajax event="dialogReturn" listener="#{AddNewCustomerActionBean.returnOfficeTownship}" update="officeTownId" />
+											</p:commandButton>
+											<p:inputText id="officeTownId" readonly="true"
+												value="#{AddNewCustomerActionBean.customer.officeAddress.township== null ? '' : AddNewCustomerActionBean.customer.officeAddress.township.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewCustomerActionBean.customer.officeAddress.setTownship(null)}" process="@this"
+												update="officeTownId" />
+										</div>
+									</div>
+								</p:panelGrid>
+							</p:panelGrid>
+							<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel />
+								<p:message for="phone" display="text" />
+								<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_CUSTOMER_PHONE_LABEL']}" />
+								<p:inputText id="phone" required="true" validatorMessage="Character does not allow and comma use when u adding one more."
+									value="#{AddNewCustomerActionBean.customer.contentInfo.phone}">
+									<f:validateRegex pattern="\b\d[\d,-]*\b" />
+								</p:inputText>
+								<p:outputLabel />
+								<p:message for="fax" display="text" />
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_FAX_LABEL']}" />
+								<p:inputText id="fax" value="#{AddNewCustomerActionBean.customer.contentInfo.fax}">
+									<f:validateLength maximum="100" />
+								</p:inputText>
+								<p:outputLabel />
+								<p:message for="mobile" display="text" />
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_MOBILE_LABEL']}" />
+								<p:inputText id="mobile" value="#{AddNewCustomerActionBean.customer.contentInfo.mobile}" />
+								<p:outputLabel />
+								<p:message for="email" display="text" />
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_EMAIL_LABEL']}" />
+								<p:inputText id="email" validatorMessage="Email format is not valid." value="#{AddNewCustomerActionBean.customer.contentInfo.email}">
+									<f:validateRegex pattern="(.+@.+\.com)?" />
+								</p:inputText>
+							</p:panelGrid>
+						</p:panelGrid>
+					</p:panel>
+				</p:tab>
+				<p:tab id="familyInfo" title="Family Info">
+					<p:panel header="Family Info" id="familyInfopanel" style="min-height:300px;">
+						<fieldset>
+							<legend>
+								<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_FAMILYINFO_LABLE']}" />
+							</legend>
+							<p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+									<p:outputLabel />
+									<p:message for="familyInitialId" display="text" />
+									<h:outputText styleClass="input-label mandatory" value="Salutation" />
+									<p:inputText id="familyInitialId"  onchange="this.value = this.value.trim()" required="true" value="#{AddNewCustomerActionBean.familyInfoDTO.initialId}" />
+									<p:outputLabel />
+									<p:message for="familyFirstName" display="text" />
+									<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_CUSTOMER_FAMILYINFO_FIRSTNAME_LABLE']}" />
+									<p:inputText id="familyFirstName" onchange="this.value = this.value.trim()" required="true" value="#{AddNewCustomerActionBean.familyInfoDTO.name.firstName}" />
+									<p:outputLabel />
+									<p:message for="familyMiddleName" display="text" />
+									<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_FAMILYINFO_MIDDLENAME_LABLE']}" />
+									<p:inputText id="familyMiddleName" onchange="this.value = this.value.trim()" value="#{AddNewCustomerActionBean.familyInfoDTO.name.middleName}" />
+									<p:outputLabel />
+									<p:message for="familyLastName" display="text" />
+									<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_FAMILYINFO_LASTNAME_LABLE']}" />
+									<p:inputText id="familyLastName" onchange="this.value = this.value.trim()" value="#{AddNewCustomerActionBean.familyInfoDTO.name.lastName}" />
+									<p:outputLabel />
+									<p:message for="familyIdType" display="text" />
+									<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_CUSTOMER_IDTYPE_LABEL']}" />
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="familyIdType" value="#{AddNewCustomerActionBean.familyInfoDTO.idType}">
+										<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{AddNewCustomerActionBean.idTypeSelectItemList}" var="type" />
+										<p:ajax event="valueChange" listener="#{AddNewCustomerActionBean.changeFamilyIdType}" update="familyIdNoGroup familyIdNoPanelGrid" />
+									</p:selectOneMenu>
+									<p:outputLabel />
+									<p:message for="familyNrcNo" display="text" />
+									<h:outputText />
+									<h:panelGrid columns="4" id="familyIdNoGroup">
+										<p:selectOneMenu id="familyStateCode" required="true" converter="omnifaces.SelectItemsConverter" rendered="#{AddNewCustomerActionBean.familyInfoDTO.idType eq 'NRCNO'}"
+											style="width:70px;margin-left:-4px;" value="#{AddNewCustomerActionBean.familyInfoDTO.stateCode}">
+											<f:selectItem itemLabel="" />
+											<f:selectItems itemLabel="#{stateCode.codeNo}" itemValue="#{stateCode}" value="#{AddNewCustomerActionBean.stateCodeList}" var="stateCode" />
+											<p:ajax event="valueChange" listener="#{AddNewCustomerActionBean.changeStateCodeForFamilyInfo}" update="familyTownshipCode" />
+										</p:selectOneMenu>
+										<p:selectOneMenu id="familyTownshipCode" required="true" converter="omnifaces.SelectItemsConverter" rendered="#{AddNewCustomerActionBean.familyInfoDTO.idType eq 'NRCNO'}"
+											style="width:90px;margin-left:-4px;" value="#{AddNewCustomerActionBean.familyInfoDTO.townshipCode}">
+											<f:selectItem itemLabel="" />
+											<f:selectItems itemLabel="#{townshipCode.townshipcodeno}" itemValue="#{townshipCode}" value="#{AddNewCustomerActionBean.townshipCodeList}" var="townshipCode" />
+										</p:selectOneMenu>
+										<p:selectOneMenu id="familyIdConditionType" required="true" rendered="#{AddNewCustomerActionBean.familyInfoDTO.idType eq 'NRCNO'}" style="width:50px;margin-left:-4px;"
+											value="#{AddNewCustomerActionBean.familyInfoDTO.idConditionType}">
+											<f:selectItem itemLabel="" />
+											<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{AddNewCustomerActionBean.idConditionTypeSelectItemList}" var="type" />
+										</p:selectOneMenu>
+										<p:inputText id="familyNrcNo" required="true" maxlength="7" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"
+											rendered="#{AddNewCustomerActionBean.familyInfoDTO.idType eq 'NRCNO'}" value="#{AddNewCustomerActionBean.familyInfoDTO.idNo}">
+											<f:validateLength maximum="7" minimum="6" />
+										</p:inputText>
+									</h:panelGrid>
+									<h:outputText />
+									<p:message for="familyIdNo" display="text" />
+									<h:outputText />
+									<h:panelGrid columns="1" width="100%" id="familyIdNoPanelGrid">
+										<p:inputText id="familyIdNo" required="true" value="#{AddNewCustomerActionBean.familyInfoDTO.idNo}" maxlength="30"
+											rendered="#{AddNewCustomerActionBean.familyInfoDTO.idType ne 'NRCNO' and AddNewCustomerActionBean.familyInfoDTO.idType ne 'STILL_APPLYING' and AddNewCustomerActionBean.familyInfoDTO.idType ne null}" />
+									</h:panelGrid>
+								</p:panelGrid>
+								<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+									<p:outputLabel />
+									<p:message for="familyRelationShip" display="text" />
+									<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_CUSTOMER_FAMILYINFO_RELSHIP_LABLE']}" />
+									<p:selectOneMenu required="true" converter="omnifaces.SelectItemsIndexConverter" id="familyRelationShip" value="#{AddNewCustomerActionBean.familyInfoDTO.relationShip}">
+										<f:selectItem itemLabel="Choose One" noSelectionOption="true" />
+										<f:selectItems itemLabel="#{relationShip.name}" itemValue="#{relationShip}" value="#{AddNewCustomerActionBean.relationShipList}" var="relationShip" />
+									</p:selectOneMenu>
+									<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_FAMILYINFO_DOB_LABLE']}" />
+									<p:inputMask id="familyDob" placeholder="dd-mm-yyyy" mask="99-99-9999" value="#{AddNewCustomerActionBean.familyInfoDTO.dateOfBirth}">
+										<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+									</p:inputMask>
+									<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_OCCUPATION_LABEL']}" />
+									<p:panelGrid styleClass="ui-panelgrid-blank" id="familyOccupationPanelGroup">
+										<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="familyOccupationPanelGroup">
+											<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+												<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewCustomerActionBean.selectOccupation()}" id="selectFamilyOccupationDialogLink"
+													process="@this">
+													<p:ajax event="dialogReturn" listener="#{AddNewCustomerActionBean.returnFamilyOccupation}" update="familyOccupation" />
+												</p:commandButton>
+												<p:inputText id="familyOccupation" readonly="true"
+													value="#{AddNewCustomerActionBean.familyInfoDTO.occupation == null ? '' : AddNewCustomerActionBean.familyInfoDTO.occupation.name}" />
+												<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewCustomerActionBean.familyInfoDTO.setOccupation(null)}" process="@this"
+													update="familyOccupation" />
+											</div>
+										</div>
+									</p:panelGrid>
+									<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_INDUSTRY_LABEL']}" />
+									<p:panelGrid styleClass="ui-panelgrid-blank" id="familyIndustryPanelGroup">
+										<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="familyIndustryPanelGroup">
+											<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+												<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewCustomerActionBean.selectIndustry()}" id="selectFamilyIndustryDialogLink"
+													process="@this">
+													<p:ajax event="dialogReturn" listener="#{AddNewCustomerActionBean.returnFamilyIndustry}" update="fanuktIndustry" />
+												</p:commandButton>
+												<p:inputText id="fanuktIndustry" readonly="true"
+													value="#{AddNewCustomerActionBean.familyInfoDTO.industry== null ? '' : AddNewCustomerActionBean.familyInfoDTO.industry.name}" />
+												<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewCustomerActionBean.familyInfoDTO.setIndustry(null)}" process="@this" update="fanuktIndustry" />
+											</div>
+										</div>
+									</p:panelGrid>
+								</p:panelGrid>
+							</p:panelGrid>
+							<p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+								<p:commandButton action="#{AddNewCustomerActionBean.saveFamilyInfo}" id="addFamilyInfoBtn" rendered="#{AddNewCustomerActionBean.createNewFamilyInfo}"
+									update=":customerEntryForm:familyInfopanel" value="#{label['COMMON_ADDNEW_BTN']}" />
+								<p:commandButton action="#{AddNewCustomerActionBean.saveFamilyInfo}" id="editFamilyInfoBtn" rendered="#{!AddNewCustomerActionBean.createNewFamilyInfo}"
+									update=":customerEntryForm:familyInfopanel" value="#{label['COMMON_UPDATE_BTN']}" />
+							</p:panelGrid>
+						</fieldset>
+						<h:panelGroup id="familyInfoTablePanel">
+							<fieldset>
+								<legend>
+									<table>
+										<tr>
+											<td>
+												<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_FAMILYINFO_LABLE']}" />
+											</td>
+											<td>
+												<h:panelGrid columns="2">
+													<p:commandLink action="#{AddNewCustomerActionBean.prepareAddNewFamilyInfo()}" process="@this" update=":customerEntryForm:familyInfopanel">
+														<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+													</p:commandLink>
+													<p:message for="familyInfoTable" display="text" />
+												</h:panelGrid>
+											</td>
+										</tr>
+									</table>
+								</legend>
+								<p:dataTable id="familyInfoTable" style="width:100%" value="#{AddNewCustomerActionBean.familyInfoDTOList}" var="familyInfo">
+									<p:column headerText="Name">
+										<h:outputText value="#{familyInfo.fullName}" />
+									</p:column>
+									<p:column headerText="#{label['MANAGE_CUSTOMER_FAMILYINFO_DOB_LABLE']}">
+										<h:outputText value="#{familyInfo.dateOfBirth}">
+											<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="#{label['MANAGE_CUSTOMER_FAMILYINFO_NRC_LABLE']}">
+										<h:outputText value="#{familyInfo.fullIdNo}" />
+									</p:column>
+									<p:column headerText="#{label['MANAGE_CUSTOMER_FAMILYINFO_RELSHIP_LABLE']}">
+										<h:outputText value="#{empty familyInfo.relationShip ? '' : familyInfo.relationShip.name}" />
+									</p:column>
+									<p:column headerText="#{label['MANAGE_CUSTOMER_OCCUPATION_LABEL']}">
+										<h:outputText value="#{empty familyInfo.occupation ? '' : familyInfo.occupation.name}" />
+									</p:column>
+									<p:column headerText="#{label['MANAGE_CUSTOMER_INDUSTRY_LABEL']}">
+										<h:outputText value="#{empty familyInfo.industry ? '' : familyInfo.industry.name}" />
+									</p:column>
+									<p:column style="width:4%;">
+										<p:commandButton styleClass="green-button" icon="fa fa-check" action="#{AddNewCustomerActionBean.prepareEditFamilyInfo(familyInfo)}" process="@this"
+											update=":customerEntryForm:familyInfopanel">
+										</p:commandButton>
+									</p:column>
+									<p:column style="width:4%;">
+										<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewCustomerActionBean.removeFamilyInfo(familyInfo)}" process="@this"
+											update=":customerEntryForm:familyInfoTablePanel">
+											<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+										</p:commandButton>
+									</p:column>
+								</p:dataTable>
+							</fieldset>
+						</h:panelGroup>
+						<p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+							<p:commandButton action="#{AddNewCustomerActionBean.addNewCustomer}" process="@this" id="addBtn" rendered="#{AddNewCustomerActionBean.createNew}" style="width:120px;"
+								value="Save Customer" />
+							<p:commandButton action="#{AddNewCustomerActionBean.updateCustomer}" process="@this" id="editBtn" rendered="#{!AddNewCustomerActionBean.createNew}" style="width:120px;"
+								value="Edit Customer" />
+						</p:panelGrid>
+					</p:panel>
+				</p:tab>
+			</p:wizard>
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			<!-- Confirmation Dialog -->
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+				<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+			</p:confirmDialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

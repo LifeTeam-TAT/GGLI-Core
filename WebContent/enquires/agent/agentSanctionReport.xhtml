@@ -1,0 +1,105 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Agent Sanction Enquiry" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="agentSanctionEquiryForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="sanctionNo" value="Sanction No." />
+						<p:inputText id="sanctionNo" value="#{AgentSanctionEnquryActionBean.criteria.sanctionNo}" />
+						<h:outputText value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectBranchPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectBranchPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" disabled="#{!AgentSanctionEnquryActionBean.accessBranch}"
+										actionListener="#{AgentSanctionEnquryActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{AgentSanctionEnquryActionBean.returnBranch}" update="branch" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true" value="#{AgentSanctionEnquryActionBean.criteria.branch == null ? '' : AgentSanctionEnquryActionBean.criteria.branch.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{!AgentSanctionEnquryActionBean.accessBranch}"
+										action="#{AgentSanctionEnquryActionBean.criteria.setBranch(null)}" process="@this" update="branch" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="insuranceType" value="Insurance Type" />
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuranceType" value="#{AgentSanctionEnquryActionBean.criteria.insuranceType}">
+							<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{AgentSanctionEnquryActionBean.insuranceTypes}" var="type" />
+						</p:selectOneMenu>
+						<h:outputText value="Agent" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectAgentPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectAgentPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentSanctionEnquryActionBean.selectAgent()}" id="selectAgentDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{AgentSanctionEnquryActionBean.returnAgent}" update="agent" />
+									</p:commandButton>
+									<p:inputText id="agent" readonly="true" value="#{AgentSanctionEnquryActionBean.criteria.agent == null ? '' : AgentSanctionEnquryActionBean.criteria.agent.name.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AgentSanctionEnquryActionBean.criteria.setAgent(null)}" process="@this" update="agent" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton action="#{AgentSanctionEnquryActionBean.filter}" style="width:80px;" update=":agentSanctionEquiryForm:incomeTable" value="Search"/>
+				<p:commandButton action="#{AgentSanctionEnquryActionBean.reset()}" style="width:80px;" immediate="true" update=":agentSanctionEquiryForm" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="incomeTable" paginator="true" style="width:100%;" styleClass="fixed-size"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="10"
+				rowsPerPageTemplate="10,20, 30" value="#{AgentSanctionEnquryActionBean.agentSanctionDTOs}" var="agentSanctionDTO">
+				<p:column headerText="No." style="width:3%;">
+					<h:outputText value="#{rowIndex + 1}" />
+				</p:column>
+				<p:column headerText="Sanction No" style="width:20%;">
+					<h:outputText value="#{agentSanctionDTO.sanctionNo}" />
+				</p:column>
+				<p:column headerText="Sanction Date" style="width:10%;">
+					<h:outputText value="#{agentSanctionDTO.sanctionDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Agent Name" style="width:20%;">
+					<h:outputText value="#{agentSanctionDTO.agent.fullName}" />
+				</p:column>
+				<p:column headerText="Agent Liscense No." style="width:10%;">
+					<h:outputText value="#{agentSanctionDTO.agent.liscenseNo}" />
+				</p:column>
+				<p:column headerText="Insurance Type" style="width:20%;">
+					<h:outputText value="#{agentSanctionDTO.referenceType.label}" />
+				</p:column>
+				<p:column headerText="Commission Amount" style="width:11%;">
+					<h:outputText value="#{agentSanctionDTO.commision}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Sanction" style="width:6%;">
+					<p:commandLink action="#{AgentSanctionEnquryActionBean.generateReport(agentSanctionDTO)}" immediate="true" oncomplete="PF('pdfPreviewDialog').show()"
+						update=":pdfPreviewForm:steam">
+						<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" url="#{ApplicationSetting.printIcon}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview (PDF)" height="500" hideEffect="fade" id="pdfPreviewDialog" resizable="false" showEffect="fade"
+			widgetVar="pdfPreviewDialog" width="1024">
+			<h:form enctype="multipart/form-data" id="pdfPreviewForm">
+				<p:outputPanel id="steam">
+					<p:media height="450" player="pdf" value="#{AgentSanctionEnquryActionBean.stream}" width="1000"  cache="false"/>
+				</p:outputPanel>
+			</h:form>
+			<p:ajax event="close" update=":pdfPreviewDialog :agentSanctionEquiryForm" listener="#{AgentSanctionEnquryActionBean.handleClose}" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>

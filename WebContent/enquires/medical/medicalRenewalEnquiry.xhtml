@@ -1,0 +1,238 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Medical Renewal Enquery" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="underwritingEnqueryForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText styleClass="input-label" value="Start Date" />
+						<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+							value="#{MedicalRenewalEnquiryActionBean.criteria.startDate}" />
+						<h:outputText value="Agent" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectagentPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectagentPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{MedicalRenewalEnquiryActionBean.selectAgent()}" id="selectAgentDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{MedicalRenewalEnquiryActionBean.returnAgent}" update="agent" />
+									</p:commandButton>
+									<p:inputText id="agent" readonly="true"
+										value="#{MedicalRenewalEnquiryActionBean.criteria.agent == null ? '' : MedicalRenewalEnquiryActionBean.criteria.agent.name.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{MedicalRenewalEnquiryActionBean.criteria.setAgent(null)}" process="@this" update="agent" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText value="Customer" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectCustomerPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectCustomerPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{MedicalRenewalEnquiryActionBean.selectCustomer()}" id="selectCustomerDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{MedicalRenewalEnquiryActionBean.returnCustomer}" update="customer" />
+									</p:commandButton>
+									<p:inputText id="customer" readonly="true"
+										value="#{MedicalRenewalEnquiryActionBean.criteria.customer == null ? '' : MedicalRenewalEnquiryActionBean.criteria.customer.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{MedicalRenewalEnquiryActionBean.criteria.setCustomer(null)}" process="@this" update="customer" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText styleClass="input-label" value="End Date" />
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+							value="#{MedicalRenewalEnquiryActionBean.criteria.endDate}" />
+						<h:outputText value="SaleMan" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectSaleManPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectSaleManPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{MedicalRenewalEnquiryActionBean.selectSaleMan()}" id="selectSaleManDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{MedicalRenewalEnquiryActionBean.returnSaleMan}" update="saleMan" />
+									</p:commandButton>
+									<p:inputText id="saleMan" readonly="true"
+										value="#{MedicalRenewalEnquiryActionBean.criteria.saleMan == null ? '' : MedicalRenewalEnquiryActionBean.criteria.saleMan.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{MedicalRenewalEnquiryActionBean.criteria.setSaleMan(null)}" process="@this" update="saleMan" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText value="Organization" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectOrganizationPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectOrganizationPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{MedicalRenewalEnquiryActionBean.selectOrganization()}" id="selectOrganizationDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{MedicalRenewalEnquiryActionBean.returnOrganization}" update="organization" />
+									</p:commandButton>
+									<p:inputText id="organization" readonly="true"
+										value="#{MedicalRenewalEnquiryActionBean.criteria.organization == null ? '' : MedicalRenewalEnquiryActionBean.criteria.organization.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{MedicalRenewalEnquiryActionBean.criteria.setOrganization(null)}" process="@this"
+										update="organization" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText value="Branch" />
+							<p:panelGrid styleClass="ui-panelgrid-blank" id="selectBranchPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectBranchPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" disabled="#{!MedicalRenewalEnquiryActionBean.accessBranches}" actionListener="#{MedicalRenewalEnquiryActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+								       <p:ajax event="dialogReturn" listener="#{LifeEnquiryActionBean.returnAgent}" update="branch"/>
+								    </p:commandButton>
+								    <p:inputText id="branch" readonly="true" value="#{MedicalRenewalEnquiryActionBean.criteria.branch == null ? '' : MedicalRenewalEnquiryActionBean.criteria.branch.name}" />
+								    <p:commandButton styleClass="red-button" disabled="#{!MedicalRenewalEnquiryActionBean.accessBranches}" icon="fa fa-times" action="#{LifeEnquiryActionBean.criteria.setBranch(null)}" process="@this" update="branch"/>
+								</div>
+							</div>
+						</p:panelGrid>
+							
+						<h:outputText value="Referral" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectReferralPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectReferralPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{MedicalRenewalEnquiryActionBean.selectReferral()}" id="selectReferralDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{MedicalRenewalEnquiryActionBean.returnReferral}" update="referralMan" />
+									</p:commandButton>
+									<p:inputText id="referralMan" readonly="true"
+										value="#{MedicalRenewalEnquiryActionBean.criteria.referral == null ? '' : MedicalRenewalEnquiryActionBean.criteria.referral.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{MedicalRenewalEnquiryActionBean.criteria.setReferral(null)}" process="@this" update="referralMan" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText for="proposalNo" value="Proposal No." />
+						<p:inputText id="proposalNo" value="#{MedicalRenewalEnquiryActionBean.criteria.number}" />
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton style="width:80px;" id="searchPolicy" action="#{MedicalRenewalEnquiryActionBean.findMedicalProposalListByEnquiryCriteria}" update="@form" value="Search" />
+				<p:commandButton style="width:80px;" action="#{MedicalRenewalEnquiryActionBean.resetCriteria}" update="@form" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="underwritingEnquiryDataTable" style="width:100%" value="#{MedicalRenewalEnquiryActionBean.proposalList}" var="medicalProposal" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="index" rows="10"
+				rowsPerPageTemplate="10,20,30">
+				<p:column headerText="No." style="width: 3%;">
+					<h:outputText value="#{index + 1}." style="float: right;" />
+				</p:column>
+				<p:column headerText="Proposal No" style="width: 15%;" styleClass="fixed-size">
+					<h:outputText value="#{medicalProposal.proposalNo}" />
+				</p:column>
+				<p:column headerText="Sale Person" style="width: 14%;">
+					<h:outputText value="#{medicalProposal.salePerson}" />
+				</p:column>
+				<p:column headerText="Customer" style="width: 14%;">
+					<h:outputText value="#{medicalProposal.customer}" />
+				</p:column>
+				<p:column headerText="Unit" style="width: 5%;" styleClass="fixed-size">
+					<h:outputText style="float: right;" value="#{medicalProposal.unit}" />
+				</p:column>
+				<p:column headerText="Total premium" style="width: 10%;" styleClass="fixed-size">
+					<h:outputText style="float: right;" value="#{medicalProposal.totalPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Submitted Date" style="width: 9%;" styleClass="fixed-size">
+					<h:outputText value="#{medicalProposal.submittedDate}" styleClass="fixed-size">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Detail" style="width: 5%;text-align:center;" styleClass="fixed-size">
+					<p:commandLink id="detailsProposal" immediate="true" oncomplete="PF('medicalProposalDetailsDialog').show()" update=":medicalProposalDetailsForm"
+						action="#{MedicalRenewalEnquiryActionBean.medicalProposalDetail(medicalProposal)}">
+						<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column headerText="Edit" style="width: 5%;text-align:center;" styleClass="fixed-size">
+					<p:commandLink action="#{MedicalRenewalEnquiryActionBean.editMedicalProposal(medicalProposal)}" update=":informationForm">
+						<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="width:6%;text-align:center;" headerText="Sanction" styleClass="fixed-size">
+					<p:commandLink id="sanctionLetter" action="#{MedicalRenewalEnquiryActionBean.generateSanction(medicalProposal)}" update=":sanctionPrintForm :informationForm">
+						<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" url="#{ApplicationSetting.printIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="width:6%;text-align:center;" headerText="Accepted Letter" styleClass="fixed-size">
+					<p:commandLink id="acceptedLetter" action="#{MedicalRenewalEnquiryActionBean.generateAcceptedLetter(medicalProposal)}" update=":acceptLetterForm :informationForm">
+						<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" url="#{ApplicationSetting.printIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column headerText="Cash Receipt" style="width:5%;text-align:center;">
+					<p:commandLink id="cashreceipt" action="#{MedicalRenewalEnquiryActionBean.generateCashReceipt(medicalProposal)}" update=":pdfCashReceiptForm :informationForm" immediate="true">
+						<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" url="#{ApplicationSetting.printIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="width:4%;text-align:center;" headerText="Policy Issue">
+					<p:commandLink id="nopolicyissue" action="#{MedicalRenewalEnquiryActionBean.generatePolicyIssue(medicalProposal)}" update=":issuePolicyPrintForm :informationForm">
+						<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" url="#{ApplicationSetting.printIcon}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<p:dialog appendTo="@(body)" dynamic="true" modal="true" header="Proposal Information" height="100" hideEffect="explode" id="informationDialog" resizable="false"
+			showEffect="explode" widgetVar="informationDialog" width="250">
+			<h:form id="informationForm">
+				<h:panelGroup id="informationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="#{MedicalRenewalEnquiryActionBean.message}" />
+							</td>
+						</tr>
+					</table>
+				</h:panelGroup>
+			</h:form>
+		</p:dialog>
+		<h:form id="acceptLetterForm" enctype="multipart/form-data">
+			<p:dialog appendTo="@(body)" dynamic="true" modal="true" widgetVar="acceptedLetterDialog" resizable="false" id="acceptedLetterDialog" width="1050" height="500">
+				<p:ajax event="close" update=":acceptLetterForm :underwritingEnqueryForm" listener="#{MedicalRenewalEnquiryActionBean.handleCloseInform}" />
+				<p:outputPanel id="printPannel">
+					<p:media id="pdfPlayer" value="#{MedicalRenewalEnquiryActionBean.acceptedStream}" player="pdf" width="1050" height="500" cache="false" />
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+		<h:form id="pdfCashReceiptForm" enctype="multipart/form-data">
+			<p:dialog appendTo="@(body)" dynamic="true" modal="true" widgetVar="cashReceiptDialog" resizable="true" id="cashReceiptDialog" width="1000" height="550">
+				<p:ajax event="close" update=":pdfCashReceiptForm :underwritingEnqueryForm" listener="#{MedicalRenewalEnquiryActionBean.handleCloseCashReceipt}" />
+				<p:media id="pdfPlayer" value="#{MedicalRenewalEnquiryActionBean.cashReceiptStream}" player="pdf" width="1000" height="500"  cache="false"/>
+			</p:dialog>
+		</h:form>
+		<h:form id="issuePolicyPrintForm" enctype="multipart/form-data">
+			<p:dialog appendTo="@(body)" dynamic="true" modal="true" widgetVar="issuePolicyPrintDialogSingle" resizable="false" id="issuePolicyPrintDialogSingle" width="1050" height="500">
+				<p:ajax event="close" update=":issuePolicyPrintForm :underwritingEnqueryForm" listener="#{MedicalRenewalEnquiryActionBean.handleCloseIssue}" />
+				<p:media id="pdfPlayer" value="#{MedicalRenewalEnquiryActionBean.policyIssueStream}" player="pdf" width="1050" height="500" cache="false" />
+			</p:dialog>
+		</h:form>
+		<h:form id="sanctionPrintForm" enctype="multipart/form-data">
+			<p:dialog appendTo="@(body)" dynamic="true" modal="true" widgetVar="sanctionPrintDialog" resizable="true" id="sanctionPrintDialog" width="1000" height="550">
+				<p:ajax event="close" update=":sanctionPrintForm :underwritingEnqueryForm" listener="#{MedicalRenewalEnquiryActionBean.handleCloseSanction}" />
+				<p:media id="pdfPlayer" value="#{MedicalRenewalEnquiryActionBean.sanctionStream}" player="pdf" width="1000" height="500" cache="false" />
+			</p:dialog>
+		</h:form>
+		<p:dialog appendTo="@(body)" dynamic="true" modal="true" header="Medical Proposal Details" height="550" hideEffect="explode" id="medicalProposalDetailsDialog" resizable="false"
+			showEffect="explode" widgetVar="medicalProposalDetailsDialog" width="1200">
+			<p:ajax event="close" update=":medicalProposalDetailsForm" />
+			<h:form id="medicalProposalDetailsForm">
+				<p:outputPanel id="detailPannel">
+					<ui:include src="/manage/medical/medicalProposalInfoTemplate.xhtml">
+						<ui:param name="medicalProposal" value="#{MedicalRenewalEnquiryActionBean.medProDTO}" />
+						<ui:param name="showPolicy" value="#{false}" />
+						<ui:param name="medicalPolicy" value="#{null}" />
+						<ui:param name="workFlowList" value="#{null}" />
+						<ui:param name="surveyQuestinList" value="#{MedicalRenewalEnquiryActionBean.surveyQuestinList}"></ui:param>
+					</ui:include>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

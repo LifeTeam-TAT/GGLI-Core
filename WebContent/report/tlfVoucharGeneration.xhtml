@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:p="http://primefaces.org/ui" xmlns:cyc="http://www.cycdemo.com/java" template="/common/commonLayout.xhtml">
+   <ui:param name="header" value="TLF Vouchar Generation" />
+   <ui:param name="headerRendered" value="true" />
+   <ui:define name="content">
+      	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+      <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/print.css" />
+      <h:form id="tlfVoucharForm">
+         <p:growl escape="false" showDetail="true" globalOnly="true" life="8000" />
+         <table cellspacing="5">
+            <tr>
+               <td>
+                  <h:outputLabel value="Receipt No" for="receiptNo" />
+               </td>
+               <td>  
+                  <p:inputText id="receiptNo" value="#{TLFVoucharGenerationActionBean.criteria.receiptNo}" style="height:20px;width: 200px;" />
+               </td>
+                <td>
+                  <h:outputLabel value="BPMS ReceiptNo " for="bpmsReceiptNo" />
+               </td>
+               <td>  
+                  <p:inputText id="bpmsReceiptNo" value="#{TLFVoucharGenerationActionBean.criteria.bpmsReceiptNo}" style="height:20px;width: 200px;" />
+               </td>
+               <td>
+                  <h:outputLabel value="No. Copy" for="copy" />
+               </td>
+               <td>
+                  <p:inputText id="copy" value="#{TLFVoucharGenerationActionBean.copy}" style="height:20px;width: 200px;" />
+               </td>
+                <td>
+                  <p:commandButton value="Search" action="#{TLFVoucharGenerationActionBean.filter()}" update="tlfVoucharForm:tlfVoucharTablePanel" />
+               </td>
+               <td>
+                  <p:commandButton value="Reset" action="#{TLFVoucharGenerationActionBean.resetCriteria()}" update="@form" />
+               </td>
+                <td align="right">
+                  <p:commandLink oncomplete="PF('pdfPreviewDialog').show()" update=":pdfPreviewForm"  action="#{TLFVoucharGenerationActionBean.generateReport()}">
+                     <h:graphicImage url="#{ApplicationSetting.printIcon}" styleClass="#{ApplicationSetting.printStyleClass}"/>
+                  </p:commandLink>
+               </td>
+            </tr>
+         </table>
+         <p:separator style="height:5px" />
+         <h:panelGroup id="tlfVoucharTablePanel">
+            <p:dataTable style="width: 100%;" value="#{TLFVoucharGenerationActionBean.tlfVoucherDTODataModel}" id="tlfVoucherDTOTable" var="tlfVoucherDTO"
+               selection="#{TLFVoucharGenerationActionBean.selectedTlfVoucherDTOs}" rowIndexVar="rowIndex">
+               <p:column selectionMode="multiple"   style="width:2%" />
+              <p:ajax event="rowSelectCheckbox"   update="@form:tlfVoucherDTOTable" />
+					<p:ajax event="rowUnselectCheckbox" update="@form:tlfVoucherDTOTable" />
+					<p:ajax event="rowSelect" update="@form:tlfVoucherDTOTable" />
+					<p:ajax event="toggleSelect" update="@form:tlfVoucherDTOTable" />
+               <p:column headerText="No." style="width:20px;">
+                  <h:outputText value="#{rowIndex + 1}" />
+               </p:column>
+               <p:column headerText="Narration">
+                  <h:outputText value="#{tlfVoucherDTO.narration}" />
+               </p:column>
+               <p:column headerText="Account Name" style="width:250px;">
+                  <h:outputText value="#{tlfVoucherDTO.acName}" />
+               </p:column>
+               <p:column headerText="Status" style="width:60px;">
+                  <h:outputText value="#{tlfVoucherDTO.status}" />
+               </p:column>
+            </p:dataTable>
+         </h:panelGroup>
+      </h:form>
+      <!-- PDF Preview Form -->
+       <p:dialog id="pdfPreviewDialog"     widgetVar="pdfPreviewDialog" header="Print Preview (PDF)" appendTo="@(body)" dynamic="true" modal="true" resizable="false" width="1070" height="505"
+          showEffect="fade" hideEffect="fade">
+           <h:form id="pdfPreviewForm" enctype="multipart/form-data">
+        		  <p:media id="pdfPlayer" value="#{TLFVoucharGenerationActionBean.stream}" player="pdf" width="1050" height="500" cache="false"  />
+           </h:form>
+       </p:dialog>
+     
+   </ui:define>
+</ui:composition>

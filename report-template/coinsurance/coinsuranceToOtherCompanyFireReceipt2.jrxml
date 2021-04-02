@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="coinsuranceToOtherCompanyFireReceipt2" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="LANGUAGE_en" uuid="470cf88a-d3f8-4ab9-81ef-593b3bd2deee">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="dataset1" uuid="98024d9f-e26f-4ce1-8b56-820f2458868d"/>
+	<parameter name="bankName" class="java.lang.String"/>
+	<parameter name="coinsurancePercentage" class="java.lang.Integer"/>
+	<parameter name="coinsuranceCompanyName" class="java.lang.String"/>
+	<parameter name="totalAmount" class="java.lang.Double"/>
+	<parameter name="englishTotalAmount" class="java.lang.String"/>
+	<parameter name="acode" class="java.lang.String"/>
+	<detail>
+		<band height="669" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="10" width="555" height="433" uuid="e75a451e-9747-4afb-a57b-59d68bc464f6"/>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement x="87" y="162" width="459" height="20" uuid="341712c2-2dff-429f-aed8-f3f88147a167"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="9" isUnderline="false"/>
+					<paragraph leftIndent="57"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{bankName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="407" y="374" width="124" height="20" uuid="62869ec7-07c9-4602-af7b-dfe0584dc38e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[MANAGER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="16" y="374" width="121" height="20" uuid="3d96fff2-0712-42e6-a768-cc9ae5fbd974"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10"/>
+				</textElement>
+				<text><![CDATA[ASST / DY / MANAGER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="162" width="75" height="20" uuid="11a979aa-476b-4a14-83d6-1dbcb478b388"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="9"/>
+				</textElement>
+				<text><![CDATA[CREDIT / ၿမီရွင္]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="86" y="186" width="460" height="20" uuid="a22b743f-e115-4a16-ae2a-862d55546c22"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["( " + $P{englishTotalAmount} + " Only )"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="13" width="555" height="28" uuid="6e88f11d-f84b-4f9b-94a6-1c45c7c4ba0c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Grand Guardian Insurance Public Co.,Ltd.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="427" y="78" width="34" height="20" uuid="808220c0-c379-49df-a849-c44443a9c5d0"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="9"/>
+				</textElement>
+				<text><![CDATA[Date -]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="466" y="78" width="79" height="20" uuid="88d0000f-e116-467b-b987-984f8c72014d"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="86" y="104" width="130" height="20" uuid="0a6aa19f-458a-4191-ad38-0735df4f5204"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["AEM000"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement x="86" y="230" width="458" height="19" uuid="2e562296-4f8e-4bd9-b16a-c238ca5d6dea"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="9" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["fire premium paid "+ $P{coinsuranceCompanyName}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="104" width="75" height="20" uuid="0223a988-c55f-4120-8797-a0452165ccd6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="9"/>
+				</textElement>
+				<text><![CDATA[G.L Code]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="16" y="265" width="528" height="19" uuid="c1a15e76-f649-40d1-b5c0-984f8bc91f3e"/>
+				<box>
+					<pen lineStyle="Dotted"/>
+					<topPen lineStyle="Dotted"/>
+					<leftPen lineStyle="Dotted"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="9" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalAmount}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="129" width="75" height="20" uuid="83d7d287-4f07-4721-bade-2286543e8dd7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="9"/>
+				</textElement>
+				<text><![CDATA[S.L Code]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="87" y="129" width="129" height="20" uuid="80417167-c404-4b78-afb6-dca894a33d38"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{acode}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="41" width="555" height="28" uuid="105b38c2-ccf2-43e6-9d83-e62e5fbf4aae"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Account with (Other bank current)]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement x="86" y="211" width="458" height="19" uuid="8b058a45-8063-4874-b146-a2315494f277"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="9" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Being Amount of "+$P{coinsurancePercentage} +"%"+" Co-Insurance Sharing Fire Premium Sharing"]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="186" width="75" height="20" uuid="917b831a-2a57-410e-80ba-a1eb40779c02"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="9"/>
+				</textElement>
+				<text><![CDATA[Kyats]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="265" width="8" height="20" uuid="ccb575a2-3f7d-46f3-b8f4-57a0d327770e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="9"/>
+				</textElement>
+				<text><![CDATA[K]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="86" y="162" width="62" height="20" uuid="acdbb57f-0110-4919-99d2-7375d636055c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="9"/>
+				</textElement>
+				<text><![CDATA[Account with]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

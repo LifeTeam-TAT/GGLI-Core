@@ -1,0 +1,12 @@
+
+--WEBPAGE For Single Premium Endowment Life
+INSERT [dbo].[WEBPAGE] ([ID], [NAME], [URL], [PERMISSION], [ITEMTYPE], [CREATEDUSERID], [CREATEDDATE], [UPDATEDUSERID], [UPDATEDDATE], [VERSION]) VALUES (N'INSU999HO00000002690132540902019        ', N'Single Premium Endowment Life Suvery', N'/manage/life/singlepremiumedowmentlife/addNewSinglePremiumEndowmentLifeSurvey.xhtml', 1, N'COMMON', NULL, NULL, NULL, NULL, 1);
+INSERT [dbo].[WEBPAGE] ([ID], [NAME], [URL], [PERMISSION], [ITEMTYPE], [CREATEDUSERID], [CREATEDDATE], [UPDATEDUSERID], [UPDATEDDATE], [VERSION]) VALUES (N'INSU999HO00000002690132550902019        ', N'Single Premium Endowment Life Approve', N'/manage/life/singlepremiumedowmentlife/approveSinglePremiumEndowmentLifeProposal.xhtml', 1, N'COMMON', NULL, NULL, NULL, NULL, 1);
+
+--WEBPAGE For Single Premium Credit Life
+INSERT [dbo].[WEBPAGE] ([ID], [NAME], [URL], [PERMISSION], [ITEMTYPE], [CREATEDUSERID], [CREATEDDATE], [UPDATEDUSERID], [UPDATEDDATE], [VERSION]) VALUES (N'INSU999HO00000002690132560902019        ', N'Single Premium Credit Life Suvery', N'/manage/life/singlepremiumcreditlife/addNewSinglePremiumCreditLifeSurvey.xhtml', 1, N'COMMON', NULL, NULL, NULL, NULL, 1);
+INSERT [dbo].[WEBPAGE] ([ID], [NAME], [URL], [PERMISSION], [ITEMTYPE], [CREATEDUSERID], [CREATEDDATE], [UPDATEDUSERID], [UPDATEDDATE], [VERSION]) VALUES (N'INSU999HO00000002690132570902019        ', N'Single Premium Credit Life Approve', N'/manage/life/singlepremiumcreditlife/approveSinglePremiumCreditLifeProposal.xhtml', 1, N'COMMON', NULL, NULL, NULL, NULL, 1);
+
+--WEBPAGE For Single Premium Endowment Life
+INSERT [dbo].[WEBPAGE] ([ID], [NAME], [URL], [PERMISSION], [ITEMTYPE], [CREATEDUSERID], [CREATEDDATE], [UPDATEDUSERID], [UPDATEDDATE], [VERSION]) VALUES (N'INSU999HO00000002690132580902019        ', N'Short Term Single Premium Credit Life Suvery', N'/manage/life/shorttermsinglepremiumcreditlife/addNewShortTermSinglePremiumEndowmentLifeSurvey.xhtml', 1, N'COMMON', NULL, NULL, NULL, NULL, 1);
+INSERT [dbo].[WEBPAGE] ([ID], [NAME], [URL], [PERMISSION], [ITEMTYPE], [CREATEDUSERID], [CREATEDDATE], [UPDATEDUSERID], [UPDATEDDATE], [VERSION]) VALUES (N'INSU999HO00000002690132590902019        ', N'Short Term Single Premium Credit Life Approve', N'/manage/life/shorttermsinglepremiumcreditlife/approveShortTermSinglePremiumEndowmentLifeProposal.xhtml', 1, N'COMMON', NULL, NULL, NULL, NULL, 1);

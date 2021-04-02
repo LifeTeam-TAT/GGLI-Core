@@ -1,0 +1,169 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['MANAGE_BUILDINGCLASS_TITLE']}"/>
+	<ui:param name="headerRendered" value="true"/>
+	<ui:define name="content">
+		<h:form id="buildingClassEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true"/>
+			<div style="padding-left: 15px;">
+				<h:outputText value="#{label['MANAGE_BUILDINGCLASS_ADDNEW_LABEL']}" styleClass="table-title" style="padding-top:-10px;" rendered="#{ManageBuildingClassActionBean.createNew}" />
+				<h:outputText value="#{label['MANAGE_BUILDINGCLASS_EDIT_LABEL']}" styleClass="table-title" style="padding-top:-10px;" rendered="#{!ManageBuildingClassActionBean.createNew}" />
+				<p:panelGrid styleClass="noneBorderGrid" id="buildingClassPanel">
+					<p:row>
+						<p:column style="width:60px;">
+						</p:column>
+						<p:column>
+							<p:message for="name" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<h:outputText value="*" style="color:red;" />
+							<h:outputText value="#{label['MANAGE_BUILDINGCLASS_NAME_LABEL']}" styleClass="input-label" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{ManageBuildingClassActionBean.buildingClass.name}" style="width:250px;" id="name" required="true">
+								<f:validateLength maximum="50" />
+							</p:inputText>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+						</p:column>
+						<p:column>
+							<p:message for="range" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<h:outputText value="*" style="color:red;" />
+							<h:outputText value="#{label['MANAGE_BUILDINGCLASS_DISTANCE_LABEL']}" styleClass="input-label" />
+						</p:column>
+						<p:column>
+							<p:inputText value="#{ManageBuildingClassActionBean.buildingClass.distance}" style="width:250px;" id="range" required="true" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+				<p:panelGrid styleClass="noneBorderGrid" id="classValuePanel" style="width:100%">
+					<p:row>
+						<p:column colspan="2" style="width:100%">
+							<fieldset>
+								<legend>
+									<h:outputText value="Building Class Config" styleClass="input-label" />
+								</legend>
+								<p:dataTable var="classValue" value="#{ManageBuildingClassActionBean.selectedClassValueDTOList}" id="selectedClassValueTable" paginator="true" rows="10" style="width:100%;"
+									paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10, 15">
+									<p:column headerText="#{label['MANAGE_BUILDINGCLASS_FLOOR_LABEL']}" filterMatchMode="contains" filterBy="#{classValue.floor.name}">
+										<h:outputText value="#{classValue.floor.name}" />
+									</p:column>
+									<p:column headerText="#{label['MANAGE_BUILDINGCLASS_WALL_LABEL']}">
+										<h:outputText value="#{classValue.wall.name}" />
+									</p:column>
+									<p:column headerText="#{label['MANAGE_BUILDINGCLASS_ROOF_LABEL']}">
+										<h:outputText value="#{classValue.roof.name}" />
+									</p:column>
+									<p:column style="width:50px;">
+										<p:commandLink action="#{ManageBuildingClassActionBean.deleteClassValue(classValue)}" update=":buildingClassEntryForm:classValuePanel" id="deleteGroupLink"
+											immediate="true">
+											<p:graphicImage value="#{ApplicationSetting.deleteIcon}" styleClass="#{ApplicationSetting.deleteStyleClass}" />
+										</p:commandLink>
+									</p:column>
+								</p:dataTable>
+							</fieldset>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2" style="width:100%">
+							<fieldset>
+								<legend>
+									<h:outputText value="Choose Class Value" styleClass="input-label" />
+								</legend>
+								<p:dataTable var="classValue" value="#{ManageBuildingClassActionBean.classValueList}" id="chooseClassTableTable" paginator="true" rows="10" style="width:100%;"
+									paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10, 15">
+									<p:column headerText="#{label['MANAGE_BUILDINGCLASS_FLOOR_LABEL']}">
+										<h:outputText value="#{classValue.floor.name}" />
+									</p:column>
+									<p:column headerText="#{label['MANAGE_BUILDINGCLASS_WALL_LABEL']}">
+										<h:outputText value="#{classValue.wall.name}" />
+									</p:column>
+									<p:column headerText="#{label['MANAGE_BUILDINGCLASS_ROOF_LABEL']}">
+										<h:outputText value="#{classValue.roof.name}" />
+									</p:column>
+									<p:column style="width:50px;">
+										<p:commandLink action="#{ManageBuildingClassActionBean.addClassValue(classValue)}" update=":buildingClassEntryForm:classValuePanel" id="addGroupLink" immediate="true">
+											<p:graphicImage value="/images/up-arrow.png" styleClass="command-image" />
+										</p:commandLink>
+									</p:column>
+								</p:dataTable>
+							</fieldset>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:commandButton id="addBtn" value="#{label['COMMON_ADDNEW_BTN']}" action="#{ManageBuildingClassActionBean.addNewBuildingClass}"
+								rendered="#{ManageBuildingClassActionBean.createNew}" update="buildingClassEntryForm :buildingClassTableForm" style="width: 80px;" />
+							<p:commandButton id="editBtn" value="#{label['COMMON_UPDATE_BTN']}" action="#{ManageBuildingClassActionBean.updateBuildingClass}"
+								rendered="#{!ManageBuildingClassActionBean.createNew}" update="buildingClassEntryForm :buildingClassTableForm" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</div>
+			<h:outputText value="#{label['COMMON_MSG_MANDATORY_LABEL']}" style="color:red;" />
+			<br />
+			<p:separator style="height:5px" />
+		</h:form>
+		<h:form id="buildingClassTableForm">
+			<h:commandLink action="#{ManageBuildingClassActionBean.prepareCreateNewBuildingClass}">
+				<h:panelGrid columns="2">
+					<h:graphicImage value="#{ApplicationSetting.addIcon}" styleClass="#{ApplicationSetting.addStyleClass}" />
+					<h:outputText value="#{label['COMMON_ADDNEW_LINK']}" styleClass="command-link" />
+				</h:panelGrid>
+			</h:commandLink>
+			<p:outputPanel id="listPanel">
+				<p:dataTable var="buildingClass" value="#{ManageBuildingClassActionBean.buildingClassList}" id="buildingClassTable" paginator="true" rows="10" style="width:100%;"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10, 15"
+					rowKey="index">
+					<p:column headerText="#{label['MANAGE_BUILDINGCLASS_NAME_LABEL']}">
+						<h:outputText value="#{buildingClass.name}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_BUILDINGCLASS_DISTANCE_LABEL']}">
+						<h:outputText value="#{buildingClass.distance}" />
+					</p:column>
+					<p:column style="width:50px;">
+						<p:commandLink action="#{ManageBuildingClassActionBean.prepareUpdateBuildingClass(buildingClass)}" update=":buildingClassEntryForm">
+							<p:graphicImage value="#{ApplicationSetting.editIcon}" styleClass="#{ApplicationSetting.editStyleClass}" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width:50px;">
+						<p:commandLink oncomplete="PF('confirmationDialog').show()" id="deleteGroupLink">
+							<f:setPropertyActionListener target="#{ManageBuildingClassActionBean.buildingClass}" value="#{buildingClass}" />
+							<p:graphicImage value="#{ApplicationSetting.deleteIcon}" styleClass="#{ApplicationSetting.deleteStyleClass}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<h:form id="confiationForm">
+			<p:dialog header="#{label['MANAGE_BUILDINGCLASS_DELETE_CONFIRM']}" widgetVar="confirmationDialog" resizable="false" width="250" height="100" showEffect="explode"
+				hideEffect="explode" id="confirmationDialog">
+				<h:panelGroup id="confirmationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage url="/images/warning.png" style="width:30px;height:30px;" />
+							</td>
+							<td valign="middle">
+								<h:outputText value="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" style="padding-top:-10px;text-decoration: none;font-size: 12px;" />
+							</td>
+						</tr>
+					</table>
+					<br />
+					<p:commandButton value="#{label['COMMON_YES_BTN']}" action="#{ManageBuildingClassActionBean.deleteBuildingClass}" update=":buildingClassEntryForm :buildingClassTableForm"
+						oncomplete="PF('confirmationDialog').hide()" immediate="true" />
+					<p:commandButton value="#{label['COMMON_NO_BTN']}" oncomplete="PF('confirmationDialog').hide()" immediate="true" />
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

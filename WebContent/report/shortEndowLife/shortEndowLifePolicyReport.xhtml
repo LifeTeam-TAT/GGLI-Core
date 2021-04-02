@@ -1,0 +1,223 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:jsf="http://xmlns.jcp.org/jsf" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:param name="header" value="Short Term Endowment Life Policy Report" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<h:form id="policyList">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="startDate" value="Start Date" />
+					<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{ShortEndowLifePolicyReportActionBean.criteria.startDate}" />
+					<h:outputText value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" disabled="#{!ShortEndowLifePolicyReportActionBean.accessBranches}" actionListener="#{ShortEndowLifePolicyReportActionBean.selectEntity()}" id="entityDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{ShortEndowLifePolicyReportActionBean.returnEntity}" update="entity branchPanelGroup salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true"
+									value="#{ShortEndowLifePolicyReportActionBean.criteria.entity == null ? '' : ShortEndowLifePolicyReportActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{!ShortEndowLifePolicyReportActionBean.accessBranches}" icon="fa fa-times" action="#{ShortEndowLifePolicyReportActionBean.removeEntity}" process="@this"
+									update="entity branchPanelGroup salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputText styleClass="input-label" value="Agent" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="selectAgentPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ShortEndowLifePolicyReportActionBean.selectAgent}" id="selectAgentDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{ShortEndowLifePolicyReportActionBean.returnAgent}" update="agent" />
+								</p:commandButton>
+								<p:inputText id="agent" readonly="true"
+									value="#{ShortEndowLifePolicyReportActionBean.criteria.agent == null ? '' : ShortEndowLifePolicyReportActionBean.criteria.agent.name.fullName}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ShortEndowLifePolicyReportActionBean.criteria.setAgent(null)}" process="@this" update="agent" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="endDate" value="End Date" />
+					<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{ShortEndowLifePolicyReportActionBean.criteria.endDate}" />
+					<h:outputText styleClass="input-label" value="Branch" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ShortEndowLifePolicyReportActionBean.selectBranch()}" id="selectBranchDialogLink"
+									process="@this" disabled="#{!ShortEndowLifePolicyReportActionBean.accessBranches || ShortEndowLifePolicyReportActionBean.criteria.entity==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{ShortEndowLifePolicyReportActionBean.returnBranch}" update="branch salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true"
+									value="#{ShortEndowLifePolicyReportActionBean.criteria.branch == null ? 'ALL' : ShortEndowLifePolicyReportActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ShortEndowLifePolicyReportActionBean.removeBranch()}"
+									disabled="#{!ShortEndowLifePolicyReportActionBean.accessBranches || ShortEndowLifePolicyReportActionBean.criteria.entity==null?true:false}" process="@this" update="branch salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputText styleClass="input-label" value="Customer" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="selectCustomerPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ShortEndowLifePolicyReportActionBean.selectCustomer()}" id="selectCustomerDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{ShortEndowLifePolicyReportActionBean.returnCustomer}" update="customer" />
+								</p:commandButton>
+								<p:inputText id="customer" readonly="true"
+									value="#{ShortEndowLifePolicyReportActionBean.criteria.customer == null ? '' : ShortEndowLifePolicyReportActionBean.criteria.customer.name.fullName}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ShortEndowLifePolicyReportActionBean.criteria.setCustomer(null)}" process="@this" update="customer" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText styleClass="input-label" value="Organization" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="selectOrgPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ShortEndowLifePolicyReportActionBean.selectOrganization()}" id="selectOrgDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{ShortEndowLifePolicyReportActionBean.returnOrganization}" update="organization" />
+								</p:commandButton>
+								<p:inputText id="organization" readonly="true"
+									value="#{ShortEndowLifePolicyReportActionBean.criteria.organization == null ? '' : ShortEndowLifePolicyReportActionBean.criteria.organization.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ShortEndowLifePolicyReportActionBean.criteria.setOrganization(null)}" process="@this"
+									update="organization" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputText styleClass="input-label" value="SalePoint" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ShortEndowLifePolicyReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+									disabled="#{ShortEndowLifePolicyReportActionBean.criteria.branch==null?true:false}" process="@this">
+									<p:ajax event="dialogReturn" listener="#{ShortEndowLifePolicyReportActionBean.returnSalePoint}" update="salePoint" />
+								</p:commandButton>
+								<p:inputText id="salePoint" readonly="true"
+									value="#{ShortEndowLifePolicyReportActionBean.criteria.salePoint == null ? '' : ShortEndowLifePolicyReportActionBean.criteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ShortEndowLifePolicyReportActionBean.criteria.setSalePoint(null)}"
+									disabled="#{ShortEndowLifePolicyReportActionBean.criteria.branch==null?true:false}" process="@this" update="salePoint" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton action="#{ShortEndowLifePolicyReportActionBean.filter}" update=":policyList :policyList:lifePolicyTable" value="Search" />
+				<p:commandButton action="#{ShortEndowLifePolicyReportActionBean.resetCriteria()}" update="@form" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="lifePolicyTable" lazy="true" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="10"
+				rowsPerPageTemplate="10,20,30" value="#{ShortEndowLifePolicyReportActionBean.lazyModel}" var="lifePolicy" style="width:150%">
+				<f:facet name="header">
+					<p:commandLink action="#{ShortEndowLifePolicyReportActionBean.exportExcel}" immediate="true" ajax="false">
+						<p:graphicImage style="width: 30px; height: 30px;" styleClass="#{ApplicationSetting.excelStyleClass}" value="#{ApplicationSetting.excelIcon}" />
+					</p:commandLink>
+					<p:message for="lifePolicyTable" />
+				</f:facet>
+				<p:columnGroup type="header">
+					<p:row>
+						<p:column colspan="1" headerText="No." rowspan="2" style="width:3%" />
+						<p:column colspan="1" headerText="Date" rowspan="2" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Policy No" rowspan="2" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Proposal No" rowspan="2" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Insured Name" rowspan="2" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Sum Insured" rowspan="2" styleClass="fixed-size" />
+						<p:column colspan="2" headerText="Period of Insurance" rowspan="1" />
+						<p:column colspan="1" headerText="Name of Assignee and Registration No" rowspan="2" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Yearly Premium" rowspan="2" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Mode of Premium" rowspan="2" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Installment Premium" rowspan="2" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Agent Name and No" rowspan="2" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Branch Name" rowspan="2" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="SalePoint Name" rowspan="2" styleClass="fixed-size" />
+						<p:column colspan="1" headerText="Remark" rowspan="2" />
+					</p:row>
+					<p:row>
+						<p:column headerText="From" />
+						<p:column headerText="To" />
+					</p:row>
+				</p:columnGroup>
+				<p:column>
+					<h:outputText value="#{rowIndex + 1}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{lifePolicy.commencementDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{lifePolicy.policyNo}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{lifePolicy.proposalNo}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{lifePolicy.insuredPersonName}" />
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{lifePolicy.sumInsured}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{lifePolicy.startDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{lifePolicy.endDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{lifePolicy.assignee}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{lifePolicy.oneYearPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{lifePolicy.modeOfPremium}" />
+				</p:column>
+				<p:column style="text-align:right;">
+					<h:outputText value="#{lifePolicy.installmentPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{lifePolicy.agentName}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{lifePolicy.branchName}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<h:outputText value="#{lifePolicy.salePoint}" />
+				</p:column>
+				<p:column />
+			</p:dataTable>
+		</h:form>
+		<h:form id="pdfPrintPreviewForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview" width="1070" height="505" id="pdfPrintPreviewDialog" resizable="false" widgetVar="pdfPrintPreviewDialog">
+				<p:media width="1050" height="500" player="pdf" value="#{ShortEndowLifePolicyReportActionBean.stream}" cache="false" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

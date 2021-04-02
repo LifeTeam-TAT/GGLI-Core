@@ -1,0 +1,131 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Life Proposal(Portal) Enquiry" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="lifePortalEquiryForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="startDate" value="Start Date" />
+						<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+							value="#{LifePortalEnquiryActionBean.criteria.startDate}" />
+						<h:outputText value="Customer" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectCustomerPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectCustomerPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{LifePortalEnquiryActionBean.selectCustomer()}" id="selectCustomerDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{LifePortalEnquiryActionBean.returnCustomer}" update="customer" />
+									</p:commandButton>
+									<p:inputText id="customer" readonly="true" value="#{LifePortalEnquiryActionBean.criteria.customer == null ? '' : LifePortalEnquiryActionBean.criteria.customer.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{LifePortalEnquiryActionBean.criteria.setCustomer(null)}" process="@this" update="customer" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="endDate" value="End Date" />
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{LifePortalEnquiryActionBean.criteria.endDate}" />
+						<h:outputText value="Product" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectProductPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectProductPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{LifePortalEnquiryActionBean.selectProduct()}" id="selectProductDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{LifePortalEnquiryActionBean.returnProduct}" update="product" />
+									</p:commandButton>
+									<p:inputText id="product" readonly="true" value="#{LifePortalEnquiryActionBean.criteria.product == null ? '' : LifePortalEnquiryActionBean.criteria.product.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{LifePortalEnquiryActionBean.criteria.setProduct(null)}" process="@this" update="product" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText value="Agent" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectagentPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectagentPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{LifePortalEnquiryActionBean.selectAgent()}" id="selectAgentDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{LifePortalEnquiryActionBean.returnAgent}" update="agent" />
+									</p:commandButton>
+									<p:inputText id="agent" readonly="true" value="#{LifePortalEnquiryActionBean.criteria.agent == null ? '' : LifePortalEnquiryActionBean.criteria.agent.name.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{LifePortalEnquiryActionBean.criteria.setAgent(null)}" process="@this" update="agent" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton style="width:80px;" action="#{LifePortalEnquiryActionBean.findLifeProposalListByEnquiryCriteria}" update=":lifePortalEquiryForm" value="Search" />
+				<p:commandButton style="width:80px;" action="#{LifePortalEnquiryActionBean.resetCriteria}" update=":lifePortalEquiryForm" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="lifeProposalTable" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="lifeProposalIndex"
+				rowKey="index" rows="10" rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{LifePortalEnquiryActionBean.lifeProposalList}" var="lifeProposal">
+				<p:column headerText="Portal Request Id" style="width:19%;">
+					<h:outputText value="Portal Request #{lifeProposalIndex + 1}" />
+				</p:column>
+				<p:column headerText="Sale Person" style="width:18%;">
+					<h:outputText value="#{lifeProposal.salePersonName}" />
+				</p:column>
+				<p:column headerText="Customer" style="width:18%;">
+					<h:outputText value="#{lifeProposal.customerName}" />
+				</p:column>
+				<p:column headerText="Total Sum Insured" style="width:15%;">
+					<h:outputText value="#{lifeProposal.sumInsured}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="PaymentType" style="width:10%;">
+					<h:outputText value="#{lifeProposal.paymentType}" />
+				</p:column>
+				<p:column headerText="Submitted Date" style="width:10%;">
+					<h:outputText pattern="#{ApplicationSetting.dateFormat}" value="#{lifeProposal.submittedDate}" />
+				</p:column>
+				<p:column headerText="Detail" style="width:5%;">
+					<p:commandLink action="#{LifePortalEnquiryActionBean.showDetailLifeProposal(lifeProposal)}" id="detailsProposal" immediate="true"
+						oncomplete="PF('lifeProposalDetailsDialog').show()" update=":lifeProposalDetailsForm">
+						<h:graphicImage styleClass="action-img" url="/images/details.png" />
+					</p:commandLink>
+				</p:column>
+				<p:column headerText="Edit" style="width:5%;">
+					<p:commandLink action="#{LifePortalEnquiryActionBean.editLifeProposal(lifeProposal)}" update=":informationForm">
+						<p:graphicImage styleClass="command-image" value="/images/propose.jpg" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+			<p:commandButton action="dashboard" id="cancelBtn" immediate="true" value="Cancel" />
+		</h:form>
+		<h:form id="lifeProposalDetailsForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Life Proposal Details" height="550" hideEffect="explode" id="lifeProposalDetailsDialog" resizable="false"
+				showEffect="explode" widgetVar="lifeProposalDetailsDialog" width="1200">
+				<ui:include src="/manage/life/lifeProposalInfoTemplate.xhtml">
+					<ui:param name="lifeProposal" value="#{LifePortalEnquiryActionBean.lifeProposal}" />
+				</ui:include>
+			</p:dialog>
+		</h:form>
+		<h:form id="informationForm">
+			<p:dialog header="Proposal Information" height="100" hideEffect="explode" id="informationDialog" resizable="false" showEffect="explode" widgetVar="informationDialog" width="350">
+				<h:panelGroup id="informationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="#{LifePortalEnquiryActionBean.message}" />
+							</td>
+						</tr>
+					</table>
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

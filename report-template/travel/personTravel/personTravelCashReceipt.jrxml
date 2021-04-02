@@ -1,0 +1,1402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="personTravelCashReceipt" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="553" leftMargin="21" rightMargin="21" topMargin="10" bottomMargin="10" resourceBundle="LANGUAGE_en" uuid="8b699523-3e76-4d79-b79b-d9bee73bb9a6">
+	<property name="ireport.zoom" value="2.415765000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="144"/>
+	<parameter name="reportLogo" class="java.lang.String"/>
+	<parameter name="proposalNo" class="java.lang.String"/>
+	<parameter name="cashReceiptNo" class="java.lang.String"/>
+	<parameter name="bank" class="java.lang.String"/>
+	<parameter name="chequeOrPo" class="java.lang.String"/>
+	<parameter name="chequeNo" class="java.lang.String"/>
+	<parameter name="premium" class="java.lang.Double"/>
+	<parameter name="discountAmount" class="java.lang.Double"/>
+	<parameter name="serviceCharges" class="java.lang.Double"/>
+	<parameter name="stempFees" class="java.lang.Double"/>
+	<parameter name="totalAmount" class="java.lang.Double"/>
+	<parameter name="confirmDate" class="java.util.Date"/>
+	<parameter name="policyType" class="java.lang.String"/>
+	<parameter name="numberOfPassenger" class="java.lang.Integer"/>
+	<parameter name="numberOfUnit" class="java.lang.Integer"/>
+	<parameter name="fromDate" class="java.util.Date"/>
+	<parameter name="toDate" class="java.util.Date"/>
+	<parameter name="agent" class="java.lang.String"/>
+	<parameter name="customerName" class="java.lang.String"/>
+	<parameter name="netPremium" class="java.lang.Double"/>
+	<parameter name="policyBranch" class="java.lang.String"/>
+	<detail>
+		<band height="736">
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="537" width="269" height="157" isPrintWhenDetailOverflows="true" uuid="3cb4a4b6-1589-4f83-8db5-c8215075fec3"/>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="44" width="272" height="157" isPrintWhenDetailOverflows="true" uuid="4c411a45-6b56-4c45-bc8f-460d35cb0e94"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="136" y="129" width="136" height="18" uuid="a2464dbd-c3e2-4bc2-ad5c-3164d9a40689"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="201" width="553" height="42" uuid="753b9497-6973-477e-a70c-da4c0d86951f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="272" y="44" width="281" height="157" uuid="1b4baa68-f2c3-4ad2-952e-4dcae2261bf2"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="1" width="553" height="43" uuid="b7297f7a-725e-4f85-a88b-5c5a7f3af19a"/>
+			</rectangle>
+			<image>
+				<reportElement x="28" y="3" width="105" height="40" uuid="2333b2b4-6abe-4337-8e9f-2c63273da939"/>
+				<imageExpression><![CDATA[$P{reportLogo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="196" y="1" width="175" height="13" uuid="5381bf6e-489b-4451-abe2-b1cf15b6216b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{GRAND_GUARDIAN_LABEL}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="136" y="147" width="136" height="18" uuid="a2464dbd-c3e2-4bc2-ad5c-3164d9a40689"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="129" width="136" height="18" uuid="bd1c3454-8432-4672-8e52-e7a9d825b254"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="136" y="111" width="136" height="18" uuid="3417a641-e51b-4d94-9d32-5d9483792d3e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="147" width="136" height="18" uuid="a7ea501d-1033-483f-a24c-499f123da8c8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="126" y="-79" width="136" height="18" uuid="98a2bf24-0d8a-4722-a9b9-d0bcf926b2ec"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="183" width="136" height="18" uuid="bfc7ef71-3c6d-4aae-b14b-1eeeb905c960"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="136" y="165" width="136" height="18" uuid="26941d07-5a86-4c3e-9da3-cc21b314a14e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="165" width="136" height="18" uuid="57c463fd-b9a0-4fe3-9042-d378a1179258"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="3" y="129" width="102" height="18" uuid="6078a7e7-6c4b-42cf-a629-38fb57fff924"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Discount Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="147" width="102" height="18" uuid="f02b568f-a82d-43d9-b042-aece68cd9e42"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Service Charges]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="165" width="102" height="18" uuid="635d887b-743e-49dc-878e-3b80fd767a97"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Policy Stamp Fees]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="105" y="183" width="30" height="18" uuid="56577e32-e61b-45b9-8b34-82af2790b79f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="91" width="61" height="15" uuid="fd2f5369-89f4-4509-ac04-149cf8915dc0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Policy Type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="91" width="8" height="15" uuid="101d7bf3-795a-40a2-ac8f-35a2db194c3b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="345" y="91" width="200" height="15" uuid="8cb70e1b-36a6-4b12-9d3d-e0b37d0aeffe"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{policyType}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="451" y="46" width="34" height="15" uuid="56899073-51bc-4140-b6fd-356671e54983"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Date -]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="487" y="46" width="58" height="15" uuid="1c4cf2eb-046c-405a-8945-3c8d5668c2a6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{confirmDate}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="443" y="227" width="100" height="15" uuid="db01f79a-3615-4e6e-a08a-5b263297053f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Cashier's Stamp]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="215" y="227" width="100" height="15" uuid="092a546d-bcf7-42ce-95a0-40f7efb171af"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Authorized Signature]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="227" width="100" height="15" uuid="a1105b7b-489a-4ab2-a96f-18c5147b5136"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Authorized Signature]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="151" y="133" width="117" height="14" uuid="628419b6-6afc-4056-8331-9ec3e7eaad9a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{discountAmount}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="151" y="151" width="118" height="14" uuid="cc8e136b-9dac-4eef-aec8-ce72de78c8fd"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{serviceCharges}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="151" y="169" width="118" height="14" uuid="dc14f6e1-0b7f-4097-b9c8-1873fa7c3d5d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{stempFees}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="471" y="16" width="74" height="15" uuid="0eee4bf4-9a41-4501-884a-c9eef6e13c8c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Customer Receipt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="46" width="62" height="12" uuid="ad22c867-5a3a-42d2-8721-ad6e1eb8c53d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Proposal No.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="78" y="70" width="190" height="12" uuid="b951db88-5288-4da5-8fd8-90d52c721798"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cashReceiptNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="70" y="70" width="8" height="12" uuid="577c1e4a-d282-4eee-9f8b-3915e6fb61cc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="79" y="46" width="190" height="12" uuid="09cc2c3c-5e31-4a7e-94b5-3e68b1be57e8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{proposalNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="70" y="46" width="8" height="12" uuid="4e853e0c-b21d-4907-80b0-7d1adbbd6eed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="334" y="63" width="8" height="15" uuid="902d4575-222b-4802-9106-3dbffc4023b9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="343" y="65" width="200" height="17" uuid="f6a4d391-7920-42cd-845b-85a4fa95944b"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$P{cashReceiptNo}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<staticText>
+				<reportElement x="276" y="63" width="58" height="15" uuid="9154c37b-75cf-4476-8aad-6cc237ed456b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Barcode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="106" width="61" height="15" uuid="fd2f5369-89f4-4509-ac04-149cf8915dc0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Travel Period]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="106" width="8" height="15" uuid="101d7bf3-795a-40a2-ac8f-35a2db194c3b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="121" width="66" height="15" uuid="fd2f5369-89f4-4509-ac04-149cf8915dc0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[No. Of Passenger]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="136" width="61" height="15" uuid="fd2f5369-89f4-4509-ac04-149cf8915dc0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[No. Of Unit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="121" width="8" height="15" uuid="101d7bf3-795a-40a2-ac8f-35a2db194c3b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="136" width="8" height="15" uuid="101d7bf3-795a-40a2-ac8f-35a2db194c3b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="345" y="121" width="200" height="15" uuid="8cb70e1b-36a6-4b12-9d3d-e0b37d0aeffe"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numberOfPassenger}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="345" y="136" width="200" height="15" uuid="8cb70e1b-36a6-4b12-9d3d-e0b37d0aeffe"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numberOfUnit}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="247" width="553" height="43" uuid="b7297f7a-725e-4f85-a88b-5c5a7f3af19a"/>
+			</rectangle>
+			<image>
+				<reportElement x="28" y="250" width="105" height="38" uuid="2333b2b4-6abe-4337-8e9f-2c63273da939"/>
+				<imageExpression><![CDATA[$P{reportLogo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="196" y="249" width="175" height="13" uuid="5381bf6e-489b-4451-abe2-b1cf15b6216b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{GRAND_GUARDIAN_LABEL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="469" y="263" width="74" height="15" uuid="0eee4bf4-9a41-4501-884a-c9eef6e13c8c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[(Copy)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="290" width="272" height="163" isPrintWhenDetailOverflows="true" uuid="4c411a45-6b56-4c45-bc8f-460d35cb0e94"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="272" y="290" width="281" height="160" uuid="1b4baa68-f2c3-4ad2-952e-4dcae2261bf2"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="6" y="293" width="62" height="12" uuid="ad22c867-5a3a-42d2-8721-ad6e1eb8c53d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Proposal No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="333" width="62" height="12" uuid="837d5435-2a3f-4763-8730-c71b0d4b84a4">
+					<printWhenExpression><![CDATA[$P{bank}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Bank]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="71" y="294" width="8" height="12" uuid="4e853e0c-b21d-4907-80b0-7d1adbbd6eed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="319" width="8" height="12" uuid="4e853e0c-b21d-4907-80b0-7d1adbbd6eed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="334" width="8" height="12" uuid="4e853e0c-b21d-4907-80b0-7d1adbbd6eed">
+					<printWhenExpression><![CDATA[$P{bank}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="347" width="8" height="12" uuid="4e853e0c-b21d-4907-80b0-7d1adbbd6eed">
+					<printWhenExpression><![CDATA[$P{chequeNo}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="79" y="294" width="190" height="12" uuid="09cc2c3c-5e31-4a7e-94b5-3e68b1be57e8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{proposalNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="77" y="320" width="190" height="12" uuid="b951db88-5288-4da5-8fd8-90d52c721798"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cashReceiptNo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="78" y="334" width="190" height="12" uuid="226ea91b-366a-4d96-9167-08c0469e61d5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{bank}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="78" y="347" width="190" height="12" uuid="116b3402-afb2-41cf-9b6f-1b4d8d779608"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{chequeNo}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="362" width="136" height="18" uuid="98a2bf24-0d8a-4722-a9b9-d0bcf926b2ec"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="362" width="115" height="18" uuid="7b0821ad-316f-40a6-ac1b-cafcb11a7e2f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Net Premium]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="380" width="136" height="18" uuid="bd1c3454-8432-4672-8e52-e7a9d825b254"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="4" y="380" width="116" height="18" uuid="6078a7e7-6c4b-42cf-a629-38fb57fff924"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Discount Amount]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="398" width="136" height="18" uuid="a7ea501d-1033-483f-a24c-499f123da8c8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="416" width="136" height="18" uuid="a7ea501d-1033-483f-a24c-499f123da8c8"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="3" y="398" width="117" height="18" uuid="f02b568f-a82d-43d9-b042-aece68cd9e42"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Service Charges]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="416" width="116" height="18" uuid="635d887b-743e-49dc-878e-3b80fd767a97"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Policy Stamp Fees]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="136" y="362" width="136" height="18" uuid="5c3845ac-6ede-4022-88c2-c8b0ec9dc2dd"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="136" y="380" width="136" height="18" uuid="5c3845ac-6ede-4022-88c2-c8b0ec9dc2dd"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="136" y="398" width="136" height="18" uuid="5c3845ac-6ede-4022-88c2-c8b0ec9dc2dd"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="136" y="416" width="136" height="18" uuid="5c3845ac-6ede-4022-88c2-c8b0ec9dc2dd"/>
+			</rectangle>
+			<textField pattern="">
+				<reportElement x="151" y="367" width="116" height="14" uuid="e322bf6b-f628-4b7e-a8f3-901f1d6daebc"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{premium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="151" y="385" width="116" height="14" uuid="628419b6-6afc-4056-8331-9ec3e7eaad9a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{discountAmount}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="151" y="403" width="117" height="14" uuid="cc8e136b-9dac-4eef-aec8-ce72de78c8fd"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{serviceCharges}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="151" y="420" width="117" height="14" uuid="dc14f6e1-0b7f-4097-b9c8-1873fa7c3d5d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{stempFees}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="434" width="136" height="18" uuid="bfc7ef71-3c6d-4aae-b14b-1eeeb905c960"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="104" y="434" width="30" height="18" uuid="56577e32-e61b-45b9-8b34-82af2790b79f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="136" y="434" width="136" height="18" uuid="bfc7ef71-3c6d-4aae-b14b-1eeeb905c960"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="276" y="310" width="58" height="15" uuid="9154c37b-75cf-4476-8aad-6cc237ed456b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Barcode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="334" y="310" width="8" height="15" uuid="902d4575-222b-4802-9106-3dbffc4023b9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="342" y="311" width="200" height="17" uuid="f6a4d391-7920-42cd-845b-85a4fa95944b"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$P{cashReceiptNo}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<staticText>
+				<reportElement x="451" y="291" width="34" height="15" uuid="56899073-51bc-4140-b6fd-356671e54983"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Date -]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="484" y="291" width="58" height="15" uuid="1c4cf2eb-046c-405a-8945-3c8d5668c2a6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{confirmDate}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="336" width="61" height="15" uuid="fd2f5369-89f4-4509-ac04-149cf8915dc0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Policy Type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="350" width="61" height="15" uuid="fd2f5369-89f4-4509-ac04-149cf8915dc0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Travel Period]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="366" width="66" height="15" uuid="fd2f5369-89f4-4509-ac04-149cf8915dc0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[No. Of Passenger]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="381" width="61" height="15" uuid="fd2f5369-89f4-4509-ac04-149cf8915dc0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[No. Of Unit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="336" width="8" height="15" uuid="101d7bf3-795a-40a2-ac8f-35a2db194c3b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="350" width="8" height="15" uuid="101d7bf3-795a-40a2-ac8f-35a2db194c3b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="366" width="8" height="15" uuid="101d7bf3-795a-40a2-ac8f-35a2db194c3b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="381" width="8" height="15" uuid="101d7bf3-795a-40a2-ac8f-35a2db194c3b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="345" y="336" width="200" height="15" uuid="8cb70e1b-36a6-4b12-9d3d-e0b37d0aeffe"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{policyType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="345" y="366" width="200" height="15" uuid="8cb70e1b-36a6-4b12-9d3d-e0b37d0aeffe"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numberOfPassenger}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="345" y="381" width="200" height="15" uuid="8cb70e1b-36a6-4b12-9d3d-e0b37d0aeffe"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numberOfUnit}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="450" width="553" height="38" uuid="753b9497-6973-477e-a70c-da4c0d86951f"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="473" width="100" height="15" uuid="a1105b7b-489a-4ab2-a96f-18c5147b5136"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Authorized Signature]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="215" y="473" width="100" height="15" uuid="092a546d-bcf7-42ce-95a0-40f7efb171af"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Authorized Signature]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="442" y="473" width="100" height="15" uuid="db01f79a-3615-4e6e-a08a-5b263297053f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Cashier's Stamp]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="111" width="136" height="18" uuid="98a2bf24-0d8a-4722-a9b9-d0bcf926b2ec"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="3" y="111" width="102" height="18" uuid="33a4727d-7432-4d79-b4f3-eba999ad6395"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Net Premium]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="151" y="112" width="118" height="14" uuid="e322bf6b-f628-4b7e-a8f3-901f1d6daebc"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{premium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="493" width="553" height="43" uuid="43bcb2f1-fc17-4737-84fe-f50ab747931a"/>
+			</rectangle>
+			<image>
+				<reportElement x="28" y="496" width="105" height="38" uuid="80a8fed9-1b43-40f7-a80a-cd5b869a3fa3"/>
+				<imageExpression><![CDATA[$P{reportLogo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="345" y="106" width="26" height="15" uuid="5e0226e2-111f-4335-8791-8f438a2b853c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[From]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="371" y="106" width="58" height="15" uuid="c48960e6-168b-4751-81ee-9d04b0ff1284"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fromDate}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="429" y="106" width="14" height="15" uuid="e5952e1c-8900-4383-943d-5a918f2a607b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="443" y="106" width="58" height="15" uuid="5220c625-427b-4bd9-b28a-bd17166e6718"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{toDate}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="345" y="350" width="26" height="15" uuid="619de36e-dd3d-4933-98e3-a3e8c2835b79"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[From]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="371" y="350" width="58" height="15" uuid="39aa4f48-86bd-45d0-ba32-d9f5c7470297"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fromDate}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="429" y="350" width="14" height="15" uuid="97cf538a-f533-4167-84d0-dc59c0c12ca9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="442" y="350" width="58" height="15" uuid="ceec3393-577b-4894-a6d2-909cb26c38ec"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{toDate}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement x="196" y="496" width="175" height="13" uuid="c23824f9-1aad-446d-8566-d51661bc90cd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{GRAND_GUARDIAN_LABEL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="468" y="508" width="74" height="15" uuid="74607c5d-fc41-4e1e-8b06-39876eaa7c58"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[(Copy)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="538" width="63" height="12" uuid="236af051-9b38-4f24-b76d-99abbb3007b9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Proposal No.]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="269" y="537" width="284" height="156" uuid="c6cab961-8280-4cb0-b763-e205a054c385"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="693" width="553" height="42" uuid="b4f38b4a-01dd-4418-9586-68aec060df91"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="4" y="719" width="100" height="15" uuid="28a336c1-b552-4a04-8920-61a27bb4bf93"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Authorized Signature]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="215" y="720" width="100" height="15" uuid="78394515-d320-468f-996b-d9fb1ce372bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Authorized Signature]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="442" y="719" width="100" height="15" uuid="22310dd3-6673-4644-9fdd-4e34901cc33b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Cashier's Stamp]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="537" width="8" height="12" uuid="dfa553a7-e51d-4589-bf2b-864298c3019e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="79" y="538" width="190" height="12" uuid="fedcb868-2646-40bc-919d-3aacaa7f5391"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{proposalNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="70" y="562" width="8" height="12" uuid="fdd6e447-2139-4572-b1a4-ea33432217f9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="77" y="562" width="190" height="12" uuid="a0378012-db32-4bea-b9d4-da1dcd519775"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cashReceiptNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="575" width="62" height="12" uuid="3f483983-59db-43ce-bf84-502489b4c4a9">
+					<printWhenExpression><![CDATA[$P{bank}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Bank]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="575" width="8" height="12" uuid="479d7154-07ec-43c4-87e9-31b44b9a2620">
+					<printWhenExpression><![CDATA[$P{bank}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="77" y="575" width="190" height="12" uuid="48b02351-acc5-4a95-9b94-8e07b9d4f8d4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{bank}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="70" y="589" width="8" height="12" uuid="c688fc28-1380-4a80-b411-9312aeb801ee">
+					<printWhenExpression><![CDATA[$P{chequeNo}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="77" y="589" width="190" height="12" uuid="c10e9aa5-cd60-4bce-9b39-06baadb4829c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{chequeNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="451" y="537" width="34" height="15" uuid="82cbb371-2e53-4fa9-ac10-e4eb12a79907"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Date -]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="484" y="537" width="58" height="15" uuid="612439bc-5ec1-4ba9-a0ca-46d4794435a3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{confirmDate}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="558" width="58" height="15" uuid="e646b556-9045-43c6-97f8-7cb6054a5f6b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Barcode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="333" y="558" width="8" height="15" uuid="0f1a4ea9-b651-443e-8da5-4c9cf4c17c61"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="341" y="558" width="200" height="17" uuid="85015597-ae22-4227-bb1a-8ee68fdd1d0e"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$P{cashReceiptNo}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<rectangle>
+				<reportElement x="0" y="603" width="136" height="18" uuid="2b959508-869e-4ac4-94f9-d869c6ee60c4"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="135" y="603" width="134" height="18" uuid="3bf9db7a-38e2-4711-b867-915f8acf6fc8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="621" width="136" height="18" uuid="b1897128-4884-4c8b-bb97-7747bfeaadc3"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="135" y="621" width="134" height="18" uuid="71e3b9b2-7492-44f8-ae7c-83bfea610d2b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="639" width="136" height="18" uuid="ea17c9e1-4074-4c23-a7e7-7d3161c0f497"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="135" y="639" width="134" height="18" uuid="3b95f89e-6c26-4867-ae66-529d0c7bac6f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="657" width="136" height="18" uuid="8dc1a236-e3bc-4552-b8b5-2018bd15e124"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="135" y="657" width="134" height="18" uuid="eef2a9aa-5ce3-477d-b3a3-a85c07aedd63"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="675" width="135" height="18" uuid="672800ed-3b33-45cd-bec7-be454e5b798c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="603" width="115" height="18" uuid="6acf1b24-eedf-4390-ad06-801fc284b4c7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Net Premium]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="621" width="116" height="18" uuid="c90c94b9-5d02-431b-ac87-8d84af83bf31"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Discount Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="639" width="117" height="18" uuid="e3f1335b-b103-4501-8f60-a9073a18b9a9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Service Charges]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="658" width="116" height="18" uuid="da99b0ca-d09d-4529-9136-8daa7ed547eb"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Policy Stamp Fees]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="103" y="678" width="30" height="15" uuid="b692ab62-cba0-406f-ab59-9164ddf1ca70"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="151" y="603" width="116" height="18" uuid="69b6d8cc-5415-48ef-980d-8256b480c884"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{premium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="151" y="621" width="116" height="18" uuid="bbce7bc6-b91a-4f66-8c23-3da82732aafb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{discountAmount}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="150" y="640" width="117" height="15" uuid="3ce8e2b8-218f-477a-8bbd-53e7ff8d20fe"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{serviceCharges}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="150" y="658" width="115" height="18" uuid="0118ab23-a514-4f0f-afd5-8a32c102dc75"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{stempFees}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="584" width="61" height="15" uuid="9808fb7c-75ff-47d0-b159-a19d58b71b49"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Policy Type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="584" width="8" height="15" uuid="32c81b1a-0f9e-4c44-9481-9d9b7160b84c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="345" y="584" width="200" height="15" uuid="a95133ce-7947-4021-b0c4-d82c0fe11a59"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{policyType}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="598" width="61" height="15" uuid="8aaed1ad-a856-4c63-b051-1f7a06a170f2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Travel Period]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="598" width="8" height="15" uuid="ed36c2d3-c1f6-4fbd-ad40-30f7d3f4e026"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="345" y="598" width="26" height="15" uuid="56752702-3fa6-4005-b6dd-9636b853fb45"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[From]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="371" y="598" width="58" height="15" uuid="36b34e80-8c66-4abc-99ec-35c2dcce4f0a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fromDate}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="429" y="598" width="14" height="15" uuid="ae3b1045-9a44-4159-bd6e-ff46b19a2fbc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="442" y="598" width="58" height="15" uuid="b84b10ca-ea48-4321-8e8e-808cbf3aa0bc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{toDate}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="614" width="66" height="15" uuid="a4ba4ebf-9ad6-42cf-a347-5703a5c00ef0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[No. Of Passenger]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="614" width="8" height="15" uuid="28f4a018-c121-4498-9430-173bffec947f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="345" y="614" width="200" height="15" uuid="2b4e8d43-effa-4ce4-a866-d1ea1897d603"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numberOfPassenger}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="629" width="61" height="15" uuid="21e4650e-6224-4e71-a60d-0da223ca3849"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[No. Of Unit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="629" width="6" height="15" uuid="7bec0a5d-84f5-4ee7-bc17-31ad8160a23a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="345" y="629" width="200" height="15" uuid="abb3f004-cfae-4aa2-827f-12ae4472b74b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numberOfUnit}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="196" y="18" width="175" height="13" uuid="b10bdc68-842d-431d-a7ef-1d73654f2896"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Cash Receipt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="196" y="267" width="175" height="13" uuid="74471fd8-312e-45a4-b523-c89dd78a1b82"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Cash Receipt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="196" y="514" width="175" height="13" uuid="4eff16d4-5ae0-4240-9b65-0f79bb956bd7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Cash Receipt]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="70" width="62" height="12" uuid="9113b49f-4dea-48b4-bf52-2ec78f49cab0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Receipt No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="319" width="62" height="12" uuid="f908a5ab-4a69-42da-87ee-b43b96d5cf99"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Receipt No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="562" width="62" height="12" uuid="38baac4d-8df9-4111-8e44-8a4abe35a78f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Receipt No]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="5" y="347" width="62" height="12" uuid="ee33028b-13a5-469f-8687-3ba7fe02fb3c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{chequeOrPo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="5" y="589" width="62" height="12" uuid="a7ccc78f-123c-4012-a625-0b514b22652d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{chequeOrPo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="83" width="62" height="12" uuid="87974d59-23a3-4c63-bf2c-bc93c936f54f">
+					<printWhenExpression><![CDATA[$P{bank}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Bank]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="5" y="96" width="62" height="12" uuid="1de730f4-7242-4bdb-b88b-c5cd86ceee88"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{chequeOrPo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="70" y="83" width="8" height="12" uuid="5f17a4f0-fac5-48b9-8eb6-f799cdcd1039">
+					<printWhenExpression><![CDATA[$P{bank}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="96" width="8" height="12" uuid="99c60a80-d5a1-49b6-8a47-8403c2353bcd">
+					<printWhenExpression><![CDATA[$P{chequeNo}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="79" y="83" width="190" height="12" uuid="9cdbb7e0-ebd0-41ab-b566-785c85de93e5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{bank}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="79" y="96" width="190" height="12" uuid="1e46ec3f-b27f-4738-944b-2a54a632af22"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{chequeNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="174" width="61" height="15" uuid="5a9750af-6b3b-4962-8425-c37cc22d77ba"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Agent]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="174" width="8" height="15" uuid="9dc91ef2-f277-484f-93ee-069ec40f4896"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="417" width="61" height="15" uuid="22ce3247-f554-4adf-896e-9dd3fa9e7ec1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Agent]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="417" width="8" height="15" uuid="ebc7a59e-34e5-4f78-bbb7-2cddcbb5d33a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="667" width="61" height="15" uuid="7dc9da89-2ab1-4ce3-a4b0-f59772c7f3d6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Agent]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="667" width="8" height="15" uuid="99167596-1a57-4c7b-b4c9-be21e895ddcf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="345" y="174" width="200" height="15" isPrintWhenDetailOverflows="true" uuid="da93f4d1-328c-4159-af3d-6a804adb4990"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{agent}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="345" y="417" width="200" height="15" isPrintWhenDetailOverflows="true" uuid="40bda252-3d9f-459d-b036-0900423ab0e3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{agent}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="345" y="667" width="208" height="15" isPrintWhenDetailOverflows="true" uuid="42a5b82f-7b34-41a0-af72-e7fde98197f6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{agent}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="276" y="397" width="61" height="22" uuid="f3965a20-f51f-4270-b3ed-17c9ae892310"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Customer Name]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="345" y="397" width="200" height="22" uuid="3223dba7-9f6a-4590-8cfe-05db9edd7bc5"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{customerName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="337" y="397" width="8" height="22" uuid="85ea0687-8c1b-4e51-9af5-ad4e89c82992"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="152" width="61" height="22" uuid="91bc5d18-3157-409f-a97c-9ee603db5364"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Customer Name]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="345" y="152" width="208" height="22" uuid="4ea06303-9ee7-4616-ae4a-196a18f9452d"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{customerName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="337" y="152" width="8" height="22" uuid="babc3d14-92ea-44bb-971f-7f90363d08d4"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="645" width="61" height="22" uuid="ffbffc65-a878-4b01-aa85-e0245388f8dc"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Customer Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="645" width="8" height="22" uuid="61c9ff7d-0198-4654-a3cd-f7714d432cbd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="345" y="645" width="208" height="22" uuid="3ba45753-f5ef-4a5f-b997-6ab47f92ad48"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{customerName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="136" y="434" width="133" height="16" uuid="f665f460-f15b-4d5d-ab18-6dd09b7e7332"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{netPremium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement x="136" y="183" width="133" height="18" uuid="c0e1ae67-354b-4692-b207-58d195c99ede"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{netPremium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement x="136" y="675" width="133" height="18" uuid="5eeef611-d63c-4367-9cfb-e2365f79f5bf"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{netPremium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement x="79" y="58" width="190" height="12" uuid="045a81a7-8177-44fe-bda6-67fd15046a60"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{policyBranch}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="70" y="58" width="8" height="12" uuid="505706ef-720a-4215-ba5b-e518f16e5399"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="58" width="62" height="12" uuid="a90d3444-cdfa-4961-8164-77a484f6f0bf"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Location]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="79" y="307" width="190" height="12" uuid="4260bcb9-a79f-4b46-a35c-9c2692110323"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{policyBranch}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="71" y="307" width="8" height="12" uuid="f5cf5245-e82d-4acc-80b4-c8e1ceec3b9e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="306" width="62" height="12" uuid="bf18d089-addb-4cf2-accf-a9219312180b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Location]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="550" width="62" height="12" uuid="c976c629-42c8-4070-abf3-7ec846828827"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Location]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="78" y="550" width="190" height="12" uuid="48229945-2036-4076-9eec-32f7e2ce25a5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{policyBranch}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="70" y="550" width="8" height="12" uuid="adf3fcfa-be46-4e27-bb4b-1e012d369312"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

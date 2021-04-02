@@ -1,0 +1,199 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Person Travel Proposal Enquiry" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="personTravelEnquiryForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="startDate" value="Start Date" />
+						<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{PersonTravelProposalEnquiryActionBean.criteria.startDate}" />
+						<h:outputText value="Customer" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectCustomerPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectCustomerPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{PersonTravelProposalEnquiryActionBean.selectCustomer()}" id="selectCustomerDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{PersonTravelProposalEnquiryActionBean.returnCustomer}" update="customer" />
+									</p:commandButton>
+									<p:inputText id="customer" readonly="true"
+										value="#{PersonTravelProposalEnquiryActionBean.criteria.customer == null ? '' : PersonTravelProposalEnquiryActionBean.criteria.customer.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{PersonTravelProposalEnquiryActionBean.criteria.setCustomer(null)}" process="@this" update="customer" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText for="proposalNo" value="Proposal No." />
+						<p:inputText id="proposalNo" value="#{PersonTravelProposalEnquiryActionBean.criteria.number}" />
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="endDate" value="End Date" />
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{PersonTravelProposalEnquiryActionBean.criteria.endDate}" />
+						<h:outputText value="Organization" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectOrganizationPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectOrganizationPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{PersonTravelProposalEnquiryActionBean.selectOrganization()}"
+										id="selectOrganizationDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{PersonTravelProposalEnquiryActionBean.returnOrganization}" update="organization" />
+									</p:commandButton>
+									<p:inputText id="organization" readonly="true"
+										value="#{PersonTravelProposalEnquiryActionBean.criteria.organization == null ? '' : PersonTravelProposalEnquiryActionBean.criteria.organization.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{PersonTravelProposalEnquiryActionBean.criteria.setOrganization(null)}" process="@this"
+										update="organization" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectBranchPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectBranchPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" disabled="#{!PersonTravelProposalEnquiryActionBean.isAccessBranches}" icon="fa fa-search" actionListener="#{PersonTravelProposalEnquiryActionBean.selectBranch()}" id="selectBranchDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" disabled="#{!PersonTravelProposalEnquiryActionBean.isAccessBranches}" listener="#{PersonTravelProposalEnquiryActionBean.returnBranch}"
+											update="branch" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true"
+										value="#{PersonTravelProposalEnquiryActionBean.criteria.branch == null ? '' : PersonTravelProposalEnquiryActionBean.criteria.branch.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{!PersonTravelProposalEnquiryActionBean.isAccessBranches}" icon="fa fa-times"
+										action="#{LifeEnquiryActionBean.criteria.setAgent(null)}" process="@this" update="branch" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText value="Product" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectProductPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectProductPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{PersonTravelProposalEnquiryActionBean.selectProduct()}" id="selectProductDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{PersonTravelProposalEnquiryActionBean.returnProduct}" update="product" />
+									</p:commandButton>
+									<p:inputText id="product" readonly="true"
+										value="#{PersonTravelProposalEnquiryActionBean.criteria.product == null ? '' : PersonTravelProposalEnquiryActionBean.criteria.product.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{PersonTravelProposalEnquiryActionBean.criteria.setProduct(null)}" process="@this" update="product" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton style="width: 80px;" id="searchBtn" action="#{PersonTravelProposalEnquiryActionBean.findTravelProposalListByEnquiryCriteria}" update=":personTravelEnquiryForm"
+					value="Search" />
+				<p:commandButton style="width: 80px;" action="#{PersonTravelProposalEnquiryActionBean.resetCriteria}" update=":personTravelEnquiryForm" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="personTravelProposalTable" paginator="true" rows="10" rowIndexVar="indexVar"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" style="width:100%;"
+				value="#{PersonTravelProposalEnquiryActionBean.travelProposalList}" var="travelProposal">
+				<p:column headerText="No." style="width:3%;" styleClass="fixed-size">
+					<h:outputText value="#{indexVar + 1}." style="float: right;" />
+				</p:column>
+				<p:column headerText="Proposal No." style="width:12%;" styleClass="fixed-size">
+					<h:outputText value="#{travelProposal.proposalNo}" />
+				</p:column>
+				<p:column headerText="Sale Person" style="width:9%;">
+					<h:outputText value="#{travelProposal.salePersonName}" />
+				</p:column>
+				<p:column headerText="Customer Name" style="width:9%;">
+					<h:outputText value="#{travelProposal.customerName}" />
+				</p:column>
+				<p:column headerText="Branch" style="width:9%;">
+					<h:outputText value="#{travelProposal.branch}" />
+				</p:column>
+				<p:column headerText="Total Premium" style="width:9%;" styleClass="fixed-size">
+					<h:outputText value="#{travelProposal.premium}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Total Unit" style="width:4%;" styleClass="fixed-size">
+					<h:outputText value="#{travelProposal.totalUnit}" style="float:right;" />
+				</p:column>
+				<p:column headerText="No. of Passenger" style="width:6%;">
+					<h:outputText value="#{travelProposal.noOfPassenger}" style="float:right;" styleClass="fixed-size" />
+				</p:column>
+				<p:column headerText="Payment Type" style="width:9%;" styleClass="fixed-size">
+					<h:outputText value="#{travelProposal.paymentType}" />
+				</p:column>
+				<p:column headerText="Submitted Date" style="width:9%;" styleClass="fixed-size">
+					<h:outputText pattern="#{ApplicationSetting.dateFormat}" value="#{travelProposal.submittedDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width: 6%; text-align: center;" headerText="Detail" styleClass="fixed-size">
+					<p:commandLink action="#{PersonTravelProposalEnquiryActionBean.showDetailtravelProposal(travelProposal)}" id="detailsProposal" immediate="true"
+						oncomplete="PF('personTravelProposalDetailsDialog').show()" update=":personTravelProposalDetailsForm:detailPannel">
+						<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="width: 5%; text-align: center;" headerText="Edit" styleClass="fixed-size">
+					<p:commandLink id="editLink" action="#{PersonTravelProposalEnquiryActionBean.editPersonTravelProposal(travelProposal)}" update=":informationForm">
+						<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="width: 5%; text-align: center;" headerText="Cash Receipt">
+					<p:commandLink action="#{PersonTravelProposalEnquiryActionBean.generateCashReceipt(travelProposal)}" id="printCashReceiptDialogLink" immediate="true"
+						update=":pdfPrintForm:printPannel,:informationForm">
+						<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" url="#{ApplicationSetting.printIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column style="width: 5%; text-align: center;" headerText="Policy Issue">
+					<p:commandLink action="#{PersonTravelProposalEnquiryActionBean.generatePersonTravelIssue(travelProposal)}" id="printIssueDialogLink" immediate="true"
+						update=":pdfPrintIssueForm:printIssuePannel,:informationForm">
+						<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" url="#{ApplicationSetting.printIcon}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<h:form id="personTravelProposalDetailsForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Person Travel Proposal Details" height="550" hideEffect="explode" id="personTravelProposalDetailsDialog" resizable="false"
+				showEffect="explode" widgetVar="personTravelProposalDetailsDialog" width="1025">
+				<p:outputPanel id="detailPannel">
+					<ui:include src="/manage/travel/personTravel/personTravelDetailTemplate.xhtml">
+						<ui:param name="personTravelProposal" value="#{PersonTravelProposalEnquiryActionBean.travelProposal}" />
+					</ui:include>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+		<h:form enctype="multipart/form-data" id="pdfPrintForm">
+			<p:dialog appendTo="@(body)" dynamic="true" width="1070" height="505" id="issuePolicyPDFDialogSingle" resizable="false" widgetVar="issuePolicyPDFDialogSingle">
+				<p:ajax event="close" update=":pdfPrintForm :personTravelEnquiryForm" listener="#{PersonTravelProposalEnquiryActionBean.handleClose}" />
+				<p:outputPanel id="printPannel">
+					<p:media width="1050" height="500" id="pdfPlayer" player="pdf" value="#{PersonTravelProposalEnquiryActionBean.reportStream}" cache="false" />
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+		<h:form enctype="multipart/form-data" id="pdfPrintIssueForm">
+			<p:dialog appendTo="@(body)" dynamic="true" width="1070" height="505" id="issuePersonTravelPolicyPDFDialogSingle" resizable="false"
+				widgetVar="issuePersonTravelPolicyPDFDialogSingle">
+				<p:ajax event="close" update=":pdfPrintIssueForm :personTravelEnquiryForm" listener="#{PersonTravelProposalEnquiryActionBean.handleCloseIssuePolicy}" />
+				<p:outputPanel id="printIssuePannel">
+					<p:media width="1050" height="500" id="pdfPlayer" player="pdf" value="#{PersonTravelProposalEnquiryActionBean.issueReportStream}" cache="false" />
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+		<h:form id="informationForm">
+			<p:dialog header="Proposal Information" height="100" hideEffect="explode" id="informationDialog" resizable="false" showEffect="explode" widgetVar="informationDialog" width="250">
+				<h:panelGroup id="informationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="#{PersonTravelProposalEnquiryActionBean.message}" />
+							</td>
+						</tr>
+					</table>
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

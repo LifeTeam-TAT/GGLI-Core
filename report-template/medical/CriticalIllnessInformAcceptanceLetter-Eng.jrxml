@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MedicalInformAcceptanceLetter" pageWidth="595" pageHeight="865" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="130" bottomMargin="20" resourceBundle="LANGUAGE_en" uuid="3afc633b-0514-4136-a994-621d31ab3e14">
+	<property name="ireport.zoom" value="0.9330147604194671"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="7"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="01639de4-926f-4f4c-b14d-6bdf76a57ce5"/>
+	<parameter name="customerName" class="java.lang.String"/>
+	<parameter name="proposalNo" class="java.lang.String"/>
+	<parameter name="periodYears" class="java.lang.Integer"/>
+	<parameter name="totalPremium" class="java.lang.Double"/>
+	<parameter name="servicesCharges" class="java.lang.Double"/>
+	<parameter name="customerAddress" class="java.lang.String"/>
+	<parameter name="agent" class="java.lang.String"/>
+	<parameter name="netTermAmount" class="java.lang.Double"/>
+	<parameter name="todayDate" class="java.lang.String"/>
+	<parameter name="currentDate" class="java.lang.String"/>
+	<parameter name="phoneNo" class="java.lang.String"/>
+	<parameter name="basicPlus" class="java.lang.String"/>
+	<parameter name="additional1" class="java.lang.String"/>
+	<parameter name="additional2" class="java.lang.String"/>
+	<parameter name="startDate" class="java.util.Date"/>
+	<parameter name="endDate" class="java.util.Date"/>
+	<parameter name="nbcTotalPremium" class="java.lang.Double"/>
+	<parameter name="paymentType" class="java.lang.String"/>
+	<parameter name="oneYearPremium" class="java.lang.Double"/>
+	<parameter name="termPremium" class="java.lang.Double"/>
+	<parameter name="basicUnit" class="java.lang.String"/>
+	<title>
+		<band height="715" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="129" width="555" height="20" uuid="fb2cac67-4beb-4302-b608-c42835cb5f7a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Subject:	Acceptance of Critical Illness Insurance and notification of premium payment]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="588" width="555" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="3398b191-9bdf-4c6e-91a7-1ef639d1c72f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Copy]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="608" width="555" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="b8dd9aac-e382-43f1-8e2e-b269ef23e33d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[-     Office copy]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="227" width="141" height="20" uuid="7b2eec38-8a6f-4bf7-86ef-4a7afc2802a5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Insurance period]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="203" width="141" height="20" uuid="f48b17e2-abeb-4ae6-932a-5b975241e283"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Proposal No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="180" y="203" width="7" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="f051c0be-9c14-47b8-a859-3c04e6741036"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="208" y="203" width="347" height="20" uuid="d626fb64-eebe-4cfd-b2a6-25c3ec5ed86e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{proposalNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="218" y="227" width="11" height="20" uuid="dea84090-5ab9-4642-af97-ceb5715d4498"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{periodYears}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="229" y="227" width="326" height="20" uuid="dcb490d1-9510-4d3b-8469-00ddeba91137"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[year )]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="26" y="19" width="544" height="20" uuid="9cdda843-515a-4288-88ee-d62fc505a2a2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{customerName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="19" uuid="8b1f2507-8348-4ccb-bdba-b71f443f0bcf"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="12"/>
+				</textElement>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="26" y="41" width="544" height="20" uuid="64038c85-6c50-49a5-bbbd-44eb91aa39a8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{customerAddress}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="180" y="227" width="7" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="80af1d95-43d5-4faa-9a4b-f2d57df86c16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="179" y="288" width="7" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="c952b4f4-103a-4cd9-9d42-f35c615d0eb9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="336" y="515" width="79" height="20" uuid="5208659e-244e-449b-9409-ad9826ef594b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Signature]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="415" y="540" width="140" height="20" uuid="e15ea8aa-1a8d-4146-bbe7-c57323a3ba36"/>
+				<box>
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="415" y="564" width="140" height="20" uuid="85cc7cbe-39fc-4649-a059-2ef076c3eb59"/>
+				<box>
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="336" y="564" width="79" height="20" uuid="975a02f1-ae84-484a-9cff-05fd2e62d142"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Designation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="336" y="540" width="79" height="20" uuid="b88a112c-2f0a-4775-ba69-f48174610b31"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="415" y="515" width="140" height="20" uuid="a4058d14-06b1-42ef-b4ae-5b72d5e825e5"/>
+				<box>
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="368" y="464" width="187" height="20" uuid="60fddc40-8537-472f-ad4c-0d182089ebcc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Respectfully yours]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="651" width="555" height="20" uuid="29916670-b00a-40fe-a62f-9957748bbff7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Please dial (			) for further information]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="630" width="555" height="20" uuid="6011964c-7395-4c83-9923-f1ce5b36b973"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[-    Agent]]></text>
+			</staticText>
+			<line>
+				<reportElement x="85" y="149" width="388" height="1" uuid="dd32f01b-5b3f-4fa8-a351-95f8074b8956"/>
+			</line>
+			<staticText>
+				<reportElement x="27" y="160" width="529" height="38" uuid="1bb2b94d-5fa3-457d-8de1-7e08ec526b0c"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<text><![CDATA[Thank you so much for choosing Grand Guardian Nippon Life Insurance Co.,Ltd  as your trusted critical illness insurer. We are glad to inform you that we have accepted your critical illness insurance as follows:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="387" width="529" height="66" uuid="58f7ac4a-32cc-4138-ad3a-5864ab35e076"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial" size="12"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<text><![CDATA[Please do not hesitate to contact us if you have any requirements in connection with insurance business as we guarantee utmost efforts and best services for your every convenience and satisfaction. We wish you and your family health, wealth and happiness.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="416" y="95" width="140" height="20" uuid="06cf66b2-bc5a-40a5-a314-013554cedfd0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Date. "+$P{currentDate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="26" y="61" width="298" height="20" uuid="dc72c6ed-2559-4d44-92ea-2dd2fa054ae4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{phoneNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="208" y="227" width="10" height="20" uuid="c3e421ab-83f9-4596-9769-ed7efa705a9b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[(]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="179" y="318" width="7" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="547dc8d9-cec5-4ef7-b3bb-c1b744fdaf42"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="288" width="140" height="20" uuid="8e54f1ee-caf8-4a7f-85de-84ed8f512c07"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[One Year Premium]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="318" width="140" height="20" uuid="b2772599-bb32-4f59-835e-08101f5777bb"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Payment Type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="342" width="140" height="20" uuid="edcdcdc0-d801-46ae-8dc1-3153d3e8a7e7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Term Premium]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="179" y="342" width="7" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="577da334-e354-45e4-8d5a-58aef30d91a0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="209" y="288" width="347" height="20" uuid="821875d4-ccc8-4591-8ada-6e70bdc9423f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{oneYearPremium}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="180" y="257" width="7" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="d71f9f2b-c416-49a8-9933-0e7646629727"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="208" y="257" width="347" height="20" uuid="4dfa382c-cd48-4ed6-88c8-bb3032aa02d4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{basicUnit}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="26" y="365" width="142" height="20" uuid="3302e486-6d97-431a-b49e-25c930ae7a09"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Total Payment]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="179" y="365" width="7" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="5e21d152-50cb-4068-984d-177e02a868b9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="209" y="365" width="347" height="20" uuid="dd295e47-3146-4d13-94ca-d1af8add03bc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{termPremium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="387" width="26" height="20" uuid="03cc273d-9fb3-43d8-a9ca-42ed2a97b0cb"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[2.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="160" width="26" height="17" uuid="fb487a43-eec7-4fc1-89a9-decf1012338a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[1.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="208" y="318" width="347" height="20" uuid="c8b68001-cc39-4bd0-aefc-4a20e09ef964"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{paymentType}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement x="208" y="342" width="347" height="20" uuid="a8fa218e-c533-4bc4-965b-3d7654ee5447"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{termPremium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="26" y="257" width="142" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="70732e45-abc1-4333-908b-79f50e272964"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Basic cover]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>

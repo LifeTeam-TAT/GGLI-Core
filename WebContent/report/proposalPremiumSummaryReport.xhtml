@@ -1,0 +1,139 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+   <ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+   <ui:param name="rendered" value="true" />
+   <ui:define name="content">
+      <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+      <link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+      <h:form id="summaryForm">
+         <table cellspacing="5" width="100%">
+            <tr>
+               <td>
+                  <h:outputText styleClass="table-title" value="Proposal Premium Summary Report" />
+               </td>
+               <td align="right">
+                  <p:commandLink action="#{ProposalPremiunSummaryReportActionBean.generateReport()}" oncomplete="PF('pdfPrintPreviewDialog').show()">
+                     <h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" title="PDF print" url="#{ApplicationSetting.printIcon}" />
+                  </p:commandLink>
+               </td>
+            </tr>
+         </table>
+         <p:separator style="height:5px" />
+         		<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+			  <p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                  <h:outputLabel value="ReportType" />
+                  <p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="reportType" 
+                     value="#{ProposalPremiunSummaryReportActionBean.criteria.reportType}">
+                     <f:selectItems itemValue="#{type}" value="#{ProposalPremiunSummaryReportActionBean.reportTypeList}" var="type" />
+                     <p:ajax event="valueChange" listener="#{ProposalPremiunSummaryReportActionBean.criteriaChangeOrgEvent}" update=":summaryForm" />
+                  </p:selectOneMenu>
+               </p:panelGrid>
+               
+               	<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" styleClass="ui-panelgrid-blank ui-fluid"  rendered="#{ProposalPremiunSummaryReportActionBean.showWeekly}">
+                  <h:outputLabel value="Start Date" />
+                  <p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}"  showOn="button"
+                     timeZone="#{ApplicationSetting.timeZone}" value="#{ProposalPremiunSummaryReportActionBean.criteria.startDate}" />
+              </p:panelGrid>
+              
+               	<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" rendered="#{ProposalPremiunSummaryReportActionBean.showMonthly}">
+                  <h:outputLabel  value="Month" />
+                  <p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="monthType"
+                     value="#{ProposalPremiunSummaryReportActionBean.criteria.month}">
+                     <f:selectItems  value="#{ProposalPremiunSummaryReportActionBean.monthSelectItemList}"  var="month" itemLabel="#{month}" itemValue="#{month.value}" />
+                  </p:selectOneMenu>
+              </p:panelGrid>
+              
+              	<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                  <h:outputLabel rendered="#{ProposalPremiunSummaryReportActionBean.showYearly || ProposalPremiunSummaryReportActionBean.showMonthly}" value="Year" />
+                  <p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+                     rendered="#{ProposalPremiunSummaryReportActionBean.showYearly || ProposalPremiunSummaryReportActionBean.showMonthly}" >
+                     <f:selectItems value="#{ProposalPremiunSummaryReportActionBean.years}" />
+                  </p:selectOneMenu>
+               </p:panelGrid>
+            </p:panelGrid>
+               
+                  <p:commandButton action="#{ProposalPremiunSummaryReportActionBean.search()}" update=":summaryForm" value="Search"  />
+             
+         <p:separator />
+         <p:dataTable id="sumamaryTable" value="#{ProposalPremiunSummaryReportActionBean.summaryReportList}" var="sumamary">
+            <f:facet name="header">  
+		           Summary Report  
+		       </f:facet>
+            <p:columnGroup type="header">
+               <p:row>
+                  <p:column headerText="" sortBy="#{sumamary.name}" />
+                  <p:column headerText="Brokers" />
+                  <p:column headerText="S &amp; M" />
+                  <p:column headerText="Direct" />
+                  <p:column headerText="Staff" />
+                  <p:column headerText="Other" />
+                  <p:column headerText="Total" />
+               </p:row>
+            </p:columnGroup>
+            <p:subTable value="#{sumamary.productPremiumInfoList}" var="stats">
+               <f:facet name="header">  
+		             #{sumamary.name}   
+		           </f:facet>
+               <p:column>  
+		               #{stats.productName}  
+		           </p:column>
+               <p:column>
+                  <h:outputText value="#{stats.agentTotalPremium}" style="float:right">
+                     <f:convertNumber pattern="#{ApplicationSetting.numberFormat}" />
+                  </h:outputText>
+               </p:column>
+               <p:column>
+                  <h:outputText value="#{stats.salemanTotalPremium}" style="float:right">
+                     <f:convertNumber pattern="#{ApplicationSetting.numberFormat}" />
+                  </h:outputText>
+               </p:column>
+               <p:column>
+               </p:column>
+               <p:column>
+               </p:column>
+               <p:column>
+               </p:column>
+               <p:column>
+                  <h:outputText value="#{stats.total}" style="float:right">
+                     <f:convertNumber pattern="#{ApplicationSetting.numberFormat}" />
+                  </h:outputText>
+               </p:column>
+               <p:columnGroup type="footer">
+                  <p:row>
+                     <p:column footerText="Totals: " style="text-align:right" />
+                     <p:column>
+                        <f:facet name="footer">
+                           <h:outputText value="#{sumamary.totalAgent}" style="float:right">
+                              <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+                           </h:outputText>
+                        </f:facet>
+                     </p:column>
+                     <p:column>
+                        <f:facet name="footer">
+                           <h:outputText value="#{sumamary.totalSaleman}" style="float:right">
+                              <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+                           </h:outputText>
+                        </f:facet>
+                     </p:column>
+                     <p:column footerText="" />
+                     <p:column footerText="" />
+                     <p:column footerText="" />
+                     <p:column footerText="">
+                        <f:facet name="footer">
+                           <h:outputText value="#{sumamary.total}" style="float:right">
+                              <f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+                           </h:outputText>
+                        </f:facet>
+                     </p:column>
+                  </p:row>
+               </p:columnGroup>
+            </p:subTable>
+         </p:dataTable>
+      </h:form>
+      <h:form id="pdfPrintPreviewForm">
+         <p:dialog appendTo="@(body)" dynamic="true" header="Print Preview" width="1070" height="505" id="pdfPrintPreviewDialog" resizable="false" widgetVar="pdfPrintPreviewDialog">
+            <p:media width="1050" height="500" player="pdf" value="#{ProposalPremiunSummaryReportActionBean.stream}" cache="false"/>
+         </p:dialog>
+      </h:form>
+   </ui:define>
+</ui:composition>

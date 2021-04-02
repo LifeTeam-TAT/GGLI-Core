@@ -1,0 +1,434 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsf="http://xmlns.jcp.org/jsf">
+	<ui:param name="header" value="Add New Group Micro Health Proposal" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="inputForm">
+			<p:panel id="saleChannelType">
+				<table>
+						<tr>
+								<td><h:outputText styleClass="input-label mandatory" value="Sale Channel" /></td>
+								<td><p:message display="text" for="saleUserType" /> <p:selectOneMenu id="saleUserType" converter="omnifaces.SelectItemsConverter" style="width:240px; margin-top: -5px; margin-left: -5px;"
+										value="#{GroupMicroHealthProposalActionBean.groupMicroHealth.
+										saleChannelType}" required="true">
+										<f:selectItem itemLabel=" -- Select SaleChannelType --" noSelectionOption="true" itemDisabled="true" />
+										<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{GroupMicroHealthProposalActionBean.saleChannelType}" var="type" />
+										<p:ajax event="valueChange" listener="#{GroupMicroHealthProposalActionBean.changeSaleEvent}" update="@form:saleChannelType" />
+									</p:selectOneMenu></td>
+							</tr>
+							<tr>
+								<td style="height: 1px;" />
+								<td><c:if test="#{GroupMicroHealthProposalActionBean.groupMicroHealth.saleChannelType ne 'BANCASSURANCE'}">
+										<p:outputLabel />
+										<p:message display="text" for="userType" />
+										<p:panelGrid styleClass="ui-panelgrid-blank" id="user">
+											<div style="width: 270px; margin-left: -4px;" class="ui-g ui-fluid">
+												<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+													<p:commandButton  styleClass="green-button" icon="fa fa-search"
+														actionListener="#{GroupMicroHealthProposalActionBean.selectAgent()}" rendered="#{GroupMicroHealthProposalActionBean.groupMicroHealth.saleChannelType eq 'AGENT'}"
+														id="selectAgentDialogLink" process="@this">
+														<p:ajax event="dialogReturn" listener="#{GroupMicroHealthProposalActionBean.returnAgent}" update="userType" />
+													</p:commandButton>
+													<p:commandButton  styleClass="green-button" icon="fa fa-search"
+														actionListener="#{GroupMicroHealthProposalActionBean.selectSaleMan()}" rendered="#{GroupMicroHealthProposalActionBean.groupMicroHealth.saleChannelType eq 'SALEMAN'}"
+														id="selectSaleManDialogLink" process="@this">
+														<p:ajax event="dialogReturn" listener="#{GroupMicroHealthProposalActionBean.returnSaleMan}" update="userType" />
+													</p:commandButton>
+													<p:commandButton  styleClass="green-button" icon="fa fa-search"
+														actionListener="#{GroupMicroHealthProposalActionBean.selectReferral()}" rendered="#{GroupMicroHealthProposalActionBean.groupMicroHealth.saleChannelType eq 'REFERRAL'}"
+														id="selectReferralDialogLink" process="@this">
+														<p:ajax event="dialogReturn" listener="#{GroupMicroHealthProposalActionBean.returnReferral}" update="userType" />
+													</p:commandButton>
+													<p:inputText id="userType" required="true" rendered="#{GroupMicroHealthProposalActionBean.groupMicroHealth.saleChannelType != null }"
+														readonly="#{GroupMicroHealthProposalActionBean.groupMicroHealth.salePersonName == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+														value="#{GroupMicroHealthProposalActionBean.groupMicroHealth.salePersonName}" style="width:250px;margin-left:-4px;" />
+													<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{GroupMicroHealthProposalActionBean.groupMicroHealth.setAgent(null)}"
+														rendered="#{GroupMicroHealthProposalActionBean.groupMicroHealth.saleChannelType eq 'AGENT'}" process="@this" update="userType" />
+													<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{GroupMicroHealthProposalActionBean.groupMicroHealth.setSaleMan(null)}"
+														rendered="#{GroupMicroHealthProposalActionBean.groupMicroHealth.saleChannelType eq 'SALEMAN'}" process="@this" update="userType" />
+													<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{GroupMicroHealthProposalActionBean.groupMicroHealth.setReferral(null)}"
+														rendered="#{GroupMicroHealthProposalActionBean.groupMicroHealth.saleChannelType eq 'REFERRAL'}" process="@this" update="userType" />
+												</div>
+											</div>
+										</p:panelGrid>
+									</c:if></td>
+							</tr>
+							<c:if test="#{GroupMicroHealthProposalActionBean.groupMicroHealth.saleChannelType eq 'BANCASSURANCE'}">
+								<tr>
+									<td />
+									<td><p:message for="channel" display="text" /></td>
+								</tr>
+								<tr>
+									<td><h:outputText styleClass="input-label mandatory" id="channellabel" value="Channel" /></td>
+									<td><p:panelGrid styleClass="ui-panelgrid-blank" id="channelPanelGroup">
+									<div style="width: 270px; margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid">
+											<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12" >
+											<p:commandButton styleClass="green-button" icon="fa fa-search"
+													actionListener="#{GroupMicroHealthProposalActionBean.selectChannels()}" id="selectChannelDialogLink"
+													process="@this">
+													<p:ajax event="dialogReturn" listener="#{GroupMicroHealthProposalActionBean.returnChannel}"
+														update="channel bancaBranchPanelGroup bancaMethod" />
+												</p:commandButton>
+											<p:inputText id="channel" required="true" style="width:250px;margin-left:-4px;"
+												readonly="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.channel == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.channel == null ? '' : GroupMicroHealthProposalActionBean.bancaassuranceProposal.channel.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times"
+													action="#{GroupMicroHealthProposalActionBean.removeChannel()}" process="@this" update="channel bancaBranchPanelGroup bancaMethod" />
+											</div>
+											</div>
+										</p:panelGrid></td>
+								</tr>
+								<td></td>
+								<tr>
+								<tr>
+									<td />
+									<td><p:message for="bancaBranch" display="text" /></td>
+								</tr>
+								<td><h:outputText styleClass="input-label mandatory" value="Banca Branch" /></td>
+								<td><p:panelGrid styleClass="ui-panelgrid-blank" >
+										<div style="width: 270px; margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" jsf:id="bancaBranchPanelGroup">
+											<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12" >
+											<p:commandButton styleClass="green-button" icon="fa fa-search"
+													actionListener="#{GroupMicroHealthProposalActionBean.selectBancaBranch()}" id="selectBancaBranchlink"
+													process="@this"  disabled="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.channel == null?true:false}">
+													<p:ajax event="dialogReturn" listener="#{GroupMicroHealthProposalActionBean.returnBancaBranch}"
+														update="bancaBranch bancaMethod" />
+												</p:commandButton>
+										<p:inputText id="bancaBranch" required="true" style="width:250px;margin-left:-4px;"
+											readonly="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaBranch == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+											value="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaBranch == null ? '' : GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaBranch.name}" />
+										<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.channel == null? true:false}"
+													action="#{GroupMicroHealthProposalActionBean.removeBancaBranch()}" process="@this" update="bancaBranch bancaMethod" />
+											</div>
+										</div>
+									</p:panelGrid></td>
+								</tr>
+								<tr>
+									<td />
+									<td><p:message for="bancaMethod" display="text" /></td>
+								</tr>
+								<tr>
+									<td><h:outputText styleClass="input-label mandatory" value="Banca Method" /></td>
+									<td> <p:selectOneMenu converter="omnifaces.SelectItemsConverter" required="true" id="bancaMethod" style="width: 240px; margin-top: -5px; margin-left: -5px;"
+											value="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaMethod}">
+											<f:selectItem itemLabel="" noSelectionOption="true" />
+											<f:selectItems value="#{GroupMicroHealthProposalActionBean.bancaMethodList}" var="bancaMethod" itemLabel="#{bancaMethod.name}" itemValue="#{bancaMethod}" />
+											<p:ajax event="valueChange" listener="#{GroupMicroHealthProposalActionBean.changeBancaEvent}" update="@form:saleChannelType" />
+										</p:selectOneMenu></td>
+								</tr>
+								<c:if test="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaMethod.name eq 'REFERRAL'}">
+									<tr>
+										<td />
+										<td><p:message for="bancaBRM" display="text" /></td>
+									</tr>
+									<tr>
+										<td><h:outputText styleClass="input-label mandatory" value="Banca BRM" /></td>
+										<td><p:panelGrid styleClass="ui-panelgrid-blank" id="bancaBrmPanelGroup">
+												<div  style="width: 270px; margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid">
+													<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12" >
+														<p:commandButton styleClass="green-button" icon="fa fa-search"
+															actionListener="#{GroupMicroHealthProposalActionBean.selectBancaBrm()}" id="selectBancaBrmlink"
+															process="@this" disabled="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaMethod == null?true:false}">
+															<p:ajax event="dialogReturn" listener="#{GroupMicroHealthProposalActionBean.returnBancaBrm}"
+																update="bancaBRM bancaLICPanelGroup bancaReferralPanelGroup" />
+														</p:commandButton>
+												<p:inputText id="bancaBRM" required="true" style="width:250px;margin-left:-4px;"
+													readonly="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaBRM== null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+													value="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaBRM == null ? '' : GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaBRM.name}" />
+												<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaMethod  == null?true:false}"
+															action="#{GroupMicroHealthProposalActionBean.removeBancaBRM()}"
+															process="@this" update="bancaBRM bancaLICPanelGroup bancaReferralPanelGroup" />
+													</div>
+												</div>
+											</p:panelGrid></td>
+									</tr>
+									<tr>
+										<td />
+										<td><p:message for="bancaLIC" display="text" /></td>
+									</tr>
+									<tr>
+										<td><h:outputText styleClass="input-label mandatory" value="Banca LIC" /></td>
+										<td><p:panelGrid styleClass="ui-panelgrid-blank" >
+										<div style="width: 270px; margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" jsf:id="bancaLICPanelGroup">
+													<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12" >
+														<p:commandButton styleClass="green-button" icon="fa fa-search"
+															actionListener="#{GroupMicroHealthProposalActionBean.selectBancaLIC()}" id="selectBancaCLIDialogLink"
+															process="@this" disabled="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaBRM == null?true:false}">
+															<p:ajax event="dialogReturn" listener="#{GroupMicroHealthProposalActionBean.returnBancaLIC}"
+																update="bancaLIC bancaReferralPanelGroup" />
+														</p:commandButton>
+												<p:inputText id="bancaLIC" required="true" style="width:250px;margin-left:-4px;"
+													readonly="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaLIC == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+													value="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaLIC == null ? '' : GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaLIC.name}" />
+												<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaBRM  == null?true:false}"
+															action="#{GroupMicroHealthProposalActionBean.removeBancaLIC()}" process="@this" update="bancaLIC bancaReferralPanelGroup" />
+													</div>
+												</div>
+											</p:panelGrid></td>
+									</tr>
+									<tr>
+										<td />
+										<td><p:message for="bancaReferral" display="text" /></td>
+									</tr>
+									<tr>
+										<td><h:outputText value="Banca Referral" id="bancaRefferalLabel" /></td>
+										<td><p:panelGrid styleClass="ui-panelgrid-blank">
+										<div style="width: 270px; margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" jsf:id="bancaReferralPanelGroup">
+													<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12" >
+														<p:commandButton styleClass="green-button" icon="fa fa-search"
+															actionListener="#{GroupMicroHealthProposalActionBean.selectBancaReferral()}"
+															id="selectBancaReferralDialogLink" process="@this" disabled="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaLIC == null?true:false}">
+															<p:ajax event="dialogReturn" listener="#{GroupMicroHealthProposalActionBean.returnBancaRefferal}"
+																update="bancaReferral" />
+														</p:commandButton>
+												<p:inputText id="bancaReferral" required="true" style="width:250px;margin-left:-4px;"
+													readonly="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaRefferal == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+													value="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaRefferal == null ? '' : GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaRefferal.name}" />
+												<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaLIC == null?true:false}"
+															action="#{GroupMicroHealthProposalActionBean.removeBancaReferral()}" process="@this"
+															update="bancaReferral" />
+													</div>
+												</div>
+											</p:panelGrid></td>
+									</tr>
+								</c:if>
+								<c:if test="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaMethod.name eq 'OTC'}">
+									<tr>
+										<td />
+										<td><p:message for="bancaReferral" display="text" /></td>
+									</tr>
+									<tr>
+										<td><h:outputText value="Banca Staff" id="bancaRefferalLabel" /></td>
+										<td><p:panelGrid styleClass="ui-panelgrid-blank" id="bancaReferralPanelGroup">
+										<div style="width: 270px;margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid">
+													<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12" >
+														<p:commandButton styleClass="green-button" icon="fa fa-search"
+															actionListener="#{GroupMicroHealthProposalActionBean.selectBancaReferralByOTC()}"
+															id="selectBancaReferralDialogLink" process="@this">
+															<p:ajax event="dialogReturn" listener="#{GroupMicroHealthProposalActionBean.returnBancaRefferal}"
+																update="bancaReferral" />
+														</p:commandButton>
+												<p:inputText id="bancaReferral" required="true" style="width:250px;margin-left:-4px;"
+													readonly="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaRefferal == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+													value="#{GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaRefferal == null ? '' : GroupMicroHealthProposalActionBean.bancaassuranceProposal.bancaRefferal.name}" />
+												<p:commandButton styleClass="red-button" icon="fa fa-times"
+															action="#{GroupMicroHealthProposalActionBean.removeBancaReferral()}" process="@this"
+															update="bancaReferral" />
+													</div>
+												</div>
+											</p:panelGrid></td>
+									</tr>
+								</c:if>
+							</c:if>
+					<tr>
+						<td />
+						<td><p:message for="startDate" display="text"></p:message></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel styleClass="input-label mandatory">Start Date</p:outputLabel></td>
+						<td><p:calendar value="#{GroupMicroHealthProposalActionBean.groupMicroHealth.startDate}" pattern="#{ApplicationSetting.dateFormat}" id="startDate"
+								timeZone="#{ApplicationSetting.timeZone}" showOn="button" size="38" required="true" requiredMessage="Start Date is required!" /></td>
+					</tr>
+					<tr>
+						<td />
+						<td><p:message for="noOfInsuredPerson" display="text" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel styleClass="input-label mandatory">Number Of Insured Person</p:outputLabel></td>
+						<td><p:inputText id="noOfInsuredPerson" value="#{GroupMicroHealthProposalActionBean.groupMicroHealth.numberOfInsuredPerson}" required="true"
+								requiredMessage="Number Of Insured Person is required!" style="width:250px;">
+								<f:convertNumber integerOnly="true" type="number" />
+							</p:inputText></td>
+					</tr>
+					<!-- <tr>
+						<td><p:outputLabel>Number Of unit</p:outputLabel></td>
+						<td><p:inputText id="noOfUnit" value="#{GroupMicroHealthProposalActionBean.groupMicroHealth.numberOfUnit}" required="true"
+								requiredMessage="Number Of Unit is required!"
+								style="width:250px;">
+								<f:convertNumber integerOnly="true" type="number" />
+							</p:inputText> <p:message for="noOfUnit" display="text" /></td>
+					</tr> -->
+					<tr>
+						<td />
+						<td><p:message for="totalPremium" display="text" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel styleClass="input-label mandatory">Total Premium</p:outputLabel></td>
+						<td><p:inputText id="totalPremium" value="#{GroupMicroHealthProposalActionBean.groupMicroHealth.totalPremium}" required="true"
+								requiredMessage="Total Premium is required!" style="width:250px;">
+								<f:convertNumber type="number" />
+							</p:inputText></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><p:message for="entity" display="text" /></td>
+					</tr>
+					<tr>
+						<td><h:outputText styleClass="input-label mandatory" value="Entity " /></td>
+						<td><p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGroup">
+								<div style="width: 270px; margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid">
+									<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+										<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{GroupMicroHealthProposalActionBean.selectEntity()}" id="selectEnitysDialogLink"
+											process="@this">
+											<p:ajax event="dialogReturn" listener="#{GroupMicroHealthProposalActionBean.returnEntity}" update="entity branchPanelGroup salePontPanelGroup" />
+										</p:commandButton>
+										<p:inputText id="entity" readonly="#{GroupMicroHealthProposalActionBean.entity == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+											style="width:250px;margin-left:-4px;" value="#{GroupMicroHealthProposalActionBean.entity == null ? '' : GroupMicroHealthProposalActionBean.entity.name}" required="true" />
+										<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{GroupMicroHealthProposalActionBean.removeEntity()}" process="@this"
+											update="entity branchPanelGroup salePontPanelGroup" />
+									</div>
+								</div>
+							</p:panelGrid></td>
+					</tr>
+					<tr>
+						<td />
+						<td><p:message for="branch" display="text" /></td>
+					</tr>
+					<tr>
+						<td><h:outputText styleClass="input-label mandatory" value="Branch" /></td>
+						<td><p:panelGrid styleClass="ui-panelgrid-blank">
+								<div style="width: 270px; margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+									<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+										<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{GroupMicroHealthProposalActionBean.selectBranchByEntity()}" id="selectBranchDialogLink"
+											process="@this" disabled="#{GroupMicroHealthProposalActionBean.entity==null?true:false}">
+											<p:ajax event="dialogReturn" listener="#{GroupMicroHealthProposalActionBean.returnBranch}" update="branch salePontPanelGroup" />
+										</p:commandButton>
+										<p:inputText id="branch" readonly="#{GroupMicroHealthProposalActionBean.groupMicroHealth.branch == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+											required="true" value="#{GroupMicroHealthProposalActionBean.groupMicroHealth.branch == null ? '' : GroupMicroHealthProposalActionBean.groupMicroHealth.branch.name}" />
+										<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{GroupMicroHealthProposalActionBean.removeBranch()}" process="@this"
+											update="branch salePontPanelGroup" />
+									</div>
+								</div>
+							</p:panelGrid></td>
+					</tr>
+					<tr>
+						<td />
+						<td><p:message for="salePoint" display="text" /></td>
+					</tr>
+					<tr>
+						<td><h:outputText styleClass="input-label mandatory" value="Sale Point" /></td>
+						<td><p:panelGrid styleClass="ui-panelgrid-blank">
+								<div style="width: 270px; margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+									<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+										<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{GroupMicroHealthProposalActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+											process="@this" disabled="#{GroupMicroHealthProposalActionBean.groupMicroHealth.branch==null?true:false}">
+											<p:ajax event="dialogReturn" listener="#{GroupMicroHealthProposalActionBean.returnSalePoint}" update="salePoint" />
+										</p:commandButton>
+										<p:inputText id="salePoint" readonly="#{GroupMicroHealthProposalActionBean.groupMicroHealth.salePoint == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+											required="true"
+											value="#{GroupMicroHealthProposalActionBean.groupMicroHealth.salePoint == null ? '' : GroupMicroHealthProposalActionBean.groupMicroHealth.salePoint.name}" />
+										<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{GroupMicroHealthProposalActionBean.groupMicroHealth.setSalePoint(null)}" process="@this"
+											update="salePoint" />
+									</div>
+								</div>
+							</p:panelGrid></td>
+					</tr>
+					<tr>
+						<td />
+						<td><p:message for="responsiblePerson" display="text" /></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel styleClass="input-label mandatory">Responsible Person</p:outputLabel></td>
+						<td><h:panelGrid columns="3" id="responsiblePersonPanel">
+								<p:inputText id="responsiblePerson" required="true"
+									readonly="#{GroupMicroHealthProposalActionBean.responsiblePerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" style="width:250px;margin-left:-4px;"
+									value="#{GroupMicroHealthProposalActionBean.responsiblePerson == null ? '' : GroupMicroHealthProposalActionBean.responsiblePerson.name}" />
+								<p:commandLink actionListener="#{GroupMicroHealthProposalActionBean.selectUser()}" id="selectUserDialogLink" immediate="true">
+									<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+									<p:ajax event="dialogReturn" listener="#{GroupMicroHealthProposalActionBean.returnUser}" update="responsiblePersonPanel" />
+								</p:commandLink>
+							</h:panelGrid></td>
+					</tr>
+					<tr>
+						<td><p:commandButton value="Submit" action="#{GroupMicroHealthProposalActionBean.createGroupMicroHealth}" update="inputForm "></p:commandButton> <p:commandButton
+								value="Reset" action="#"></p:commandButton></td>
+					</tr>
+				</table>
+			</p:panel>
+		</h:form>
+		<!-- <h:form id="groupMicroHealthTableForm">
+			<h:commandLink
+				action="#{ManageSalePointActionBean.createNewSalePoint}">
+				<h:panelGrid columns="2">
+					<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}"
+						value="#{ApplicationSetting.addIcon}" />
+					<h:outputText styleClass="command-link"
+						value="#{label['COMMON_ADDNEW_LINK']}" />
+				</h:panelGrid>
+			</h:commandLink>
+			<p:outputPanel id="listPanel">
+				<p:dataTable id="microHealthTalbe" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowKey="index" rows="10" rowsPerPageTemplate="5,10, 15"
+					style="width:100%;"
+					value="#{ManageSalePointActionBean.salePointList}" var="salePoint"
+					widgetVar="microHealthTalbe">
+					<p:column filterBy="#{salePoint.name}" filterMatchMode="contains"
+						headerText="#{label['MANAGE_BRANCH_NAME_LABEL']}">
+						<h:outputText value="#{salePoint.name}" />
+					</p:column>
+					<p:column filterBy="#{salePoint.township.name}"
+						filterMatchMode="contains"
+						headerText="#{label['MANAGE_BRANCH_TOWNSHIPNAME_LABEL']}">
+						<h:outputText value="#{salePoint.township.name}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_BRANCH_ADDRESS_LABEL']}">
+						<h:outputText value="#{salePoint.address}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_BRANCH_DESCRIPTION_LABEL']}">
+						<h:outputText value="#{salePoint.description}" />
+					</p:column>
+
+					<p:column style="width:50px;">
+						<p:commandLink
+							action="#{ManageSalePointActionBean.prepareUpdateSalePoint(salePoint)}"
+							update=":inputForm">
+							<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}"
+								value="#{ApplicationSetting.editIcon}" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width:50px;">
+						<p:commandLink id="deleteGroupLink"
+							oncomplete="PF('confirmationDialog').show()">
+							<f:setPropertyActionListener
+								target="#{ManageSalePointActionBean.salePoint}"
+								value="#{salePoint}" />
+							<p:graphicImage
+								styleClass="#{ApplicationSetting.deleteStyleClass}"
+								value="#{ApplicationSetting.deleteIcon}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		Confirmation Dialog
+		<h:form id="confiationForm">
+			<p:dialog header="Delete Proposal" height="100" hideEffect="explode"
+				id="confirmationDialog" resizable="false" showEffect="explode"
+				widgetVar="confirmationDialog" width="250">
+				<h:panelGroup id="confirmationPanel">
+					<table>
+						<tr>
+							<td align="left"><h:graphicImage
+									style="width:30px;height:30px;" url="/images/warning.png" /></td>
+							<td valign="middle"><h:outputText
+									style="padding-top:-10px;text-decoration: none;font-size: 12px;"
+									value="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" /></td>
+						</tr>
+					</table>
+					<br />
+					<p:commandButton
+						action="#{ManageSalePointActionBean.deleteSalePoint}"
+						immediate="true"
+						oncomplete="PF('confirmationDialog').hide(); microHealthTalbe.filter();"
+						update=":inputForm" value="#{label['COMMON_YES_BTN']}" />
+					<p:commandButton immediate="true"
+						oncomplete="PF('confirmationDialog').hide()"
+						value="#{label['COMMON_NO_BTN']}" />
+				</h:panelGroup>
+			</p:dialog>
+		</h:form> -->
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,161 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="monthlyForm">
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<h:outputText id="title" styleClass="ui-widget ui-widget-header ui-corner-all submenu-title"
+				value="#{label['AGENT_SALEDATA_MONTHLY_COMPARISON_REPORT']} #{AgentSaleMonthlyComparisonActionBean.criteria.monthString}, #{AgentSaleMonthlyComparisonActionBean.criteria.year}" />
+			<p:separator style="height:3px; margin-top:1px;" />
+			<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="month" value="#{label['MONTH_CRITERIA_LBL']}" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="month" value="#{AgentSaleMonthlyComparisonActionBean.criteria.month}">
+						<f:selectItems value="#{AgentSaleMonthlyComparisonActionBean.monthSet}" var="month" itemLabel="#{month}" itemValue="#{month.value}" />
+					</p:selectOneMenu>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText styleClass="input-label" value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" disabled="#{!AgentSaleMonthlyComparisonActionBean.accessBranches}" icon="fa fa-search"
+									actionListener="#{AgentSaleMonthlyComparisonActionBean.selectEntity()}" id="entityDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{AgentSaleMonthlyComparisonActionBean.returnEntity}" update="entity branchPannelGroup salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true"
+									value="#{AgentSaleMonthlyComparisonActionBean.criteria.entity == null ? '' :AgentSaleMonthlyComparisonActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{!AgentSaleMonthlyComparisonActionBean.accessBranches}" icon="fa fa-times"
+									action="#{AgentSaleMonthlyComparisonActionBean.removeEntity}" process="@this" update="entity branchPannelGroup salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText styleClass="input-label" value="#{label['CURRENCY_CRITERIA_LBL']}" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="currency" value="#{AgentSaleMonthlyComparisonActionBean.criteria.currencyType}">
+						<f:selectItem itemLabel="ALL" />
+						<f:selectItems value="#{AgentSaleMonthlyComparisonActionBean.currencyList}" itemValue="#{currency}" var="currency" itemLabel="#{currency.description}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="year" value="#{label['YEAR_CRITERIA_LBL']}" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="year" value="#{AgentSaleMonthlyComparisonActionBean.criteria.year}">
+						<f:selectItems value="#{AgentSaleMonthlyComparisonActionBean.years}" />
+					</p:selectOneMenu>
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputText styleClass="input-label" value="Branch" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPannelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentSaleMonthlyComparisonActionBean.selectBranch()}" id="selectBranchDialogLink"
+									process="@this" disabled="#{AgentSaleMonthlyComparisonActionBean.criteria.entity==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{AgentSaleMonthlyComparisonActionBean.returnBranch}" update="branch salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true"
+									value="#{AgentSaleMonthlyComparisonActionBean.criteria.branch == null ? '' : AgentSaleMonthlyComparisonActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{!AgentSaleMonthlyComparisonActionBean.accessBranches}" icon="fa fa-times"
+									action="#{AgentSaleMonthlyComparisonActionBean.removeBranch()}" process="@this" update="branch salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="proposalType" value="#{label['PROPOSAL_TYPE_CRITERIA_LBL']}" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="proposalType" value="#{AgentSaleMonthlyComparisonActionBean.criteria.proposalType}">
+						<f:selectItem itemLabel="NEW" itemValue="NEW" />
+						<f:selectItem itemLabel="RENEWAL" itemValue="RENEWAL" />
+					</p:selectOneMenu>
+					<h:outputLabel />
+					<p:message for="salesPoints" />
+					<h:outputText styleClass="input-label" value="Sale Point" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AgentSaleMonthlyComparisonActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+									process="@this" disabled="#{AgentSaleMonthlyComparisonActionBean.criteria.branch==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{AgentSaleMonthlyComparisonActionBean.returnSalePoint}" update="salesPoints" />
+								</p:commandButton>
+								<p:inputText id="salesPoints" readonly="true"
+									value="#{AgentSaleMonthlyComparisonActionBean.criteria.salePoint == null ? '' :AgentSaleMonthlyComparisonActionBean.criteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AgentSaleMonthlyComparisonActionBean.criteria.setSalePoint(null)}" process="@this"
+									update="salesPoints" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton action="#{AgentSaleMonthlyComparisonActionBean.filter()}" update="monthlyForm:title :monthlyForm:comparisonTable" value="#{label['SEARCH_BTN_LABEL']}" />
+				<p:commandButton action="#{AgentSaleMonthlyComparisonActionBean.resetCriteria()}" update=":monthlyForm" value="#{label['RESET_BTN_LABEL']}" />
+			</h:panelGrid>
+			<br />
+			<h:panelGroup>
+				<p:separator style="height:2px;" />
+				<p:dataTable id="comparisonTable" style="width: 100%" rowIndexVar="index" value="#{AgentSaleMonthlyComparisonActionBean.reportList}" var="saleData">
+					<f:facet name="header">
+						<h:commandLink action="#{AgentSaleMonthlyComparisonActionBean.exportExcel}" immediate="true">
+							<p:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" value="/images/excel.png" />
+						</h:commandLink>
+						<p:message for="comparisonTable" />
+					</f:facet>
+					<!-- 				 <p:dataTable id="comparisonTable" style="width: 100%" rowIndexVar="index" value="#{AgentSaleMonthlyComparisonActionBean.reportList}" var="saleData">
+					<f:facet name="header">
+						<p:column rendered="#{AgentSaleMonthlyComparisonActionBean.reportList.size() lt 1 ? false : true}">
+							<h:commandLink action="#{AgentSaleMonthlyComparisonActionBean.exportExcel()}" immediate="true">
+								<p:graphicImage style="widht:30px;height:30px;" value="/images/excel.png" />
+							</h:commandLink>
+						</p:column>
+						<p:column rendered="#{AgentSaleMonthlyComparisonActionBean.reportList.size() lt 1 ? true : false}">
+							<p:commandLink >
+								<p:graphicImage style="widht:30px;height:30px;" value="/images/excel.png" />
+							</p:commandLink>
+							<p:message for="comparisonTable" />
+						</p:column>
+					</f:facet>  -->
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column headerText="#{label['NO_TITLE']}" style="width:50px;" />
+							<p:column headerText="#{label['INSURANCE_TYPE_TITLE']}" />
+							<p:column headerText="#{label['NO_OF_POLICY_TITLE']}" />
+							<p:column headerText="#{label['PREMIUM_TITLE']}" />
+							<p:column headerText="#{label['REMARK_TITLE']}" />
+							<p:column headerText="Branch Name" />
+							<p:column headerText="SalePoint Name" />
+						</p:row>
+					</p:columnGroup>
+					<p:column headerText="#{label['NO_TITLE']}" style="width:50px;text-align:center;">
+						<h:outputText value="#{index + 1}" />
+					</p:column>
+					<p:column>
+						<h:outputText value="#{saleData.insuranceType}" />
+					</p:column>
+					<p:column>
+						<h:outputText value="#{saleData.noOfpolicy}" style="float:right;"></h:outputText>
+					</p:column>
+					<p:column align="right">
+						<h:outputText value="#{saleData.premium}" style="float:right;">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column>
+						<h:outputText value="" style="float:right;"></h:outputText>
+					</p:column>
+					<p:column align="right">
+						<h:outputText value="#{saleData.branchName}" style="float:right;">
+						</h:outputText>
+					</p:column>
+					<p:column align="right">
+						<h:outputText value="#{saleData.salePointName}" style="float:right;">
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>

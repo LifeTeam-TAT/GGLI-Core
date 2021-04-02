@@ -1,0 +1,786 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Credit and Debit Voucher" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="LANGUAGE_en" uuid="80a755f2-36d6-4866-801c-cefc864a63eb">
+	<property name="ireport.zoom" value="1.1269722013523664"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="416"/>
+	<parameter name="sundryAccountCode" class="java.lang.String"/>
+	<parameter name="sundryAccountName" class="java.lang.String"/>
+	<parameter name="cashReceiptNo" class="java.lang.String"/>
+	<parameter name="insuredName" class="java.lang.String"/>
+	<parameter name="siAmount" class="java.lang.Double"/>
+	<parameter name="totalPremiumAmount" class="java.lang.Double"/>
+	<parameter name="sundryCrAmount" class="java.lang.Double"/>
+	<parameter name="sundryDrAmount" class="java.lang.Double"/>
+	<parameter name="agentCommissionCrAmount" class="java.lang.Double"/>
+	<parameter name="premiumIncomeCrAmount" class="java.lang.Double"/>
+	<parameter name="agentCommissionAcountCode" class="java.lang.String"/>
+	<parameter name="agentCommissionAccountName" class="java.lang.String"/>
+	<parameter name="premiumIncomeAccountCode" class="java.lang.String"/>
+	<parameter name="premiumIncomeAccountName" class="java.lang.String"/>
+	<detail>
+		<band height="802" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="7a75569a-c371-40fd-8b7f-e3d3e2e91d49" mode="Transparent" x="0" y="0" width="554" height="196"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="c1266f3e-6dd3-4b7d-a401-2647b075cb29" mode="Transparent" x="0" y="202" width="554" height="196"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="2f6d20d9-3ae6-4ee4-bb3f-526135f0332a" x="70" y="123" width="9" height="15"/>
+				<box>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Ks]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="65664792-cf84-4ac8-b8eb-ed6260983f2a" x="473" y="100" width="14" height="15"/>
+				<box>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Ks]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ca65a04e-23aa-418b-b20d-8a41726d9a76" x="70" y="79" width="100" height="15"/>
+				<box>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Co-insurance Premium On]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement uuid="f818b27f-bdcf-4ce7-ba3e-b9c6834b779a" x="86" y="123" width="221" height="15"/>
+				<box>
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sundryCrAmount}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="1c56e380-79db-4769-ae91-32b3ebed747d" x="69" y="227" width="198" height="15"/>
+				<box>
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sundryAccountCode}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="b047ed2f-add7-4756-b57c-f0726a50ff4d" x="70" y="322" width="9" height="15"/>
+				<box>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Ks]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="45fb5e14-90f5-4099-8417-897e0966e53f" x="184" y="79" width="219" height="15"/>
+				<box>
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cashReceiptNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="fc534d05-d8c0-4881-af6f-e69467c81860" x="70" y="100" width="55" height="15"/>
+				<box>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Insured Name]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement uuid="c18e0194-cd81-4d26-acec-4d30558708d5" x="370" y="100" width="103" height="15"/>
+				<box>
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{siAmount}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="a6fcfbc7-8fba-4712-a19d-e9349dcc532f" x="137" y="100" width="170" height="15"/>
+				<box>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{insuredName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement uuid="9e91e86a-ebc2-48d9-9521-439f9c85611c" x="326" y="299" width="209" height="15"/>
+				<box>
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{siAmount}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="46e6f15a-e0f2-4472-bdad-dda8e09542e9" x="69" y="247" width="198" height="15"/>
+				<box>
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sundryAccountName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="25d54f0a-e19b-44f5-8def-ef76918e9c46" x="5" y="247" width="24" height="15"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[DEBIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b92d2b61-eba6-4df3-abc9-5fe3fc81daf4" x="420" y="373" width="78" height="15"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Authorized Signature]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="54b95b13-04e4-4332-a17e-b5439af95e54" x="69" y="299" width="52" height="15"/>
+				<box>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Insured Name]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="3d2922f9-397a-4831-b5ee-68a6ef1c3099" x="0" y="202" width="555" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{GRAND_GUARDIAN_LABEL}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="69a2719c-fd99-4031-a989-daabc50742f5" x="69" y="47" width="198" height="15"/>
+				<box>
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sundryAccountName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="1e7d3da3-cc98-447c-8964-880b30c9795f" x="57" y="175" width="81" height="15"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Authorized Signature]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="75d8e6c4-a301-473a-b9b9-ccff0d65b671" x="69" y="278" width="207" height="15"/>
+				<box>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Our Shared of Premium income and agent commision on]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement uuid="eb4ddc6f-e84f-47c4-90ab-9b789b86735a" x="85" y="322" width="219" height="15"/>
+				<box>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sundryDrAmount}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="72a5e59d-d4ec-4264-90aa-840b7247d3fa" x="281" y="278" width="219" height="15"/>
+				<box>
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cashReceiptNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="1112de2e-da88-4b69-9e04-56895cba014b" x="314" y="299" width="8" height="15"/>
+				<box>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[SI]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="33a51cc4-fca9-44ce-a187-bd4f2758cf5d" x="0" y="0" width="554" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{GRAND_GUARDIAN_LABEL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="9ac4b173-f396-4c97-a54f-83b9e42d90a1" x="356" y="100" width="10" height="15"/>
+				<box>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[SI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ebda9d42-6bdf-4b6a-8fee-bead740d4c3e" x="417" y="175" width="81" height="15"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Authorized Signature]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="db17c630-37b8-4baa-a25c-35cc1295c526" x="4" y="47" width="35" height="15"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[CREDIT]]></text>
+			</staticText>
+			<elementGroup>
+				<rectangle>
+					<reportElement uuid="5e7d4b76-187b-41ee-9fda-b10b0e760268" mode="Transparent" x="0" y="403" width="554" height="196"/>
+				</rectangle>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="3560ec1c-a688-4f2e-985e-f922716ecc75" x="69" y="430" width="198" height="15"/>
+					<box>
+						<pen lineStyle="Dashed"/>
+						<topPen lineStyle="Dashed"/>
+						<leftPen lineStyle="Dashed"/>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+						<rightPen lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{agentCommissionAcountCode}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="66db7461-9559-4593-b329-32ad5d80e3e5" x="57" y="574" width="81" height="15"/>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[Authorized Signature]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="d6af4063-1b31-44f4-bf16-20130ba30b57" x="4" y="450" width="28" height="15"/>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[CREDIT]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="90e14fb9-658a-4760-9d06-30fe59e39150" x="4" y="430" width="53" height="15"/>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[Account Code]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="771a5350-af6d-4405-bb9b-a7931c439de3" x="70" y="500" width="53" height="15"/>
+					<box>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[Insured Name]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="6e56f25f-3159-4330-8311-68d1d87cd551" x="69" y="450" width="198" height="15"/>
+					<box>
+						<pen lineStyle="Dashed"/>
+						<topPen lineStyle="Dashed"/>
+						<leftPen lineStyle="Dashed"/>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+						<rightPen lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{agentCommissionAccountName}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="3b99e010-0853-459c-abff-4aa1d442e69b" x="519" y="500" width="11" height="15"/>
+					<box>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[Ks]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement uuid="84ca2f61-02f7-4f06-8d8d-70cf216a1665" x="85" y="523" width="246" height="15"/>
+					<box>
+						<pen lineStyle="Dashed"/>
+						<topPen lineStyle="Dashed"/>
+						<leftPen lineStyle="Dashed"/>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+						<rightPen lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{agentCommissionCrAmount}]]></textFieldExpression>
+					<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="abbf9a8c-1be8-42e3-b4bc-1997125dba51" x="70" y="523" width="9" height="15"/>
+					<box>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[Ks]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="fdfbbdd3-2c7e-4017-ac5f-b6958f043de1" x="0" y="403" width="555" height="21"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{GRAND_GUARDIAN_LABEL}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="61b4eed1-514d-4334-b55e-27b7a92b5357" x="420" y="574" width="78" height="15"/>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[Authorized Signature]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="6c18ca8b-468c-4733-9c45-03809599785c" x="134" y="500" width="197" height="15"/>
+					<box>
+						<pen lineStyle="Dashed"/>
+						<topPen lineStyle="Dashed"/>
+						<leftPen lineStyle="Dashed"/>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+						<rightPen lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{insuredName}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="35490d8f-2c6b-4b8e-b0c2-8d56ecdd40ff" x="350" y="500" width="10" height="15"/>
+					<box>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[SI]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement uuid="58f47e99-8d22-403d-ac9f-d7edb656ff79" x="366" y="500" width="154" height="15"/>
+					<box>
+						<pen lineStyle="Dashed"/>
+						<topPen lineStyle="Dashed"/>
+						<leftPen lineStyle="Dashed"/>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+						<rightPen lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{siAmount}]]></textFieldExpression>
+					<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+				</textField>
+			</elementGroup>
+			<elementGroup>
+				<rectangle>
+					<reportElement uuid="08681d76-1171-4627-9855-a7c551952eac" mode="Transparent" x="0" y="605" width="554" height="196"/>
+				</rectangle>
+				<staticText>
+					<reportElement uuid="ebe7009f-e0ca-468a-9ec0-5b8408b45e00" x="69" y="686" width="79" height="15"/>
+					<box>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[Premium Income On]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="f91c284d-a9f0-4a93-9326-cfe1fd391589" x="148" y="686" width="133" height="15"/>
+					<box>
+						<pen lineStyle="Dashed"/>
+						<topPen lineStyle="Dashed"/>
+						<leftPen lineStyle="Dashed"/>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+						<rightPen lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{cashReceiptNo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="56d8a967-ee88-45f5-b933-1100a9008303" x="69" y="634" width="198" height="15"/>
+					<box>
+						<pen lineStyle="Dotted"/>
+						<topPen lineStyle="Dotted"/>
+						<leftPen lineStyle="Dotted"/>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+						<rightPen lineStyle="Dotted"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{premiumIncomeAccountCode}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="a69944b5-5d94-48aa-a87a-5336ff2eeb40" x="57" y="778" width="81" height="15"/>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[Authorized Signature]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="4bf5987b-c5b7-4ae2-8146-ccf23a9273a8" x="5" y="654" width="28" height="15"/>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[CREDIT]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5728b4bd-6e29-4651-94da-86af43a02b6d" x="4" y="634" width="53" height="15"/>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[Account Code]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="b404686d-5905-4672-a945-595e2984f186" x="69" y="706" width="52" height="15"/>
+					<box>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[Insured Name]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="3e14e64e-0ce5-4341-9f33-36bce1ce1904" x="69" y="654" width="198" height="15"/>
+					<box>
+						<pen lineStyle="Dashed"/>
+						<topPen lineStyle="Dashed"/>
+						<leftPen lineStyle="Dashed"/>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+						<rightPen lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{premiumIncomeAccountName}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="ef7f1e52-bee2-4d83-a390-83b4dc6f005c" x="535" y="706" width="13" height="15"/>
+					<box>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[Ks]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement uuid="40bcf98f-7bf7-42e0-bacf-d3578525256c" x="85" y="728" width="247" height="15"/>
+					<box>
+						<pen lineStyle="Dashed"/>
+						<topPen lineStyle="Dashed"/>
+						<leftPen lineStyle="Dashed"/>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+						<rightPen lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{premiumIncomeCrAmount}]]></textFieldExpression>
+					<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="ad15bef1-9234-47d4-b5e3-4974f488b59c" x="69" y="728" width="9" height="15"/>
+					<box>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[Ks]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="e7c63c23-8c02-4d97-99f4-3afd45b3e6f0" x="0" y="607" width="555" height="21"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{GRAND_GUARDIAN_LABEL}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="ca5bec16-1bc9-4acb-8652-645d1984b795" x="420" y="778" width="78" height="15"/>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[Authorized Signature]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="48f839ec-fb63-44d8-9dd7-ea9599b9bf08" x="134" y="706" width="198" height="15"/>
+					<box>
+						<pen lineStyle="Dashed"/>
+						<topPen lineStyle="Dashed"/>
+						<leftPen lineStyle="Dashed"/>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+						<rightPen lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{insuredName}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="9d0ec51a-a735-4b4f-aa38-0ff8c176ff46" x="345" y="706" width="10" height="15"/>
+					<box>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[SI]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement uuid="bae0bcd5-fbf6-4203-b88d-770979e2754b" x="357" y="706" width="178" height="15"/>
+					<box>
+						<pen lineStyle="Dashed"/>
+						<topPen lineStyle="Dashed"/>
+						<leftPen lineStyle="Dashed"/>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+						<rightPen lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{siAmount}]]></textFieldExpression>
+					<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="83ebb32c-d9a1-4058-a071-077b32d47b6e" x="291" y="686" width="62" height="15"/>
+					<box>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[for Premium]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="e7153f2a-726c-47e0-83fa-52208749b922" x="485" y="686" width="13" height="15"/>
+					<box>
+						<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					</box>
+					<textElement>
+						<font fontName="Zawgyi-One" size="8"/>
+					</textElement>
+					<text><![CDATA[Ks]]></text>
+				</staticText>
+			</elementGroup>
+			<staticText>
+				<reportElement uuid="4dcad7dc-5709-4363-8137-c46c5b08aeb5" x="70" y="480" width="81" height="15"/>
+				<box>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Agent Commission On]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="e5c4570e-a1b6-4262-a498-11f7463e51c4" x="158" y="480" width="123" height="15"/>
+				<box>
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cashReceiptNo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement uuid="a68ae7cd-3d4c-4b5a-ab29-68a88c8aa014" x="354" y="480" width="136" height="15"/>
+				<box>
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalPremiumAmount}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2d7522a9-7e04-4812-aac8-c01d60e00ff2" x="490" y="480" width="10" height="15"/>
+				<box>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Ks]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9c752883-bf58-4748-a519-8cfeac07b1c9" x="290" y="480" width="63" height="15"/>
+				<box>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[for Premium]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement uuid="648a12f1-8fc0-4ee1-9a3e-3f7ed0e673f6" x="354" y="686" width="131" height="15"/>
+				<box>
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalPremiumAmount}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="5e7130a6-8994-4f0b-bd4c-8b18cff45b22" x="69" y="27" width="198" height="15"/>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Dashed"/>
+					<topPen lineWidth="0.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="0.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineWidth="0.0" lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sundryAccountCode}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="b54b4308-4dd4-4a79-8db9-05a10a810866" x="4" y="27" width="55" height="15"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Account Code]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1d18f181-4d70-486a-8b42-9e2fd5b0b115" x="535" y="299" width="10" height="15"/>
+				<box>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Ks]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b76ab64d-ae4b-48d9-949d-64b3bc077845" x="57" y="373" width="81" height="15"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Authroized Signature]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="f78f53b8-ce2c-4001-826a-195f25d3e44b" x="134" y="299" width="170" height="15"/>
+				<box>
+					<pen lineStyle="Dashed"/>
+					<topPen lineStyle="Dashed"/>
+					<leftPen lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+					<rightPen lineStyle="Dashed"/>
+				</box>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{insuredName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="879088e4-a6cb-4a0c-94c5-51df13c432c4" x="4" y="227" width="53" height="15"/>
+				<textElement>
+					<font fontName="Zawgyi-One" size="8"/>
+				</textElement>
+				<text><![CDATA[Account Code]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

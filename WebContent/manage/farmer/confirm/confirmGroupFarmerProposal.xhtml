@@ -1,0 +1,83 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Group Farmer Porposal Confirmation" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="groupFarmerConfirmationForm">
+			<p:panel>
+				<table>
+					<tr>
+						<td style="width: 150px;">
+							<h:outputText styleClass="input-label" value="Proposal No" />
+						</td>
+						<td>
+							<h:panelGrid columns="2">
+								<p:inputText id="proposalNo" readonly="true" style="width:250px; margin-left:-4px;" value="#{AddNewGroupFarmerConfirmActionBean.groupFarmerProposal.proposalNo}" />
+								<p:commandLink id="detailsProposal" immediate="true" oncomplete="PF('groupFarmerProposalDetailsDialog').show()">
+									<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+					
+					<tr>
+						<td />
+						<td>
+							<p:message for="remark" />
+						</td>
+					</tr>
+					<tr>
+						<td valign="top">
+							<h:outputText styleClass="input-label" value="Remark" />
+						</td>
+						<td valign="top">
+							<p:inputTextarea autoResize="true" id="remark" rows="7" style="width: 350px;" value="#{AddNewGroupFarmerConfirmActionBean.remark}">
+								<f:validateLength maximum="8000" />
+							</p:inputTextarea>
+						</td>
+					</tr>
+					<tr>
+						<td />
+						<td>
+							<p:message for="responsiblePerson" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText style="color:red;" value="*" />
+							<h:outputText styleClass="input-label" value="Responsible Person" />
+						</td>
+						<td>
+							<h:panelGrid columns="3" id="responsiblePersonPanel">
+								<p:inputText id="responsiblePerson" readonly="true" style="width:250px;margin-left:-4px;"
+									value="#{AddNewGroupFarmerConfirmActionBean.responsiblePerson == null ? '' : AddNewGroupFarmerConfirmActionBean.responsiblePerson.name}" />
+								<p:commandLink actionListener="#{AddNewGroupFarmerConfirmActionBean.selectUser()}"
+									id="selectUserDialogLink" immediate="true">
+									<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+									<p:ajax event="dialogReturn" listener="#{AddNewGroupFarmerConfirmActionBean.returnUser}" update="responsiblePersonPanel" />
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+				</table>
+			</p:panel>
+			<br />
+			<p:commandButton style="width: 70px;" action="#{AddNewGroupFarmerConfirmActionBean.confirmGroupFarmerProposal()}" id="addBtn" value="Confirm" update="groupFarmerConfirmationForm" />
+			<p:spacer width="10" />
+			<p:commandButton style="width: 65px;" action="#{AddNewGroupFarmerConfirmActionBean.editGroupFarmerProposal()}" id="editBtn" value="Edit" />
+			<p:spacer width="10" />
+			<p:commandButton style="width: 65px;" action="#{AddNewGroupFarmerConfirmActionBean.denyGroupFarmerProposal()}" id="denyBtn" value="Deny" />
+			<p:spacer width="10" />
+			<p:commandButton style="width: 65px;" action="dashboard" id="cancelBtn" immediate="true" value="Cancel" />
+		</h:form>
+        <h:form id="groupFarmerProposalDetailsForm">
+			<p:dialog appendTo="@(body)" header="Group Farmer Proposal Details" height="300" hideEffect="explode" id="groupFarmerProposalDetailsDialog" resizable="false" showEffect="explode"
+				widgetVar="groupFarmerProposalDetailsDialog" width="1000">
+				<ui:include src="/manage/farmer/groupFarmerProposalDetailInfo.xhtml">
+					<ui:param name="groupFarmerProposal" value="#{AddNewGroupFarmerConfirmActionBean.groupFarmerProposal}" />
+				</ui:include>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,103 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml" xmlns:o="http://omnifaces.org/ui">
+	<ui:param name="header" value="App Version Management" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<div style="padding-left: 15px; padding-right: 15px;">
+			<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+			<h:form id="appVersionEntryForm" enctype="multipart/form-data">
+				<p:growl globalOnly="true" id="messages" showDetail="true" escape="false" />
+				<table>
+					<tr>
+						<td />
+						<td>
+							<p:message for="type" />
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 150px;">
+							<h:outputText value="Mobile Type" styleClass="mandatory" />
+						</td>
+						<td>
+							<p:selectOneMenu id="type" value="#{ManageAppVersionActionBean.appVersion.type}" required="true" converter="omnifaces.SelectItemsConverter" style="width: 258px;">
+								<f:selectItem itemLabel="SELECT ONE" noSelectionOption="true" />
+								<f:selectItems value="#{ManageAppVersionActionBean.mobileTypes}" var="type" itemLabel="#{type.label}" itemValue="#{type}" />
+							</p:selectOneMenu>
+						</td>
+					</tr>
+					<tr>
+						<td />
+						<td>
+							<p:message for="version" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value="Version" styleClass="mandatory" />
+						</td>
+						<td>
+							<p:inputText id="version" value="#{ManageAppVersionActionBean.appVersion.appVersion}" required="true" validatorMessage="Version must be greater than 0.001"
+								style="width: 250px; text-align: right;">
+								<f:convertNumber pattern="##,##0.0000" />
+								<f:validateDoubleRange minimum="0.0001" />
+							</p:inputText>
+						</td>
+					</tr>
+				</table>
+				<br />
+				<p:commandButton action="#{ManageAppVersionActionBean.addNewAppVersion}" id="addBtn" rendered="#{ManageAppVersionActionBean.createNew}" style="width: 65px;" update="@form"
+					value="#{label['COMMON_ADDNEW_BTN']}" />
+				<p:commandButton style="width: 65px;" action="#{ManageAppVersionActionBean.updateAppVersion}" id="editBtn" rendered="#{!ManageAppVersionActionBean.createNew}" update="@form"
+					value="#{label['COMMON_UPDATE_BTN']}" />
+				<p:spacer width="15" />
+				<p:commandButton action="#{ManageAppVersionActionBean.createNewInstance}" style="width: 65px;" update="@form" value="Cancel" process="@this" />
+				<p:spacer width="15" />
+				<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+				<p:separator style="height:3px;" />
+				<h:panelGrid columns="1" style="margin-left: -5px;">
+					<p:commandLink action="#{ManageAppVersionActionBean.createNewInstance}" process="@this" update="@form" title="New AppVersion">
+						<h:panelGrid columns="2">
+							<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+							<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+						</h:panelGrid>
+					</p:commandLink>
+				</h:panelGrid>
+				<p:dataTable id="appVersionTable" paginator="true" rowIndexVar="index"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+					rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageAppVersionActionBean.appVersionList}" var="appVersion" widgetVar="notificationTable"
+					paginatorPosition="bottom">
+					<p:column headerText="No" style="width: 4%; text-align: center">
+						<h:outputText value="#{index + 1}." style="float: right;" />
+					</p:column>
+					<p:column headerText="Mobile Type">
+						<h:outputText value="#{appVersion.type}" />
+					</p:column>
+					<p:column headerText="Version" style="width: 10%;">
+						<h:outputText value="#{appVersion.appVersion}" style="float: right;">
+							<f:convertNumber pattern="##,##0.0000" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width: 4%; text-align: center;" headerText="Edit">
+						<p:commandLink action="#{ManageAppVersionActionBean.prepareUpdate(appVersion)}" process="@this" update="@form">
+							<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width: 4%; text-align: center;" headerText="Delete">
+						<p:commandLink process="@this" update="@form" actionListener="#{ManageAppVersionActionBean.deleteAppVersion(appVersion)}">
+							<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+							<p:confirm header="Confirmation" message="Are you sure to delete this version (#{appVersion.appVersion})?" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+				<!-- Confirmation Dialog -->
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" closable="false">
+					<center>
+						<p:commandButton style="width: 75px;" value="Ok" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:spacer width="30px;" />
+						<p:commandButton style="width: 75px;" value="Cancel" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</center>
+				</p:confirmDialog>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

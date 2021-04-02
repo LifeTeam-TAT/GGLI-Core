@@ -1,0 +1,137 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="monthlyForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<h:outputText id="title" styleClass="ui-widget ui-widget-header ui-corner-all submenu-title"
+				value="The Farmer Monthly Report Of #{ApplicationSetting.getMonthInString(FarmerMonthlyReportActionBean.criteria.month)}, #{FarmerMonthlyReportActionBean.criteria.year}" />
+			<p:separator style="height:3px; margin-top:1px;" />
+			<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" disabled="#{!FarmerMonthlyReportActionBean.accessBranches}" icon="fa fa-search" actionListener="#{FarmerMonthlyReportActionBean.selectEntity()}" id="entityDialogLink" process="@this">
+									<p:ajax event="dialogReturn" listener="#{FarmerMonthlyReportActionBean.returnEntity}" update="entity selectBranchPanelGrid salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true" value="#{FarmerMonthlyReportActionBean.criteria.entity == null ? '' : FarmerMonthlyReportActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{!FarmerMonthlyReportActionBean.accessBranches}" icon="fa fa-times" action="#{FarmerMonthlyReportActionBean.removeEntity}" process="@this" update="entity selectBranchPanelGrid salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText styleClass="input-label" value="Branch" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" >
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="selectBranchPanelGrid">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{FarmerMonthlyReportActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this" disabled="#{!FarmerMonthlyReportActionBean.accessBranches || FarmerMonthlyReportActionBean.criteria.entity==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{FarmerMonthlyReportActionBean.returnBranch}" update="branch salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true" value="#{FarmerMonthlyReportActionBean.criteria.branch == null ? 'ALL' : FarmerMonthlyReportActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{!FarmerMonthlyReportActionBean.accessBranches || FarmerMonthlyReportActionBean.criteria.entity==null?true:false}" icon="fa fa-times" action="#{FarmerMonthlyReportActionBean.removeBranch()}" process="@this" update="branch salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-9" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText styleClass="input-label" value="Sale Point" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" >
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{FarmerMonthlyReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+									process="@this" disabled="#{FarmerMonthlyReportActionBean.criteria.branch==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{FarmerMonthlyReportActionBean.returnSalePoint}" update="salePoint" />
+								</p:commandButton>
+								<p:inputText id="salePoint" readonly="true" value="#{FarmerMonthlyReportActionBean.criteria.salePoint== null ? '' : FarmerMonthlyReportActionBean.criteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" disabled="#{FarmerMonthlyReportActionBean.criteria.branch==null?true:false}" icon="fa fa-times" action="#{FarmerMonthlyReportActionBean.criteria.setSalePoint(null)}" process="@this" update="salePoint" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="month" value="Month" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="month" value="#{FarmerMonthlyReportActionBean.criteria.month}">
+						<f:selectItems value="#{FarmerMonthlyReportActionBean.monthSet}" var="month" itemLabel="#{month}" itemValue="#{month.value}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="year" value="Year" />
+					<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="year" value="#{FarmerMonthlyReportActionBean.criteria.year}">
+						<f:selectItems value="#{FarmerMonthlyReportActionBean.years}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+			</p:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton action="#{FarmerMonthlyReportActionBean.filter()}" update="monthlyForm:farmerPolicyTable" value="Search" />
+				<p:commandButton action="#{FarmerMonthlyReportActionBean.resetCriteria}" process="@this" update="@form" value="Reset" />
+			</h:panelGrid>
+			<br />
+			<p:dataTable id="farmerPolicyTable" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex"
+				rowKey="index" rows="10" rowsPerPageTemplate="5,10,15" style="width:100%;" value="#{FarmerMonthlyReportActionBean.farmerMonthlyReportList}" var="report">
+				<f:facet name="header">
+					<h:commandLink action="#{FarmerMonthlyReportActionBean.exportExcel}" immediate="true">
+						<p:graphicImage style="width: 30px; height: 30px;" styleClass="#{ApplicationSetting.excelStyleClass}" value="#{ApplicationSetting.excelIcon}" />
+					</h:commandLink>
+					<p:message for="farmerPolicyTable" />
+				</f:facet>
+				<p:column headerText="No." style="width:3%;">
+					<h:outputText value="#{rowIndex + 1}" />
+				</p:column>
+				<p:column headerText="Insured Person Name" style="width:10%;">
+					<h:outputText value="#{report.insuredPersonName}" />
+				</p:column>
+				<p:column headerText="Policy No" style="width:13%;" styleClass="fixed-size">
+					<h:outputText value="#{report.policyNo}" />
+				</p:column>
+				<p:column headerText="Proposal No" style="width:13%;" styleClass="fixed-size">
+					<h:outputText value="#{report.proposalNo}" />
+				</p:column>
+				<p:column headerText="Address" style="width:13%;" styleClass="fixed-size">
+					<h:outputText value="#{report.address}" />
+				</p:column>
+				<p:column headerText="Sum Insured" style="width:10%;" styleClass="fixed-size">
+					<h:outputText style="float:right;" value="#{report.sumInsured}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Premium" style="width:10%;" styleClass="fixed-size">
+					<h:outputText style="float:right;" value="#{report.premium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Commission" style="width:10%;" styleClass="fixed-size">
+					<h:outputText style="float:right;" value="#{report.commission}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Cash Receipt No. And Date" style="width:10%;" styleClass="fixed-size">
+					<h:outputText value="#{report.cashReceiptNoAndPaymentDate}" />
+				</p:column>
+				<p:column headerText="Agent Name And Code" style="width:10%;" styleClass="fixed-size">
+					<h:outputText value="#{report.agentNameAndCode}" />
+				</p:column>
+				<p:column headerText="Branch Name" style="width:10%">
+					<h:outputText value="#{report.branch}" />
+				</p:column>
+				<p:column headerText="Sale Point Name" style="width:10%">
+					<h:outputText value="#{report.salepoint}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

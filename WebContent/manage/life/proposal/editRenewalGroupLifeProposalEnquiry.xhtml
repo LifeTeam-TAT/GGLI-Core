@@ -1,0 +1,1098 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fu="http://java.sun.com/jsf/fileUpload" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				jQuery('[id$="_next"]').css('right', 1080);
+			});
+		</script>
+		<h:form enctype="multipart/form-data" id="lifeProposalEntryForm">
+			<table width="100%">
+				<tr>
+					<td>
+						<h:outputText styleClass="table-title" value="Enquiry Edit GroupLife Renewal Proposal " />
+					</td>
+					<td align="center" width="70%">
+						<div style="z-index: 100; position: fixed; margin-top: -30px; width: 800px;">
+							<p:messages globalOnly="true" id="messages" showDetail="true" />
+						</div>
+					</td>
+				</tr>
+			</table>
+			<p:separator style="height:5px" />
+			<div style="padding-left: 15px;">
+				<p:wizard flowListener="#{EditRenewalGroupLifeProposalEnquiryActionBean.onFlowProcess}" style="margin-bottom: 10px;" widgetVar="wiz">
+					<p:tab id="proposalInfo" title="Proposal Info">
+						<p:panel header="Proposal Info" id="proposalInfoWizardPanel" style="min-height:270px;">
+							<table>
+								<tr>
+									<td valign="top">
+										<table>
+											<tr>
+												<td style="padding-top: 8px;" valign="top">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="#{label['ADDNEWLIFEPROPOSAL_CUSTOMER_LABEL']}" />
+												</td>
+												<td valign="top">
+													<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="org" style="width:130px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.organization}">
+														<f:selectItem itemLabel="Person" itemValue="false" />
+														<f:selectItem itemLabel="Organization" itemValue="true" />
+														<p:ajax event="valueChange" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.changeOrgEvent}" update=":lifeProposalEntryForm:customerPanelGroup" />
+													</p:selectOneRadio>
+													<br />
+													<p:message for="customer" />
+													<br />
+													<h:panelGrid columns="3" id="customerPanelGroup">
+														<p:inputText id="customer" readonly="true" style="width:250px;margin-left:-4px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.lifeProposal.customerName}" />
+														<p:watermark for="customer" value="Select Customer" />
+														<p:commandLink actionListener="#{EditRenewalGroupLifeProposalEnquiryActionBean.selectCustomer()}" id="selectCustomerDialogLink" immediate="true"
+															rendered="#{!EditRenewalGroupLifeProposalEnquiryActionBean.organization}">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.returnCustomer}" update="customerPanelGroup" />
+														</p:commandLink>
+														<p:commandLink actionListener="#{EditRenewalGroupLifeProposalEnquiryActionBean.selectOrganization()}" id="selectOrganizationDialogLink" immediate="true"
+															rendered="#{EditRenewalGroupLifeProposalEnquiryActionBean.organization}">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.returnOrganization}" update="customerPanelGroup" />
+														</p:commandLink>
+													</h:panelGrid>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td>
+													<p:message for="paymentType" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="#{label['ADDNEWLIFEROPOSAL_PAYMENTTYPE_LABEL']}" />
+												</td>
+												<td>
+													<h:panelGrid columns="3" id="paymentTypePanelGroup">
+														<p:inputText id="paymentType" readonly="true" style="width:250px;margin-left:-4px;"
+															value="#{EditRenewalGroupLifeProposalEnquiryActionBean.lifeProposal.paymentType == null ? '' : EditRenewalGroupLifeProposalEnquiryActionBean.lifeProposal.paymentType.description}" />
+														<p:commandLink actionListener="#{EditRenewalGroupLifeProposalEnquiryActionBean.selectPaymentType()}" id="selectPaymentTypeDialogLink" immediate="true">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.returnPaymentType}" update="paymentTypePanelGroup" />
+														</p:commandLink>
+													</h:panelGrid>
+												</td>
+											</tr>
+											<tr>
+												<td style="padding-top: 8px;" valign="top">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="Sale Person" />
+												</td>
+												<td valign="top">
+													<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="saleUserType" style="width:130px;"
+														value="#{EditRenewalGroupLifeProposalEnquiryActionBean.userType}">
+														<f:selectItem itemLabel="Agent" itemValue="AGENT" />
+														<f:selectItem itemLabel="Saleman" itemValue="SALEMAN" />
+														<f:selectItem itemLabel="Referral" itemValue="REFERRAL" />
+														<p:ajax event="valueChange" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.changeSaleEvent}" update=":lifeProposalEntryForm:salePersonPanelGroup" />
+													</p:selectOneRadio>
+													<br />
+													<p:message for="userType" />
+													<br />
+													<h:panelGrid columns="3" id="salePersonPanelGroup">
+														<p:inputText id="userType" readonly="true" style="width:250px;margin-left:-4px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.lifeProposal.salePersonName}" />
+														<p:watermark for="userType" value="Select Sale Person" />
+														<p:commandLink actionListener="#{EditRenewalGroupLifeProposalEnquiryActionBean.selectAgent()}" id="selectAgentDialogLink" immediate="true"
+															rendered="#{EditRenewalGroupLifeProposalEnquiryActionBean.userType eq 'AGENT'}">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.returnAgent}" update="salePersonPanelGroup" />
+														</p:commandLink>
+														<p:commandLink actionListener="#{EditRenewalGroupLifeProposalEnquiryActionBean.selectSaleMan()}" id="selectSaleManDialogLink" immediate="true"
+															rendered="#{EditRenewalGroupLifeProposalEnquiryActionBean.userType eq 'SALEMAN'}">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.returnSaleMan}" update="salePersonPanelGroup" />
+														</p:commandLink>
+														<p:commandLink actionListener="#{EditRenewalGroupLifeProposalEnquiryActionBean.selectReferral()}" id="selectReferralDialogLink" immediate="true"
+															rendered="#{EditRenewalGroupLifeProposalEnquiryActionBean.userType eq 'REFERRAL'}">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.returnReferral}" update="salePersonPanelGroup" />
+														</p:commandLink>
+													</h:panelGrid>
+												</td>
+											</tr>
+										</table>
+									</td>
+									<td valign="top">
+										<table>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 130px;">
+													<p:message for="submittedDate" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="#{label['ADDNEWLIFEPROPOSAL_SUBMITTEDDATE_LABEL']}" />
+												</td>
+												<td>
+													<p:calendar id="submittedDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" size="38" timeZone="#{ApplicationSetting.timeZone}"
+														value="#{EditRenewalGroupLifeProposalEnquiryActionBean.lifeProposal.submittedDate}" />
+												</td>
+											</tr>
+											
+											<tr>
+												<td>
+													<h:outputText value=""/>
+												</td>
+												<td>
+													<p:message for="entity"/>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText style="color:red;" value="*"/>
+													<h:outputText styleClass="input-label" value="Entity"/>
+												</td>
+												<td>
+													<h:panelGrid columns="3" id="entityPanelGroup">
+														<p:inputText id="entity" required="true" readonly="true" style="width:250px;margin-left:-4px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.entitys == null ? '' : EditRenewalGroupLifeProposalEnquiryActionBean.entitys.name}"/>
+														<p:commandLink actionListener="#{EditRenewalGroupLifeProposalEnquiryActionBean.selectEntity()}" id="selectEntityDialogLink" immediate="true">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}"/>
+															<p:ajax event="dialogReturn" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.returnEntity}" update="branchPanelGroup salePoint entity"/>
+														</p:commandLink>
+													</h:panelGrid>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td>
+													<p:message for="branch" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="#{label['ADDNEWLIFEPROPOSAL_BRANCH_LABEL']}" />
+												</td>
+												<td>
+													<h:panelGrid columns="3" id="branchPanelGroup">
+														<p:inputText id="branch" readonly="true" style="width:250px;margin-left:-4px;"
+															value="#{EditRenewalGroupLifeProposalEnquiryActionBean.lifeProposal.branch == null ? '' : EditRenewalGroupLifeProposalEnquiryActionBean.lifeProposal.branch.name}" />
+														<p:commandLink actionListener="#{EditRenewalGroupLifeProposalEnquiryActionBean.selectBranchByEntity()}" id="selectBranchDialogLink" immediate="true">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.returnBranch}" update="branchPanelGroup salePoint" />
+														</p:commandLink>
+													</h:panelGrid>
+												</td>
+											</tr>
+											<tr>
+												<td />
+												<td>
+													<p:message id="msgSalePoint" for="salePoint" />
+												</td>
+											</tr>
+											
+											<tr>
+												<td>
+													<h:outputText style="color:red;" value="*"/>
+													<h:outputText styleClass="input-label" value="Sale Point"/>
+												</td>
+												<td>
+													<h:panelGrid columns="3" id="salePointPanelGroup">
+														<p:inputText id="salePoint" required="true" readonly="#{EditRenewalGroupLifeProposalEnquiryActionBean.lifeProposal.salePoint == null ? facesContext.currentPhaseId.ordinal eq 6 : true }" style="width:250px;margin-left:-4px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.lifeProposal.salePoint == null ? '' : EditRenewalGroupLifeProposalEnquiryActionBean.lifeProposal.salePoint.name}"/>
+														<p:commandLink actionListener="#{EditRenewalGroupLifeProposalEnquiryActionBean.selectSalePoint}" id="selectSalePointDialogLink" immediate="true">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}"/>
+															<p:ajax event="dialogReturn" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.returnSalePoint}" update="salePointPanelGroup"/>
+														</p:commandLink>
+													</h:panelGrid>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</p:panel>
+					</p:tab>
+					<p:tab id="InsuredPersonInfo" title="InsuredPerson Info">
+						<p:panel header="InsuredPerson Information" id="insuredPersonInfoWizardPanel" style="min-height:270px;">
+							<table width="1000px">
+								<tr>
+									<td valign="top">
+										<table cellspacing="5">
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="initialId" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_INITIALID_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="initialId" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.initialId}">
+														<f:validateLength maximum="36" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="firstName" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_FIRSTNAME_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="firstName" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.name.firstName}">
+														<f:validateLength maximum="36" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="middleName" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_MIDDLENAME_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="middleName" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.name.middleName}">
+														<f:validateLength maximum="36" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="lastName" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_LASTNAME_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="lastName" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.name.lastName}">
+														<f:validateLength maximum="36" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="fatherName" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="Father Name" />
+												</td>
+												<td>
+													<p:inputText id="fatherName" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.fatherName}">
+														<f:validateLength maximum="36" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="idNo" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_IDNO_LABEL']}" />
+												</td>
+												<td>
+													<p:inputText id="idNo" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.fullIdNo}">
+														<f:validateLength maximum="36" />
+													</p:inputText>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 150px;">
+													<p:message for="idType" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 150px;">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="idType" />
+												</td>
+												<td>
+													<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="idType" style="height:24px;width: 258px;"
+														value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.idType}">
+														<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.idTypes}" var="type" />
+													</p:selectOneMenu>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td>
+													<p:message for="dateOfBirth" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="DateOfBirth" />
+												</td>
+												<td>
+													<p:inputMask id="dateOfBirth" mask="99-99-9999" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.dateOfBirth}">
+														<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+													</p:inputMask>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td>
+													<p:message for="sumInsuredInfo" />
+												</td>
+											</tr>
+											<tr>
+												<td valign="top">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="Sum Insured" />
+												</td>
+												<td>
+													<p:inputText id="sumInsuredInfo" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.sumInsuredInfoNum}">
+														<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+														<f:validateLength maximum="20" />
+													</p:inputText>
+												</td>
+											</tr>
+										</table>
+									</td>
+									<td valign="top">
+										<table width="100%">
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="resident" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="Resident Address" />
+												</td>
+												<td>
+													<p:inputTextarea id="resident" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.residentAddress.residentAddress}">
+														<f:validateLength maximum="200" />
+													</p:inputTextarea>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="townShip" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="Resident TownShip" />
+												</td>
+												<td>
+													<h:panelGrid columns="3" id="townShipPanelGroup">
+														<p:inputText id="townShip" readonly="true" required="true" style="width:250px;margin-left:-4px;"
+															value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.residentAddress.township == null ? '' : EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.residentAddress.township.name}">
+															<f:validateLength maximum="36" />
+														</p:inputText>
+														<p:commandLink actionListener="#{EditRenewalGroupLifeProposalEnquiryActionBean.selectTownship()}" id="selectTownShipDialogLink1" immediate="true">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.returnInsuTownShip}" update="townShipPanelGroup" />
+														</p:commandLink>
+													</h:panelGrid>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 115px;">
+													<p:message for="occupation" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 115px;">
+													<h:outputText styleClass="input-label" value="Occupation" />
+												</td>
+												<td>
+													<h:panelGrid columns="3" id="occupationPanelGroup">
+														<p:inputText id="occupation" readonly="true" required="true" style="width:250px;margin-left:-4px;"
+															value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.occupation == null ? '' : EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.occupation.name}">
+															<f:validateLength maximum="36" />
+														</p:inputText>
+														<p:commandLink actionListener="#{EditRenewalGroupLifeProposalEnquiryActionBean.selectOccupation()}" id="selectOccupationDialogLink1" immediate="true">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.returnOccupation}" update="occupationPanelGroup" />
+														</p:commandLink>
+														<p:commandLink action="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.setOccupation(null)}" update=":lifeProposalEntryForm:occupation">
+															<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+														</p:commandLink>
+													</h:panelGrid>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 150px;">
+													<p:message for="gender" />
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 150px;">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="Gender" />
+												</td>
+												<td>
+													<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="gender" style="height:24px;width: 258px;"
+														value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.gender}">
+														<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.gender}" var="type" />
+													</p:selectOneMenu>
+												</td>
+											</tr>
+											<tr>
+												<td style="width: 100px;" valign="top">
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="Product" />
+												</td>
+												<td>
+													<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="product" style="height:24px;width: 258px;"
+														value="#{EditRenewalGroupLifeProposalEnquiryActionBean.product}">
+														<f:selectItems value="#{EditRenewalGroupLifeProposalEnquiryActionBean.productList}" itemLabel="#{type.name}" itemValue="#{type}" var="type" />
+														<p:ajax event="valueChange" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.changeProduct}" update=":lifeProposalEntryForm" />
+													</p:selectOneMenu>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td>
+													<p:message for="periodOfInsurance" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="Period of Insurance (Years)" />
+												</td>
+												<td valign="top">
+													<h:panelGrid columns="2">
+														<p:inputText id="periodOfInsurance" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.periodOfYears}" />
+													</h:panelGrid>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText value="" />
+												</td>
+												<td style="width: 130px;">
+													<p:message for="startDate" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<h:outputText style="color:red;" value="*" />
+													<h:outputText styleClass="input-label" value="Start Date" />
+												</td>
+												<td>
+													<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" size="35" timeZone="#{ApplicationSetting.timeZone}"
+														value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.startDate}" />
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td align="left" colspan="2" width="100%">
+										<h:panelGroup id="addOnTablePanel" style="width:100%">
+											<legend>
+												<table>
+													<tr>
+														<td>
+															<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_ADDON_LABLE']}" />
+														</td>
+														<td>
+															<p:commandLink action="#{EditRenewalGroupLifeProposalEnquiryActionBean.prepareInsuredPersonAddOnDTO()}" immediate="true" oncomplete="PF('addOnEntryDialog').show()"
+																update=":selectAddOnForm">
+																<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+															</p:commandLink>
+														</td>
+													</tr>
+												</table>
+											</legend>
+											<p:dataTable id="insuredPersonAddOnTable" style="width:100%" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.insuredPersonAddOnDTOList}"
+												var="insuPesAddOn">
+												<p:column headerText="AddOn">
+													<h:outputText value="#{insuPesAddOn.addOn.name}" />
+												</p:column>
+												<p:column headerText="AddOn Type">
+													<h:outputText value="#{insuPesAddOn.addOn.addOnType.label}" />
+												</p:column>
+												<p:column style="width:50px;">
+													<p:commandLink action="#{EditRenewalGroupLifeProposalEnquiryActionBean.removeAddOn(insuPesAddOn)}" id="removeInsuPesAddOnLink"
+														update=":lifeProposalEntryForm:addOnTablePanel">
+														<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+													</p:commandLink>
+												</p:column>
+											</p:dataTable>
+										</h:panelGroup>
+									</td>
+								</tr>
+								<tr>
+									<td align="left" colspan="2" width="100%">
+										<p:message for="beneficiariesInfoTablePanel" />
+										<h:panelGroup id="beneficiariesInfoTablePanel" style="width:100%">
+											<fieldset>
+												<legend>
+													<table>
+														<tr>
+															<td>
+																<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIESINFO_LABLE']}" />
+															</td>
+														</tr>
+														<tr>
+															<td>
+																<p:commandLink action="#{EditRenewalGroupLifeProposalEnquiryActionBean.prepareAddNewBeneficiariesInfo()}" immediate="true"
+																	oncomplete="PF('beneficiariesInfoEntryDialog').show()" update=":beneficiaryInfoEntryForm">
+																	<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+																</p:commandLink>
+															</td>
+														</tr>
+													</table>
+												</legend>
+												<p:dataTable id="beneficiaryPersonTable" rowStyleClass="#{beneficiary.validBeneficiaries ?  null : 'rowWarnning'}" style="width:100%"
+													value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.beneficiariesInfoDTOList}" var="beneficiary">
+													<p:column headerText="Beneficiary">
+														<h:outputText value="#{beneficiary.fullName} " />
+													</p:column>
+													<p:column headerText="Age">
+														<h:outputText value="#{beneficiary.age}" />
+													</p:column>
+													<p:column headerText="Gender">
+														<h:outputText value="#{beneficiary.gender}" />
+													</p:column>
+													<p:column headerText="ID NO.">
+														<h:outputText value="#{beneficiary.fullIdNo}" />
+													</p:column>
+													<p:column headerText="Resident TownShip">
+														<h:outputText value="#{beneficiary.residentAddress.township.name}" />
+													</p:column>
+													<p:column headerText="Beneficiary Percentage">
+														<h:outputText value="#{beneficiary.percentage}%" />
+													</p:column>
+													<p:column headerText="Relationship">
+														<h:outputText value="#{beneficiary.relationship.name}" />
+													</p:column>
+													<p:column style="width:50px;">
+														<p:commandLink action="#{EditRenewalGroupLifeProposalEnquiryActionBean.prepareEditBeneficiariesInfo(beneficiary)}" id="editBeneficiaryLink" immediate="true"
+															oncomplete="PF('beneficiariesInfoEntryDialog').show()" update=":beneficiaryInfoEntryForm">
+															<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+														</p:commandLink>
+													</p:column>
+													<p:column style="width:50px;">
+														<p:commandLink action="#{EditRenewalGroupLifeProposalEnquiryActionBean.removeBeneficiariesInfo(beneficiary)}" id="removeBeneficiaryLink"
+															update=":lifeProposalEntryForm:beneficiariesInfoTablePanel">
+															<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+														</p:commandLink>
+													</p:column>
+												</p:dataTable>
+											</fieldset>
+										</h:panelGroup>
+									</td>
+								</tr>
+							</table>
+							<p:commandButton action="#{EditRenewalGroupLifeProposalEnquiryActionBean.saveInsuredPersonInfo()}" id="addInsuredPersonInfoBtn"
+								rendered="#{EditRenewalGroupLifeProposalEnquiryActionBean.createNewInsuredPersonInfo}" update=":lifeProposalEntryForm:insuredPersonInfoWizardPanel"
+								value="#{label['COMMON_ADDNEW_BTN']}" />
+							<p:commandButton action="#{EditRenewalGroupLifeProposalEnquiryActionBean.showPaidUpDialog()}" id="editInsuredPersonInfoBtn"
+								rendered="#{!EditRenewalGroupLifeProposalEnquiryActionBean.createNewInsuredPersonInfo}" update=":lifeProposalEntryForm:insuredPersonInfoWizardPanel"
+								value="#{label['COMMON_UPDATE_BTN']}" />
+							<p:separator style="height:5px" />
+							<h:panelGrid columns="2">
+								<h:commandLink action="#{EditRenewalGroupLifeProposalEnquiryActionBean.prepareAddNewInsuredPersonInfo()}" immediate="true"
+									update=":lifeProposalEntryForm:insuredPersonInfoWizardPanel">
+									<f:ajax render=":lifeProposalEntryForm:insuredPersonInfoWizardPanel" />
+									<h:panelGrid columns="2">
+										<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+										<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+									</h:panelGrid>
+								</h:commandLink>
+								<p:message for="insuredPersonInfoDTOTable" />
+							</h:panelGrid>
+							<p:dataTable id="insuredPersonInfoDTOTable" style="width:100%" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTOList}" var="insuredPersonInfoDTO">
+								<p:column headerText="Name">
+									<h:outputText value="#{insuredPersonInfoDTO.fullName}" />
+								</p:column>
+								<p:column headerText="Date Of Birth">
+									<h:outputText value="#{insuredPersonInfoDTO.dateOfBirth}">
+										<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Father Name">
+									<h:outputText value="#{insuredPersonInfoDTO.fatherName}" />
+								</p:column>
+								<p:column headerText="Occupation">
+									<h:outputText value="#{insuredPersonInfoDTO.occupation.name}" />
+								</p:column>
+								<p:column headerText="Address">
+									<h:outputText value="#{insuredPersonInfoDTO.residentAddress.residentAddress}" />
+								</p:column>
+								<p:column headerText="Sum Insured">
+									<h:outputText value="#{insuredPersonInfoDTO.sumInsuredInfo}">
+										<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Product Type">
+									<h:outputText value="#{insuredPersonInfoDTO.product.name}" />
+								</p:column>
+								<p:column headerText="Age" style="text-align:left;">
+									<h:outputText value="#{insuredPersonInfoDTO.ageForNextYear}" />
+								</p:column>
+								<p:column headerText="Period Of Years" style="text-align:left;">
+									<h:outputText value="#{insuredPersonInfoDTO.periodOfYears}" /> - (Years)
+								</p:column>
+								<p:column headerText="Start Date">
+									<h:outputText value="#{insuredPersonInfoDTO.startDate}">
+										<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="End Date">
+									<h:outputText value="#{insuredPersonInfoDTO.endDate}">
+										<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+									</h:outputText>
+								</p:column>
+								<p:column style="width:50px;">
+									<h:commandLink action="#{EditRenewalGroupLifeProposalEnquiryActionBean.prepareEditInsuredPersonInfo(insuredPersonInfoDTO)}" id="editInsuredPersonInfoLink">
+										<f:ajax render=":lifeProposalEntryForm:insuredPersonInfoWizardPanel" />
+										<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+									</h:commandLink>
+								</p:column>
+								<p:column style="width:50px;">
+									<p:commandLink action="#{EditRenewalGroupLifeProposalEnquiryActionBean.removeInsuredPersonInfo(insuredPersonInfoDTO)}" id="removeEditInsuredPersonInfoLink"
+										update=":lifeProposalEntryForm:insuredPersonInfoDTOTable">
+										<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+									</p:commandLink>
+								</p:column>
+							</p:dataTable>
+
+							<p:commandButton action="#{EditRenewalGroupLifeProposalEnquiryActionBean.updateLifeProposal}" update=":lifeProposalEntryForm" value="Submit Proposal" />
+
+						</p:panel>
+					</p:tab>
+				</p:wizard>
+				<p:commandButton action="dashboard" immediate="true" value="#{label['COMMON_CANCEL_BTN']}" />
+			</div>
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			<br />
+		</h:form>
+		<!--  Input Selection Dialog -->
+		<h:form id="addOnEntryForm">
+			<p:dialog header="AddOn Entry" hideEffect="explode" id="addOnEntryDialog" resizable="false" showEffect="explode" widgetVar="addOnEntryDialog">
+				<table cellspacing="5">
+					<tr>
+						<td>
+							<h:outputText value="" />
+						</td>
+						<td>
+							<p:message for="addOn" id="addOnMsg" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText style="color:red;" value="*" />
+							<h:outputText styleClass="input-label" value="AddOn" />
+						</td>
+						<td>
+							<h:panelGrid columns="3" id="addOnPanel">
+								<p:inputText id="addOn" readonly="true" style="width:250px;margin-left:-4px;"
+									value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonAddOnDTO.addOn == null ? '' : EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonAddOnDTO.addOn.name}" />
+								<p:commandLink actionListener="#{EditRenewalGroupLifeProposalEnquiryActionBean.selectAddOn()}" id="selectAddOnDialogLink" immediate="true">
+									<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+									<p:ajax event="dialogReturn" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.returnAddOn}" update="addOnPanel" />
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value="" />
+						</td>
+						<td style="width: 150px;">
+							<p:message for="addOnSumInsured" />
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 150px;">
+							<h:outputText rendered="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonAddOnDTO.addOn.addOnType == 'BASED_ON_ADDON_SUMINSU' ? true : false}" style="color:red;"
+								value="*" />
+							<h:outputText rendered="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonAddOnDTO.addOn.addOnType == 'BASED_ON_ADDON_SUMINSU' ? true : false}"
+								styleClass="input-label" value="AddOn Sum Insured" />
+						</td>
+						<td>
+							<p:inputText id="addOnSumInsured"
+								rendered="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonAddOnDTO.addOn.addOnType == 'BASED_ON_ADDON_SUMINSU' ? true : false}" style="width:250px;"
+								value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonAddOnDTO.addOnSumInsured}">
+								<f:validateLength maximum="50" />
+							</p:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<p:commandButton action="#{EditRenewalGroupLifeProposalEnquiryActionBean.saveInsuredPersonAddOnDTO()}" id="addAddOn" update=":lifeProposalEntryForm:addOnTablePanel addOnMsg"
+								value="Add" />
+						</td>
+					</tr>
+				</table>
+			</p:dialog>
+		</h:form>
+		<h:form id="beneficiaryInfoEntryForm">
+			<p:dialog header="#{label['MANAGE_INSUREDPERSON_BENEFICIARIESINFO_LABLE']}" hideEffect="explode" id="beneficiariesInfoEntryDialog" resizable="false" showEffect="explode"
+				visible="#{facesContext.validationFailed}" widgetVar="beneficiariesInfoEntryDialog">
+				<h:panelGroup id="beneficiariesInfoPanel">
+					<table cellspacing="5">
+						<tr>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="initialId" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="Initial ID" />
+										</td>
+										<td>
+											<p:inputText id="initialId" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.beneficiariesInfoDTO.initialId}" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="firstName" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="First Name" />
+										</td>
+										<td>
+											<p:inputText id="firstName" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.beneficiariesInfoDTO.name.firstName}" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="middleName" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="Middle Name" />
+										</td>
+										<td>
+											<p:inputText id="middleName" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.beneficiariesInfoDTO.name.middleName}" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="lastName" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="Last Name" />
+										</td>
+										<td>
+											<p:inputText id="lastName" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.beneficiariesInfoDTO.name.lastName}" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="idType" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="IdType" />
+										</td>
+										<td>
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="idType" style="height:24px;width: 258px;"
+												value="#{EditRenewalGroupLifeProposalEnquiryActionBean.beneficiariesInfoDTO.idType}">
+												<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.idTypes}" var="type" />
+											</p:selectOneMenu>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="idNo" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="ID NO" />
+										</td>
+										<td>
+											<p:inputText id="idNo" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.beneficiariesInfoDTO.fullIdNo}" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="gender" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="Gender" />
+										</td>
+										<td>
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="gender" style="height:24px;width: 258px;"
+												value="#{EditRenewalGroupLifeProposalEnquiryActionBean.beneficiariesInfoDTO.gender}">
+												<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.gender}" var="type" />
+											</p:selectOneMenu>
+										</td>
+									</tr>
+								</table>
+							</td>
+							<td valign="top">
+								<table>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 115px;">
+											<p:message for="townShip" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 115px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="Resident TownShip" />
+										</td>
+										<td>
+											<h:panelGrid columns="3" id="townShipPanelGroup1">
+												<p:inputText id="townShip" readonly="true" style="width:250px;margin-left:-4px;"
+													value="#{EditRenewalGroupLifeProposalEnquiryActionBean.beneficiariesInfoDTO.residentAddress.township == null ? '' : EditRenewalGroupLifeProposalEnquiryActionBean.beneficiariesInfoDTO.residentAddress.township.name}" />
+												<p:commandLink actionListener="#{EditRenewalGroupLifeProposalEnquiryActionBean.selectTownship()}" id="selectTownShipDialogLink2" immediate="true">
+													<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+													<p:ajax event="dialogReturn" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.returnTownShip}" update="townShipPanelGroup1" />
+												</p:commandLink>
+											</h:panelGrid>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="address" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="Resident Address" />
+										</td>
+										<td>
+											<p:inputTextarea id="address" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.beneficiariesInfoDTO.residentAddress.residentAddress}" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="percentage" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText style="color:red;" value="*" />
+											<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_PERCENTAGE_LABEL']}" />
+										</td>
+										<td>
+											<p:inputText id="percentage" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.beneficiariesInfoDTO.percentage}" />
+										</td>
+									</tr>
+									
+									 <tr>
+									   	<td>
+											<h:outputText />
+											<h:outputText value="#{label['MANAGE_CUSTOMER_DOB_LABEL']}" />
+										</td>
+										<td>
+										<p:inputMask id="dateOfBirth" mask="99-99-9999" style="width:250px;"  placeholder="dd-mm-yyy"  value="#{EditRenewalGroupLifeProposalEnquiryActionBean.beneficiariesInfoDTO.dateOfBirth}">
+											<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+										    <p:ajax event="change" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.calculateAgeForBene}" update="benificiaryAge"></p:ajax>
+											<p:ajax event="valueChange" listener="#{EditRenewalGroupLifeProposalEnquiryActionBean.calculateAgeForBene}" update="benificiaryAge"></p:ajax>
+										
+										</p:inputMask>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td style="width: 150px;">
+											<p:message for="benificiaryAge" />
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_AGE_LABEL']}" />
+										</td>
+										<td>
+											<p:inputText id="benificiaryAge" style="width:250px;" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.beneficiariesInfoDTO.age}" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h:outputText value="" />
+										</td>
+										<td>
+											<div style="width: 270px; margin-left: -5px;">
+												<p:message for="beneficiaryRelationShip" />
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 150px;">
+											<h:outputText styleClass="input-label" value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_RELATIONSHIP_LABEL']}" />
+										</td>
+										<td>
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="beneficiaryRelationShip" style="height:24px;width: 258px;"
+												value="#{EditRenewalGroupLifeProposalEnquiryActionBean.beneficiariesInfoDTO.relationship}">
+												<f:selectItem itemLabel="Select" />
+												<f:selectItems value="#{EditRenewalGroupLifeProposalEnquiryActionBean.relationShipList}" var="relationship" itemLabel="#{relationship.name}" itemValue="#{relationship}" />
+											</p:selectOneMenu>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<p:commandButton action="#{EditRenewalGroupLifeProposalEnquiryActionBean.saveBeneficiariesInfo()}"
+												update=":lifeProposalEntryForm:beneficiariesInfoTablePanel beneficiariesInfoPanel" value="Save" />
+											<p:commandButton immediate="true" oncomplete="PF('beneficiariesInfoEntryDialog').hide()" value="Cancel" />
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+		<h:form id="selectAddOnForm">
+			<p:dialog header="Select AddOn" widgetVar="selectAddOnDialog" resizable="false" showEffect="explode" hideEffect="explode" id="selectAddOnDialog"
+				onShow="addOnTable.clearFilters();">
+				<p:dataTable var="addOn" value="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonInfoDTO.product.addOnList}" paginator="true" id="addOnTable" widgetVar="addOnTable">
+					<p:column headerText="Name" filterBy="#{addOn.name}" filterMatchMode="contains">
+						<h:outputText value="#{addOn.name}" />
+					</p:column>
+					<p:column headerText="Value">
+						<h:outputText value="#{addOn.value}" />
+					</p:column>
+					<p:column headerText="Type">
+						<h:outputText value="#{addOn.addOnType.label}" />
+					</p:column>
+					<p:column style="width:30px;text-align: center;">
+						<p:commandLink id="selectAddOnLink" update=":addOnEntryForm:addOnPanel" oncomplete="PF('selectAddOnDialog').hide()" immediate="true">
+							<f:setPropertyActionListener target="#{EditRenewalGroupLifeProposalEnquiryActionBean.insuredPersonAddOnDTO.addOn}" value="#{addOn}" />
+							<h:graphicImage url="#{ApplicationSetting.selectIcon}" styleClass="#{ApplicationSetting.selectStyleClass}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:dialog>
+		</h:form>
+		<!-- Paid Premium For Paidup Confirmation Dialog -->
+		<h:form id="paidPremiumForPaidup">
+			<p:dialog header="Paid Premium for Paidup" height="100" hideEffect="explode" id="paidPremiumConfirmationDialog" resizable="false" showEffect="explode"
+				widgetVar="paidPremiumConfirmationDialog" width="350">
+				<h:panelGroup id="confirmationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="Pay premium for the rest period to fill a full year?" />
+								<br />
+								<h:outputText value="" />
+							</td>
+						</tr>
+					</table>
+					<br />
+					<p:commandButton action="#{EditRenewalGroupLifeProposalEnquiryActionBean.paidPremiumForPaidUp(true)}" oncomplete="PF('paidPremiumConfirmationDialog').hide()"
+						update=":lifeProposalEntryForm:insuredPersonInfoWizardPanel" value="Paid" />
+					<p:commandButton action="#{EditRenewalGroupLifeProposalEnquiryActionBean.paidPremiumForPaidUp(false)}" oncomplete="PF('paidPremiumConfirmationDialog').hide()"
+						update=":lifeProposalEntryForm:insuredPersonInfoWizardPanel" value="Not Paid" />
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

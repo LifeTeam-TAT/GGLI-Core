@@ -1,0 +1,207 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Life Claim Notification" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form enctype="multipart/form-data" id="lifeClaimNotificationForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" />
+			<p:wizard flowListener="#{LifeClaimNotificationActionBean.onFlowProcess}" widgetVar="wiz" style="margin-left:30px;width:95%">
+				<p:tab title="Report Info" id="initialReportTap">
+					<p:panel header="Report Info" style="min-height:300px;">
+						<h:panelGrid columns="2" cellpadding="4px">
+							<h:outputText />
+							<p:message for="lifePolicyNo" />
+							<h:outputText styleClass="input-label mandatory" value="#{label['POLICYNO']}" />
+							<h:panelGrid columns="3" id="MedicalPolicyNoPanel">
+								<p:inputText id="lifePolicyNo" style="width:250px;margin-left:-4px;"
+									value="#{LifeClaimNotificationActionBean.notification.lifePolicyNo == null ? '' : LifeClaimNotificationActionBean.notification.lifePolicyNo}"
+									readonly="#{LifeClaimNotificationActionBean.notification.lifePolicyNo == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true" />
+								<p:commandLink actionListener="#{LifeClaimNotificationActionBean.selectLifePolicyNo('Actived')}" id="selectLifePolicyNoDialogLink" immediate="true">
+									<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+									<p:ajax event="dialogReturn" listener="#{LifeClaimNotificationActionBean.returnLifePolicyNo}" update="MedicalPolicyNoPanel claimPerson product" />
+								</p:commandLink>
+							</h:panelGrid>
+							<h:outputText />
+							<p:message for="product" />
+							<h:outputText value="Product" />
+							<p:inputText value="#{LifeClaimNotificationActionBean.notification.product.name}" readonly="true" style="width:250px;margin-left:-4px;" id="product" />
+							<h:outputText />
+							<p:message for="claimPerson" />
+							<h:outputText style="width:250px;" styleClass="input-label mandatory" value="Claimed Person" />
+							<p:selectOneMenu style="width:250px;" converter="omnifaces.SelectItemsIndexConverter" id="claimPerson" required="true"
+								value="#{LifeClaimNotificationActionBean.notification.claimPerson}">
+								<f:selectItem itemLabel="-- Select Claimed Person --" noSelectionOption="true" />
+								<f:selectItems itemLabel="#{claimPerson.name.fullName}" itemValue="#{claimPerson}" value="#{LifeClaimNotificationActionBean.insuredPersonList}" var="claimPerson" />
+							</p:selectOneMenu>
+							<h:outputText />
+							<p:message for="reportedDate" />
+							<h:outputText styleClass="input-label mandatory" value="Reported Date" />
+							<p:calendar id="reportedDate" required="true" pattern="#{ApplicationSetting.dateFormat}" size="30" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+								value="#{LifeClaimNotificationActionBean.notification.reportedDate}" />
+							<h:outputText />
+							<p:message for="dateOfIncident" />
+							<h:outputText styleClass="input-label mandatory" value="Date Of Incident" />
+							<p:calendar id="dateOfIncident" required="true" pattern="#{ApplicationSetting.dateFormat}" size="30" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+								value="#{LifeClaimNotificationActionBean.notification.occuranceDate}" />
+							<h:outputText />
+							<p:message for="salePoint" />
+							<h:outputText value="Sale Point" styleClass="input-label mandatory" />
+							<h:panelGrid columns="3" id="salePontPanelGroup">
+								<p:inputText id="salePoint" style="width:250px;margin-left:-4px;margin-right: 3px;"
+									readonly="#{LifeClaimNotificationActionBean.notification.salePoint == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true"
+									value="#{LifeClaimNotificationActionBean.notification.salePoint == null ? '' : LifeClaimNotificationActionBean.notification.salePoint.name}" />
+								<p:commandLink actionListener="#{LifeClaimNotificationActionBean.selectSalePoint()}" id="selectSalePointDialogLink" immediate="true">
+									<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+									<p:ajax event="dialogReturn" listener="#{LifeClaimNotificationActionBean.returnSalePoint}" update="salePontPanelGroup" />
+								</p:commandLink>
+							</h:panelGrid>
+						</h:panelGrid>
+					</p:panel>
+				</p:tab>
+				<p:tab title="Reporter" id="repoterTap">
+					<p:panel header="Reporter" style="min-height:270px;">
+						<table>
+							<tr>
+								<td />
+								<td>
+									<p:message for="repName" display="text" />
+								</td>
+							</tr>
+							<tr>
+								<td style="width: 150px;" valign="top">
+									<h:outputText style="color:red;" value="*" />
+									<h:outputText value="#{label['NAME_LABEL']}" />
+								</td>
+								<td valign="top">
+									<p:inputText id="repName" styleClass="myanmar-inputtext" required="true" style="width:250px;"
+										value="#{LifeClaimNotificationActionBean.notification.claimInitialReporter.name}" />
+								</td>
+							</tr>
+							<tr>
+								<td />
+								<td>
+									<p:message for="reporterRegidNo" display="text" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p:selectOneMenu converter="omnifaces.SelectItemsIndexConverter" id="repIdType" style="width: 100px;" styleClass="#{facesContext.validationFailed   ?'': 'menu'}"
+										value="#{LifeClaimNotificationActionBean.notification.claimInitialReporter.idType}">
+										<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{LifeClaimNotificationActionBean.idTypes}" var="type" />
+										<p:ajax event="valueChange" listener="#{LifeClaimNotificationActionBean.changeIdType}" update="reporterIdNoPanelGrid" />
+									</p:selectOneMenu>
+								</td>
+								<td>
+									<h:panelGrid columns="4" id="reporterIdNoPanelGrid" style="margin-left: -4px;">
+										<p:selectOneMenu converter="omnifaces.SelectItemsIndexConverter" id="stateCode" value="#{LifeClaimNotificationActionBean.notification.claimInitialReporter.stateCode}"
+											rendered="#{LifeClaimNotificationActionBean.nrcReporter}" style="width: 50px;">
+											<f:selectItem itemLabel="--" />
+											<f:selectItems var="stateCode" itemLabel="#{stateCode.codeNo}" itemValue="#{stateCode}" value="#{LifeClaimNotificationActionBean.stateCodeList}" />
+											<p:ajax event="valueChange" listener="#{LifeClaimNotificationActionBean.changeStateCode}" update="reporterIdNoPanelGrid" />
+										</p:selectOneMenu>
+										<p:selectOneMenu rendered="#{LifeClaimNotificationActionBean.nrcReporter}" converter="omnifaces.SelectItemsIndexConverter" style="width: 90px;"
+											value="#{LifeClaimNotificationActionBean.notification.claimInitialReporter.townshipCode}">
+											<f:selectItem itemLabel="--" />
+											<f:selectItems var="townshipCode" itemLabel="#{townshipCode.townshipcodeno}" itemValue="#{townshipCode}" value="#{LifeClaimNotificationActionBean.townshipCodeList}" />
+										</p:selectOneMenu>
+										<p:selectOneMenu converter="omnifaces.SelectItemsIndexConverter" id="IdConditionType" rendered="#{LifeClaimNotificationActionBean.nrcReporter}"
+											value="#{LifeClaimNotificationActionBean.notification.claimInitialReporter.idConditionType}" style="width:40px;">
+											<f:selectItem itemLabel="---" />
+											<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{LifeClaimNotificationActionBean.idConditionTypeSelectItemList}" var="type" />
+										</p:selectOneMenu>
+										<p:inputText id="reporterRegidNo" value="#{LifeClaimNotificationActionBean.notification.claimInitialReporter.idNo}"
+											rendered="#{LifeClaimNotificationActionBean.stillApplyReporter}" style="#{LifeClaimNotificationActionBean.nrcReporter eq true? 'width: 50px' : 'width: 250px'};" />
+									</h:panelGrid>
+								</td>
+							</tr>
+							<tr>
+								<td />
+								<td>
+									<p:message for="customerRegresidentAdd" display="text" />
+								</td>
+							</tr>
+							<tr valign="top">
+								<td>
+									<h:outputText value="*" style="color:red;" />
+									<h:outputText value="#{label['MANAGE_CUSTOMER_RESIDENTADD_LABEL']}" />
+								</td>
+								<td>
+									<p:inputTextarea value="#{LifeClaimNotificationActionBean.notification.claimInitialReporter.residentAddress}" styleClass="myanmar-inputtext" style="width:250px;"
+										id="customerRegresidentAdd" required="true" rows="5">
+									</p:inputTextarea>
+								</td>
+							</tr>
+							<tr>
+								<td />
+								<td>
+									<p:message for="customerRegresidentTownId" id="MsgcustomerRegresidentTownId" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText value="*" style="color:red;" />
+									<h:outputText value="#{label['MANAGE_CUSTOMER_RESIDENTTOWNID_LABEL']}" />
+								</td>
+								<td>
+									<h:panelGrid columns="3" id="residentPanelGroup">
+										<p:inputText
+											value="#{LifeClaimNotificationActionBean.notification.claimInitialReporter.township == null ? '' : LifeClaimNotificationActionBean.notification.claimInitialReporter.township.name}"
+											style="width:250px;margin-left:-4px;" id="customerRegresidentTownId" required="true"
+											readonly="#{LifeClaimNotificationActionBean.notification.claimInitialReporter.township == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" />
+										<p:commandLink immediate="true" actionListener="#{LifeClaimNotificationActionBean.selectTownship()}" id="selectResidentTownshipDialogLink">
+											<p:ajax event="dialogReturn" listener="#{LifeClaimNotificationActionBean.returnResidentTownship}" update="residentPanelGroup MsgcustomerRegresidentTownId" />
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										</p:commandLink>
+									</h:panelGrid>
+								</td>
+							</tr>
+							<tr>
+								<td />
+								<td>
+									<p:message for="repPhNo" display="text" />
+								</td>
+							</tr>
+							<tr>
+								<td valign="top">
+									<h:outputText style="color:red;" value="*" />
+									<h:outputText value="#{label['MANAGE_CUSTOMER_PHONE_LABEL']}" />
+								</td>
+								<td>
+									<p:inputText required="true" id="repPhNo" styleClass="myanmar-inputtext" style="width:250px;"
+										value="#{LifeClaimNotificationActionBean.notification.claimInitialReporter.phone}" />
+								</td>
+							</tr>
+							<tr>
+								<td />
+								<td>
+									<p:message for="repFatherName" display="text" />
+								</td>
+							</tr>
+							<tr>
+								<td valign="top">
+									<h:outputText style="color:red;" value="*" />
+									<h:outputText value="#{label['MANAGE_CUSTOMER_FATHERNAME_LABEL']}" />
+								</td>
+								<td>
+									<p:inputText required="true" id="repFatherName" styleClass="myanmar-inputtext" style="width:250px;"
+										value="#{LifeClaimNotificationActionBean.notification.claimInitialReporter.fatherName}" />
+								</td>
+							</tr>
+						</table>
+						<br />
+						<h:panelGrid columns="3" cellpadding="10px">
+							<p:commandButton value="Submit" update="lifeClaimNotificationForm" action="#{LifeClaimNotificationActionBean.addNotification()}" style="width:80px"
+								rendered="#{LifeClaimNotificationActionBean.createNew}" />
+							<p:commandButton style="width: 65px;" value="Update" action="#{LifeClaimNotificationActionBean.updateNotification}" update=":lifeClaimNotificationForm"
+								rendered="#{!LifeClaimNotificationActionBean.createNew}" />
+							<h:outputText />
+							<p:commandButton value="Cancel" action="dashboard" style="width: 65px;" />
+						</h:panelGrid>
+					</p:panel>
+					<br />
+				</p:tab>
+			</p:wizard>
+		</h:form>
+	</ui:define>
+</ui:composition>

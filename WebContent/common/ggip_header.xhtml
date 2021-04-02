@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form>
+		<table width="100%">
+			<tr style="height: 65px;">
+				<td valign="middle">
+					<h:graphicImage value="/images/comp-logo.jpg" style="width:100px;height:60px;" />
+				</td>
+				<td align="center">
+					<font style="font-size: 30px;">Insurance Management System</font>
+				</td>
+				<td align="right" width="30%">
+					<div style="margin-top: 30px;">
+						<h:outputText value="#{label['WELCOME_LABEL']} : #{sessionScope.loginUser.name} | " style="font-family:Century;font-size:14px;" rendered="#{identity.loggedIn}" />
+						<h:commandLink value="Profile" action="changePassword" style="font-family:Century;font-size:14px;" immediate="true" rendered="#{identity.loggedIn}" />
+						<h:outputLabel value=" | " style="font-family:Century;font-size:14px;" rendered="#{identity.loggedIn}" />
+						<h:commandLink value="#{label['LOGIN_LABEL']}" action="login" style="font-family:Century;font-size:14px;" immediate="true" rendered="#{!identity.loggedIn}" />
+						<h:commandLink value="#{label['LOOUT_LABEL']}" action="#{LoginBean.logout}" style="font-family:Century;font-size:14px;" immediate="true" rendered="#{identity.loggedIn}" />
+					</div>
+				</td>
+			</tr>
+		</table>
+	</h:form>
+</ui:composition>

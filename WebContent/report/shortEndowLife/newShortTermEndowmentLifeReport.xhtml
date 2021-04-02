@@ -1,0 +1,170 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:jsf="http://xmlns.jcp.org/jsf" template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<h:form id="policyList">
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<h:outputText id="title" styleClass="ui-widget ui-widget-header ui-corner-all submenu-title" value="Short Term Endowment Life Policy Report" />
+			<p:separator style="height:3px; margin-top:1px;" />
+			<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="startDate" value="Start Date" />
+					<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{NewShortTermEndowmentLifeReportActionBean.criteria.startDate}" />
+					<h:outputText value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{NewShortTermEndowmentLifeReportActionBean.selectEntity()}" id="entityDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{NewShortTermEndowmentLifeReportActionBean.returnEntity}" update="entity branchPanelGroup salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true"
+									value="#{NewShortTermEndowmentLifeReportActionBean.criteria.entity == null ? '' : NewShortTermEndowmentLifeReportActionBean.criteria.entity.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{NewShortTermEndowmentLifeReportActionBean.removeEntity}" process="@this"
+									update="entity branchPanelGroup salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputText styleClass="input-label" value="Agent" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="selectAgentPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{NewShortTermEndowmentLifeReportActionBean.selectAgent}" id="selectAgentDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{NewShortTermEndowmentLifeReportActionBean.returnAgent}" update="agent" />
+								</p:commandButton>
+								<p:inputText id="agent" readonly="true"
+									value="#{NewShortTermEndowmentLifeReportActionBean.criteria.agent == null ? '' : NewShortTermEndowmentLifeReportActionBean.criteria.agent.fullName}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{NewShortTermEndowmentLifeReportActionBean.criteria.setAgent(null)}" process="@this" update="agent" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputLabel for="endDate" value="End Date" />
+					<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{NewShortTermEndowmentLifeReportActionBean.criteria.endDate}" />
+					<h:outputText styleClass="input-label" value="Branch" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{NewShortTermEndowmentLifeReportActionBean.selectBranch()}" id="selectBranchDialogLink"
+									process="@this" disabled="#{NewShortTermEndowmentLifeReportActionBean.criteria.entity==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{NewShortTermEndowmentLifeReportActionBean.returnBranch}" update="branch salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true"
+									value="#{NewShortTermEndowmentLifeReportActionBean.criteria.branch == null ? 'ALL' : NewShortTermEndowmentLifeReportActionBean.criteria.branch.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{NewShortTermEndowmentLifeReportActionBean.removeBranch()}" process="@this"
+									update="branch salePontPanelGroup" disabled="#{NewShortTermEndowmentLifeReportActionBean.criteria.entity==null?true:false}" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<h:outputText styleClass="input-label" value="Insure Person" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="selectCustomerPanelGrid">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{NewShortTermEndowmentLifeReportActionBean.selectCustomer}" id="selectCustomerDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{NewShortTermEndowmentLifeReportActionBean.returnCustomer}" update="customer" />
+								</p:commandButton>
+								<p:inputText id="customer" readonly="true"
+									value="#{NewShortTermEndowmentLifeReportActionBean.criteria.insurePersonName == null ? '' : NewShortTermEndowmentLifeReportActionBean.criteria.insurePersonName}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{NewShortTermEndowmentLifeReportActionBean.criteria.setInsurePersonName(null)}" process="@this"
+									update="customer" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText styleClass="input-label" value="Policy No" />
+					<p:inputText value="#{NewShortTermEndowmentLifeReportActionBean.criteria.policyNo}"></p:inputText>
+					<h:outputText styleClass="input-label" value="#{label['CUSTOMER_REPORT_INFOTMATION_SALEPOINT_LABEL']}" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{NewShortTermEndowmentLifeReportActionBean.selectSalePoint()}"
+									id="selectSalePointDialogLink" process="@this" disabled="#{NewShortTermEndowmentLifeReportActionBean.criteria.branch==null?true:false}">
+									<p:ajax event="dialogReturn" listener="#{NewShortTermEndowmentLifeReportActionBean.returnSalePoint}" update="salePoint" />
+								</p:commandButton>
+								<p:inputText id="salePoint" required="false" readonly="true"
+									value="#{NewShortTermEndowmentLifeReportActionBean.criteria.salePoint == null ? '' : NewShortTermEndowmentLifeReportActionBean.criteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{NewShortTermEndowmentLifeReportActionBean.criteria.setSalePoint(null)}" process="@this"
+									update="salePoint" disabled="#{NewShortTermEndowmentLifeReportActionBean.criteria.branch==null?true:false}" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panelGrid>
+			<h:panelGrid columns="2">
+				<p:commandButton action="#{NewShortTermEndowmentLifeReportActionBean.filter}" update=":policyList :policyList:lifePolicyTable" value="Search">
+				</p:commandButton>
+				<p:commandButton action="#{NewShortTermEndowmentLifeReportActionBean.reset}" update=":policyList" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="lifePolicyTable" lazy="true" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="10"
+				rowsPerPageTemplate="10,20,30" value="#{NewShortTermEndowmentLifeReportActionBean.lazyModel}" var="lifePolicy" style="width:150%">
+				<f:facet name="header">
+					<p:commandLink action="#{NewShortTermEndowmentLifeReportActionBean.exportExcel}" immediate="true" ajax="false">
+						<p:graphicImage style="width: 30px; height: 30px;" styleClass="#{ApplicationSetting.excelStyleClass}" value="#{ApplicationSetting.excelIcon}" />
+					</p:commandLink>
+					<p:message for="lifePolicyTable" />
+				</f:facet>
+				<p:column headerText="No.">
+					<h:outputText value="#{rowIndex + 1}" />
+				</p:column>
+				<p:column headerText="Insured Person Name">
+					<h:outputText value="#{lifePolicy.insuredPersonName}" />
+				</p:column>
+				<p:column headerText="Age.">
+					<h:outputText value="#{lifePolicy.age}" />
+				</p:column>
+				<p:column headerText="Policy No">
+					<h:outputText value="#{lifePolicy.policyNo}" />
+				</p:column>
+				<p:column headerText="Address" width="20%">
+					<h:outputText value="#{lifePolicy.address}" />
+				</p:column>
+				<p:column headerText="SI">
+					<h:outputText value="#{lifePolicy.sumInsured}" />
+				</p:column>
+				<p:column headerText="Premium Mode">
+					<h:outputText value="#{lifePolicy.paymentMode}" />
+				</p:column>
+				<p:column headerText="Policy Term(Year)">
+					<h:outputText value="#{lifePolicy.policyTerm}" />
+				</p:column>
+				<p:column headerText="Premium For 1 time">
+					<h:outputText value="#{lifePolicy.basicTermPremium}" />
+				</p:column>
+				<p:column headerText="Policy Start Date">
+					<h:outputText value="#{lifePolicy.policyStartDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Policy Last Payment Date">
+					<h:outputText value="#{lifePolicy.lastPaymentDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Agent">
+					<h:outputText value="#{lifePolicy.agentName}" />
+				</p:column>
+				<p:column headerText="Branch Name">
+					<h:outputText value="#{lifePolicy.branchName}" />
+				</p:column>
+				<p:column headerText="SalePoint">
+					<h:outputText value="#{lifePolicy.salePointName}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<h:form id="pdfPrintPreviewForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview" width="1070" height="505" id="pdfPrintPreviewDialog" resizable="false" widgetVar="pdfPrintPreviewDialog">
+				<p:media width="1050" height="500" player="pdf" value="#{ShortEndowLifePolicyReportActionBean.stream}" cache="false" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

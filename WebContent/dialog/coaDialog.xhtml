@@ -1,0 +1,22 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/dialog/dialogTemplate.xhtml">
+	<ui:define name="content">
+		<h:form>
+			<p:dataTable id="coaTable" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="index" rows="10" rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{CoaDialogActionBean.coaList}" var="coa" widgetVar="coaTable">
+				<p:column headerText="No" style="width:50px;">
+					<h:outputText value="#{index + 1}"/>
+				</p:column>
+				<p:column filterBy="#{coa.acode}" filterMatchMode="contains" headerText="A/C CODE">
+					<h:outputText value="#{coa.acode == null ? 'null' : coa.acode}"/>
+				</p:column>
+				<p:column filterBy="#{coa.acName}" filterMatchMode="contains" filterStyle="width:55%;" headerText="A/C NAME">
+					<h:outputText value="#{coa.acName}"/>
+				</p:column>
+				<p:column style="width:30px;text-align: center;">
+					<p:commandLink action="#{CoaDialogActionBean.selectCoa(coa)}" immediate="true">
+						<h:graphicImage styleClass="#{ApplicationSetting.selectStyleClass}" url="#{ApplicationSetting.selectIcon}"/>
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

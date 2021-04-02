@@ -1,0 +1,230 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:fu="http://java.sun.com/jsf/fileUpload" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml"
+	xmlns:o="http://omnifaces.org/ui">
+	<ui:param name="header" value="Student Life (BC) Monthly Report" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="bcStudentLifeForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<script>
+if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
+</script>
+			<p:growl globalOnly="true" id="messages" showDetail="true" />
+			<p:messages for="bcStudentLifeForm" />
+			<p:panel id="criteriaPanel">
+				<p:panelGrid columns="4" columnClasses="ui-grid-col-3,ui-grid-col-3,ui-grid-col-3,ui-grid-col-3" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:outputLabel />
+						<h:outputText value="Type" />
+						<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="saleUserType" value="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.daily}">
+							<f:selectItem itemLabel="Daily" itemValue="true" />
+							<f:selectItem itemLabel="Monthly" itemValue="false" />
+							<p:ajax event="valueChange" listener="#{BcStudentLifeMonthlyReportActionBean.changeType}" update="criteriaPanel" />
+						</p:selectOneRadio>
+						<p:outputLabel />
+						<p:outputLabel />
+						<h:outputText value="Product" />
+						<p:inputText disabled="true" value="#{BcStudentLifeMonthlyReportActionBean.product.name}" />
+						<p:outputLabel />
+						<p:outputLabel />
+						<h:outputText value="Entity" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{BcStudentLifeMonthlyReportActionBean.selectEntity()}" id="entityDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{BcStudentLifeMonthlyReportActionBean.returnEntity}" update="entity branchPanelGroup salePanelGroup" />
+									</p:commandButton>
+									<p:inputText id="entity" readonly="true"
+										value="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.entity == null ? '' : BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.entity.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{BcStudentLifeMonthlyReportActionBean.setEntityNull() }" process="@this"
+										update="entity branchPanelGroup salePanelGroup" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:message for="year" />
+						<h:outputText rendered="#{!BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.daily}" styleClass="input-label mandatory" value="Year" />
+						<p:inputText id="year" rendered="#{!BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.daily}" maxlength="4"
+							onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" value="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.year}">
+							<o:validator disabled="#{empty param[isRequired.clientId]}" minimum="1" validatorId="javax.faces.LongRange" />
+						</p:inputText>
+						<p:outputLabel />
+						<p:message for="startDate" />
+						<h:outputLabel rendered="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.daily}" styleClass="input-label mandatory" value="Start Date" />
+						<p:calendar required="#{not empty param[isRequired.clientId]}" id="startDate" pattern="#{ApplicationSetting.dateFormat}"
+							rendered="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.daily}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+							value="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.startDate}">
+							<p:ajax event="dateSelect" update="endDate" />
+						</p:calendar>					
+						<p:outputLabel />
+						<p:outputLabel />
+						<h:outputLabel value="Payment Type" />
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="paymentType" value="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.paymentType}">
+							<f:selectItem itemLabel="" noSelectionOption="true" />
+							<f:selectItems value="#{BcStudentLifeMonthlyReportActionBean.paymentTypes}" var="paymentType" itemLabel="#{paymentType.name}" itemValue="#{paymentType.id}" />
+						</p:selectOneMenu>						
+						<p:outputLabel />
+						<!-- Branch -->
+						<p:message for="branch" id="MsgBranch" display="text" />
+						<h:outputText styleClass="input-label" value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{BcStudentLifeMonthlyReportActionBean.selectBranch()}" id="selectBranchDialogLink"
+										process="@this" disabled="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.entity==null?true:false}">
+										<p:ajax event="dialogReturn" listener="#{BcStudentLifeMonthlyReportActionBean.returnBranch}" update="branch salePanelGroup" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true"
+										value="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.branch == null ? '' : BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.branch.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.entity==null?true:false}" icon="fa fa-times" action="#{BcStudentLifeMonthlyReportActionBean.setBranchNull}" process="@this" update="branch salePanelGroup" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />						
+						<p:message for="endDate" />
+						<h:outputLabel rendered="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.daily}" styleClass="input-label mandatory" value="End Date" />
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" required="#{not empty param[isRequired.clientId]}"
+							mindate="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.startDate}" rendered="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.daily}" showOn="button"
+							timeZone="#{ApplicationSetting.timeZone}" value="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.endDate}" />				
+						<p:outputLabel />
+						<p:message for="startMonthType" />
+						<h:outputText rendered="#{!BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.daily}" styleClass="input-label mandatory" value="Start Month" />
+						<p:selectOneMenu id="startMonthType" required="#{not empty param[isRequired.clientId]}" rendered="#{!BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.daily}"
+							value="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.startMonthType}">
+							<f:selectItem itemLabel="" itemValue="-1" noSelectionOption="true" />
+							<f:selectItems value="#{BcStudentLifeMonthlyReportActionBean.monthSet}" var="monthName" itemValue="#{monthName.value}" itemLabel="#{monthName}" />
+						</p:selectOneMenu>
+						<p:outputLabel />
+						<p:outputLabel />
+						<h:outputLabel value="Channel" />
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="channelType" value="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.channel}">
+							<f:selectItem itemLabel="" noSelectionOption="true" />
+							<f:selectItem itemLabel="Agent" itemValue="Agent" />
+							<f:selectItem itemLabel="SaleMan" itemValue="SaleMan" />
+						</p:selectOneMenu>	
+						<!-- SalePoint -->
+						<p:outputLabel />
+						<p:message for="salePoint" />
+						<h:outputText styleClass="input-label" value="Sale Point" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{BcStudentLifeMonthlyReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+										process="@this" disabled="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.branch==null?true:false}">
+										<p:ajax event="dialogReturn" listener="#{BcStudentLifeMonthlyReportActionBean.returnSalePoint}" update="salePoint" />
+									</p:commandButton>
+									<p:inputText id="salePoint" readonly="true"
+										value="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.salePoint == null ? '' : BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.salePoint.name}" />
+									<p:commandButton styleClass="red-button" disabled="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.branch==null?true:false}" icon="fa fa-times" action="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.setSalePoint(null)}" process="@this"
+										update="salePoint" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:outputLabel />
+						<h:outputText rendered="#{!BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.daily}" styleClass="input-label" value="End Month" />
+						<p:selectOneMenu id="endMonthType" rendered="#{!BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.daily}"
+							value="#{BcStudentLifeMonthlyReportActionBean.studentLifeCriteria.endMonthType}">
+							<f:selectItem itemLabel="" itemValue="-1" noSelectionOption="true" />
+							<f:selectItems value="#{BcStudentLifeMonthlyReportActionBean.monthSet}" var="monthName" itemLabel="#{monthName}" itemValue="#{monthName.value}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton action="#{BcStudentLifeMonthlyReportActionBean.search()}" binding="#{isRequired}" id="searchBtn" value="Search" update=":bcStudentLifeForm" />
+				<p:commandButton action="#{BcStudentLifeMonthlyReportActionBean.reset()}" resetValues="true" id="resetBtn" immediate="true" value="Reset" update=":bcStudentLifeForm" />
+			</h:panelGrid>
+			<p:separator style="height:2px;" />
+			<p:dataTable id="lifePolicyInfoTable" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="10"
+				rowsPerPageTemplate="10,20, 30" style="width:124%;" value="#{BcStudentLifeMonthlyReportActionBean.bcStudentLifeViewList}" var="studentLifeView">
+				<f:facet name="header">
+					<h:commandLink action="#{BcStudentLifeMonthlyReportActionBean.exportExcel}" immediate="true">
+						<p:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" value="/images/excel.png" />
+					</h:commandLink>
+					<p:message for="lifePolicyInfoTable" />
+				</f:facet>
+				<p:column headerText="No" style="width:3%">
+					<h:outputText value="#{rowIndex + 1}" />
+				</p:column>
+				<p:column headerText="Policy No" styleClass="fixed-size" style="width:10%">
+					<h:outputText value="#{studentLifeView.policyNo}" />
+				</p:column>
+				<p:column headerText="Holder Name" style="width:10%">
+					<h:outputText value="#{studentLifeView.policyHolderName}" />
+				</p:column>
+				<p:column headerText="Holder DOB" styleClass="fixed-size" style="width:7%">
+					<h:outputText value="#{studentLifeView.policyHolderDOB}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Insured Person Name" style="width:10%">
+					<h:outputText value="#{studentLifeView.insuredPersonName}" />
+				</p:column>
+				<p:column headerText="Insured Person DOB" styleClass="fixed-size" style="width:7%">
+					<h:outputText value="#{studentLifeView.insuredPersonDOB}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Address" style="width:10%">
+					<h:outputText value="#{studentLifeView.address}" />
+				</p:column>
+				<p:column headerText="Suminsured" styleClass="fixed-size" style="width:10%">
+					<h:outputText value="#{studentLifeView.suminsured}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Premium Term" styleClass="fixed-size" style="width:5%">
+					<h:outputText value="#{studentLifeView.premiumTerm}" />
+				</p:column>
+				<p:column headerText="Premium" styleClass="fixed-size" style="width:9%">
+					<h:outputText value="#{studentLifeView.premium}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Mode Of Premium" style="width:8%">
+					<h:outputText value="#{studentLifeView.paymentTypeName}" />
+				</p:column>
+				<p:column headerText="Agent Commission" styleClass="fixed-size" style="width:9%">
+					<h:outputText value="#{studentLifeView.agentCommission}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Receive Date" styleClass="fixed-size" style="width:8%">
+					<h:outputText value="#{studentLifeView.receive_Date}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Branch Name" style="width:10%">
+					<h:outputText value="#{studentLifeView.branchName}" />
+				</p:column>
+				<p:column headerText="Sale Point Name" style="width:10%">
+					<h:outputText value="#{studentLifeView.salePointName}" />
+				</p:column>
+				<p:column headerText="Agent Name" style="width:10%">
+					<h:outputText value="#{studentLifeView.agentName}" />
+				</p:column>
+				<p:column headerText="RegrestionNo" style="width:8%">
+					<h:outputText value="#{studentLifeView.regrestionNo}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

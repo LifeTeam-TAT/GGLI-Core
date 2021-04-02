@@ -1,0 +1,90 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['MANAGE_TOWNSHIP_TITLE']}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="townshipEntryForm">
+			<p:growl globalOnly="true" escape="false" id="messages" />
+			<p:panel id="townShipPanel">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:message for="name" display="text" />
+						<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_TOWNSHIP_NAME_LABEL']}" />
+						<p:inputText id="name" required="true" value="#{ManageTownshipActionBean.township.name}">
+							<f:validateLength maximum="50" />
+						</p:inputText>
+						<p:outputLabel />
+						<p:message for="province" display="text" />
+						<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_TOWNSHIP_PROVINCE_LABEL']}" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="provincePanelGroup">
+							<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="provincePanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{ManageTownshipActionBean.selectProvince()}" id="selectProvinceDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{ManageTownshipActionBean.returnProvince}" update="province" />
+									</p:commandButton>
+									<p:inputText id="province" readonly="#{ManageTownshipActionBean.township.province == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true"
+										value="#{ManageTownshipActionBean.township.province == null ? '' : ManageTownshipActionBean.township.province.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{ManageTownshipActionBean.township.setProvince(null)}" process="@this" update="province" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:message for="description" display="text" />
+						<h:outputText styleClass="input-label" value="#{label['MANAGE_TOWNSHIP_DESCRIPTION_LABEL']}" />
+						<p:inputTextarea autoResize="true" id="description" rows="4" value="#{ManageTownshipActionBean.township.description}">
+							<f:validateLength maximum="300" />
+						</p:inputTextarea>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:commandButton action="#{ManageTownshipActionBean.addNewTownship}" id="addBtn" rendered="#{ManageTownshipActionBean.createNew}" style="width: 80px;"
+					update="townshipEntryForm" value="#{label['COMMON_ADDNEW_BTN']}" />
+				<p:commandButton action="#{ManageTownshipActionBean.updateTownship}" id="editBtn" oncomplete="PF('townshipTable').filter();" style="width: 80px;"
+					rendered="#{!ManageTownshipActionBean.createNew}" update="townshipEntryForm" value="#{label['COMMON_UPDATE_BTN']}" />
+				<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			</h:panelGrid>
+			<h:panelGrid columns="1">
+				<h:commandLink action="#{ManageTownshipActionBean.createNewTownship}">
+					<p:ajax update="townShipPanel"/>
+					<h:panelGrid columns="2">
+						<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+						<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+					</h:panelGrid>
+				</h:commandLink>
+			</h:panelGrid>
+			<p:dataTable id="townshipTable" paginator="true" rowIndexVar="index"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+				rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageTownshipActionBean.townshipList}" var="township" widgetVar="townshipTable">
+				<p:column headerText="No." style="width:4%;">
+					<h:outputText value="#{index + 1}" />
+				</p:column>
+				<p:column filterBy="#{township.name}" filterStyle="width:60%" filterMatchMode="contains" headerText="#{label['MANAGE_TOWNSHIP_NAME_LABEL']}">
+					<h:outputText value="#{township.name}" />
+				</p:column>
+				<p:column filterBy="#{township.province}" filterStyle="width:60%" headerText="#{label['MANAGE_TOWNSHIP_PROVINCE_LABEL']}">
+					<h:outputText value="#{township.province}" />
+				</p:column>
+				<p:column style="width:4%;" headerText="Edit">
+					<p:commandButton styleClass="green-button" icon="fa fa-paint-brush" immediate="true" action="#{ManageTownshipActionBean.prepareUpdateTownship(township)}" resetValues="true"
+						update=":townshipEntryForm" />
+				</p:column>
+				<p:column style="width:4%;" headerText="Delete">
+					<p:commandButton styleClass="red-button" icon="fa fa-times" immediate="true" action="#{ManageTownshipActionBean.deleteTownship(township)}" oncomplete="PF('townshipTable').filter();"
+						update=":townshipEntryForm">
+						<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+		</p:confirmDialog>
+	</ui:define>
+</ui:composition>

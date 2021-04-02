@@ -1,0 +1,55 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Error Page" />
+	<ui:param name="headerRendered" value="false" />
+	<ui:define name="content">
+		<script>
+			function showErrorDetails() {
+				var x = document.getElementById("errorDetails");
+				var y = document.getElementById("errorOverviews");
+				if (x.style.display === "none") {
+					x.style.display = "block";
+					y.style.display = "none";
+				} else {
+					x.style.display = "none";
+					y.style.display = "block";
+				}
+			}
+		</script>
+		<style>
+#errorDetails {
+	
+}
+</style>
+		<div style="padding-left: 15px; padding-right: 15px;">
+			<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+			<h:form id="errorForm" enctype="multipart/form-data">
+				<div id="errorOverviews" style="display: block;">
+					<center style="margin-top: 20%; color: red;">
+						<font style="font-size: 25px;">Unexpected error occurred.</font>
+						<br />
+						<br />
+						<h:outputText style="font-size: 20px;" value="Please, inform to system administrator." />
+						<p:spacer width="15" />
+						<p:commandButton action="dashboard" value="Back To Home" />
+						<p:spacer width="15" />
+						<p:commandButton onclick="showErrorDetails();" value="Error Details" />
+					</center>
+				</div>
+				<div id="errorDetails" style="display: none;">
+					<h2>Error Message.</h2>
+					#{sessionScope['error-message']}
+					<br />
+					<h3>Stack Trace</h3>
+					<ul>
+						<ui:repeat value="#{sessionScope['error-stack']}" var="stack">
+							<li>#{stack.className} - #{stack.methodName} - #{stack.fileName} (#{stack.lineNumber})</li>
+						</ui:repeat>
+					</ul>
+					<p:separator style="height: 3px;" />
+					<p:commandButton action="dashboard" value="Back To Home" />
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,241 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['AGENT_COMISSION_PAYMENT']}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="agentCommissionListForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" />
+			<table style="width: 100%;">
+				<tr>
+					<td>
+						<h:outputText styleClass="input-label" value="#{label['ADDNEWMOTORPROPOSAL_AGENT_LABEL']}" />
+					</td>
+					<td>
+						<h:panelGrid columns="3" id="agentPanelGroup">
+							<p:inputText id="agent" readonly="true" style="width:200px;margin-left:-4px;"
+								value="#{AgentCommissionInvoiceActionBean.criteria.agent == null ? '' : AgentCommissionInvoiceActionBean.criteria.agent.fullName}" />
+							<p:commandLink actionListener="#{AgentCommissionInvoiceActionBean.selectAgent()}" id="selectAgentDialogLink" immediate="true">
+								<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+								<p:ajax event="dialogReturn" listener="#{AgentCommissionInvoiceActionBean.returnAgent}" update="agentPanelGroup" />
+							</p:commandLink>
+						</h:panelGrid>
+					</td>
+					<td>
+						<h:outputLabel for="startDate" value="Start Date" />
+					</td>
+					<td>
+						<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}" 
+							value="#{AgentCommissionInvoiceActionBean.criteria.startDate}">
+							<p:ajax global="false"/>
+						</p:calendar>
+					</td>
+					<td>
+						<h:outputLabel for="endDate" value="End Date" />
+					</td>
+					<td>
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}" 
+							value="#{AgentCommissionInvoiceActionBean.criteria.endDate}" >
+							<p:ajax global="true" />
+						</p:calendar>
+					</td>
+					<td>
+						<h:outputLabel for="insuranceType" value="Insurance Type" />
+					</td>
+					<td>
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuranceType" style="height:24px;width: 150px;"
+							value="#{AgentCommissionInvoiceActionBean.criteria.insuranceType}">
+							<f:selectItems value="#{AgentCommissionInvoiceActionBean.insuranceTypes}" />
+							<p:ajax event="valueChange" listener="#{AgentCommissionInvoiceActionBean.changeCurrency}" update=":agentCommissionListForm" />
+						</p:selectOneMenu>
+					</td>
+					<td>
+						<h:outputText styleClass="input-label" value="Currency Type" id="currencyTypeLable" rendered="#{AgentCommissionInvoiceActionBean.currencyrender}" />
+					</td>
+					<td>
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="currencyType" style="height:24px;width: 150px;"
+							value="#{AgentCommissionInvoiceActionBean.criteria.currency}" rendered="#{AgentCommissionInvoiceActionBean.currencyrender}">
+							<f:selectItems value="#{AgentCommissionInvoiceActionBean.currencyList}" itemValue="#{currency}" var="currency" itemLabel="#{currency.description}" />
+						</p:selectOneMenu>
+					</td>
+					<td>
+						<h:outputText for="SanctionNo" value="Sanction No" />
+					</td>
+					<td>
+         				<p:inputText id="SanctionNo" value="#{AgentCommissionInvoiceActionBean.criteria.sanctionNo}">
+         				<p:ajax global="false"/>
+         				</p:inputText>
+					</td>
+				</tr>
+				<tr height="10" />
+				<tr>
+					<td>
+						<p:commandButton style="width: 65px;" action="#{AgentCommissionInvoiceActionBean.filter}" process="@this" update=":agentCommissionListForm" value="Search">
+							<p:resetInput target="bankName,bankAccountNo" />
+						</p:commandButton>
+					</td>
+					<td>
+						<p:commandButton style="width: 65px;" action="#{AgentCommissionInvoiceActionBean.init()}" process="@this" update=":agentCommissionListForm" value="Reset">
+							<p:resetInput target="bankName,bankAccountNo" />
+						</p:commandButton>
+					</td>
+				</tr>
+				<tr height="10" />
+			</table>
+			<p:message for="varTable" id="varTableMsg" />
+			<p:dataTable id="varTable" selection="#{AgentCommissionInvoiceActionBean.selectedAgentCommissionList}" value="#{AgentCommissionInvoiceActionBean.agentCommissionList}" var="var"
+				rowKey="#{var.id}">
+				<p:columnGroup type="header">
+					<p:row>
+						<p:column width="5%" colspan="1" headerText=" Check" rowspan="2" />
+						<p:column colspan="4" headerText=" Agent" />
+						<p:column headerText=" Policy No" rowspan="2" style="width:180px;" />
+						<p:column colspan="1" headerText=" Commission" rowspan="2" style="width:100px;" />
+						<!-- <p:column colspan="1" headerText=" WithHoldingTax" rowspan="2" style="width:100px;" />
+						<p:column colspan="1" headerText=" Net Comission" rowspan="2" style="width:100px;" /> -->
+						<p:column colspan="1" headerText=" Reference Type" rowspan="2" style="width:70px;" />
+					</p:row>
+					<p:row>
+						<p:column headerText=" Code" style="width:130px;" />
+						<p:column headerText=" Name" style="width:130px;" />
+						<p:column headerText=" Licensed No" />
+						<p:column headerText=" Address" />
+					</p:row>
+				</p:columnGroup>
+				<p:column selectionMode="multiple" style="width:2%" />
+				<p:column>
+					<h:outputText value="#{var.agent.codeNo}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{var.agent.fullName}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{var.agent.liscenseNo}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{var.agent.fullAddress}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{AgentCommissionInvoiceActionBean.getPolicyNo(var)}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{var.commission}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<!-- <p:column>
+					<h:outputText value="#{var.withHoldingTax}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<h:outputText value="#{var.commission - var.withHoldingTax}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column> -->
+				<p:column>
+					<h:outputText value="#{var.referenceType.label}" />
+				</p:column>
+			</p:dataTable>
+			<p:outputPanel id="chequePanel">
+				<table style="width: 50%;">
+					<tr>
+						<td />
+						<td>
+							<p:message for="paymentChannel" id="paymentChannelMsg" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Payment Channel" />
+						</td>
+						<td>
+							<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="paymentChannel" value="#{AgentCommissionInvoiceActionBean.agentCommission.paymentChannel}">
+								<f:selectItems temLabel="#{c.label}" itemValue="#{c}" value="#{AgentCommissionInvoiceActionBean.paymentChannelSet}" var="c" />
+								<p:ajax event="valueChange" listener="#{AgentCommissionInvoiceActionBean.changePaymentChannel}" update=":agentCommissionListForm:chequePanel" />
+							</p:selectOneRadio>
+						</td>
+					</tr>
+					<p:column rendered="#{AgentCommissionInvoiceActionBean.isCheque}">
+						<tr>
+							<td />
+							<td>
+								<p:message for="bankName" id="bankMessage" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText styleClass="input-label" value="GGLI Account Bank " />
+							</td>
+							<td>
+								<h:panelGrid columns="3" id="bankPanelGroup">
+									<p:inputText id="bankName" readonly="#{AgentCommissionInvoiceActionBean.agentCommission.bank == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" required="true"
+										style="width:250px;margin-left:-4px;"
+										value="#{AgentCommissionInvoiceActionBean.agentCommission.bank== null ? '' : AgentCommissionInvoiceActionBean.agentCommission.bank.name}" />
+									<p:commandLink actionListener="#{AgentCommissionInvoiceActionBean.selectBranchBank()}" id="selectBankDialogLink" immediate="true">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" value="#{ApplicationSetting.searchIcon}" />
+										<p:ajax event="dialogReturn" listener="#{AgentCommissionInvoiceActionBean.returnBank}" update="bankPanelGroup" />
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="bankAccountNo" id="bankAccountNoMessage" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText styleClass="input-label" value="Bank Account No." />
+							</td>
+							<td>
+								<p:inputText id="bankAccountNo" required="true" style="width:250px;" value="#{AgentCommissionInvoiceActionBean.agentCommission.bankaccountno}" />
+							</td>
+						</tr>
+					</p:column>
+					<tr>
+						<td />
+						<td>
+							<p:message for="responsiblePerson" id="resPersonMsg" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText style="color:red;" value="*" />
+							<h:outputText styleClass="input-label" value="Responsible Person" />
+						</td>
+						<td>
+							<h:panelGrid columns="4" id="responsiblePersonPanel">
+								<p:inputText id="responsiblePerson" readonly="true" style="width:250px;margin-left:-4px;"
+									value="#{AgentCommissionInvoiceActionBean.responsiblePerson== null ? '' : AgentCommissionInvoiceActionBean.responsiblePerson.name}" />
+								<p:commandLink actionListener="#{AgentCommissionInvoiceActionBean.selectUser()}" id="selectUserDialogLink" immediate="true">
+									<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+									<p:ajax event="dialogReturn" listener="#{AgentCommissionInvoiceActionBean.returnUser}" update="responsiblePersonPanel" />
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+				</table>
+			</p:outputPanel>
+			<p:separator />
+			<h:panelGrid columns="5">
+				<p:commandButton action="#{AgentCommissionInvoiceActionBean.invoiceAgentCommission}" disabled="#{!AgentCommissionInvoiceActionBean.disablePrintBtn}" id="btnPaid"
+					update=":agentCommissionListForm" value="Paid" style="width: 65px;" />
+				<p:spacer width="10px;" />
+				<p:commandButton action="#{AgentCommissionInvoiceActionBean.reset()}" style="width: 65px;" process="@this" update=":agentCommissionListForm" id="btnReset" value="Reset" />
+				<p:spacer width="10px;" height="0px;" />
+				<p:commandButton action="#{AgentCommissionInvoiceActionBean.generateReport()}" disabled="#{AgentCommissionInvoiceActionBean.disablePrintBtn}" id="btnPrintPreview"
+					immediate="true" oncomplete="PF('pdfPreviewDialog').show()" update=":pdfPreviewForm" value="Print Preview" />
+			</h:panelGrid>
+		</h:form>
+		<!-- PDF Preview Form -->
+		<h:form enctype="multipart/form-data" id="pdfPreviewForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview (PDF)" height="500" hideEffect="fade" id="pdfPreviewDialog" resizable="false" showEffect="fade"
+				widgetVar="pdfPreviewDialog" width="1025">
+				<p:media height="475" player="pdf" value="#{AgentCommissionInvoiceActionBean.stream}" width="1000"  cache="false"/>
+			</p:dialog>
+		</h:form>
+		<!-- Select Bank -->
+	</ui:define>
+</ui:composition>

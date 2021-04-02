@@ -1,0 +1,604 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="uploadRootPath" value="/image" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<script type="text/javascript">
+									jQuery(document).ready(
+											function($) {
+												jQuery('[id$="_next"]').css(
+														'right', 1080);
+											});
+								</script>
+		<h:form enctype="multipart/form-data" id="medicalClaimHospSurveyEntryForm">
+			<table width="100%">
+				<tr>
+					<td>
+						<h:outputText styleClass="table-title" value="Add New Hospitalization Claim Survey"/>
+					</td>
+					<td align="center" width="70%">
+						<div style="z-index: 100; position: fixed; margin-top: -30px; width: 800px;">
+							<p:messages globalOnly="true" id="messages" showDetail="true"/>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<p:separator style="height:5px"/>
+			<div style="padding-left: 15px;">
+				<p:wizard flowListener="#{AddNewHospitalizedSurveyActionBean.onFlowProcess}" widgetVar="jwiz">
+					<p:tab id="proposalInfo" title="Hospitalization Claim Survey">
+						<p:panel header="Hospitalization Claim Survey" id="proposalInfoWizardPanel">
+							<table>
+								<tr>
+									<td colspan="2">
+										<table>
+											<tr>
+												<td style="width: 135px; height: 10px;">
+													<h:outputText value="#{label['MEDICALHOSP_CLAIMREQUEST_NO']}" styleClass="input-label" />
+												</td>
+												<td style="width: 250px;">
+													<h:panelGrid columns="2" id="medicalClaimMethodPanelGroup">
+														<p:inputText value="#{AddNewHospitalizedSurveyActionBean.hospitalizedClaimDTO.claimRequestId}" style="width:250px;margin-left:-4px;" id="medicalClaimMethod" />
+														<p:commandLink id="medicalClaimDetail" action="#{AddNewHospitalizedSurveyActionBean.loadWorkflow}" oncomplete="PF('medicalClaimInformDetailsDialog').show()"
+															update=":medicalClaimDetailsForm:medicalClaimDetailsPanel">
+															<h:graphicImage url="#{ApplicationSetting.detailIcon}" styleClass="#{ApplicationSetting.detailStyleClass}" />
+														</p:commandLink>
+													</h:panelGrid>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td valign="top"  style="background-color: #A2BAB3 " colspan="2">
+										<!-- Start Proposal Attachment File Upload -->
+										 <p:accordionPanel>
+        									<p:tab title="Proposal Attachment" >
+												<table>
+													<tr>
+														<td valign="top">
+															<p:fileUpload allowTypes="/(\.|\/)(gif|jpe?g|png)$/" fileUploadListener="#{AddNewHospitalizedSurveyActionBean.handleProposalAttachment}" id="proposalAttachment" mode="advanced" multiple="true" sizeLimit="3000000" update="proposalImageGrid"/>
+														</td>
+													</tr>
+													<tr>
+														<td align="center" valign="top">
+															<p:dataGrid columns="8" id="proposalImageGrid" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rows="16" value="#{AddNewHospitalizedSurveyActionBean.proposalUploadedFileList}" var="image">
+																<p:graphicImage style="width:120px;height:120px;" value="#{uploadRootPath}#{image}"/>
+																<br/>
+																<p:commandLink action="#{AddNewHospitalizedSurveyActionBean.removeProposalUploadedFile(image)}" id="deleteGroupLink" update="proposalImageGrid">
+																	<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}"/>
+																</p:commandLink>
+															</p:dataGrid>
+														</td>
+													</tr>
+												</table>
+											</p:tab>
+										</p:accordionPanel>
+									</td>
+								</tr>
+								<tr>
+									<td valign="top"  style="background-color: #A2BAB3" colspan="2">
+										<!-- Start Proposal Attachment File Upload -->
+										<p:accordionPanel rendered="#{AddNewHospitalizedSurveyActionBean.showEntry}"  style="background-color: transparent  !important;">
+											<p:tab title="Insured Person Attachment">
+												<table>
+													<tr>
+														<td valign="top">
+															<p:fileUpload allowTypes="/(\.|\/)(gif|jpe?g|png)$/" fileUploadListener="#{AddNewHospitalizedSurveyActionBean.handleInsurePersonAttachment}" id="insuredPersonAttachment" mode="advanced" multiple="true" rendered="#{AddNewHospitalizedSurveyActionBean.showEntry}" sizeLimit="3000000" update="insuredPersonImageGrid :medicalClaimHospSurveyEntryForm:personTable"/>
+														</td>
+													</tr>
+													<tr>
+														<td align="center" valign="top">
+															<p:dataGrid columns="8" id="insuredPersonImageGrid" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rendered="#{AddNewHospitalizedSurveyActionBean.showEntry}" rows="16" value="#{AddNewHospitalizedSurveyActionBean.personUploadedFileList}" var="image">
+																<p:graphicImage style="width:120px;height:120px;" value="#{uploadRootPath}#{image}"/>
+																<br/>
+																<p:commandLink action="#{AddNewHospitalizedSurveyActionBean.removeInsuPersonUploadedFile(image)}" id="deleteGroupLink" update="insuredPersonImageGrid :medicalClaimHospSurveyEntryForm:personTable">
+																	<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}"/>
+																</p:commandLink>
+															</p:dataGrid>
+														</td>
+													</tr>
+												</table>
+											</p:tab>
+										</p:accordionPanel>
+									</td>
+								</tr>
+							</table>
+							<table>
+							<tr>
+								<td valign="top">
+									<p:message for="personTable"/>
+									<p:dataTable id="personTable" rowStyleClass="#{AddNewHospitalizedSurveyActionBean.isEmptyAtt() ? 'rowWarnningGrey' : null}" style="width:100%" value="#{AddNewHospitalizedSurveyActionBean.insuredPersonDTOList}" var="person">
+										<p:column headerText="Name">
+											<h:outputText value="#{person.policyInsuredPersonDto.fullName}"/>
+										</p:column>
+										<p:column headerText="Occupation">
+											<h:outputText value="#{person.policyInsuredPersonDto.occupation.name}"/>
+										</p:column>
+										<p:column headerText="paymentTerm">
+											<h:outputText value="#{person.policyInsuredPersonDto.paymentTerm}"/>
+										</p:column>
+										<p:column headerText="Unit">
+											<h:outputText value="#{person.policyInsuredPersonDto.unit}">
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Date Of Birth">
+											<h:outputText value="#{person.policyInsuredPersonDto.dateOfBirth}">
+												<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}"/>
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Age (Next Year)">
+											<h:outputText value="#{person.policyInsuredPersonDto.ageForNextYear}"/>
+										</p:column>
+										<p:column headerText="Classification Of Health">
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter" value="#{person.clsOfHealth}">
+												<f:selectItem itemLabel="Select Class" />
+												<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{AddNewHospitalizedSurveyActionBean.classificationHealthList}" var="type"/>
+												<p:ajax event="valueChange" update=":medicalClaimHospSurveyEntryForm:personTable"/>
+											</p:selectOneMenu>
+										</p:column>
+										<p:column headerText="Product type">
+											<h:outputText value="#{person.policyInsuredPersonDto.product.name}"/>
+										</p:column>
+										
+										<p:column style="width:50px;">
+											<p:commandLink action="#{AddNewHospitalizedSurveyActionBean.preparePersonAttachment()}" immediate="true" update=":medicalClaimHospSurveyEntryForm">
+												<p:graphicImage styleClass="#{ApplicationSetting.attachStyleClass}" value="#{ApplicationSetting.attachIcon}"/>
+											</p:commandLink>
+										</p:column>
+										<p:column style="width:50px;">
+											<p:commandLink action="#{AddNewHospitalizedSurveyActionBean.preparePersonAttachmentDetails()}" immediate="true" oncomplete="PF('personAttachmentDeatil').show()" update=":medicalAttachmentDeatilForm :medicalClaimHospSurveyEntryForm">
+												<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}"/>
+											</p:commandLink>
+										</p:column>
+									</p:dataTable>
+								</td>
+							</tr>
+						</table>
+							
+						</p:panel>
+					</p:tab>
+					<p:tab id="QuestionInfo" title="Question Info" rendered="#{AddNewHospitalizedSurveyActionBean.questionAnswerDTOList.size() > 0}">
+						<p:panel header="Question Info" id="questionInfoWizardPanel" style="min-height:270px;" >
+							<table width="1000px">
+								<tr>
+									<td>
+										<p:dataTable id="questionTable"  style="width:100%" value="#{AddNewHospitalizedSurveyActionBean.questionAnswerDTOList}" var="answer">
+											<p:column  headerText="No." style="width:10px;">
+												<h:outputText value="#{answer.priority}" />
+											</p:column>
+											<p:column  headerText="Description">
+												<h:outputText style="color:red;" value="*"  rendered="#{answer.option}"/>
+												<h:outputText value="#{answer.description}" />
+											</p:column>
+											<p:column style="width:300px;" headerText="Answer">
+												<p:panel rendered="#{answer.inputType == 'NUMBER' ? true : false}" style="width:50%;border: none ;">
+													<table border="1" style="width:330px;" bordercolor="white">
+														<tr>
+															<td></td>
+															<td><p:message for="answerForNumber"/></td>
+															<td></td>
+														</tr>
+														<tr>
+															<td style="width: 80px;" align="right">
+																<h:outputText value="#{answer.frontLabel}" rendered="#{answer.frontLabel != null ? true : false}" />
+															</td>
+															<td style="width: 170px;" align="center">
+																<p:inputText id="answerForNumber" value="#{answer.resourceQuestionList[0].result}" required="#{answer.option}">
+																	<f:convertNumber type="number"/>
+																</p:inputText>
+															</td>
+															<td style="width: 80px;padding-left:1px;">
+																<h:outputText value="#{answer.behindLabel}" rendered="#{answer.behindLabel != null ? true : false}" />
+															</td>
+														</tr>
+													</table>
+												</p:panel>
+												
+												<p:panel rendered="#{answer.inputType == 'TEXT' ? true : false}" style="width:100%;border:none;">
+													<table border="1" style="width:330px;" bordercolor="white">
+														<tr>
+															<td></td>
+															<td><p:message for="answerForText"/></td>
+															<td></td>
+														</tr>
+														<tr>
+															<td style="width: 80px;" align="right">
+																<h:outputText value="#{answer.frontLabel}" rendered="#{answer.frontLabel != null ? true : false}" />
+															</td>
+															<td style="width: 170px;" align="center">
+																<p:inputText id="answerForText" value="#{answer.resourceQuestionList[0].result}" required="#{answer.option}" />
+															</td>
+															<td style="width: 80px;padding-left:1px;">
+																<h:outputText value="#{answer.behindLabel}" rendered="#{answer.behindLabel != null ? true : false}" />
+															</td>
+														</tr>
+													</table>
+												</p:panel>
+												<p:panel rendered="#{answer.inputType == 'DATE' ? true : false}" style="width:100%;border:none;" id="datePanel" >
+													<table border="1" style="width:330px;" bordercolor="white">
+														<tr>
+															<td></td>
+															<td><p:message for="answerForDate"/></td>
+															<td></td>
+														</tr>
+														<tr>
+															<td style="width: 80px;"></td>
+															<td style="width: 190px;" align="right">
+																<p:calendar style="margin-top:1px;" id="answerForDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" size="17" timeZone="#{ApplicationSetting.timeZone}" value="#{answer.answerDate}" required="#{answer.option}" readonly="#{facesContext.currentPhaseId.ordinal eq 6}" widgetVar="dateWidget">
+																	<p:ajax event="dateSelect" listener="#{AddNewHospitalizedSurveyActionBean.changeDate}" update=":medicalClaimHospSurveyEntryForm:questionTable:datePanel" />
+																</p:calendar>
+															</td>
+															<td style="padding-left :1px;width:60px;">
+																<p:commandLink action="#{AddNewHospitalizedSurveyActionBean.resetDate(answer)}" immediate="true" onclick="dateWidget.setDate(null)" rendered="#{!answer.option}">
+																	<p:graphicImage value="#{ApplicationSetting.deleteIcon}" styleClass="#{ApplicationSetting.deleteStyleClass}" />
+																</p:commandLink>   
+															</td>
+														</tr>
+													</table>
+												</p:panel>
+												
+												<p:panel id="selectOneMenuPanel" rendered="#{answer.inputType == 'SELECT_ONE_MENU' ? true : false}" style="border: none ;">
+													<table border="1" style="width:330px;" bordercolor="white">
+														<tr>
+															<td></td>
+															<td><p:message for="answerForOneMenu"/></td>
+														</tr>
+														<tr>
+															<td style="width: 50px;"></td>
+															<td>
+																<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="answerForOneMenu" style="height:24px;width: 200px;"
+																		value="#{answer.selectedResourceQAnsDTO}" required="#{answer.option}">
+																		<f:selectItem itemLabel="Select" />
+																		<f:selectItems value="#{answer.resourceQuestionList}" var="resourceQuestionAnswer" itemLabel="#{resourceQuestionAnswer.name}" itemValue="#{resourceQuestionAnswer}" />
+																		<p:ajax event="valueChange" listener="#{AddNewHospitalizedSurveyActionBean.changeResourceQuestion}" update=":medicalClaimHospSurveyEntryForm:questionTable:selectOneMenuPanel">
+																		</p:ajax>
+																</p:selectOneMenu>
+															</td>
+														</tr>
+													</table>
+												</p:panel>
+												
+												<p:panel id="selectManyMenuPanel" rendered="#{answer.inputType == 'SELECT_MANY_MENU' ? true : false}" style="border: none ;" >
+													<table border="1" style="width:330px;" bordercolor="white">
+														<tr>
+															<td></td>
+															<td><p:message for="answerForManyMenu"/></td>
+														</tr>
+														<tr>
+															<td style="width: 50px;"></td>
+															<td  valign="top">
+																<p:selectManyMenu id="answerForManyMenu" converter="omnifaces.SelectItemsConverter" showCheckbox="true"
+																	value="#{answer.selectedResourceQAnsDTOList}" required="#{answer.option}" style="background-color: #A0A0A0;height:110px;width:200px;margin-left:15px;">
+																	<f:selectItems value="#{answer.resourceQuestionList}" var="resourceQuestionAnswer" itemLabel="#{resourceQuestionAnswer.name}" itemValue="#{resourceQuestionAnswer}" />
+																	<p:ajax event="valueChange" listener="#{AddNewHospitalizedSurveyActionBean.changeResourceQuestionList}" update=":medicalClaimHospSurveyEntryForm:questionTable:selectManyMenuPanel">
+																	</p:ajax>
+																</p:selectManyMenu> 
+															</td>
+														</tr>
+													</table>
+												</p:panel>
+												
+												<p:panel id="selectOneRadioPanel" rendered="#{answer.inputType == 'SELECT_ONE_RADIO' ? true : false}" style="width: 50%;border: none ;">
+													<table border="1" style="width:250px;" bordercolor="white">
+														<tr>
+															<td></td>
+															<td><p:message for="answerForOneRadio"/></td>
+														</tr>
+														<tr>
+															<td style="width: 50px;"></td>
+															<td>
+																<p:selectOneRadio layout="pageDirection" converter="omnifaces.SelectItemsConverter" id="answerForOneRadio" style="height:24px;"
+																	value="#{answer.selectedResourceQAnsDTO}" required="#{answer.option}">
+																	<f:selectItems value="#{answer.resourceQuestionList}" var="resourceQuestionAnswer" itemLabel="#{resourceQuestionAnswer.name}" itemValue="#{resourceQuestionAnswer}" />
+																	<p:ajax event="valueChange" listener="#{AddNewHospitalizedSurveyActionBean.changeResourceQuestion}" update=":medicalClaimHospSurveyEntryForm:questionTable:selectOneRadioPanel">
+																	</p:ajax>
+																</p:selectOneRadio>
+															</td>
+														</tr>
+													</table>
+												</p:panel>
+												
+												
+												<p:panel id="selectManyCheckBoxPanel" rendered="#{answer.inputType == 'SELECT_MANY_CHECKBOX' ? true : false}" style="border: none ;">
+													<table border="1" style="width:250px;" bordercolor="white">
+														<tr>
+															<td></td>
+															<td><p:message for="answerForManyCheckbox"/></td>
+														</tr>
+														<tr>
+															<td style="width: 50px;"></td>
+															<td>
+																<p:selectManyCheckbox converter="omnifaces.SelectItemsConverter" id="answerForManyCheckbox" style="height:24px;"
+																	value="#{answer.selectedResourceQAnsDTOList}" layout="pageDirection" required="#{answer.option}">
+																	<f:selectItems value="#{answer.resourceQuestionList}" var="resourceQuestionAnswer" itemLabel="#{resourceQuestionAnswer.name}" itemValue="#{resourceQuestionAnswer}" />
+																	<p:ajax event="valueChange" listener="#{AddNewHospitalizedSurveyActionBean.changeResourceQuestionList}"
+																		update=":medicalClaimHospSurveyEntryForm:questionTable:selectManyCheckBoxPanel">
+																	</p:ajax>
+																</p:selectManyCheckbox>
+															</td>
+														</tr>
+													</table>
+												</p:panel>
+												
+												
+												<p:panel id="selectBooleanPanel" rendered="#{answer.inputType == 'BOOLEAN' ? true : false}" style="border: none ;">
+													<table border="1"  style="width:270px;" bordercolor="white">
+														<tr>
+															<td></td>
+															<td><p:message for="resourceQueAnsTwo"/></td>
+														</tr>
+														<tr>
+															<td style="width: 50px;"></td>
+															<td>
+																<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="resourceQueAnsTwo" style="width:130px;"
+																	value="#{answer.tureLabelValue}" required="#{answer.option}">
+																	<f:selectItem itemLabel="#{answer.tureLabel}" itemValue="true" />
+																	<f:selectItem itemLabel="#{answer.falseLabel}" itemValue="false" />
+																	<p:ajax event="valueChange" listener="#{AddNewHospitalizedSurveyActionBean.changeBooleanValue}" update=":medicalClaimHospSurveyEntryForm:questionTable:selectBooleanPanel" />
+																</p:selectOneRadio>
+															</td>
+														</tr>
+													</table>
+												</p:panel>
+											</p:column>
+										</p:dataTable>
+									</td>
+								</tr>	
+							</table>
+						</p:panel>
+					</p:tab>
+					<p:tab id="surveyInfo" title="Survey Info">
+						<p:panel header="Survey Info" id="surveyInfoWizardPanel" style="min-height:270px;">
+							<table>
+								<tr>
+									<td></td>
+									<td>
+										<fieldset style="margin-bottom: 10px;">
+											<legend>
+												<h:outputText styleClass="input-label" value="Survey Information"/>
+											</legend>
+											<table>
+												<tr>
+													<td>
+														<h:outputText value=""/>
+													</td>
+													<td style="width: 115px;">
+														<p:message for="surveyDate"/>
+													</td>
+												</tr>
+												<tr>
+													<td style="width: 115px;">
+														<h:outputText style="color:red;" value="*"/>
+														<h:outputText styleClass="input-label" value="Survey Date"/>
+													</td>
+													<td>
+														<p:calendar id="surveyDate" pattern="#{ApplicationSetting.dateFormat}"  showOn="button"  value="#{AddNewHospitalizedSurveyActionBean.hospitalizationClaimSurveyDTO.surveyDate}" readonlyInput="true">
+															<p:ajax event="dateSelect" process="@this"/>
+														</p:calendar>
+														
+													</td>
+												</tr>
+												
+												<tr>
+													<td>
+														<h:outputText value=""/>
+													</td>
+													<td style="width: 115px;">
+														<p:message for="medicalPlace"/>
+													</td>
+												</tr>
+												<tr>
+													<td style="width: 115px;">
+														<h:outputText styleClass="input-label" value="Medical Place"/>
+													</td>
+													<td>
+														<h:panelGrid columns="3" id="medcialPlaceGrid">
+															<p:inputText  id="medicalPlace"  readonly="true" style="width:250px;margin-left:-4px;" value="#{AddNewHospitalizedSurveyActionBean.hospitalizationClaimSurveyDTO.medicalPlace == null ? '' : AddNewHospitalizedSurveyActionBean.hospitalizationClaimSurveyDTO.medicalPlace.name}" />
+															<p:commandLink actionListener="#{AddNewHospitalizedSurveyActionBean.selectMedicalPlace()}"  id="selectMedicalPlaceDialogLink" immediate="true">
+																<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}"/>
+																<p:ajax event="dialogReturn" listener="#{AddNewHospitalizedSurveyActionBean.returnMedicalPlaceDialog}" update="medcialPlaceGrid mpAddress" />
+															</p:commandLink>
+														</h:panelGrid>
+													</td>
+												</tr>
+												<tr>
+													<td style="width: 115px;"  valign="top">
+														<h:outputText styleClass="input-label" value="Medical Place's Address" />
+													</td>
+													<td valign="top">
+														<p:inputTextarea autoResize="true" id="mpAddress" rows="7" readonly="true" style="width:250px;" value="#{AddNewHospitalizedSurveyActionBean.hospitalizationClaimSurveyDTO.medicalPlace == null ? '' : AddNewHospitalizedSurveyActionBean.hospitalizationClaimSurveyDTO.medicalPlace.address.permanentAddress}">
+															<f:validateLength maximum="8000"/>
+														</p:inputTextarea>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<h:outputText value=""/>
+													</td>
+													<td style="width: 115px;">
+														<p:message for="surveyTeam"/>
+													</td>
+												</tr>
+												<tr>
+													<td style="width: 115px;">
+														<h:outputText styleClass="input-label" value="Medical Officer Name"/>
+													</td>
+													<td>
+														<p:inputText id="surveyTeam" style="width:250px;" value="#{AddNewHospitalizedSurveyActionBean.hospitalizationClaimSurveyDTO.medicalOfficerName}">
+															<p:ajax event="valueChange" />
+															<f:validateLength maximum="300"/>
+														</p:inputText>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<h:outputText value=""/>
+													</td>
+													<td style="width: 115px;">
+														<p:message for="rankAndQualification"/>
+													</td>
+												</tr>
+												<tr>
+													<td style="width: 115px;" valign="top">
+														<h:outputText styleClass="input-label" value="Rank And Qulification"/>
+													</td>
+													<td>
+														<p:inputTextarea autoResize="true" id="rankAndQualification" rows="5" style="width:250px;" value="#{AddNewHospitalizedSurveyActionBean.hospitalizationClaimSurveyDTO.rankAndQualification}">
+															<p:ajax event="valueChange" />
+															<f:validateLength maximum="5000"/>
+														</p:inputTextarea>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<h:outputText value=""/>
+													</td>
+													<td style="width: 115px;">
+														<p:message for="address"/>
+													</td>
+												</tr>
+												<tr>
+													<td style="width: 115px;" valign="top">
+														<h:outputText styleClass="input-label" value="Address"/>
+													</td>
+													<td>
+														<p:inputTextarea autoResize="true" id="address" rows="5" style="width:250px;" value="#{AddNewHospitalizedSurveyActionBean.hospitalizationClaimSurveyDTO.address}" >
+															<p:ajax event="valueChange" />
+															<f:validateLength maximum="5000"/>
+														</p:inputTextarea>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<h:outputText value=""/>
+													</td>
+													<td style="width: 115px;">
+														<p:message for="township"/>
+													</td>
+												</tr>
+												<tr>
+													<td style="width: 115px;">
+														<h:outputText styleClass="input-label" value="Township"/>
+													</td>
+													<td>
+														<h:panelGrid columns="3" id="townshipPanelGroup">
+															<p:inputText id="township" readonly="true" style="width:250px;margin-left:-4px;" value="#{AddNewHospitalizedSurveyActionBean.hospitalizationClaimSurveyDTO.township == null ? '' : AddNewHospitalizedSurveyActionBean.hospitalizationClaimSurveyDTO.township.name}"/>
+															<p:commandLink actionListener="#{AddNewHospitalizedSurveyActionBean.selectTownship()}" id="selectTownshipDialogLink" immediate="true">
+																<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}"/>
+																<p:ajax event="dialogReturn" listener="#{AddNewHospitalizedSurveyActionBean.returnTownship}" update="townshipPanelGroup"/>
+															</p:commandLink>
+														</h:panelGrid>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<h:outputText value=""/>
+													</td>
+													<td style="width: 115px;">
+														<p:message for="ExternalMedicalExamination"/>
+													</td>
+												</tr>
+												<tr>
+													<td style="width: 115px;" valign="top">
+														<h:outputText styleClass="input-label" value="External Medical Examination"/>
+													</td>
+													<td>
+														<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="ExternalMedicalExamination" value="#{AddNewHospitalizedSurveyActionBean.hospitalizationClaimSurveyDTO.boardOrNot}"  >
+															<p:ajax event="valueChange" />
+															<f:selectItem itemLabel="Yes" itemValue="true"/>
+															<f:selectItem itemLabel="No" itemValue="false"/>
+														</p:selectOneRadio>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<h:outputText value=""/>
+													</td>
+													<td style="width: 115px;">
+														<p:message for="remark"/>
+													</td>
+												</tr>
+												<tr>
+													<td style="width: 115px;" valign="top">
+														<h:outputText styleClass="input-label" value="Remark"/>
+													</td>
+													<td>
+														<p:inputTextarea autoResize="true" id="remark" rows="5" style="width:250px;" value="#{AddNewHospitalizedSurveyActionBean.remark}">
+															<p:ajax event="valueChange" />
+															<f:validateLength maximum="8000"/>
+														</p:inputTextarea>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<h:outputText value=""/>
+													</td>
+													<td style="width: 115px;">
+														<p:message for="responsiblePerson"/>
+													</td>
+												</tr>
+												<tr>
+													<td style="width: 115px;">
+														<h:outputText style="color:red;" value="*"/>
+														<h:outputText styleClass="input-label" value="Responsible Person"/>
+													</td>
+													<td>
+														<h:panelGrid columns="3" id="responsiblePersonPanel">
+															<p:inputText id="responsiblePerson" readonly="#{AddNewHospitalizedSurveyActionBean.responsiblePerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"  style="width:250px;margin-left:-4px;" value="#{AddNewHospitalizedSurveyActionBean.responsiblePerson == null ? '' : AddNewHospitalizedSurveyActionBean.responsiblePerson.name}" required="true"/>
+															<p:commandLink actionListener="#{AddNewHospitalizedSurveyActionBean.selectUser()}" id="selectUserDialogLink" immediate="true">
+																<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}"/>
+																<p:ajax event="dialogReturn" listener="#{AddNewHospitalizedSurveyActionBean.returnUser}" update="responsiblePersonPanel"/>
+															</p:commandLink>
+														</h:panelGrid>
+													</td>
+												</tr>
+											</table>
+										</fieldset>
+										<p:commandButton action="#{AddNewHospitalizedSurveyActionBean.addNewSurvey()}" id="addBtn" update="medicalClaimHospSurveyEntryForm" value="#{label['COMMON_ADDNEW_BTN']}"  style="width:60px;"/>
+										<p:commandButton action="#{AddNewHospitalizedSurveyActionBean.generateReport()}" icon="ui-icon-print" id="pdfSingleBtn" update="medicalClaimHospSurveyEntryForm" value="Print Preview" rendered="false"/>
+									</td>
+								</tr>
+							 </table>
+							</p:panel>
+						</p:tab>
+					
+				</p:wizard>
+				<br/>
+				<p:commandButton action="dashboard" immediate="true" value="#{label['COMMON_CANCEL_BTN']}"/>
+			</div>
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}"/>
+			<br/>
+		</h:form>
+		
+		<h:form enctype="multipart/form-data" id="pdfPrintForm">
+			<p:dialog appendTo="@(body)" dynamic="true" height="550" id="medicalPDFDialogSingle" resizable="false" widgetVar="medicalPDFDialogSingle" width="1024">
+				<p:media height="550" id="pdfPlayer" player="pdf" value="#{AddNewHospitalizedSurveyActionBean.reportStream}" width="1000" cache="false"/>
+			</p:dialog>
+		</h:form>
+		
+		<h:form id="medicalAttachmentDeatilForm">
+			<p:dialog header="Attachment Details" height="350" hideEffect="explode" id="personAttachmentDeatil" resizable="false" showEffect="explode" widgetVar="personAttachmentDeatil" width="1000">
+				<p:dataGrid columns="7" id="proposalImageGrid" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rows="14" value="#{AddNewHospitalizedSurveyActionBean.personUploadedFileList}" var="image">
+					<h:outputLink onclick="window.open('#{uploadRootPath}#{image}');return false;">
+						<h:graphicImage style="width:120px;height:120px;" value="#{uploadRootPath}#{image}"/>
+					</h:outputLink>
+				</p:dataGrid>
+			</p:dialog>
+		</h:form>
+		
+		<!--  medicalClaimDetails Dialog -->
+		<h:form id="medicalClaimDetailsForm">
+			<p:dialog header="Medical Claim Detail" widgetVar="medicalClaimInformDetailsDialog" resizable="false" width="1000" height="563" showEffect="explode" hideEffect="explode"
+				id="medicalClaimInformDetailsDialog" appendTo="@(body)" dynamic="true">
+				<p:outputPanel id="medicalClaimDetailsPanel">
+					<ui:include src="/manage/medical/claim/hospitalization/medicalClaimInfoTemplate.xhtml">
+						<ui:param name="hospitalizedClaimDTO" value="#{AddNewHospitalizedSurveyActionBean.hospitalizedClaimDTO}" />
+						<ui:param name="workFlowList" value="#{AddNewHospitalizedSurveyActionBean.workFlowList}" />
+					</ui:include>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+		
+	</ui:define>
+</ui:composition>
+						

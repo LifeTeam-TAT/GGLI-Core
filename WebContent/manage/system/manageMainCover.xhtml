@@ -1,0 +1,122 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['MANAGE_MAINCOVER_TITLE']}"/>
+	<ui:param name="headerRendered" value="true"/>
+	<ui:define name="content">
+		<h:form id="mainCoverEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true"/>
+			<div style="padding-left: 15px;">
+				<h:outputText value="#{label['MANAGE_MAINCOVER_ADDNEW_LABEL']}" styleClass="table-title" style="padding-top:-10px;" rendered="#{ManageMainCoverActionBean.createNew}" />
+				<h:outputText value="#{label['MANAGE_MAINCOVER_EDIT_LABEL']}" styleClass="table-title" style="padding-top:-10px;" rendered="#{!ManageMainCoverActionBean.createNew}" />
+				<table>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 115px;">
+										<p:message for="name" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;">
+										<h:outputText value="*" style="color:red;" />
+										<h:outputText value="#{label['MANAGE_MAINCOVER_NAME_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{ManageMainCoverActionBean.mainCover.name}" style="width:250px;" id="name" required="true">
+											<f:validateLength maximum="50" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 115px;">
+										<p:message for="description" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;">
+										<h:outputText value="#{label['MANAGE_MAINCOVER_DESCRIPTION_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputTextarea value="#{ManageMainCoverActionBean.mainCover.description}" style="width:250px;" id="description" rows="5" autoResize="true">
+											<f:validateLength maximum="300" />
+										</p:inputTextarea>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p:commandButton id="addBtn" value="#{label['COMMON_ADDNEW_BTN']}" action="#{ManageMainCoverActionBean.addNewMainCover}" rendered="#{ManageMainCoverActionBean.createNew}"
+								update=":mainCoverEntryForm :mainCoverTableForm" style="width: 80px;" />
+							<p:commandButton id="editBtn" value="#{label['COMMON_UPDATE_BTN']}" action="#{ManageMainCoverActionBean.updateMainCover}" rendered="#{!ManageMainCoverActionBean.createNew}"
+								update="mainCoverEntryForm" oncomplete="PF('mainCoverTable.filter();" />
+						</td>
+					</tr>
+				</table>
+			</div>
+			<h:outputText value="#{label['COMMON_MSG_MANDATORY_LABEL']}" style="color:red;" />
+			<br />
+			<p:separator style="height:5px" />
+		</h:form>
+		<h:form id="mainCoverTableForm">
+			<h:commandLink action="#{ManageMainCoverActionBean.createNewMainCover}">
+				<h:panelGrid columns="2">
+					<h:graphicImage value="#{ApplicationSetting.addIcon}" styleClass="#{ApplicationSetting.addStyleClass}" />
+					<h:outputText value="#{label['COMMON_ADDNEW_LINK']}" styleClass="command-link" />
+				</h:panelGrid>
+			</h:commandLink>
+			<p:outputPanel id="listPanel">
+				<p:dataTable var="mainCover" value="#{ManageMainCoverActionBean.mainCoverList}" id="mainCoverTable" paginator="true" rows="10" style="width:100%;" widgetVar="mainCoverTable"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10, 15"
+					rowKey="index">
+					<p:column headerText="#{label['MANAGE_MAINCOVER_NAME_LABEL']}" filterMatchMode="contains" filterBy="#{mainCover.name}">
+						<h:outputText value="#{mainCover.name}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_MAINCOVER_DESCRIPTION_LABEL']}">
+						<h:outputText value="#{mainCover.description}" />
+					</p:column>
+					<p:column style="width:50px;">
+						<p:commandLink action="#{ManageMainCoverActionBean.prepareUpdateMainCover(mainCover)}" update=":mainCoverEntryForm">
+							<p:graphicImage value="#{ApplicationSetting.editIcon}" styleClass="#{ApplicationSetting.editStyleClass}" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width:50px;">
+						<p:commandLink oncomplete="PF('confirmationDialog').show()" id="deleteGroupLink">
+							<f:setPropertyActionListener target="#{ManageMainCoverActionBean.mainCover}" value="#{mainCover}" />
+							<p:graphicImage value="#{ApplicationSetting.deleteIcon}" styleClass="#{ApplicationSetting.deleteStyleClass}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		<h:form id="confiationForm">
+			<p:dialog header="#{label['MANAGE_MAINCOVER_DELETE_CONFIRM']}" widgetVar="confirmationDialog" resizable="false" width="250" height="100" showEffect="explode"
+				hideEffect="explode" id="confirmationDialog">
+				<h:panelGroup id="confirmationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage url="/images/warning.png" style="width:30px;height:30px;" />
+							</td>
+							<td valign="middle">
+								<h:outputText value="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" style="padding-top:-10px;text-decoration: none;font-size: 12px;" />
+							</td>
+						</tr>
+					</table>
+					<br />
+					<p:commandButton value="#{label['COMMON_YES_BTN']}" action="#{ManageMainCoverActionBean.deleteMainCover}" update=":mainCoverEntryForm"
+						oncomplete="PF('confirmationDialog').hide(); mainCoverTable.filter();" immediate="true" />
+					<p:commandButton value="#{label['COMMON_NO_BTN']}" oncomplete="PF('confirmationDialog').hide()" immediate="true" />
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

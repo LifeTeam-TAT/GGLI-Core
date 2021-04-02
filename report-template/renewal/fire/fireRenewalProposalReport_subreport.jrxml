@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fireProposalReport_subreport" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="356" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="1a0d5a35-7c44-43b9-af16-2ca7770253be">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="DefaultFont" isDefault="true" fontName="Zawgyi-One" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="HeaderOne" fontName="Zawgyi-One" fontSize="16" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="HeaderTwo" fontName="Zawgyi-One" fontSize="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="HeaderThree" fontName="Zawgyi-One" fontSize="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="08ac4f86-e56e-4d7c-9c34-bb7eb77084f8">
+		<field name="sumInsured" class="java.lang.Double"/>
+		<field name="buildingSumInsured" class="java.lang.Double"/>
+		<field name="furnitureSumInsured" class="java.lang.Double"/>
+		<field name="machinerySumInsured" class="java.lang.Double"/>
+		<field name="stockSumInsured" class="java.lang.Double"/>
+		<field name="buildingName" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="ListDataSource" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="test" class="java.util.Collection"/>
+	<summary>
+		<band height="57" splitType="Stretch">
+			<componentElement>
+				<reportElement uuid="599fac02-8c8d-4b99-9818-0190909db516" key="" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="356" height="57" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="Table Dataset 1" uuid="1026ce3d-320f-4ac6-a8ff-b06a33f9c33b">
+						<datasetParameter name="REPORT_DATA_SOURCE">
+							<datasetParameterExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{test})]]></datasetParameterExpression>
+						</datasetParameter>
+					</datasetRun>
+					<jr:column width="60" uuid="3fbe24aa-46da-4133-9e11-840232fb60e1">
+						<jr:detailCell style="table" height="57" rowSpan="1">
+							<box>
+								<topPen lineWidth="0.0"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0"/>
+								<rightPen lineWidth="0.0"/>
+							</box>
+							<textField isStretchWithOverflow="true" pattern="##,###.00" isBlankWhenNull="true">
+								<reportElement uuid="431519dc-7ca5-4ecb-b9e1-737c9b53d361" positionType="Float" stretchType="RelativeToTallestObject" x="4" y="4" width="56" height="51" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+								<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+								<textElement textAlignment="Left" verticalAlignment="Top">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{buildingName}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="61" uuid="1c700857-d8bb-4ed8-ba23-bca2fa391eb7">
+						<jr:detailCell style="table" height="57" rowSpan="1">
+							<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+								<topPen lineWidth="0.0"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0"/>
+								<rightPen lineWidth="0.0"/>
+							</box>
+							<textField isStretchWithOverflow="true" pattern="##,###.00" isBlankWhenNull="true">
+								<reportElement uuid="b6d22c33-5cf3-4345-b08d-797f3e1c5320" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="4" width="57" height="51" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+								<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+								<textElement textAlignment="Right" verticalAlignment="Top">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{buildingSumInsured}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="59" uuid="ffb5f8cf-8da1-4930-b2d6-b5ac75aec0cf">
+						<jr:detailCell style="table" height="57" rowSpan="1">
+							<box bottomPadding="0" rightPadding="0">
+								<topPen lineWidth="0.0"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0"/>
+								<rightPen lineWidth="0.0"/>
+							</box>
+							<textField isStretchWithOverflow="true" pattern="##,###.00" isBlankWhenNull="true">
+								<reportElement uuid="0a564c97-1e1c-4464-964e-b8991ebafd16" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="4" width="54" height="51" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+								<box bottomPadding="0" rightPadding="0"/>
+								<textElement textAlignment="Right" verticalAlignment="Top">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{furnitureSumInsured}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="58" uuid="2c9f8ef1-5ba5-499f-bb33-f0797d031ba6">
+						<jr:detailCell style="table" height="57" rowSpan="1">
+							<box bottomPadding="0" rightPadding="0">
+								<topPen lineWidth="0.0"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0"/>
+								<rightPen lineWidth="0.0"/>
+							</box>
+							<textField isStretchWithOverflow="true" pattern="##,###.00" isBlankWhenNull="true">
+								<reportElement uuid="12312496-073b-44fc-8196-c33971eba7ae" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="4" width="54" height="51" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+								<box bottomPadding="0" rightPadding="0"/>
+								<textElement textAlignment="Right" verticalAlignment="Top">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{machinerySumInsured}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="57" uuid="b25cf016-80da-4ce6-a711-0bcd8abe6f28">
+						<jr:detailCell style="table" height="57" rowSpan="1">
+							<box bottomPadding="0" rightPadding="0">
+								<topPen lineWidth="0.0"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0"/>
+								<rightPen lineWidth="0.0"/>
+							</box>
+							<textField isStretchWithOverflow="true" pattern="##,###.00" isBlankWhenNull="true">
+								<reportElement uuid="64de2eb9-19e3-45a7-883a-e4afbc464496" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="4" width="53" height="51" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+								<box bottomPadding="0" rightPadding="0"/>
+								<textElement textAlignment="Right" verticalAlignment="Top">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{stockSumInsured}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60" uuid="e69a5e26-995f-426f-9df2-36ee6f14ea44">
+						<jr:detailCell style="table" height="57" rowSpan="1">
+							<box bottomPadding="0" rightPadding="0">
+								<topPen lineWidth="0.0"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0"/>
+								<rightPen lineWidth="0.0"/>
+							</box>
+							<textField isStretchWithOverflow="true" pattern="##,###.00" isBlankWhenNull="true">
+								<reportElement uuid="a6bd4a7a-e68e-48b3-8f2e-d88e750ac01a" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="4" width="56" height="51" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+								<box bottomPadding="0" rightPadding="0"/>
+								<textElement textAlignment="Right" verticalAlignment="Top">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{sumInsured}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,204 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:cyc="http://www.cycdemo.com/java"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/common/commonLayout.xhtml">
+	<ui:param name="leftMenu" value="/common/reportLeft.xhtml" />
+	<ui:param name="rendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet"
+			type="text/css" />
+		<h:form id="accountList">
+			<div
+				style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<p:panelGrid columns="3"
+				columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4"
+				layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+					<h:outputText value="Entity" />
+					<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+						<div style="margin-top: -5px; margin-left: -5px;"
+							class="ui-g ui-fluid" id="entityPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search"
+									actionListener="#{AccountManualReceiptReportActionBean.selectEntity()}"
+									id="entityDialogLink" process="@this">
+									<p:ajax event="dialogReturn"
+										listener="#{AccountManualReceiptReportActionBean.returnEntity}"
+										update="entity branchPanelGroup salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="entity" readonly="true"
+									value="#{AccountManualReceiptReportActionBean.tlfCriteria.entity == null ? '' : AccountManualReceiptReportActionBean.tlfCriteria.entity.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times"
+									action="#{AccountManualReceiptReportActionBean.removeEntity}"
+									process="@this"
+									update="entity branchPanelGroup salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<p:outputLabel value="Start Date" />
+					<p:calendar
+						value="#{AccountManualReceiptReportActionBean.tlfCriteria.startDate}"
+						pattern="#{ApplicationSetting.dateFormat}" id="startDate"
+						timeZone="#{ApplicationSetting.timeZone}" showOn="button" />
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+					<h:outputText value="#{label['ADDNEWLIFEPROPOSAL_BRANCH_LABEL']}" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid"
+							jsf:id="branchPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search"
+									disabled="#{AccountManualReceiptReportActionBean.tlfCriteria.entity==null?true:false}"
+									actionListener="#{AccountManualReceiptReportActionBean.selectBranch()}"
+									id="selectBranchDialogLink" process="@this">
+									<p:ajax event="dialogReturn"
+										listener="#{AccountManualReceiptReportActionBean.returnBranch}"
+										update="branch salePontPanelGroup" />
+								</p:commandButton>
+								<p:inputText id="branch" readonly="true"
+									value="#{AccountManualReceiptReportActionBean.tlfCriteria.branch == null ? '' :AccountManualReceiptReportActionBean.tlfCriteria.branch.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times"
+									action="#{AccountManualReceiptReportActionBean.removeBranch()}"
+									process="@this"
+									disabled="#{AccountManualReceiptReportActionBean.tlfCriteria.entity==null?true:false}"
+									update="branch salePontPanelGroup" />
+							</div>
+						</div>
+					</p:panelGrid>
+					<p:outputLabel value="End Date" />
+					<p:calendar
+						value="#{AccountManualReceiptReportActionBean.tlfCriteria.endDate}"
+						pattern="#{ApplicationSetting.dateFormat}" id="endDate"
+						timeZone="#{ApplicationSetting.timeZone}" showOn="button" />
+				</p:panelGrid>
+
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText value="Sale Point " />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin: -6px -6px;" class="ui-g ui-fluid"
+							jsf:id="salePontPanelGroup">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search"
+									disabled="#{AccountManualReceiptReportActionBean.tlfCriteria.branch==null?true:false}"
+									actionListener="#{AccountManualReceiptReportActionBean.selectSalePoint()}"
+									id="selectSalePointDialogLink" process="@this">
+									<p:ajax event="dialogReturn"
+										listener="#{AccountManualReceiptReportActionBean.returnSalePoint}"
+										update="salesPoints" />
+								</p:commandButton>
+								<p:inputText id="salesPoints" readonly="true"
+									value="#{AccountManualReceiptReportActionBean.tlfCriteria.salePoint == null ? '' : AccountManualReceiptReportActionBean.tlfCriteria.salePoint.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times"
+									disabled="#{AccountManualReceiptReportActionBean.tlfCriteria.branch==null?true:false}"
+									action="#{AccountManualReceiptReportActionBean.tlfCriteria.setSalePoint(null)}"
+									process="@this" update="salesPoints" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panelGrid>
+
+			<p:commandButton value="Search"
+				action="#{AccountManualReceiptReportActionBean.SearchDTOList}"
+				update=":accountList :accountList:salePointTable" />
+			<p:commandButton value="Reset" style="width:120px"
+				action="#{AccountManualReceiptReportActionBean.resetCriteria}"
+				update="@form" />
+			<br />
+			<br />
+			<p:panel>
+					<p:dataTable id="salePointTable" lazy="true" paginator="true"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowIndexVar="rowIndex" rows="10" rowsPerPageTemplate="10,20,30"
+						value="#{AccountManualReceiptReportActionBean.accountManualReceiptDTOList}"
+						var="tlfDTO" style="width:100%;">
+						<f:facet name="header">
+							<div style="float: center;">
+								<h:commandLink
+									action="#{AccountManualReceiptReportActionBean.exportExcel}"
+									immediate="true">
+									<p:graphicImage
+										styleClass="#{ApplicationSetting.printStyleClass}"
+										value="/images/excel.png" />
+								</h:commandLink>
+							</div>
+							<p:message for="salePointTable" />
+						</f:facet>
+						<p:column headerText="No." width="4%">
+							<h:outputText value="#{rowIndex + 1}" />
+						</p:column>
+						<!-- ProductGroup's name as product name -->
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Product Name" />
+							</f:facet>
+							<h:outputText value="#{tlfDTO.acName}" />
+						</p:column>
+
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Amount" />
+							</f:facet>
+							<h:outputText value="#{tlfDTO.amount}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</h:outputText>
+						</p:column>
+
+						<!-- Received Date -->
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Received Date" />
+							</f:facet>
+							<h:outputText value="#{tlfDTO.receivedDate}">
+								<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}"
+									timeZone="#{ApplicationSetting.timeZone}" />
+							</h:outputText>
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Sale Point" />
+							</f:facet>
+							<h:outputText value="#{tlfDTO.salePointName}">
+								<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}"
+									timeZone="#{ApplicationSetting.timeZone}" />
+							</h:outputText>
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Branch" />
+							</f:facet>
+							<h:outputText value="#{tlfDTO.branchName}">
+								<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}"
+									timeZone="#{ApplicationSetting.timeZone}" />
+							</h:outputText>
+						</p:column>
+						<!-- Amount -->
+
+					</p:dataTable>
+			
+			</p:panel>
+		</h:form>
+		<h:form id="pdfPrintPreviewForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview"
+				width="1070" height="505" id="pdfPrintPreviewDialog"
+				resizable="false" widgetVar="pdfPrintPreviewDialog">
+				<p:media width="1050" height="500" player="pdf"
+					value="#{AccountManualReceiptReportActionBean.stream}"
+					cache="false" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

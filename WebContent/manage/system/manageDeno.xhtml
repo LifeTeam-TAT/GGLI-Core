@@ -1,0 +1,169 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['MANAGE_DENO_TITLE']}"/>
+	<ui:param name="headerRendered" value="true"/>
+	<ui:define name="content">
+		<h:form id="denoEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true"/>
+			<div style="padding-left: 15px;">
+				<h:outputText rendered="#{ManageDenoActionBean.createNew}" style="padding-top:-10px;" styleClass="table-title" value="#{label['MANAGE_DENO_ADDNEW_LABEL']}"/>
+				<h:outputText rendered="#{!ManageDenoActionBean.createNew}" style="padding-top:-10px;" styleClass="table-title" value="#{label['MANAGE_DENO_EDIT_LABEL']}"/>
+				<table>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td>
+										<h:outputText value=""/>
+									</td>
+									<td style="width: 115px;">
+										<p:message for="symbol"/>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;">
+										<h:outputText style="color:red;" value="*"/>
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_DENO_SYMBOL_LABEL']}"/>
+									</td>
+									<td>
+										<p:inputText id="symbol" required="true" style="width:250px;" value="#{ManageDenoActionBean.deno.symbol}">
+											<f:validateLength maximum="50"/>
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value=""/>
+									</td>
+									<td style="width: 115px;">
+										<p:message for="name"/>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;">
+										<h:outputText style="color:red;" value="*"/>
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_DENO_NAME_LABEL']}"/>
+									</td>
+									<td>
+										<p:inputText id="name" required="true" style="width:250px;" value="#{ManageDenoActionBean.deno.name}">
+											<f:validateLength maximum="50"/>
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value=""/>
+									</td>
+									<td style="width: 115px;">
+										<p:message for="d1"/>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;" valign="top">
+										<h:outputText style="color:red;" value="*"/>
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_DENO_D1_LABEL']}"/>
+									</td>
+									<td>
+										<p:inputText id="d1" style="width:250px;" value="#{ManageDenoActionBean.deno.d1}"/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value=""/>
+									</td>
+									<td style="width: 115px;">
+										<p:message for="d2"/>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;" valign="top">
+										<h:outputText style="color:red;" value="*"/>
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_DENO_D2_LABEL']}"/>
+									</td>
+									<td>
+										<p:inputText id="d2" required="true" style="width:250px;" value="#{ManageDenoActionBean.deno.d2}"/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value=""/>
+									</td>
+									<td style="width: 115px;">
+										<p:message for="currency"/>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;">
+										<h:outputText style="color:red;" value="*"/>
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_DENO_CURRENCY_LABEL']}"/>
+									</td>
+									<td>
+										<h:panelGrid columns="3" id="currencyPanelGroup">
+											<p:inputText id="currency" readonly="true" style="width:250px;margin-left:-4px;" value="#{ManageDenoActionBean.deno.currency == null ? '' : ManageDenoActionBean.deno.currency.currencyCode}"/>
+											<p:commandLink actionListener="#{ManageDenoActionBean.selectCurrency()}" id="selectCurrencyDialogLink" immediate="true">
+												<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}"/>
+												<p:ajax event="dialogReturn" listener="#{ManageDenoActionBean.returnCurrency}" update="currencyPanelGroup"/>
+											</p:commandLink>
+										</h:panelGrid>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p:commandButton action="#{ManageDenoActionBean.addNewDeno}" id="addBtn" rendered="#{ManageDenoActionBean.createNew}" style="width: 80px;" update="denoEntryForm :denoTableForm" value="#{label['COMMON_ADDNEW_BTN']}"/>
+							<p:commandButton action="#{ManageDenoActionBean.updateDeno}" id="editBtn" oncomplete="PF('denoTable.filter();" rendered="#{!ManageDenoActionBean.createNew}" update="denoEntryForm" value="#{label['COMMON_UPDATE_BTN']}"/>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}"/>
+			<br/>
+			<p:separator style="height:5px"/>
+		</h:form>
+		<h:form id="denoTableForm">
+			<h:commandLink action="#{ManageDenoActionBean.createNewDeno}">
+				<h:panelGrid columns="2">
+					<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}"/>
+					<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}"/>
+				</h:panelGrid>
+			</h:commandLink>
+			<p:outputPanel id="listPanel">
+				<p:dataTable id="denoTable" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10" rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageDenoActionBean.denoList}" var="deno" widgetVar="denoTable">
+					<p:column headerText="#{label['MANAGE_DENO_SYMBOL_LABEL']}">
+						<h:outputText value="#{deno.symbol}"/>
+					</p:column>
+					<p:column filterBy="#{deno.name}" filterMatchMode="contains" headerText="#{label['MANAGE_DENO_NAME_LABEL']}">
+						<h:outputText value="#{deno.name}"/>
+					</p:column>
+					<p:column headerText="#{label['MANAGE_DENO_D1_LABEL']}">
+						<h:outputText value="#{deno.d1}"/>
+					</p:column>
+					<p:column headerText="#{label['MANAGE_DENO_D2_LABEL']}">
+						<h:outputText value="#{deno.d2}"/>
+					</p:column>
+					<p:column headerText="#{label['MANAGE_DENO_CURRENCY_LABEL']}">
+						<h:outputText value="#{deno.currency.currencyCode}"/>
+					</p:column>
+					<p:column style="width:50px;" headerText="Edit" >
+						<p:commandLink action="#{ManageDenoActionBean.prepareUpdateDeno(deno)}" update=":denoEntryForm">
+							<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}"/>
+						</p:commandLink>
+					</p:column>
+					<p:column style="width:50px;" headerText="Delete">
+						<p:commandLink id="deleteGroupLink" oncomplete="PF('denoTable').filter()"  action="#{ManageDenoActionBean.deleteDeno(deno)}" update=":denoEntryForm :denoTableForm">
+								<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+							<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}"/>
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+	<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		 	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+		</p:confirmDialog>
+	
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,242 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fu="http://java.sun.com/jsf/fileUpload" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/inputText.css" rel="stylesheet" type="text/css" />
+		<h:form id="travelProposalDetailEntryForm">
+			<p:growl escape="false" globalOnly="true" life="8000" showDetail="true" />
+			<table width="100%">
+				<tr>
+					<td>
+						<h:outputText value="#{label['ADD_EXPRESS_DETAIL']}" style="background:#C2D6FF;" styleClass="ui-widget ui-widget-header ui-corner-all submenu-title" />
+					</td>
+				</tr>
+			</table>
+			<p:separator style="height:3px; margin-top:-1px;" />
+			<div style="padding-left: 15px; border-left: thick solid #C2D6FF; border-right: thick solid #C2D6FF;">
+				<p:panel id="travelPanel" style="border:none;">
+					<table>
+						<tr>
+							<td height="35px;">
+								<h:outputText value="Proposal No" />
+							</td>
+							<td>
+								<p:inputText id="proposalNO" value="#{AddNewTourActionBean.travelExpress.travelProposal.proposalNo}" style="width:200px;" />
+							</td>
+						</tr>
+						<tr>
+							<td height="35px;">
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="Express Name" />
+							</td>
+							<td>
+								<p:inputText id="expressName" value="#{AddNewTourActionBean.travelExpress.express.name}" style="width:200px;" />
+							</td>
+						</tr>
+						<tr>
+							<td height="35px;">
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="Tour " />
+							</td>
+							<td width="60%">
+								<h:panelGrid columns="3" id="occurrencePanelGroup">
+									<p:inputText id="occurrence" readonly="true" style="width:200px;margin-left:-4px;"
+										value="#{AddNewTourActionBean.tour.occurrence == null ? '' : AddNewTourActionBean.tour.occurrence.description}" />
+									<p:commandLink actionListener="#{AddNewTourActionBean.selectOccurrence()}" id="selectOccurrenceDialogLink" immediate="true">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										<p:ajax event="dialogReturn" listener="#{AddNewTourActionBean.returnOccurrence}" update="occurrencePanelGroup" />
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p:commandButton id ="addBtn" value="#{label['COMMON_ADDNEW_BTN']}" action="#{AddNewTourActionBean.addTour()}" update="travelPanel expressListPanel" 
+								rendered="#{AddNewTourActionBean.createNew}"/>
+								<p:commandButton id="editBtn" value="#{label['COMMON_UPDATE_BTN']}" action="#{AddNewTourActionBean.editTour()}" rendered="#{!AddNewTourActionBean.createNew}"
+								update="travelPanel expressListPanel"/>
+							</td>
+						</tr>
+					</table>
+				</p:panel>
+				<p:separator style="height:3px; margin-top:-1px;" />
+				<h:commandLink action="#{AddNewTourActionBean.createNewTour()}">
+					<f:ajax render="travelPanel" />
+					<p:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+				</h:commandLink>
+				<p:panel id="expressListPanel">
+					<p:dataTable id="tourTable" rowIndexVar="index" style="width:100%" value="#{AddNewTourActionBean.tourList}" var="tour" widgetVar="tourTable"
+						rowStyleClass="#{(index mod 2) eq 0 ? 'second-row' : 'first-row'}">
+						<p:column headerText="No.">
+							<h:outputText value="#{index + 1}" />
+						</p:column>
+						<p:column headerText="Tour">
+							<h:outputText value="#{tour.occurrence.description}" />
+						</p:column>
+						<p:column headerText="Number Of Passenger">
+							<h:outputText value="#{tour.travelExpress.noOfPassenger}" />
+						</p:column>
+						<p:column headerText="Number Of Unit">
+							<h:outputText value="#{tour.travelExpress.noOfUnit}" />
+						</p:column>
+						<p:column headerText="Setting">
+							<p:commandLink oncomplete="PF('expressDetailDialog').show()" action="#{AddNewTourActionBean.prepareExpressDetail(tour)}" update=":expressListForm">
+								<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+								<p:ajax event="dialogReturn" />
+							</p:commandLink>
+						</p:column>
+						<p:column style="width:50px;">
+							<p:commandLink action="#{AddNewTourActionBean.prepareEditTour(tour)}" update=":travelProposalDetailEntryForm:travelPanel">
+								<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+							</p:commandLink>
+						</p:column>
+						<p:column style="width:50px;">
+							<p:commandLink id="deleteTourLink" oncomplete="PF('confirmationDialog').show()" update=":travelProposalDetailEntryForm:expressListPanel">
+								<f:setPropertyActionListener target="#{AddNewTourActionBean.tour}" value="#{tour}" />
+								<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+							</p:commandLink>
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+				<br />
+				<p:commandButton value="Save" action="#{AddNewTourActionBean.updateTravelExpress()}" update=":travelProposalDetailEntryForm" />
+				<p:commandButton value="Back" action="expressDetail" immediate="true" update=":travelProposalDetailEntryForm" />
+			</div>
+		</h:form>
+		<p:dialog id="expressDetailDialog" widgetVar="expressDetailDialog">
+			<h:form id="expressListForm">
+				<p:growl escape="false" globalOnly="true" life="8000" showDetail="true" />
+				<p:separator style="height:3px; margin-top:-1px;" />
+				<p:panel id="expressDetailPanel" header="Add Express Detail" style="border:none;" styleClass="customTitleBar">
+					<table>
+						<tr>
+							<td height="35px;">
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="No. Of Passenger " />
+							</td>
+							<td>
+								<p:inputText value="#{AddNewTourActionBean.expressDetail.noOfPassenger}" style="width:200px;" />
+							</td>
+						</tr>
+						<tr>
+							<td height="35px;">
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="Registration No. " />
+							</td>
+							<td>
+								<p:inputText value="#{AddNewTourActionBean.expressDetail.registrationNo}" style="width:200px;" />
+							</td>
+						</tr>
+						<tr>
+							<td height="35px;">
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="Premium" />
+							</td>
+							<td>
+								<p:inputText value="#{AddNewTourActionBean.expressDetail.premium}" style="width:200px;" />
+							</td>
+						</tr>
+						<tr>
+							<td height="35px;">
+								<h:outputText value="Remark " />
+							</td>
+							<td>
+								<p:inputTextarea value="#{AddNewTourActionBean.expressDetail.remark}" style="width:200px;" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p:commandButton action="#{AddNewTourActionBean.addExpressDetail()}" update=":expressListForm" value="Add" process="@all" rendered="#{AddNewTourActionBean.createNew}"/>
+								<p:commandButton action="#{AddNewTourActionBean.editExpressDetail()}" update=":expressListForm" value="Update" process="@all" rendered="#{!AddNewTourActionBean.createNew}"/>
+							</td>
+						</tr>
+					</table>
+				</p:panel>
+				<p:separator style="height:3px; margin-top:-1px;" />
+				<p:panel id="expressDetailListPanel">
+					<p:dataTable id="expressDetailTable" rowIndexVar="index" style="width:100%;" value="#{AddNewTourActionBean.tour.expressDetailList}" var="expressDetail"
+						rowStyleClass="#{(index mod 2) eq 0 ? 'second-row' : 'first-row'}">
+						<p:column headerText="No.">
+							<h:outputText value="#{index + 1}" />
+						</p:column>
+						<p:column headerText="RegistrationNo.">
+							<h:outputText value="#{expressDetail.registrationNo}" />
+						</p:column>
+						<p:column headerText="No. of Passenger">
+							<h:outputText value="#{expressDetail.noOfPassenger}" />
+						</p:column>
+						<p:column headerText="Premium">
+							<h:outputText value="#{expressDetail.premium}" />
+						</p:column>
+						<p:column headerText="Commission">
+							<h:outputText value="#{expressDetail.commission}" />
+						</p:column>
+						<p:column headerText="Net Premium">
+							<h:outputText value="#{expressDetail.netPremium}" />
+						</p:column>
+						<p:column headerText="Remark">
+							<h:outputText value="#{expressDetail.remark}" />
+						</p:column>
+						<p:column style="width:50px;">
+							<p:commandLink action="#{AddNewTourActionBean.prepareEditExpressDetail(expressDetail)}" update=":expressListForm">
+								<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+							</p:commandLink>
+						</p:column>
+						<p:column style="width:50px;">
+							<p:commandLink id="deleteExpressDetailLink" oncomplete="PF('eDetailConfirmationDialog').show()">
+								<f:setPropertyActionListener target="#{AddNewTourActionBean.expressDetail}" value="#{expressDetail}" />
+								<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+							</p:commandLink>
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+				<br />
+				<p:commandButton action="#{AddNewTourActionBean.saveExpressDetailList()}" value="Save" oncomplete="PF('expressDetailDialog').hide()" update=":travelProposalDetailEntryForm" />
+			</h:form>
+		</p:dialog>
+		<!-- Confirmation Dialog -->
+		<h:form id="confiationForm">
+			<p:dialog header="#{label['MANAGE_TOUR_DELETE_CONFIRM']}" height="100" hideEffect="explode" id="confirmationDialog" resizable="false" showEffect="explode"
+				widgetVar="confirmationDialog" width="250">
+				<h:panelGroup id="confirmationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" />
+							</td>
+						</tr>
+					</table>
+					<br />
+					<p:commandButton action="#{AddNewTourActionBean.deleteTour()}" oncomplete="PF('confirmationDialog').hide();" update=":travelProposalDetailEntryForm:expressListPanel"
+						value="#{label['COMMON_YES_BTN']}" />
+					<p:commandButton immediate="true" oncomplete="PF('confirmationDialog').hide()" value="#{label['COMMON_NO_BTN']}" />
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+		<!-- eDetail Confirmation Dialog -->
+		<h:form id="eDetailConfiationForm">
+			<p:dialog header="#{label['MANAGE_TOUR_DELETE_CONFIRM']}" height="100" hideEffect="explode" id="eDetailConfirmationDialog" resizable="false" showEffect="explode"
+				widgetVar="eDetailConfirmationDialog" width="250">
+				<h:panelGroup id="confirmationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" />
+							</td>
+						</tr>
+					</table>
+					<br />
+					<p:commandButton action="#{AddNewTourActionBean.deleteExpressDetail()}" oncomplete="PF('eDetailConfirmationDialog').hide();" update=":expressListForm"
+						value="#{label['COMMON_YES_BTN']}" />
+					<p:commandButton immediate="true" oncomplete="PF('eDetailConfirmationDialog').hide()" value="#{label['COMMON_NO_BTN']}" />
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

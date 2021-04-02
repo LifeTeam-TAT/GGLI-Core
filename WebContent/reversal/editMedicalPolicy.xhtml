@@ -1,0 +1,1895 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{EditMedicalPolicyActionBean.getPageHeader()}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<p:messages globalOnly="true" id="messages" showDetail="true" />
+		<style>
+.highlight {
+	background: #fca752 !important;
+}
+</style>
+		<h:form enctype="multipart/form-data" id="medicalProposalEntryForm">
+			<p:wizard flowListener="#{EditMedicalPolicyActionBean.onFlowProcess}" widgetVar="wiz">
+				<p:tab title="Proposal Info" id="proposalTab">
+					<p:panel style="min-height:400px;" id="PolicyInfoWizardPanel">
+						<table style="width: 100%;">
+							<tr>
+								<td style="width: 155px;">
+									<h:outputText style="color:red;" value="*" rendered="#{!EditMedicalPolicyActionBean.microHealthRender}" />
+									<h:outputText value="Product Type" rendered="#{!EditMedicalPolicyActionBean.microHealthRender}" />
+								</td>
+								<td>
+									<p:selectOneRadio value="#{EditMedicalPolicyActionBean.individualProduct}" converter="omnifaces.SelectItemsConverter" id="productType" style="width: 200px;"
+										rendered="#{!EditMedicalPolicyActionBean.microHealthRender}" disabled="#{EditMedicalPolicyActionBean.oldPolicy}">
+										<p:ajax listener="#{EditMedicalPolicyActionBean.loadData()}" />
+										<f:selectItem itemLabel="Individual" itemValue="true" />
+										<f:selectItem itemLabel="Group" itemValue="false" />
+									</p:selectOneRadio>
+									<p:message for="productType" display="text" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText style="color:red;" value="*" />
+									<h:outputText value="#{label['SALEPERSON_LABEL']}" />
+								</td>
+								<td>
+<!-- 									<p:selectOneRadio converter="omnifaces.SelectItemsConverter" id="saleUserType" style="width: 280px;" value="#{EditMedicalPolicyActionBean.userType}"
+										disabled="#{EditMedicalPolicyActionBean.oldPolicy}">
+										<f:selectItem itemLabel="Agent" itemValue="AGENT" />
+										<f:selectItem itemLabel="Saleman" itemValue="SALEMAN" />
+										<f:selectItem itemLabel="Referral" itemValue="REFERRAL" />
+										<p:ajax event="valueChange" listener="#{EditMedicalPolicyActionBean.changeSaleEvent}" update=":medicalProposalEntryForm:salePersonPanelGroup" />
+									</p:selectOneRadio>
+									<p:message for="userType" id="MsgUserType" display="text" /> -->
+										<p:selectOneMenu  disabled="#{EditMedicalPolicyActionBean.oldPolicy}" id="saleUserType" converter="omnifaces.SelectItemsConverter"
+											value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.saleChannelType}" required="true">
+											<f:selectItem itemLabel=" -- Select SaleChannelType --" noSelectionOption="true"  itemDisabled="true"/>
+											<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditMedicalPolicyActionBean.saleChannelType}" var="type" />
+											<p:ajax event="valueChange" listener="#{EditMedicalPolicyActionBean.changeSaleEvent}" update="@form:PolicyInfoWizardPanel" />
+										</p:selectOneMenu>
+										<br />
+													
+										<c:if test="#{EditMedicalPolicyActionBean.medicalPolicyDTO.saleChannelType ne 'BANCASSURANCE'}">
+												<p:message for="userType" />
+									<h:panelGrid columns="3" id="salePersonPanelGroup">
+										<p:inputText id="userType" readonly="#{EditMedicalPolicyActionBean.medicalPolicyDTO.salePersonName == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+											 style="width:250px;margin-left:-4px;" value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.salePersonName}" />
+										<p:watermark for="userType" value="Select Sale Person" />
+										<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectAgent()}" id="selectAgentDialogLink" immediate="true"
+											rendered="#{EditMedicalPolicyActionBean.userType eq 'AGENT'}" disabled="#{EditMedicalPolicyActionBean.oldPolicy}">
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnAgent}" update="salePersonPanelGroup MsgUserType" />
+										</p:commandLink>
+										<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectSaleMan()}" id="selectSaleManDialogLink" immediate="true"
+											rendered="#{EditMedicalPolicyActionBean.userType eq 'SALEMAN'}" disabled="#{EditMedicalPolicyActionBean.oldPolicy}">
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnSaleMan}" update="salePersonPanelGroup MsgUserType" />
+										</p:commandLink>
+										<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectReferral()}" id="selectReferralDialogLink" immediate="true"
+											rendered="#{EditMedicalPolicyActionBean.userType eq 'REFERRAL'}" disabled="#{EditMedicalPolicyActionBean.oldPolicy}">
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnReferral}" update="salePersonPanelGroup MsgUserType" />
+										</p:commandLink>
+									</h:panelGrid>
+										</c:if>
+								</td>
+							</tr>
+<!-- 							<tr>
+								<td style="height: 50px;" />
+								<td>
+									<h:panelGrid columns="3" id="salePersonPanelGroup">
+										<p:inputText id="userType" readonly="#{EditMedicalPolicyActionBean.medicalPolicyDTO.salePersonName == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+											 style="width:250px;margin-left:-4px;" value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.salePersonName}" />
+										<p:watermark for="userType" value="Select Sale Person" />
+										<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectAgent()}" id="selectAgentDialogLink" immediate="true"
+											rendered="#{EditMedicalPolicyActionBean.userType eq 'AGENT'}" disabled="#{EditMedicalPolicyActionBean.oldPolicy}">
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnAgent}" update="salePersonPanelGroup MsgUserType" />
+										</p:commandLink>
+										<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectSaleMan()}" id="selectSaleManDialogLink" immediate="true"
+											rendered="#{EditMedicalPolicyActionBean.userType eq 'SALEMAN'}" disabled="#{EditMedicalPolicyActionBean.oldPolicy}">
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnSaleMan}" update="salePersonPanelGroup MsgUserType" />
+										</p:commandLink>
+										<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectReferral()}" id="selectReferralDialogLink" immediate="true"
+											rendered="#{EditMedicalPolicyActionBean.userType eq 'REFERRAL'}" disabled="#{EditMedicalPolicyActionBean.oldPolicy}">
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnReferral}" update="salePersonPanelGroup MsgUserType" />
+										</p:commandLink>
+									</h:panelGrid>
+								</td>
+							</tr> -->
+			
+							<tr>
+								<td />
+								<td>
+									<p:message for="branch" id="MsgBranch" display="text" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText value="#{label['ADDNEWLIFEPROPOSAL_BRANCH_LABEL']}" />
+								</td>
+								<td>
+									<h:panelGrid columns="3" id="branchPanelGroup">
+										<p:inputText id="branch" readonly="true" style="width:250px;margin-left:-4px;"
+											value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.branch == null ? '' : EditMedicalPolicyActionBean.medicalPolicyDTO.branch.name}" />
+										<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectBranch()}" id="selectBranchDialogLink" immediate="true" disabled="#{EditMedicalPolicyActionBean.oldPolicy}">
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnBranch}" update="branchPanelGroup MsgBranch" />
+										</p:commandLink>
+									</h:panelGrid>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText style="color: red;" value="*" />
+									<h:outputText value="#{label['ADDNEWLIFEROPOSAL_PAYMENTTYPE_LABEL']}" />
+								</td>
+								<td>
+									<h:panelGrid columns="3" id="paymentTypePanelGroup">
+										<p:inputText id="paymentType" style="width:250px;margin-left:-4px;margin-right: 3px;" readonly="true" required="true"
+											value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.paymentType == null ? '' : EditMedicalPolicyActionBean.medicalPolicyDTO.paymentType.description}" />
+										<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectPaymentType()}" id="selectPaymentTypeDialogLink" immediate="true"
+											disabled="#{EditMedicalPolicyActionBean.oldPolicy}">
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnPaymentType}" update="paymentTypePanelGroup" />
+										</p:commandLink>
+									</h:panelGrid>
+								</td>
+							</tr>
+							
+							<tr>
+								<td>
+									<h:outputText style="color: red;" value="*" />
+									<h:outputText value="Sale Point" />
+								</td>
+								<td>
+									<h:panelGrid columns="3" id="salePontPanelGroup">
+										<p:inputText id="salePoint" style="width:250px;margin-left:-4px;margin-right: 3px;" readonly="true" required="true"
+											value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.salePoint == null ? '' : EditMedicalPolicyActionBean.medicalPolicyDTO.salePoint.name}" />
+										<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectSalePoint()}" id="selectSalePointDialogLink" immediate="true"
+											disabled="#{EditMedicalPolicyActionBean.oldPolicy}">
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnSalePoint}" update="salePontPanelGroup" />
+										</p:commandLink>
+									</h:panelGrid>
+								</td>
+							</tr>
+
+										<c:if test="#{EditMedicalPolicyActionBean.medicalPolicyDTO.medProDTO.saleChannelType eq 'BANCASSURANCE'}">
+										<tr>
+											<td>
+												<p:message for="channel" display="text" />
+											</td>
+										</tr>							
+										<tr>
+											<td>
+												<h:outputText styleClass="input-label mandatory" id="channellabel" value="Channel" />					
+											</td>
+											<td> 
+												<h:panelGrid columns="3" id="channelPanelGroup"   style="height:24px;width: 258px;"  >
+													<p:inputText id="channel"  required="true" style="width:250px;margin-left:-4px;"
+															readonly="#{EditMedicalPolicyActionBean.bancaassurancePolicy.channel == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+															value="#{EditMedicalPolicyActionBean.bancaassurancePolicy.channel == null ? '' : EditMedicalPolicyActionBean.bancaassurancePolicy.channel.name}" />
+													<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectChannels()}" id="selectChannelDialogLink" immediate="true" process="@this" disabled="true">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnChannel}" update="channel" />
+													</p:commandLink>	
+											   </h:panelGrid>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText styleClass="input-label mandatory" value="BancaBranch"    />								
+											</td>
+											<td> 
+												<h:panelGrid columns="3" id="bancaBranchPanelGroup"   style="height:24px;width: 258px;" >
+														<p:inputText id="bancaBranch"  required="true" style="width:250px;margin-left:-4px;"
+															readonly="#{EditMedicalPolicyActionBean.bancaassurancePolicy.bancaBranch == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+															value="#{EditMedicalPolicyActionBean.bancaassurancePolicy.bancaBranch == null ? '' : EditMedicalPolicyActionBean.bancaassurancePolicy.bancaBranch.name}" />
+														<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectBancaBranch()}" id="selectBancaBranchlink" immediate="true" process="@this" disabled="true">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnBancaBranch}" update="bancaBranch" />
+													</p:commandLink>					
+											    </h:panelGrid>
+											</td>
+										</tr>
+										
+										<tr>
+											<td>
+												<h:outputText styleClass="input-label mandatory" value="Banca Method"   />									
+											</td>
+											<td> 
+												<p:selectOneMenu converter="omnifaces.SelectItemsConverter"   style="width:250px;margin-left:-4px;"  required="true" id="bancaMethod" value="#{EditMedicalPolicyActionBean.bancaassurancePolicy.bancaMethod}" disabled="true">
+													<f:selectItem itemLabel="" noSelectionOption="true" />
+													<f:selectItems value="#{EditMedicalPolicyActionBean.bancaMethodList}" var="bancaMethod" itemLabel="#{bancaMethod.name}" itemValue="#{bancaMethod}" />
+								    				<p:ajax event="valueChange" update="PolicyInfoWizardPanel" />
+												</p:selectOneMenu>
+											</td>
+										</tr> 
+										
+										<c:if test="#{AddNewLifeProposalActionBean.bancaassuranceProposal.bancaMethod.name eq 'REFERRAL'}">
+										<tr>
+											<td>
+												<h:outputText styleClass="input-label mandatory" value="BancaBrm"    />
+											</td>							
+											<td> 
+												<h:panelGrid columns="3" id="bancaBrmPanelGroup"   style="height:24px;width: 258px;">
+														<p:inputText id="bancaBrm"  required="true" style="width:250px;margin-left:-4px;"
+															readonly="#{EditMedicalPolicyActionBean.bancaassurancePolicy.bancaBRM == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+															value="#{EditMedicalPolicyActionBean.bancaassurancePolicy.bancaBRM == null ? '' : EditMedicalPolicyActionBean.bancaassurancePolicy.bancaBRM.name}" />
+														<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectBancaBrm()}" id="selectBancaBRMDialogLink" immediate="true" process="@this" disabled="true">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnBancaBrm}" update="bancaBrm" />
+														</p:commandLink>		
+												</h:panelGrid>
+											</td> 
+										</tr>
+										
+										<tr>
+											<td>
+												<h:outputText styleClass="input-label mandatory" value="Banca LIC"   style="height:24px;width: 258px;"/>									
+											</td>
+			 								<td> 
+												<h:panelGrid columns="3" id="bancaLICPanelGroup"  >
+														<p:inputText id="bancaLIC"  required="true" style="width:250px;margin-left:-4px;"
+															readonly="#{EditMedicalPolicyActionBean.bancaassurancePolicy.bancaLIC == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+															value="#{EditMedicalPolicyActionBean.bancaassurancePolicy.bancaLIC == null ? '' : EditMedicalPolicyActionBean.bancaassurancePolicy.bancaLIC.name}" />
+														<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectBancaLIC()}" id="selectBancaCLIDialogLink" immediate="true" process="@this" disabled="true">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnBancaLIC}" update="bancaLIC" />
+														</p:commandLink>		
+												</h:panelGrid>
+											</td> 
+										</tr>	
+										
+										<tr>
+											<td>
+												 <h:outputText value="Banca Refferal"  id="bancaRefferalLabel"  />							
+											</td>
+											<td> 
+												<h:panelGrid columns="3" id="bancaReferralPanelGroup" style="height:24px;width: 258px;" >
+														<p:inputText id="bancaReferral"  required="true" style="width:250px;margin-left:-4px;"
+														readonly="#{EditMedicalPolicyActionBean.bancaassurancePolicy.bancaRefferal == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+														value="#{EditMedicalPolicyActionBean.bancaassurancePolicy.bancaRefferal == null ? '' : EditMedicalPolicyActionBean.bancaassurancePolicy.bancaRefferal.name}" />
+														<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectBancaReferral()}" id="selectBancaReferralDialogLink" immediate="true" process="@this" disabled="true" >
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnBancaRefferal}" update="bancaReferral" />
+														</p:commandLink>		
+												</h:panelGrid>
+											</td>
+										</tr>
+										</c:if>
+										
+										<c:if test="#{EditMedicalPolicyActionBean.bancaassurancePolicy.bancaMethod.name eq 'OTC'}">
+										<tr>
+											<td>
+												 <h:outputText value="Banca Staff"   />							
+											</td>
+											<td> 
+												<h:panelGrid columns="3" id="bancaReferralPanelGroup" style="height:24px;width: 258px;" >
+														<p:inputText id="bancaStaff"  required="true" style="width:250px;margin-left:-4px;"
+														readonly="#{EditMedicalPolicyActionBean.bancaassurancePolicy.bancaRefferal == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+														value="#{EditMedicalPolicyActionBean.bancaassurancePolicy.bancaRefferal == null ? '' : EditMedicalPolicyActionBean.bancaassurancePolicy.bancaRefferal.name}" />
+														<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectBancaReferralByOTC()}" id="selectBancaReferralDialogLink" immediate="true" process="@this" disabled="true" >
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnBancaRefferal}" update="bancaStaff" />
+														</p:commandLink>		
+												</h:panelGrid>
+											</td>
+										</tr>
+										 </c:if>
+									</c:if>
+						</table>
+					</p:panel>
+				</p:tab>
+				<p:tab title="Customer Info" id="customerTab">
+					<p:panel id="customerRegTab">
+						<table style="width: 100%;">
+							<tr>
+								<td style="width: 155px;">
+									<h:outputText style="color: red;" value="*" />
+									<h:outputText styleClass="input-label" value="Customer Type" />
+								</td>
+								<td>
+									<p:selectOneRadio style="width: 200px;" converter="omnifaces.SelectItemsConverter" id="customerType" styleClass="input-label"
+										value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customerType}" required="true" disabled="#{EditMedicalPolicyActionBean.oldPolicy}">
+										<f:selectItems value="#{EditMedicalPolicyActionBean.customerTypes}" var="cusType" itemLabel="#{cusType.label}" itemValue="#{cusType}" />
+										<p:ajax event="valueChange" listener="#{EditMedicalPolicyActionBean.changeCustomerType}"
+											update=":medicalProposalEntryForm:customerRegTab,existingCustomerPanelGroup,customeInfoPanel" />
+									</p:selectOneRadio>
+								</td>
+							</tr>
+							<tr>
+								<td />
+								<td>
+									<p:message for="customerRegcustomer" display="text" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText value="#{label['EXISTING_CUSTOMER_LABEL']}" />
+								</td>
+								<td colspan="3">
+									<h:panelGrid columns="4" id="existingCustomerPanelGroup">
+										<p:inputText readonly="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customerName == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+											style="width:250px;margin-left:-4px;" styleClass="myanmar-label" id="customerRegcustomer" value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customerName}"
+											required="true" />
+										<p:watermark for="customerRegcustomer" value="Select Customer" />
+										<p:commandLink immediate="true" actionListener="#{EditMedicalPolicyActionBean.selectCustomer()}" id="selectExistCustomerLink" process="@this"
+											disabled="#{EditMedicalPolicyActionBean.oldPolicy}" rendered="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customerType eq 'INDIVIDUALCUSTOMER' }">
+											<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnCustomer}" update="customerRegTab" />
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										</p:commandLink>
+										<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectOrganization()}" id="selectOrganizationDialogLink" immediate="true"
+											rendered="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customerType eq 'CORPORATECUSTOMER' }" process="@this">
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnOrganization}" update="customerRegTab" />
+										</p:commandLink>
+										<p:commandLink immediate="true" action="#{EditMedicalPolicyActionBean.resetCustomer()}" update="customerRegTab" process="@this"
+											disabled="#{EditMedicalPolicyActionBean.oldPolicy}">
+											<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+										</p:commandLink>
+									</h:panelGrid>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4">
+									<p:separator />
+								</td>
+							</tr>
+							<p:panel id="customeInfoPanel" rendered="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customerType eq 'INDIVIDUALCUSTOMER' }">
+								<tr>
+									<td />
+									<td>
+										<p:message for="customerRegInit" display="text" />
+									</td>
+									<td />
+									<td>
+										<p:message for="customerRegidNo" display="text" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="*" style="color:red;" />
+										<h:outputText value="Initial" />
+									</td>
+									<td>
+										<p:inputText value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.initialId}" id="customerRegInit" style="width:250px;"
+											disabled="#{EditMedicalPolicyActionBean.existingCustomer}" readonly="#{EditMedicalPolicyActionBean.oldPolicy}" />
+									</td>
+									<td>
+										<h:panelGrid>
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="custRegidType" value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.idType}"
+												disabled="#{EditMedicalPolicyActionBean.existingCustomer or EditMedicalPolicyActionBean.oldPolicy}">
+												<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditMedicalPolicyActionBean.idTypes}" var="type" />
+												<p:ajax event="valueChange" listener="#{EditMedicalPolicyActionBean.changeIdType}" update="customerIdNoPanelGrid" />
+											</p:selectOneMenu>
+										</h:panelGrid>
+									</td>
+									<td>
+										<h:panelGrid columns="5" id="customerIdNoPanelGrid" style="margin-left:-4px;">
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="stateCode" value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.stateCode}"
+												disabled="#{EditMedicalPolicyActionBean.existingCustomer or EditMedicalPolicyActionBean.oldPolicy}" rendered="#{EditMedicalPolicyActionBean.nrcCustomer}" style="width:50px;">
+												<f:selectItem itemLabel="---" noSelectionOption="true" />
+												<f:selectItems var="stateCode" itemLabel="#{stateCode.codeNo}" itemValue="#{stateCode}" value="#{EditMedicalPolicyActionBean.stateCodeList}" />
+												<p:ajax event="valueChange" listener="#{EditMedicalPolicyActionBean.changeStateCode}" update="customerIdNoPanelGrid" />
+											</p:selectOneMenu>
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="townshipCode"
+												rendered="#{EditMedicalPolicyActionBean.haveTownship || EditMedicalPolicyActionBean.nrcCustomer}"
+												value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.townshipCode}"
+												disabled="#{EditMedicalPolicyActionBean.existingCustomer or EditMedicalPolicyActionBean.oldPolicy}" style="width:90px;">
+												<f:selectItem itemLabel="-----" noSelectionOption="true" />
+												<f:selectItems value="#{EditMedicalPolicyActionBean.townshipCodeList}" var="townshipCode" itemLabel="#{townshipCode.townshipcodeno}" itemValue="#{townshipCode}" />
+											</p:selectOneMenu>
+											<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="IdConditionType"
+												disabled="#{EditMedicalPolicyActionBean.existingCustomer or EditMedicalPolicyActionBean.oldPolicy}" rendered="#{EditMedicalPolicyActionBean.nrcCustomer}"
+												value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.idConditionType}" style="width:40px;">
+												<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditMedicalPolicyActionBean.idConditionType}" var="type" />
+											</p:selectOneMenu>
+											<p:inputText style="#{EditMedicalPolicyActionBean.nrcCustomer eq true ? 'width: 50px' : 'width: 250px'}" readonly="#{EditMedicalPolicyActionBean.oldPolicy}"
+												value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.idNo}" id="customerRegidNo" disabled="#{EditMedicalPolicyActionBean.existingCustomer}"
+												rendered="#{EditMedicalPolicyActionBean.stillApplyCustomer}">
+											</p:inputText>
+										</h:panelGrid>
+									</td>
+								</tr>
+								<tr>
+									<td />
+									<td>
+										<p:message for="customerRegName" display="text" />
+									</td>
+									<td />
+									<td>
+										<p:message for="occupationcustomer" display="text" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="*" style="color:red;" />
+										<h:outputText value="#{label['NAME_LABEL']}" />
+									</td>
+									<td>
+										<p:inputText value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.name.firstName}" id="customerRegName" style="width:250px;"
+											disabled="#{EditMedicalPolicyActionBean.existingCustomer}" readonly="#{EditMedicalPolicyActionBean.oldPolicy}">
+										</p:inputText>
+									</td>
+									<td>
+										<h:outputText value="*" style="color: red;" />
+										<h:outputText value="#{label['OCCUPATION_LABEL']}" />
+									</td>
+									<td>
+										<h:panelGrid columns="3" id="occupationPanelGroupCustomer">
+											<p:inputText id="occupationcustomer" readonly="true" style="width:250px;margin-left:-4px;" required="true"
+												value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.occupation == null ? '' : EditMedicalPolicyActionBean.medicalPolicyDTO.customer.occupation.name}"
+												disabled="#{EditMedicalPolicyActionBean.existingCustomer}" />
+											<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectOccupation()}" id="selectOccupationDialogLinkcustomer" immediate="true"
+												disabled="#{EditMedicalPolicyActionBean.existingCustomer or EditMedicalPolicyActionBean.oldPolicy}">
+												<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnOccupationForCustomer}" update="occupationPanelGroupCustomer" />
+												<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											</p:commandLink>
+										</h:panelGrid>
+									</td>
+								</tr>
+								<tr>
+									<td />
+									<td>
+										<p:message for="customerRegdob" display="text" />
+									</td>
+									<td />
+									<td>
+										<p:message for="customerNationality" display="text" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="*" style="color:red;" />
+										<h:outputText value="#{label['MANAGE_CUSTOMER_DOB_LABEL']}" />
+									</td>
+									<td>
+										<p:inputMask value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.dateOfBirth}" style="width:250px;" id="customerRegdob" mask="99-99-9999"
+											disabled="#{EditMedicalPolicyActionBean.existingCustomer}" readonly="#{EditMedicalPolicyActionBean.oldPolicy}">
+											<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+										</p:inputMask>
+									</td>
+									<td>
+										<h:outputText value="*" style="color: red;" />
+										<h:outputText value="#{label['NATIONALITY_LABEL']}" />
+									</td>
+									<td>
+										<h:panelGrid columns="3" id="nationalityPanelGroupCustomer">
+											<p:inputText id="customerNationality"
+												readonly="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.country == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												style="width:250px;margin-left:-4px;"
+												value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.country == null ? '' : EditMedicalPolicyActionBean.medicalPolicyDTO.customer.country.name}"
+												disabled="#{EditMedicalPolicyActionBean.existingCustomer}" />
+											<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectCountry()}" id="selectNationalityDialogLinkcustomer" immediate="true"
+												disabled="#{EditMedicalPolicyActionBean.existingCustomer or EditMedicalPolicyActionBean.oldPolicy}">
+												<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnNationalityForCustomer}" update="nationalityPanelGroupCustomer" />
+												<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											</p:commandLink>
+										</h:panelGrid>
+									</td>
+								</tr>
+								<tr>
+									<td />
+									<td>
+										<p:message for="customerRegfatherName" display="text" />
+									</td>
+									<td />
+									<td>
+										<p:message for="customerRegmobile" display="text" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{label['MANAGE_CUSTOMER_FATHERNAME_LABEL']}" />
+									</td>
+									<td>
+										<p:inputText value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.fatherName}" style="width:250px;" id="customerRegfatherName"
+											disabled="#{EditMedicalPolicyActionBean.existingCustomer}" readonly="#{EditMedicalPolicyActionBean.oldPolicy}">
+										</p:inputText>
+									</td>
+									<td>
+										<h:outputText value="*" style="color:red;" />
+										<h:outputText value="#{label['MANAGE_CUSTOMER_MOBILE_LABEL']}" />
+									</td>
+									<td>
+										<p:inputText value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.contentInfo.mobile}" style="width:250px;" id="customerRegmobile"
+											disabled="#{EditMedicalPolicyActionBean.existingCustomer}" readonly="#{EditMedicalPolicyActionBean.oldPolicy}">
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td />
+									<td>
+										<p:message for="customerPlaceOfBirth" display="text" />
+									</td>
+									<td />
+									<td>
+										<p:message for="customerRegphone" display="text" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="*" style="color:red;" />
+										<h:outputText value="#{label['MANAGE_CUSTOMER_POB_LABEL']}" />
+									</td>
+									<td>
+										<p:inputText value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.placeOfBirth}" style="width:250px;" id="customerPlaceOfBirth"
+											disabled="#{EditMedicalPolicyActionBean.existingCustomer}" readonly="#{EditMedicalPolicyActionBean.oldPolicy}">
+										</p:inputText>
+									</td>
+									<td>
+										<h:outputText value="#{label['MANAGE_CUSTOMER_PHONE_LABEL']}" />
+									</td>
+									<td>
+										<p:inputText value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.contentInfo.phone}" style="width:250px;" id="customerRegphone"
+											disabled="#{EditMedicalPolicyActionBean.existingCustomer}" readonly="#{EditMedicalPolicyActionBean.oldPolicy}">
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td />
+									<td>
+										<p:message for="customerMaritalStatus" display="text" />
+									</td>
+									<td />
+									<td>
+										<p:message for="customerRegemail" display="text" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText style="color:red;" value="*" />
+										<h:outputText value="Marital Status" />
+									</td>
+									<td>
+										<p:selectOneMenu converter="omnifaces.SelectItemsConverter" value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.maritalStatus}" id="customerMaritalStatus"
+											style="height:26px;width: 258px;" disabled="#{EditMedicalPolicyActionBean.existingCustomer or EditMedicalPolicyActionBean.oldPolicy}">
+											<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditMedicalPolicyActionBean.maritalStatus}" var="type" />
+										</p:selectOneMenu>
+									</td>
+									<td>
+										<h:outputText value="Email" />
+									</td>
+									<td>
+										<p:inputText value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.contentInfo.email}" style="width:250px;" id="customerRegemail"
+											disabled="#{EditMedicalPolicyActionBean.existingCustomer}" readonly="#{EditMedicalPolicyActionBean.oldPolicy}">
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td />
+									<td>
+										<p:message for="customergender" display="text" />
+									</td>
+									<td />
+									<td>
+										<p:message for="customerRegresidentTownId" id="MsgcustomerRegresidentTownId" display="text" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText style="color:red;" value="*" />
+										<h:outputText value="#{label['GENDER_LABEL']}" />
+									</td>
+									<td>
+										<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="customergender" style="height:26px;width: 258px;"
+											value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.gender}" disabled="#{EditMedicalPolicyActionBean.existingCustomer or EditMedicalPolicyActionBean.oldPolicy}">
+											<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditMedicalPolicyActionBean.gender}" var="type" />
+										</p:selectOneMenu>
+									</td>
+									<td>
+										<h:outputText value="*" style="color:red;" />
+										<h:outputText value="#{label['MANAGE_CUSTOMER_RESIDENTTOWNID_LABEL']}" />
+									</td>
+									<td>
+										<h:panelGrid columns="3" id="residentPanelGroup">
+											<p:inputText
+												value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.residentAddress.township == null ? '' : EditMedicalPolicyActionBean.medicalPolicyDTO.customer.residentAddress.township.name}"
+												style="width:250px;margin-left:-4px;" id="customerRegresidentTownId" required="true"
+												readonly="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.residentAddress.township == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												disabled="#{EditMedicalPolicyActionBean.existingCustomer or EditMedicalPolicyActionBean.oldPolicy}" />
+											<p:commandLink immediate="true" actionListener="#{EditMedicalPolicyActionBean.selectTownship()}" id="selectResidentTownshipDialogLink"
+												disabled="#{EditMedicalPolicyActionBean.existingCustomer or EditMedicalPolicyActionBean.oldPolicy}">
+												<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnResidentTownship}" update="residentPanelGroup MsgcustomerRegresidentTownId" />
+												<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											</p:commandLink>
+										</h:panelGrid>
+									</td>
+								</tr>
+								<tr>
+									<td />
+									<td>
+										<p:message for="customerHeight" display="text" />
+									</td>
+									<td />
+									<td>
+										<p:message for="customerRegresidentAdd" display="text" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="*" style="color:red;" />
+										<h:outputText value="#{label['HEIGHT_LABEL']}" />
+									</td>
+									<td>
+										<p:inputText value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.height}" style="width:250px;" id="customerHeight" required="true"
+											disabled="#{EditMedicalPolicyActionBean.existingCustomer}" readonly="#{EditMedicalPolicyActionBean.oldPolicy}">
+											<f:convertNumber pattern="#{ApplicationSetting.numberFormat}" />
+										</p:inputText>
+									</td>
+									<td valign="top">
+										<h:outputText value="*" style="color:red;" />
+										<h:outputText value="#{label['MANAGE_CUSTOMER_RESIDENTADD_LABEL']}" />
+									</td>
+									<td rowspan="3">
+										<p:inputTextarea value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.residentAddress.residentAddress}" style="width:250px;" rows="4"
+											id="customerRegresidentAdd" disabled="#{EditMedicalPolicyActionBean.existingCustomer}" readonly="#{EditMedicalPolicyActionBean.oldPolicy}">
+										</p:inputTextarea>
+									</td>
+								</tr>
+								<tr>
+									<td />
+									<td>
+										<p:message for="customerWeight" display="text" />
+									</td>
+									<td />
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="*" style="color:red;" />
+										<h:outputText value="#{label['WEIGHT_LABEL']}" />
+									</td>
+									<td>
+										<p:inputText value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.weight}" style="width:250px;" id="customerWeight" required="true"
+											disabled="#{EditMedicalPolicyActionBean.existingCustomer}" readonly="#{EditMedicalPolicyActionBean.oldPolicy}">
+											<f:convertNumber pattern="#{ApplicationSetting.numberFormat}" />
+										</p:inputText>
+									</td>
+									<td />
+								</tr>
+							</p:panel>
+							<p:column rendered="#{EditMedicalPolicyActionBean.passportUser}">
+								<tr>
+									<td>
+										<h:outputText value="Passport Type" />
+									</td>
+									<td colspan="3">
+										<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="pType" style="width:258px;" readonly="#{EditMedicalPolicyActionBean.oldPolicy}"
+											value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.passportType}">
+											<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditMedicalPolicyActionBean.passportTypes}" var="type" />
+										</p:selectOneMenu>
+									</td>
+								</tr>
+							</p:column>
+						</table>
+					</p:panel>
+				</p:tab>
+				<p:tab id="InsuredPersonInfo" title="Insured Person Info">
+					<p:panel id="insuredPersonInfoWizardPanel" style="min-height: 400px;">
+						<table width="100%">
+							<tr>
+								<td />
+								<td>
+									<p:message for="customerRegInsu" display="text" />
+								</td>
+								<td />
+								<td>
+									<p:message for="beneficiaryRelationShip" display="text" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText value="#{label['EXISTING_CUSTOMER_LABEL']}" />
+								</td>
+								<td>
+									<h:panelGrid columns="5" id="existingCustomerInsuPanelGroup">
+										<p:inputText value="#{EditMedicalPolicyActionBean.insuredPersonFullName}" style="width:250px;margin-left:-4px;" styleClass="myanmar-label" readonly="true"
+											id="customerRegInsu" disabled="#{EditMedicalPolicyActionBean.disableInsureInfo or EditMedicalPolicyActionBean.oldPolicy}" />
+										<p:watermark for="customerRegInsu" value="Select Customer" />
+										<p:commandLink immediate="true" actionListener="#{EditMedicalPolicyActionBean.selectCustomer()}" id="selectExistCustomerInsuLink"
+											disabled="#{EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.disableInsureInfo}">
+											<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnInsuredPersonCustomer}" update="insuredPersonInfoWizardPanel" />
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										</p:commandLink>
+										<p:commandLink action="#{EditMedicalPolicyActionBean.resetInsuredPerson()}" update="insuredPersonInfoWizardPanel" process="@this"
+											disabled="#{EditMedicalPolicyActionBean.oldPolicy}">
+											<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+										</p:commandLink>
+									</h:panelGrid>
+								</td>
+								<td>
+									<h:outputText value="*" style="color:red;" rendered="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customerType ne 'CORPORATECUSTOMER' }" />
+									<h:outputText value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_RELATIONSHIP_LABEL']}"
+										rendered="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customerType ne 'CORPORATECUSTOMER'}" />
+								</td>
+								<td>
+									<p:selectOneMenu rendered="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customerType ne 'CORPORATECUSTOMER' }" converter="omnifaces.SelectItemsConverter"
+										id="beneficiaryRelationShip" style="height:24px;width: 258px;" value="#{EditMedicalPolicyActionBean.insuredPersonDTO.relationship}"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.disableInsureInfo or EditMedicalPolicyActionBean.insuredPersonDTO.sameInsuredPerson }">
+										<f:selectItem itemLabel="" noSelectionOption="true" />
+										<f:selectItems value="#{EditMedicalPolicyActionBean.relationshipList}" var="relationship" itemLabel="#{relationship.name}" itemValue="#{relationship}" />
+										<p:ajax listener="#{EditMedicalPolicyActionBean.handleInsuredPersonRelationship()}" process="@this" />
+									</p:selectOneMenu>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4">
+									<p:separator />
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<p:message for="name" display="text" />
+								</td>
+								<td></td>
+								<td>
+									<p:message for="idNo" display="text" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText style="color:red;" value="*" />
+									<h:outputText value="#{label['INSU_NAME_LABEL']}" />
+								</td>
+								<td>
+									<p:inputText id="name" style="width:250px;" value="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.name.firstName}"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.disableInsureInfo}">
+										<p:ajax update="@this" />
+									</p:inputText>
+								</td>
+								<td>
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuRegidType" style="width: 120px;"
+										value="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.idType}"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.disableInsureInfo}">
+										<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditMedicalPolicyActionBean.idTypes}" var="type" />
+										<p:ajax event="valueChange" listener="#{EditMedicalPolicyActionBean.changeIdTypeInsuredPerson}" update="insuredPersonIdNoPanelGrid" />
+									</p:selectOneMenu>
+								</td>
+								<td>
+									<h:panelGrid columns="5" id="insuredPersonIdNoPanelGrid" style="margin-left: -4px;">
+										<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuredPersonstateCode" rendered="#{EditMedicalPolicyActionBean.nrcInsuredPerson}"
+											value="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.stateCode}"
+											disabled="#{EditMedicalPolicyActionBean.selfRelation  or  EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.disableInsureInfo}" style="width: 50px;">
+											<f:selectItem itemLabel="---" noSelectionOption="true" />
+											<f:selectItems var="stateCode" itemLabel="#{stateCode.codeNo}" itemValue="#{stateCode}" value="#{EditMedicalPolicyActionBean.stateCodeList}" />
+											<p:ajax event="valueChange" listener="#{EditMedicalPolicyActionBean.changeStateCode}" update="insuredPersonIdNoPanelGrid" />
+										</p:selectOneMenu>
+										<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuredPersontownshipCode"
+											value="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.townshipCode}" style="width: 90px;" rendered="#{EditMedicalPolicyActionBean.nrcInsuredPerson}"
+											disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy  or EditMedicalPolicyActionBean.disableInsureInfo}">
+											<f:selectItem itemLabel="---" noSelectionOption="true" />
+											<f:selectItems var="townshipCode" itemLabel="#{townshipCode.townshipcodeno}" itemValue="#{townshipCode}" value="#{EditMedicalPolicyActionBean.townshipCodeList}" />
+										</p:selectOneMenu>
+										<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuredPersonidConditionType" style="width: 40px;"
+											value="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.idConditionType}"
+											disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.disableInsureInfo}"
+											rendered="#{EditMedicalPolicyActionBean.nrcInsuredPerson }">
+											<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditMedicalPolicyActionBean.idConditionType}" var="type" />
+										</p:selectOneMenu>
+										<p:inputText id="idNo" value="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.idNo}"
+											disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy  or EditMedicalPolicyActionBean.disableInsureInfo}"
+											rendered="#{EditMedicalPolicyActionBean.stillApplyInsuredPerson}" style="#{EditMedicalPolicyActionBean.nrcInsuredPerson eq true? 'width: 50px' : 'width: 250px'};">
+										</p:inputText>
+									</h:panelGrid>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<p:message for="dateOfBirth" display="text" />
+								</td>
+								<td></td>
+								<td>
+									<p:message for="occupation" display="text" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText style="color:red;" value="*" />
+									<h:outputText value="#{label['MANAGE_CUSTOMER_DOB_LABEL']}" />
+								</td>
+								<td>
+									<p:inputMask id="dateOfBirth" mask="99-99-9999" style="width:250px;" value="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.dateOfBirth}"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation  or EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.disableInsureInfo}">
+										<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+										<p:ajax listener="#{EditMedicalPolicyActionBean.handleInsuredPersonAge()}" update="@form,guradianPanelGrid" process="@this" />
+									</p:inputMask>
+								</td>
+								<td>
+									<h:outputText style="color:red;" value="*" />
+									<h:outputText value="#{label['OCCUPATION_LABEL']}" />
+								</td>
+								<td>
+									<h:panelGrid columns="2" id="occupationPanelGroup">
+										<p:inputText id="occupation" readonly="true" style="width:250px;margin-left:-4px;  "
+											value="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.occupation == null ? '' : EditMedicalPolicyActionBean.insuredPersonDTO.customer.occupation.name}"
+											disabled="#{EditMedicalPolicyActionBean.selfRelation  or EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.disableInsureInfo}" />
+										<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectOccupation()}" id="selectOccupationDialogLink1" immediate="true"
+											disabled="#{EditMedicalPolicyActionBean.selfRelation   or EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.disableInsureInfo}">
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnOccupation}" update="occupationPanelGroup" />
+										</p:commandLink>
+									</h:panelGrid>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<p:message for="insuredPersonPlaceOfBirth" display="text" />
+								</td>
+								<td></td>
+								<td>
+									<p:message for="insuredPersonNationality" display="text" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText value="*" style="color:red;" />
+									<h:outputText value="#{label['MANAGE_CUSTOMER_POB_LABEL']}" />
+								</td>
+								<td>
+									<p:inputText value="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.placeOfBirth}" style="width:250px;" id="insuredPersonPlaceOfBirth"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.disableInsureInfo}">
+									</p:inputText>
+								</td>
+								<td>
+									<h:outputText value="*" style="color: red;" />
+									<h:outputText value="#{label['NATIONALITY_LABEL']}" />
+								</td>
+								<td>
+									<h:panelGrid columns="2" id="nationalityPanelGroupInsuredPerson">
+										<p:inputText id="insuredPersonNationality"
+											readonly="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.country == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" style="width:250px;margin-left:-4px;"
+											value="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.country == null ? '' : EditMedicalPolicyActionBean.insuredPersonDTO.customer.country.name}"
+											disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.disableInsureInfo}" />
+										<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectCountry()}" id="selectNationalityDialogLinkInsuredPerson" immediate="true"
+											disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.disableInsureInfo}">
+											<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnNationalityForInsuredPerson}" update="nationalityPanelGroupInsuredPerson" />
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										</p:commandLink>
+									</h:panelGrid>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<p:message for="insuredPersonMaritalStatus" display="text" />
+								</td>
+								<td></td>
+								<td>
+									<p:message for="townShip" id="MsgTownShip" display="text" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText style="color:red;" value="*" />
+									<h:outputText value="#{label['MERITAL_STATUS_LABEL']}" />
+								</td>
+								<td>
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" value="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.maritalStatus}"
+										id="insuredPersonMaritalStatus" style="width:258px;"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation  or  EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.disableInsureInfo}">
+										<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditMedicalPolicyActionBean.maritalStatus}" var="type" />
+									</p:selectOneMenu>
+								</td>
+								<td>
+									<h:outputText style="color:red;" value="*" />
+									<h:outputText value="#{label['MANAGE_CUSTOMER_RESIDENTTOWNID_LABEL']}" />
+								</td>
+								<td>
+									<h:panelGrid columns="3" id="townShipPanelGroup1">
+										<p:inputText id="townShip"
+											readonly="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.residentAddress.township == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+											style="width:250px;margin-left:-4px;"
+											value="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.residentAddress == null ? '' : EditMedicalPolicyActionBean.insuredPersonDTO.customer.residentAddress.township.name}"
+											disabled="#{EditMedicalPolicyActionBean.selfRelation or  EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.disableInsureInfo}" />
+										<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectTownship()}" id="selectTownShipDialogLink1" immediate="true"
+											disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy  or EditMedicalPolicyActionBean.disableInsureInfo}">
+											<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnInsuredPersonTownShip}" update="townShipPanelGroup1 MsgTownShip" />
+										</p:commandLink>
+									</h:panelGrid>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<p:message for="gender" display="text" />
+								</td>
+								<td></td>
+								<td>
+									<p:message for="resident" display="text" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText style="color:red;" value="*" />
+									<h:outputText value="#{label['GENDER_LABEL']}" />
+								</td>
+								<td>
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="gender" style="width:258px;" value="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.gender}"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.disableInsureInfo}">
+										<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditMedicalPolicyActionBean.gender}" var="type" />
+									</p:selectOneMenu>
+								</td>
+								<td valign="top">
+									<h:outputText style="color:red;" value="*" />
+									<h:outputText value="#{label['MANAGE_CUSTOMER_RESIDENTADD_LABEL']}" />
+								</td>
+								<td rowspan="3">
+									<p:inputTextarea id="resident" style="width:350px;" rows="4" value="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.residentAddress.residentAddress}"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.disableInsureInfo}" />
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<p:message for="insuredPersonHeight" display="text" />
+								</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText value="*" style="color:red;" />
+									<h:outputText value="#{label['HEIGHT_LABEL']}" />
+								</td>
+								<td>
+									<p:inputText value="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.height}" style="width:250px;" id="insuredPersonHeight"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy or  EditMedicalPolicyActionBean.disableInsureInfo}">
+										<f:convertNumber pattern="#{ApplicationSetting.numberFormat}" />
+									</p:inputText>
+								</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<p:message for="insuredPersonWeight" display="text" />
+								</td>
+								<td></td>
+								<td>
+									<p:message for="Unit" display="text" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h:outputText value="*" style="color:red;" />
+									<h:outputText value="#{label['WEIGHT_LABEL']}" />
+								</td>
+								<td>
+									<p:inputText value="#{EditMedicalPolicyActionBean.insuredPersonDTO.customer.weight}" style="width:250px;  " id="insuredPersonWeight"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.disableInsureInfo}">
+										<f:convertNumber pattern="#{ApplicationSetting.numberFormat}" />
+									</p:inputText>
+								</td>
+								<td>
+									<h:outputText style="color:red;" value="*" rendered="#{!EditMedicalPolicyActionBean.microHealthRender}" />
+									<h:outputText value="Unit"  rendered="#{!EditMedicalPolicyActionBean.microHealthRender}" />
+								</td>
+								<td>
+									<p:inputText id="Unit"  readonly="true" style="width: 200px;" value="#{EditMedicalPolicyActionBean.insuredPersonDTO.unit}" disabled="#{EditMedicalPolicyActionBean.disableInsureInfo}"
+										rendered="#{!EditMedicalPolicyActionBean.microHealthRender}">
+										<p:ajax process="@this" />
+									</p:inputText>
+								</td>
+							</tr>
+						</table>
+						<br />
+						<h:panelGrid columns="2" rendered="#{!EditMedicalPolicyActionBean.guardianInfoDisable}" id="guradianPanelGrid">
+							<p:commandLink immediate="true" action="#{EditMedicalPolicyActionBean.prepareAddNewGuradianInfo()}" oncomplete="PF('guradianInfoEntryDialog').show()"
+								disabled="#{EditMedicalPolicyActionBean.saveGuar}" update=":guradianInfoEntryForm">
+								<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+							</p:commandLink>
+							<h:outputText value="Guradian Info" />
+						</h:panelGrid>
+						<p:message for="guradianPersonTable" display="text" />
+						<p:dataTable id="guradianPersonTable" style="width:75%" value="#{EditMedicalPolicyActionBean.guradianPersonList}" var="guradian"
+							rendered="#{!EditMedicalPolicyActionBean.guardianInfoDisable}">
+							<p:column headerText="Guradian Name">
+								<h:outputText value="#{guradian.customer.fullName}" />
+							</p:column>
+							<p:column headerText="#{label['MANAGE_CUSTOMER_DOB_LABEL']}">
+								<h:outputText value="#{guradian.customer.getAgeForNextYear()}">
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{label['ID_LABEL']}">
+								<h:outputText value="#{guradian.customer.fullIdNo}" />
+							</p:column>
+							<p:column headerText="#{label['MANAGE_CUSTOMER_RESIDENTTOWNID_LABEL']}">
+								<h:outputText value="#{guradian.customer.residentAddress.township.name}" />
+							</p:column>
+							<p:column headerText="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_RELATIONSHIP_LABEL']}">
+								<h:outputText value="#{guradian.relationship.name}" />
+							</p:column>
+							<p:column style="width:50px; text-align: center;" headerText="Edit">
+								<p:commandLink id="editGuradianLink" immediate="true" action="#{EditMedicalPolicyActionBean.prepareEditGuradianInfo(guradian)}" oncomplete="PF('guradianInfoEntryDialog').show()"
+									update=":guradianInfoEntryForm">
+									<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+								</p:commandLink>
+							</p:column>
+							<p:column style="width:50px; text-align: center;" headerText="Delete">
+								<p:commandLink id="removeGuradianLink" action="#{EditMedicalPolicyActionBean.removeGuradianInfo(guradian)}"
+									update=":medicalProposalEntryForm:guradianPersonTable,:medicalProposalEntryForm:guradianPanelGrid">
+									<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+								</p:commandLink>
+							</p:column>
+						</p:dataTable>
+						<h:panelGrid columns="2">
+							<p:commandLink action="#{EditMedicalPolicyActionBean.prepareAddNewBeneficiariesInfo()}" immediate="true" oncomplete="PF('beneficiariesInfoEntryDialog').show()"
+								update=":beneficiaryInfoEntryForm" disabled="#{EditMedicalPolicyActionBean.disableInsureInfo}">
+								<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+							</p:commandLink>
+							<h:outputText value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIESINFO_LABLE']}" />
+						</h:panelGrid>
+						<p:message for="beneficiaryPersonTable" display="text" />
+						<p:dataTable id="beneficiaryPersonTable" style="width:75%" value="#{EditMedicalPolicyActionBean.proposalInsuredPersonBeneficiariesList}" var="beneficiary">
+							<p:column headerText="#{label['BENE_NAME_LABEL']}">
+								<h:outputText value="#{beneficiary.fullName}" />
+							</p:column>
+							<p:column headerText="#{label['MANAGE_CUSTOMER_DOB_LABEL']}">
+								<h:outputText value="#{beneficiary.age}">
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{label['ID_LABEL']}">
+								<h:outputText value="#{beneficiary.fullIdNo}" />
+							</p:column>
+							<p:column headerText="#{label['MANAGE_CUSTOMER_RESIDENTTOWNID_LABEL']}">
+								<h:outputText value="#{beneficiary.residentAddress.township.name}" />
+							</p:column>
+							<p:column headerText="#{label['PERCENTAGE_LABEL']}">
+								<h:outputText value="#{beneficiary.percentage}%" />
+							</p:column>
+							<p:column headerText="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_RELATIONSHIP_LABEL']}">
+								<h:outputText value="#{beneficiary.relationship.name}" />
+							</p:column>
+							<p:column style="width:50px; text-align: center;" headerText="Edit">
+								<p:commandLink action="#{EditMedicalPolicyActionBean.prepareEditBeneficiariesInfo(beneficiary)}" id="editBeneficiaryLink" immediate="true"
+									oncomplete="PF('beneficiariesInfoEntryDialog').show()" update=":beneficiaryInfoEntryForm">
+									<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+								</p:commandLink>
+							</p:column>
+							<p:column style="width:50px; text-align: center;" headerText="Delete">
+								<p:commandLink action="#{EditMedicalPolicyActionBean.removeBeneficiariesInfo(beneficiary)}" id="removeBeneficiaryLink"
+									update=":medicalProposalEntryForm:beneficiaryPersonTable">
+									<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+								</p:commandLink>
+							</p:column>
+						</p:dataTable>
+						<br />
+						<p:commandButton style="width: 65px;" action="#{EditMedicalPolicyActionBean.saveMedicalInsuredPerson}" id="addMedicalInsuredPersonBtn"
+							rendered="#{EditMedicalPolicyActionBean.createNewIsuredPersonInfo}" update="insuredPersonInfoWizardPanel existingCustomerInsuPanelGroup" value="#{label['COMMON_ADDNEW_BTN']}"
+							disabled="#{EditMedicalPolicyActionBean.disableInsureInfo}" />
+						<p:commandButton style="width: 65px;" action="#{EditMedicalPolicyActionBean.saveMedicalInsuredPerson}" id="editMedicalInsuredPersonBtn"
+							rendered="#{!EditMedicalPolicyActionBean.createNewIsuredPersonInfo}" update=":medicalProposalEntryForm:insuredPersonInfoWizardPanel" value="#{label['COMMON_UPDATE_BTN']}" />
+						<p:separator style="height: 3px" />
+						
+						<p:message for="insuredPersonInfoTable" display="text" />
+						<p:dataTable id="insuredPersonInfoTable" style="width:100%" value="#{EditMedicalPolicyActionBean.medicalInsuredPersonDTOList}" var="insuredPersonDTO" rowIndexVar="index"
+							rowStyleClass="#{insuredPersonDTO.relationship == null ? 'highlight' : null}">
+							<p:column headerText="No." style="width: 2%;">
+								<h:outputText value="#{index + 1}." style="float: right;" />
+							</p:column>
+							<p:column headerText="Name" style="width: 15%;">
+								<h:outputText value="#{insuredPersonDTO.customer.fullName}" />
+							</p:column>
+							<p:column headerText="Date Of Birth" style="width: 8%;">
+								<h:outputText value="#{insuredPersonDTO.customer.dateOfBirth}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Occupation" style="width: 11%;">
+								<h:outputText value="#{insuredPersonDTO.customer.occupation.name}" />
+							</p:column>
+							<p:column headerText="Address" style="width: 27%;">
+								<h:outputText value="#{insuredPersonDTO.customer.fullAddress}" />
+							</p:column>
+							<p:column headerText="Age" style="width: 2%;">
+								<h:outputText value="#{insuredPersonDTO.age}" />
+							</p:column>
+							<p:column headerText="End Date" style="width: 8%;">
+								<h:outputText value="#{insuredPersonDTO.endDate}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Add On" style="width: 12%;" rendered="#{!EditMedicalPolicyActionBean.microHealthRender}">
+								<ui:repeat value="#{insuredPersonDTO.addOnList}" var="vehAddOn" varStatus="status">
+								  (#{status.index + 1}) #{vehAddOn.addOn.name} -  #{vehAddOn.unit}  unit(s)<br />
+								</ui:repeat>
+							</p:column>
+							<p:column style="width: 4%; text-align: center;" headerText="AddOn Config"
+								rendered="#{!EditMedicalPolicyActionBean.microHealthRender and !EditMedicalPolicyActionBean.criticalIllnessRender}">
+								<p:commandLink id="#{index}AddOnConfigLink" disabled="true" immediate="true"
+									oncomplete="PF('addOnConfigDialog').show()" update=":addOnConfigForm">
+									<f:setPropertyActionListener target="#{EditMedicalPolicyActionBean.insuredPersonDTO}" value="#{insuredPersonDTO}" />
+									<p:graphicImage styleClass="#{ApplicationSetting.configStyleClass}" value="#{ApplicationSetting.configIcon}" />
+								</p:commandLink>
+							</p:column>
+							<p:column style="width: 4%; text-align: center;" headerText="History Record">
+								<p:commandLink  id="#{index}historyRecordLink" oncomplete="PF('addOnConfigDialog1').show()" update=":addOnConfigForm1" immediate="true"
+									action="#{EditMedicalPolicyActionBean.prepareHistoryRecord(insuredPersonDTO)}">
+									<p:graphicImage value="/images/approval.png" style="width:25px;heifht:32px;" />
+								</p:commandLink>
+							</p:column>
+							<p:column style="width: 4%; text-align: center;" headerText="Edit">
+								<p:commandLink action="#{EditMedicalPolicyActionBean.prepareEditInsuredPersonInfo(insuredPersonDTO)}" id="editMedicalInsuredPersonLink"
+									update=":medicalProposalEntryForm:insuredPersonInfoWizardPanel">
+									<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+								</p:commandLink>
+							</p:column>
+						</p:dataTable>
+					</p:panel>
+				</p:tab>
+				
+						
+			</p:wizard>
+			<br />
+			<p:commandButton style="width: 65px;" action="#{EditMedicalPolicyActionBean.updateMedicalPolicy()}" update=":medicalProposalEntryForm" value="Update"  />
+			<p:spacer width="5" />
+			<p:commandButton action="dashboard" immediate="true" value="#{label['COMMON_CANCEL_BTN']}" />
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+		</h:form>
+		<!-- addOn Config Dialog -->
+		<p:dialog height="auto" width="500" hideEffect="explode" id="addOnConfigDialog" resizable="false" showEffect="explode" widgetVar="addOnConfigDialog" dynamic="true"
+			appendTo="@(body)" modal="true" header="Additional Cover Dialog" closable="false">
+			<style>
+.ui-chkbox.ui-chkbox-all.ui-widget {
+	display: none !important;
+}
+</style>
+			<!-- 				<p:dataTable id="addOnTable" var="addOnDTO" style="with: 100%;" editable="true" editMode="cell" rowIndexVar="index" selection="#{EditMedicalPolicyActionBean.selectedAddOnLists}" -->
+			<!-- 					value="#{EditMedicalPolicyActionBean.addOnDTOList}" rowKey="#{addOnDTO.addOn.id}"> -->
+			<!-- 					<p:ajax event="rowSelectCheckbox" listener="#{EditMedicalPolicyActionBean.onRowSelect}" update=":addOnConfigForm :addOnUnitDialogForm" /> -->
+			<!-- 					<p:ajax event="rowUnselectCheckbox" listener="#{MedicalRenewalProposalActionBean.onRowUnSelect(addOnDTO)}" update=":addOnConfigForm" /> -->
+			<!-- 					<p:column selectionMode="multiple" style="width: 1%;text-align:center" /> -->
+			<!-- 					<p:column filterBy="#{addOnDTO.addOn.name}" filterMatchMode="contains" headerText="Name" style="width: 39%;"> -->
+			<!-- 						<h:outputText value="#{addOnDTO.addOn.name}" /> -->
+			<!-- 					</p:column> -->
+			<!-- 					<p:column headerText="Description" style="width: 40%;"> -->
+			<!-- 						<h:outputText style="float:right;" value="#{addOnDTO.addOn.description}" /> -->
+			<!-- 					</p:column> -->
+			<!-- 					<p:column headerText="Unit" style="width: 20%;"> -->
+			<!-- 						<h:outputText style="float:right;" value="#{addOnDTO.unit}"> -->
+			<!-- 							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" /> -->
+			<!-- 						</h:outputText> -->
+			<!-- 					</p:column> -->
+			<!-- 				</p:dataTable> -->
+			<h:form id="addOnConfigForm">
+				<p:message for="addOnTable"></p:message>
+				<p:dataTable id="addOnTable" style="with: 100%;" var="addOnDTO" value="#{EditMedicalPolicyActionBean.insuredPersonAddOnList}">
+					<p:column>
+						<p:selectBooleanCheckbox value="#{addOnDTO.selected}">
+							<p:ajax listener="#{EditMedicalPolicyActionBean.handleCheckBox(addOnDTO)}" update="unit" />
+						</p:selectBooleanCheckbox>
+					</p:column>
+					<p:column headerText="Name" style="width: 39%;">
+						<h:outputText value="#{addOnDTO.addOn.name}" />
+					</p:column>
+					<p:column headerText="Description" style="width: 40%;">
+						<h:outputText style="float:right;" value="#{addOnDTO.addOn.description}" />
+					</p:column>
+					<p:column headerText="Unit" style="width: 20%;">
+						<p:inputText id="unit" value="#{addOnDTO.unit}" disabled="#{!addOnDTO.selected}"  readonly="true"/>
+					</p:column>
+				</p:dataTable>
+				<br />
+				<p:separator />
+				<br />
+				<p:commandButton style="width: 65px;" action="#{EditMedicalPolicyActionBean.addUnit()}" value="Apply" id="apply"
+					update="@form,:medicalProposalEntryForm:insuredPersonInfoWizardPanel" />
+				<p:spacer width="10px;" />
+				<p:commandButton style="width: 65px;" action="#{EditMedicalPolicyActionBean.handleAddOnDialogClose()}"
+					update="@form,:medicalProposalEntryForm:insuredPersonInfoWizardPanel,:medicalProposalEntryForm:insuredPersonInfoTable" value="Close" resetValues="true" />
+				<br />
+				<br />
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog appendTo="@(body)" dynamic="true" modal="true" header="#{label['BENEFICIARYINFO_LABLE']}" hideEffect="explode" id="beneficiariesInfoEntryDialog" resizable="fasle"
+			showEffect="explode" widgetVar="beneficiariesInfoEntryDialog" width="500" height="auto">
+			<h:form id="beneficiaryInfoEntryForm">
+				<h:panelGroup id="beneficiariesInfoPanel">
+					<table width="100%">
+						<tr>
+							<td />
+							<td>
+								<p:message for="firstName" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 50%;">
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="#{label['NAME_LABEL']}" />
+							</td>
+							<td style="width: 50%;">
+								<p:inputText id="firstName" style="width:250px;" value="#{EditMedicalPolicyActionBean.beneficiariesInfoDTO.name.firstName}" />
+							</td>
+						</tr>
+						<tr>
+						   <td>
+								<h:outputText />
+								<h:outputText value="#{label['MANAGE_CUSTOMER_DOB_LABEL']}" />
+							</td>
+							<td>
+								<p:inputMask id="dateOfBirth" mask="99-99-9999" style="width:250px;"  placeholder="dd-mm-yyy"  value="#{EditMedicalPolicyActionBean.beneficiariesInfoDTO.dateOfBirth}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</p:inputMask>
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="benificiaryAge" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText />
+								<h:outputText value="Age" />
+							</td>
+							<td>
+								<p:inputText id="benificiaryAge" style="width:250px;" value="#{EditMedicalPolicyActionBean.beneficiariesInfoDTO.age}" />
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="BeneRegidNo" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText style="color:red;" value="*" />
+								<h:panelGrid>
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="beneRegidType" style="width: 120px;" value="#{EditMedicalPolicyActionBean.beneficiariesInfoDTO.idType}">
+										<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditMedicalPolicyActionBean.idTypes}" var="type" />
+										<p:ajax event="valueChange" listener="#{EditMedicalPolicyActionBean.checkBeneficiariesIDNo}" update="beneIdNoPanelGrid" />
+									</p:selectOneMenu>
+								</h:panelGrid>
+							</td>
+							<td>
+								<h:panelGrid columns="4" id="beneIdNoPanelGrid" style="margin-left:-4px;">
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="beneStateCode" rendered="#{EditMedicalPolicyActionBean.nrcBene}"
+										value="#{EditMedicalPolicyActionBean.beneficiariesInfoDTO.stateCode}" style="width:50px;">
+										<f:selectItem itemLabel="" />
+										<f:selectItems var="stateCode" itemLabel="#{stateCode.codeNo}" itemValue="#{stateCode}" value="#{EditMedicalPolicyActionBean.stateCodeList}" />
+										<p:ajax event="valueChange" listener="#{EditMedicalPolicyActionBean.changeStateCode}" update="beneIdNoPanelGrid" />
+									</p:selectOneMenu>
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="beneTownshipCode"
+										rendered="#{EditMedicalPolicyActionBean.nrcBene ||  EditMedicalPolicyActionBean.haveTownship}" value="#{EditMedicalPolicyActionBean.beneficiariesInfoDTO.townshipCode}"
+										style="width: 90px;">
+										<f:selectItem itemLabel="" />
+										<f:selectItems var="townshipCode" itemLabel="#{townshipCode.townshipcodeno}" itemValue="#{townshipCode}" value="#{EditMedicalPolicyActionBean.townshipCodeList}" />
+									</p:selectOneMenu>
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="beneidConditionType" rendered="#{EditMedicalPolicyActionBean.nrcBene}"
+										value="#{EditMedicalPolicyActionBean.beneficiariesInfoDTO.idConditionType}" style="width: 40px;">
+										<f:selectItems value="#{EditMedicalPolicyActionBean.idConditionType}" var="type" itemLabel="#{type.label}" itemValue="#{type}" />
+									</p:selectOneMenu>
+									<p:inputText id="BeneRegidNo" rendered="#{EditMedicalPolicyActionBean.stillApplyBene}" style="#{EditMedicalPolicyActionBean.nrcBene eq true ? 'width: 50px' : 'width: 250px'};"
+										value="#{EditMedicalPolicyActionBean.beneficiariesInfoDTO.idNo}">
+									</p:inputText>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="beneficiaryRelationShip" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value=" "></h:outputText>
+								<h:outputText value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_RELATIONSHIP_LABEL']}" />
+							</td>
+							<td>
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="beneficiaryRelationShip" style="height:24px;width: 258px;"
+									value="#{EditMedicalPolicyActionBean.beneficiariesInfoDTO.relationship}">
+									<f:selectItem itemLabel="Select" />
+									<f:selectItems value="#{EditMedicalPolicyActionBean.relationshipList}" var="relationship" itemLabel="#{relationship.name}" itemValue="#{relationship}" />
+								</p:selectOneMenu>
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="beneRegmobile" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText value="*" style="color:red;" />
+								<h:outputText value="#{label['MANAGE_CUSTOMER_MOBILE_LABEL']}" />
+							</td>
+							<td>
+								<p:inputText style="width:250px;" id="beneRegmobile" value="#{EditMedicalPolicyActionBean.beneficiariesInfoDTO.contentInfo.mobile}">
+								</p:inputText>
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="percentage" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="#{label['PERCENTAGE_LABEL']}" />
+							</td>
+							<td>
+								<p:inputText id="percentage" style="width:250px;" value="#{EditMedicalPolicyActionBean.beneficiariesInfoDTO.percentage}" />
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="fatherName" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText value="#{label['MANAGE_CUSTOMER_FATHERNAME_LABEL']}" />
+							</td>
+							<td>
+								<p:inputText id="fatherName" style="width:250px;" value="#{EditMedicalPolicyActionBean.beneficiariesInfoDTO.fatherName}" />
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="beneRegphone" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText value="#{label['MANAGE_CUSTOMER_PHONE_LABEL']}" />
+							</td>
+							<td>
+								<p:inputText style="width:250px;" id="beneRegphone" value="#{EditMedicalPolicyActionBean.beneficiariesInfoDTO.contentInfo.phone}" />
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="townShip" id="MsgTS" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="#{label['MANAGE_CUSTOMER_RESIDENTTOWNID_LABEL']}" />
+							</td>
+							<td>
+								<h:panelGrid columns="3" id="townShipPanelGroup2">
+									<p:inputText id="townShip" readonly="#{EditMedicalPolicyActionBean.beneficiariesInfoDTO.residentAddress.township == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+										required="true" style="width:250px;margin-left:-4px;"
+										value="#{EditMedicalPolicyActionBean.beneficiariesInfoDTO.residentAddress.township == null ? '' : EditMedicalPolicyActionBean.beneficiariesInfoDTO.residentAddress.township.name}">
+										<f:validateLength maximum="36" />
+									</p:inputText>
+									<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectTownship()}" id="selectTownShipDialogLink2" immediate="true">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnBeneficiariesTownShip}" update="townShipPanelGroup2 MsgTS" />
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="address" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value=" "></h:outputText>
+								<h:outputText value="#{label['MANAGE_CUSTOMER_RESIDENTADD_LABEL']}" />
+							</td>
+							<td>
+								<p:inputTextarea id="address" style="width:250px;" value="#{EditMedicalPolicyActionBean.beneficiariesInfoDTO.residentAddress.residentAddress}" />
+							</td>
+						</tr>
+					</table>
+					<p:separator />
+					<p:commandButton style="width: 65px;" action="#{EditMedicalPolicyActionBean.saveBeneficiariesInfo()}" update="@form :medicalProposalEntryForm:beneficiaryPersonTable"
+						value="#{EditMedicalPolicyActionBean.createEditBeneficiariesInfo == true ? 'Edit' : 'Save'}" />
+					<p:spacer style="height:10px" />
+					<p:commandButton style="width: 65px;" immediate="true" action="#{EditMedicalPolicyActionBean.hideBeneficiaryDialog()}" value="Cancel" />
+					<br />
+				</h:panelGroup>
+			</h:form>
+		</p:dialog>
+		<!-- Guradian Info Entry Dialog -->
+		<p:dialog appendTo="@(body)" dynamic="true" modal="true" header="GuradianPerson Info" hideEffect="explode" id="guradianInfoEntryDialog" resizable="fasle" showEffect="explode"
+			widgetVar="guradianInfoEntryDialog" width="1000" height="500">
+			<h:form id="guradianInfoEntryForm">
+				<p:panel id="guardianPersonInfoWizardPanel">
+					<table width="100%">
+						<tr>
+							<td>
+								<h:outputText value="Same Customer" />
+							</td>
+							<td>
+								<p:selectBooleanCheckbox disabled="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customerType eq 'CORPORATECUSTOMER' }"
+									value="#{EditMedicalPolicyActionBean.medProGuardianDTO.sameCustomer}" id="sameCustomer" style="width: 100px;">
+									<p:ajax resetValues="true" listener="#{EditMedicalPolicyActionBean.handleSameCustomer()}" update="@form" process="@this"></p:ajax>
+								</p:selectBooleanCheckbox>
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="customerRegGuar" display="text" />
+							</td>
+							<td />
+							<td>
+								<p:message for="guarRelationShip" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText value="#{label['EXISTING_CUSTOMER_LABEL']}" />
+							</td>
+							<td>
+								<h:panelGrid columns="5" id="existingCustomerGuarPanelGroup">
+									<p:inputText value="#{EditMedicalPolicyActionBean.guardianPersonFullName}" style="width:250px;margin-left:-4px;" styleClass="myanmar-label" readonly="true"
+										id="customerRegGuar" disabled="#{EditMedicalPolicyActionBean.medProGuardianDTO.sameCustomer}" />
+									<p:watermark for="customerRegGuar" value="Select Customer" />
+									<p:commandLink immediate="true" actionListener="#{EditMedicalPolicyActionBean.selectCustomer()}" id="selectExistCustomerGuarLink"
+										disabled="#{EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.medProGuardianDTO.sameCustomer}">
+										<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnGuradianPersonCustomer}" update="guardianPersonInfoWizardPanel" />
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+									</p:commandLink>
+									<p:commandLink action="#{EditMedicalPolicyActionBean.resetGuradianPerson()}" update="guardianPersonInfoWizardPanel" process="@this"
+										disabled="#{EditMedicalPolicyActionBean.oldPolicy or EditMedicalPolicyActionBean.sameCustomer}">
+										<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+							<td>
+								<h:outputText value="*" style="color:red;" />
+								<h:outputText value="#{label['MANAGE_INSUREDPERSON_BENEFICIARIES_RELATIONSHIP_LABEL']}" />
+							</td>
+							<td>
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="guarRelationShip" style="height:24px;width: 258px;"
+									value="#{EditMedicalPolicyActionBean.medProGuardianDTO.relationship}" disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}">
+									<f:selectItem itemLabel="" noSelectionOption="true" />
+									<f:selectItems value="#{EditMedicalPolicyActionBean.relationshipList}" var="relationship" itemLabel="#{relationship.name}" itemValue="#{relationship}" />
+									<p:ajax listener="#{EditMedicalPolicyActionBean.handleGuardianPersonRelationship()}" process="@this" />
+								</p:selectOneMenu>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<p:separator />
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+								<p:message for="guarName" display="text" />
+							</td>
+							<td></td>
+							<td>
+								<p:message for="guarIdNo" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="#{label['INSU_NAME_LABEL']}" />
+							</td>
+							<td>
+								<p:inputText id="guarName" style="width:250px;" value="#{EditMedicalPolicyActionBean.medProGuardianDTO.customer.name.firstName}"
+									disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}" />
+							</td>
+							<td>
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="guarRegidType" style="width: 120px;"
+									value="#{EditMedicalPolicyActionBean.medProGuardianDTO.customer.idType}" disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}">
+									<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditMedicalPolicyActionBean.idTypes}" var="type" />
+									<p:ajax event="valueChange" listener="#{EditMedicalPolicyActionBean.changeIdTypeGuardianPerson}" update="guardianPersonIdNoPanelGrid" />
+								</p:selectOneMenu>
+							</td>
+							<td>
+								<h:panelGrid columns="5" id="guardianPersonIdNoPanelGrid" style="margin-left: -4px;">
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="guardianPersonstateCode" rendered="#{EditMedicalPolicyActionBean.nrcGuar}"
+										value="#{EditMedicalPolicyActionBean.medProGuardianDTO.customer.stateCode}" disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}"
+										style="width: 50px;">
+										<f:selectItem itemLabel="---" noSelectionOption="true" />
+										<f:selectItems var="stateCode" itemLabel="#{stateCode.codeNo}" itemValue="#{stateCode}" value="#{EditMedicalPolicyActionBean.stateCodeList}" />
+										<p:ajax event="valueChange" listener="#{EditMedicalPolicyActionBean.changeStateCode}" update="guardianPersonIdNoPanelGrid" />
+									</p:selectOneMenu>
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="guardianPersontownshipCode"
+										value="#{EditMedicalPolicyActionBean.medProGuardianDTO.customer.townshipCode}" style="width: 90px;" rendered="#{EditMedicalPolicyActionBean.nrcGuar}"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}">
+										<f:selectItem itemLabel="---" noSelectionOption="true" />
+										<f:selectItems var="townshipCode" itemLabel="#{townshipCode.townshipcodeno}" itemValue="#{townshipCode}" value="#{EditMedicalPolicyActionBean.townshipCodeList}" />
+									</p:selectOneMenu>
+									<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="guardianPersonidConditionType" style="width: 40px;"
+										value="#{EditMedicalPolicyActionBean.medProGuardianDTO.customer.idConditionType}"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}" rendered="#{EditMedicalPolicyActionBean.nrcGuar}">
+										<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditMedicalPolicyActionBean.idConditionType}" var="type" />
+									</p:selectOneMenu>
+									<p:inputText id="guarIdNo" value="#{EditMedicalPolicyActionBean.medProGuardianDTO.customer.idNo}"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}" rendered="#{EditMedicalPolicyActionBean.stillApplyGuar}"
+										style="#{EditMedicalPolicyActionBean.nrcGuar eq true? 'width: 50px' : 'width: 250px'};">
+									</p:inputText>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+								<p:message for="guarDateOfBirth" display="text" />
+							</td>
+							<td></td>
+							<td>
+								<p:message for="guarOccupation" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="#{label['MANAGE_CUSTOMER_DOB_LABEL']}" />
+							</td>
+							<td>
+								<p:inputMask id="guarDateOfBirth" mask="99-99-9999" style="width:250px;  " value="#{EditMedicalPolicyActionBean.medProGuardianDTO.customer.dateOfBirth}"
+									disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}">
+									<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+								</p:inputMask>
+							</td>
+							<td>
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="#{label['OCCUPATION_LABEL']}" />
+							</td>
+							<td>
+								<h:panelGrid columns="2" id="guarOccupationPanelGroup">
+									<p:inputText id="guarOccupation" readonly="true" style="width:250px;margin-left:-4px;  "
+										value="#{EditMedicalPolicyActionBean.medProGuardianDTO.customer.occupation == null ? '' : EditMedicalPolicyActionBean.medProGuardianDTO.customer.occupation.name}"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}" />
+									<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectOccupation()}" id="selectGuarOccupationDialogLink1" immediate="true"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnOccupationForGuardian}" update="guarOccupationPanelGroup" />
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+								<p:message for="guarPersonPlaceOfBirth" display="text" />
+							</td>
+							<td></td>
+							<td>
+								<p:message for="guardianPersonNationality" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText value="*" style="color:red;" />
+								<h:outputText value="#{label['MANAGE_CUSTOMER_POB_LABEL']}" />
+							</td>
+							<td>
+								<p:inputText value="#{EditMedicalPolicyActionBean.medProGuardianDTO.customer.placeOfBirth}" style="width:250px;" id="guarPersonPlaceOfBirth"
+									disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}">
+								</p:inputText>
+							</td>
+							<td>
+								<h:outputText value="*" style="color: red;" />
+								<h:outputText value="#{label['NATIONALITY_LABEL']}" />
+							</td>
+							<td>
+								<h:panelGrid columns="2" id="nationalityPanelGroupGiuardianPerson">
+									<p:inputText id="guardianPersonNationality"
+										readonly="#{EditMedicalPolicyActionBean.medProGuardianDTO.customer.country == null ? facesContext.currentPhaseId.ordinal eq 6 : true}" style="width:250px;margin-left:-4px;"
+										value="#{EditMedicalPolicyActionBean.medProGuardianDTO.customer.country == null ? '' : EditMedicalPolicyActionBean.medProGuardianDTO.customer.country.name}"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}" />
+									<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectCountry()}" id="selectNationalityDialogLinkGuarPerson" immediate="true"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}">
+										<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnNationalityForGuardianPerson}" update="nationalityPanelGroupGiuardianPerson" />
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+								<p:message for="guardianPersonMaritalStatus" display="text" />
+							</td>
+							<td></td>
+							<td>
+								<p:message for="guarTownShip" id="guarMsgTownShip" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="#{label['MERITAL_STATUS_LABEL']}" />
+							</td>
+							<td>
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter" value="#{EditMedicalPolicyActionBean.medicalPolicyDTO.customer.maritalStatus}"
+									id="guardianPersonMaritalStatus" style="width:258px;" disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}">
+									<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditMedicalPolicyActionBean.maritalStatus}" var="type" />
+								</p:selectOneMenu>
+							</td>
+							<td>
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="#{label['MANAGE_CUSTOMER_RESIDENTTOWNID_LABEL']}" />
+							</td>
+							<td>
+								<h:panelGrid columns="3" id="guarTownShipPanelGroup1">
+									<p:inputText id="guarTownShip"
+										readonly="#{EditMedicalPolicyActionBean.medProGuardianDTO.customer.residentAddress.township == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+										style="width:250px;margin-left:-4px;"
+										value="#{EditMedicalPolicyActionBean.medProGuardianDTO.customer.residentAddress == null ? '' : EditMedicalPolicyActionBean.medProGuardianDTO.customer.residentAddress.township.name}"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}" />
+									<p:commandLink actionListener="#{EditMedicalPolicyActionBean.selectTownship()}" id="selectGuarTownShipDialogLink1" immediate="true"
+										disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										<p:ajax event="dialogReturn" listener="#{EditMedicalPolicyActionBean.returnGuradianPersonTownShip}" update="guarTownShipPanelGroup1 guarMsgTownShip" />
+									</p:commandLink>
+								</h:panelGrid>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+								<p:message for="guarGender" display="text" />
+							</td>
+							<td></td>
+							<td>
+								<p:message for="guarResident" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="#{label['GENDER_LABEL']}" />
+							</td>
+							<td>
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="guarGender" style="width:258px;" value="#{EditMedicalPolicyActionBean.medProGuardianDTO.customer.gender}"
+									disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}">
+									<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{EditMedicalPolicyActionBean.gender}" var="type" />
+								</p:selectOneMenu>
+							</td>
+							<td valign="top">
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="#{label['MANAGE_CUSTOMER_RESIDENTADD_LABEL']}" />
+							</td>
+							<td rowspan="3">
+								<p:inputTextarea id="guarResident" style="width:350px;" rows="4" value="#{EditMedicalPolicyActionBean.medProGuardianDTO.customer.residentAddress.residentAddress}"
+									disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}" />
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+								<p:message for="guardianPersonHeight" display="text" />
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText value="*" style="color:red;" />
+								<h:outputText value="#{label['HEIGHT_LABEL']}" />
+							</td>
+							<td>
+								<p:inputText value="#{EditMedicalPolicyActionBean.medProGuardianDTO.customer.height}" style="width:250px;" id="guardianPersonHeight"
+									disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}">
+									<f:convertNumber pattern="#{ApplicationSetting.numberFormat}" />
+								</p:inputText>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+								<p:message for="guardianPersonWeight" display="text" />
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText value="*" style="color:red;" />
+								<h:outputText value="#{label['WEIGHT_LABEL']}" />
+							</td>
+							<td>
+								<p:inputText value="#{EditMedicalPolicyActionBean.medProGuardianDTO.customer.weight}" style="width:250px;  " id="guardianPersonWeight"
+									disabled="#{EditMedicalPolicyActionBean.selfRelation or EditMedicalPolicyActionBean.oldPolicy}">
+									<f:convertNumber pattern="#{ApplicationSetting.numberFormat}" />
+								</p:inputText>
+							</td>
+						</tr>
+					</table>
+					<p:separator />
+					<p:commandButton style="width: 65px;" action="#{EditMedicalPolicyActionBean.saveGuardianInfo()}" process="@this"
+						update="@form :medicalProposalEntryForm:guradianPersonTable, :medicalProposalEntryForm:guradianPanelGrid"
+						value="#{EditMedicalPolicyActionBean.createEdit == true ? 'Edit' : 'Save'}" />
+					<p:spacer style="height:10px" />
+					<p:commandButton style="width: 65px;" immediate="true" action="#{EditMedicalPolicyActionBean.hideGuradianDialog()}" value="Cancel" />
+				</p:panel>
+			</h:form>
+		</p:dialog>
+		<p:dialog height="500" width="650" hideEffect="explode" id="addOnConfigDialog1" resizable="false" showEffect="explode" widgetVar="addOnConfigDialog1" dynamic="true"
+			appendTo="@(body)" modal="true" header="History Record Dialog" closable="true">
+			<style>
+.ui-message-error {
+	width: 250px !important;
+}
+</style>
+			<h:form id="addOnConfigForm1">
+				<p:panel id="recordTable">
+					<table style="width: 100%;">
+						<tr>
+							<td />
+							<td>
+								<p:message for="company" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 150px;">
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="Company Name" />
+							</td>
+							<td>
+								<p:selectOneMenu required="true" converter="omnifaces.SelectItemsConverter" id="company" style="height:24px;width: 258px;"
+									value="#{EditMedicalPolicyActionBean.historyRecord.company}">
+									<f:selectItem itemLabel="Select" />
+									<f:selectItems value="#{EditMedicalPolicyActionBean.companyList}" var="company" itemLabel="#{company.name}" itemValue="#{company}" />
+								</p:selectOneMenu>
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="policyNo" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="Policy No" />
+							</td>
+							<td>
+								<p:inputText required="true" id="policyNo" style="width:250px;" value="#{EditMedicalPolicyActionBean.historyRecord.policyNo}" />
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="unit" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="Units" />
+							</td>
+							<td>
+								<p:inputText readonly="true" required="true" id="unit" style="width:250px;" value="#{EditMedicalPolicyActionBean.historyRecord.unit}" />
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="advanced" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="Product" />
+							</td>
+							<td>
+								<p:selectManyMenu required="true" converter="omnifaces.SelectItemsConverter" style="width:250px;" id="advanced" value="#{EditMedicalPolicyActionBean.selectedProduct}"
+									var="t" filter="true" filterMatchMode="contains" showCheckbox="true">
+									<f:selectItems value="#{EditMedicalPolicyActionBean.productList}" var="product" itemLabel="#{product.name}" itemValue="#{product}" />
+									<p:column>
+										<h:outputText value="#{t.name}" />
+									</p:column>
+								</p:selectManyMenu>
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="fromDate" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="From Date" />
+							</td>
+							<td>
+								<p:calendar id="fromDate" required="true" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+									value="#{EditMedicalPolicyActionBean.historyRecord.fromDate}" />
+							</td>
+						</tr>
+						<tr>
+							<td />
+							<td>
+								<p:message for="toDate" display="text" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h:outputText style="color:red;" value="*" />
+								<h:outputText value="To Date" />
+							</td>
+							<td>
+								<p:calendar id="toDate" required="true" pattern="#{ApplicationSetting.dateFormat}" showOn="button" timeZone="#{ApplicationSetting.timeZone}"
+									value="#{EditMedicalPolicyActionBean.historyRecord.toDate}" />
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center">
+								<p:separator style="height: 3px" />
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<p:commandButton style="width: 65px;" action="#{EditMedicalPolicyActionBean.saveHistoryRecord}" rendered="#{!EditMedicalPolicyActionBean.isEditHistoryRecord()}" value="Save"
+									update="@form" />
+								<p:commandButton style="width: 65px;" action="#{EditMedicalPolicyActionBean.updateHistoryRecord}" rendered="#{EditMedicalPolicyActionBean.isEditHistoryRecord()}" value="Update"
+									update="@form" />
+								<p:spacer width="10" />
+								<p:commandButton style="width: 65px;" action="#{EditMedicalPolicyActionBean.newHistoryRecord}" process="@this" value="#{label['COMMON_CANCEL_BTN']}" update="@form" />
+							</td>
+						</tr>
+					</table>
+					<p:message for="hitoryRecordTable" display="text" />
+					<p:dataTable id="hitoryRecordTable" var="record" style="with: 100%;" editable="true" editMode="cell" rowIndexVar="index" value="#{EditMedicalPolicyActionBean.historyRecordList}">
+						<p:column headerText="Company Name" style="width: 35%;">
+							<h:outputText value="#{record.company.name}" />
+						</p:column>
+						<p:column headerText="Policy No" style="width: 35%;">
+							<h:outputText value="#{record.policyNo}" />
+						</p:column>
+						<p:column headerText="Unit" style="width: 5%;">
+							<h:outputText value="#{record.unit}" />
+						</p:column>
+						<p:column headerText="From Date" style="width: 10%;">
+							<h:outputText style="float:right;" value="#{record.fromDate}">
+								<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="To Date" style="width: 10%;">
+							<h:outputText style="float:right;" value="#{record.toDate}">
+								<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+							</h:outputText>
+						</p:column>
+						<p:column style="width:50px; text-align: center;" headerText="Edit">
+							<p:commandLink action="#{EditMedicalPolicyActionBean.prepareEditHistoryRecord(record)}" update=":addOnConfigForm1">
+								<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+							</p:commandLink>
+						</p:column>
+						<p:column style="width: 5%; text-align: center;" headerText="Delete">
+							<p:commandLink action="#{EditMedicalPolicyActionBean.removeHistoryRecord(record)}" immediate="true" id="removeHistoryLink" update="hitoryRecordTable">
+								<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+							</p:commandLink>
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+				<br />
+				<p:commandButton style="width: 65px;" process="@this" action="#{EditMedicalPolicyActionBean.addHistoryRecord}" value="Apply"
+					update="@form :medicalProposalEntryForm:insuredPersonInfoTable" />
+				<p:spacer width="10" />
+				<p:commandButton style="width: 65px;" process="@this" action="#{EditMedicalPolicyActionBean.handleHistoryRecordDialog()}"
+					update=":medicalProposalEntryForm:insuredPersonInfoWizardPanel" value="Close" immediate="true" />
+				<br />
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

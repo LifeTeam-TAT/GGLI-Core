@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SinglePremiumEndowmentLifePolicyIssue" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="531" leftMargin="32" rightMargin="32" topMargin="130" bottomMargin="42" resourceBundle="LANGUAGE_en" uuid="50ba62ca-5f4d-4785-a3e1-ab947a550ea8">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="policyNo" class="java.lang.String"/>
+	<parameter name="insuredPersonName" class="java.lang.String"/>
+	<parameter name="nrc" class="java.lang.String"/>
+	<parameter name="address" class="java.lang.String"/>
+	<parameter name="sumInsured" class="java.lang.String"/>
+	<parameter name="premium" class="java.lang.String"/>
+	<parameter name="startDate" class="java.util.Date"/>
+	<parameter name="listDataSource" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="endDate" class="java.util.Date"/>
+	<title>
+		<band height="361" splitType="Stretch">
+			<staticText>
+				<reportElement x="148" y="0" width="230" height="20" uuid="60746c55-8e01-46f7-8210-204e9aed7351"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[တစ္လံုးတည္းေပးေငြပင္ေငြရင္းအသက္အာမခံေပၚလစီ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="29" y="54" width="63" height="20" uuid="e8c26689-863f-4e15-8f75-c2eb69411860"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ေပၚလစီအမွတ္]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="233" y="51" width="100" height="20" uuid="d0d0b525-aed3-4680-88db-cefaa8b0a5db"/>
+				<textFieldExpression><![CDATA[$P{policyNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="29" y="111" width="88" height="20" uuid="0d92bc41-3089-4cfc-af6e-058c0f9b2576"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အာမခံထားသူအမည္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="29" y="163" width="63" height="20" uuid="d055895c-bcd6-447b-be55-46a1f87bce77"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အာမခံထားေငြ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="233" y="111" width="116" height="20" uuid="d2d8dd97-abf6-471a-99b0-4d4b719cf035"/>
+				<textFieldExpression><![CDATA[$P{insuredPersonName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="233" y="169" width="100" height="20" uuid="e60017ff-d24e-4347-89c6-eeb5eee731ac"/>
+				<textFieldExpression><![CDATA[$P{sumInsured}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="326" width="502" height="35" uuid="7852a9f7-e66b-430f-80ed-d52881d48a8d"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[မွတ္ခ်က္။	     ။    ဤစာခ်ဳပ္ကို အစအဆံုး ဖတ္ရႈစစ္ေဆး၍ အမွားရွိခဲ့သည္ရွိေသာ္ ျပင္ဆင္ရန္အတြက္    ဤကုမၸၸဏီ သို႔     ျပန္လည္ေပးပို႔ပါရန္။]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>

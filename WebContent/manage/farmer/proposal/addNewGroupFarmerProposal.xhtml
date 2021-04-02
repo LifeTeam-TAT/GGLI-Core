@@ -1,0 +1,684 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui"
+	template="/common/commonLayout.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsf="http://xmlns.jcp.org/jsf">
+	<ui:param name="uploadRootPath" value="/image" />
+	<ui:param name="header" value="Add New Group Farmer Proposal" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form enctype="multipart/form-data"
+			id="groupFarmerProposalEntryForm">
+			<p:panel id="saleChannelType">
+				<table style="width: 80%;">
+					<tr>
+						<td />
+						<td><p:message for="organization" display="text" /></td>
+						<td />
+						<td><p:message for="startDate" display="text" /></td>
+					</tr>
+					<tr>
+						<td><h:outputText style="color: red;" value="*" /> <h:outputText
+								value="Organization" /></td>
+						<td><p:panelGrid styleClass="ui-panelgrid-blank">
+								<div style="width: 292px; margin-left: -4px;"
+									class="ui-g ui-fluid" jsf:id="customerPanelGroup">
+									<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+										<p:commandButton styleClass="green-button" icon="fa fa-search"
+											actionListener="#{AddNewGroupFarmerProposalActionBean.selectOrganization()}"
+											id="selectOrganizationDialogLink" process="@this">
+											<p:ajax event="dialogReturn"
+												listener="#{AddNewGroupFarmerProposalActionBean.returnOrganization}"
+												update="customerPanelGroup" />
+										</p:commandButton>
+										<p:inputText id="organization" required="true"
+											readonly="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.organization == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+											value="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.organization == null ? '' : AddNewGroupFarmerProposalActionBean.groupFarmerProposal.organization.name}" />
+										<p:commandButton styleClass="red-button" icon="fa fa-times"
+											action="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.setOrganization(null)}"
+											process="@this" update="customerPanelGroup" />
+									</div>
+								</div>
+							</p:panelGrid></td>
+						<td><h:outputText style="color:red;" value="*" /> <h:outputText
+								value="Start Date " /></td>
+						<td><p:calendar
+								value="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.submittedDate}"
+								pattern="#{ApplicationSetting.dateFormat}" showOn="button"
+								size="42" timeZone="#{ApplicationSetting.timeZone}"
+								id="startDate" required="true" /></td>
+					</tr>
+					<tr>
+						<td />
+						<td><p:message for="noOfIns" display="text" /></td>
+						<td />
+						<td><p:message for="totalSI" display="text" /></td>
+					</tr>
+					<tr>
+						<td><h:outputText style="color:red;" value="*" /> <h:outputText
+								value="No Of InsuredPerson " /></td>
+						<td><p:inputText id="noOfIns"
+								validatorMessage="Value must be greater than 1."
+								value="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.noOfInsuredPerson}"
+								style="width:275px;"
+								onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"
+								required="true">
+								<o:validator validatorId="javax.faces.LongRange" minimum="1" />
+							</p:inputText></td>
+						<td><h:outputText style="color:red;" value="*" /> <h:outputText
+								value="Total SI" /></td>
+						<td><p:inputText
+								value="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.totalSI}"
+								style="width:270px;" id="totalSI" required="true"
+								onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+								<o:validator validatorId="javax.faces.LongRange" minimum="1" />
+							</p:inputText></td>
+					</tr>
+					<tr>
+						<td />
+						<td><p:message for="entity" /></td>
+						<td />
+						<td></td>
+					</tr>
+					<tr>
+						<td><h:outputText style="color:red;" value="*" /> <h:outputText
+								styleClass="input-label" value="Entity" /></td>
+						<td><p:panelGrid styleClass="ui-panelgrid-blank"
+								id="entityPanelGroup">
+								<div style="width: 292px; margin-left: -4px;"
+									class="ui-g ui-fluid">
+									<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+										<p:commandButton styleClass="green-button" icon="fa fa-search"
+											actionListener="#{AddNewGroupFarmerProposalActionBean.selectEntity()}"
+											id="selectEnitysDialogLink" process="@this">
+											<p:ajax event="dialogReturn"
+												listener="#{AddNewGroupFarmerProposalActionBean.returnEntity}"
+												update="entity branchPanelGroup salePontPanelGroup" />
+										</p:commandButton>
+										<p:inputText id="entity" required="true"
+											readonly="#{AddNewGroupFarmerProposalActionBean.entitys== null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+											style="width:250px;margin-left:-4px;"
+											value="#{AddNewGroupFarmerProposalActionBean.entitys == null ? '' : AddNewGroupFarmerProposalActionBean.entitys.name}" />
+										<p:commandButton styleClass="red-button" icon="fa fa-times"
+											action="#{AddNewGroupFarmerProposalActionBean.removeEntity()}"
+											process="@this"
+											update="entity branchPanelGroup salePontPanelGroup" />
+									</div>
+								</div>
+							</p:panelGrid></td>
+						<td><h:outputText style="color: red;" value="*" /> <h:outputText
+								value="#{label['ADDNEWLIFEROPOSAL_PAYMENTTYPE_LABEL']}" /></td>
+						<td><p:selectOneMenu
+								converter="omnifaces.SelectItemsConverter" required="true"
+								id="paymentType" style="width:260px;"
+								value="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.paymentType}">
+								<f:selectItem itemLabel="" noSelectionOption="true" />
+								<f:selectItems
+									value="#{AddNewGroupFarmerProposalActionBean.paymentTypes}"
+									var="paymentType" itemLabel="#{paymentType.name}"
+									itemValue="#{paymentType}" />
+							</p:selectOneMenu></td>
+							
+							
+							
+							
+					</tr>
+					<tr>
+						<td />
+						<td><p:message for="branch" /></td>
+						<td />
+						<td><p:message for="salePoint" display="text" /></td>
+					</tr>
+					<tr>
+						<td><h:outputText style="color:red;" value="*" /> <h:outputText
+								styleClass="input-label"
+								value="#{label['ADDNEWLIFEPROPOSAL_BRANCH_LABEL']}" /></td>
+						<td><p:panelGrid styleClass="ui-panelgrid-blank">
+								<div style="width: 292px; margin-left: -4px;"
+									class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+									<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+										<p:commandButton styleClass="green-button" icon="fa fa-search"
+											actionListener="#{AddNewGroupFarmerProposalActionBean.selectBranchByEntity()}"
+											id="selectBranchDialogLink" process="@this"
+											disabled="#{AddNewGroupFarmerProposalActionBean.entitys==null?true:false}">
+											<p:ajax event="dialogReturn"
+												listener="#{AddNewGroupFarmerProposalActionBean.returnBranch}"
+												update="branch salePontPanelGroup" />
+										</p:commandButton>
+										<p:inputText id="branch" required="true"
+											readonly="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.branch == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+											style="width:250px;margin-left:-4px;"
+											value="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.branch == null ? '' : AddNewGroupFarmerProposalActionBean.groupFarmerProposal.branch.name}"
+											disabled="#{AddNewGroupFarmerProposalActionBean.entitys==null?true:false}" />
+										<p:commandButton styleClass="red-button" icon="fa fa-times"
+											action="#{AddNewGroupFarmerProposalActionBean.removeBranch()}"
+											process="@this" update="branch salePontPanelGroup" />
+									</div>
+								</div>
+							</p:panelGrid></td>
+		
+					<tr>
+						<td><h:outputText style="color:red;" value="*" /> <h:outputText
+								styleClass="input-label" value="Sale Point" /></td>
+						<td><p:panelGrid styleClass="ui-panelgrid-blank">
+								<div style="width: 292px; margin-left: -4px;"
+									class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+									<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+										<p:commandButton styleClass="green-button" icon="fa fa-search"
+											actionListener="#{AddNewGroupFarmerProposalActionBean.selectSalePoint()}"
+											id="selectSalePointDialogLink" process="@this"
+											disabled="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.branch==null?true:false}">
+											<p:ajax event="dialogReturn"
+												listener="#{AddNewGroupFarmerProposalActionBean.returnSalePoint}"
+												update="salePoint" />
+										</p:commandButton>
+										<p:inputText id="salePoint"
+											readonly="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.salePoint ==null ? facesContext.currentPhaseId.ordinal eq 6 : true }"
+											required="true"
+											value="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.salePoint == null ? '' : AddNewGroupFarmerProposalActionBean.groupFarmerProposal.salePoint.name}"
+											disabled="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.branch==null?true:false}" />
+										<p:commandButton styleClass="red-button" icon="fa fa-times"
+											action="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.setSalePoint(null)}"
+											process="@this" update="salePoint" />
+									</div>
+								</div>
+							</p:panelGrid></td>
+					</tr>
+					<tr>
+						<td />
+						<td></td>
+						<td />
+						<td><p:message for="paymentType" display="text" /></td>
+					</tr>
+					
+					<p:panelGrid id="saleChannelPanel" columns="1" layout="tabular" styleClass="ui-panelgrid-blank" style="width: 100%;">
+					<div style="width: 40%; margin-left: -4px;"
+						class="ui-g ui-fluid" jsf:id="saleChannelPanelGroup">
+						<div style="width: 137.33px">
+							<h:outputText styleClass="input-label mandatory"
+									value="Sale Channel" />
+						</div>
+						<div style="width: 292px;">
+					
+						<p:message display="text" for="saleUserType"/> <p:selectOneMenu
+								id="saleUserType" converter="omnifaces.SelectItemsConverter"
+								style="width:280px;"
+								value="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.saleChannelType}"
+								required="true">
+								<f:selectItem itemLabel=" -- Select SaleChannelType --"
+									noSelectionOption="true" itemDisabled="true" />
+								<f:selectItems itemLabel="#{type.label}" itemValue="#{type}"
+									value="#{AddNewGroupFarmerProposalActionBean.saleChannelType}"
+									var="type" />
+								<p:ajax event="valueChange"
+									listener="#{AddNewGroupFarmerProposalActionBean.changeSaleEvent}"
+									update="saleChannelPanel" />
+							</p:selectOneMenu>
+					
+					<div style="margin-top: 3%;">
+						<c:if
+								test="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.saleChannelType ne 'BANCASSURANCE'}">
+								<p:outputLabel />
+								<p:message display="text" for="userType" />
+								<p:panelGrid styleClass="ui-panelgrid-blank" id="user">
+									<div style="width: 292px; margin-left: -4px;"
+										class="ui-g ui-fluid">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button"
+												icon="fa fa-search"
+												actionListener="#{AddNewGroupFarmerProposalActionBean.selectAgent()}"
+												rendered="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.saleChannelType eq 'AGENT'}"
+												id="selectAgentDialogLink" process="@this">
+												<p:ajax event="dialogReturn"
+													listener="#{AddNewGroupFarmerProposalActionBean.returnAgent}"
+													update="userType" />
+											</p:commandButton>
+											<p:commandButton styleClass="green-button"
+												icon="fa fa-search"
+												actionListener="#{AddNewGroupFarmerProposalActionBean.selectSaleMan()}"
+												rendered="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.saleChannelType eq 'SALEMAN'}"
+												id="selectSaleManDialogLink" process="@this">
+												<p:ajax event="dialogReturn"
+													listener="#{AddNewGroupFarmerProposalActionBean.returnSaleMan}"
+													update="userType" />
+											</p:commandButton>
+											<p:commandButton styleClass="green-button"
+												icon="fa fa-search"
+												actionListener="#{AddNewGroupFarmerProposalActionBean.selectReferral()}"
+												rendered="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.saleChannelType eq 'REFERRAL'}"
+												id="selectReferralDialogLink" process="@this">
+												<p:ajax event="dialogReturn"
+													listener="#{AddNewGroupFarmerProposalActionBean.returnReferral}"
+													update="userType" />
+											</p:commandButton>
+											<p:inputText id="userType" required="true"
+												rendered="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.saleChannelType != null }"
+												readonly="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.salePersonName == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.salePersonName}"
+												style="width:250px;margin-left:-4px;" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times"
+												action="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.setAgent(null)}"
+												rendered="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.saleChannelType eq 'AGENT'}"
+												process="@this" update="userType" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times"
+												action="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.setSaleMan(null)}"
+												rendered="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.saleChannelType eq 'SALEMAN'}"
+												process="@this" update="userType" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times"
+												action="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.setReferral(null)}"
+												rendered="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.saleChannelType eq 'REFERRAL'}"
+												process="@this" update="userType" />
+										</div>
+									</div>
+								</p:panelGrid>
+							</c:if>
+						</div>
+					</div>
+					
+						<c:if
+							test="#{AddNewGroupFarmerProposalActionBean.groupFarmerProposal.saleChannelType eq 'BANCASSURANCE'}">
+						
+							<p:message for="channel" display="text" />
+							<div style="width: 137.32px; padding: 1px; margin-top: 2%;">
+								<h:outputText styleClass="input-label mandatory" id="channellabel" value="Channel" />
+							</div>
+							<div>
+								<p:panelGrid styleClass="ui-panelgrid-blank"
+										id="channelPanelGroup">
+										<div style="width: 292px; margin-left: -4px;"
+											class="ui-g ui-fluid">
+											<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+												<p:commandButton styleClass="green-button"
+													icon="fa fa-search"
+													actionListener="#{AddNewGroupFarmerProposalActionBean.selectChannels()}"
+													id="selectChannelDialogLink" process="@this">
+													<p:ajax event="dialogReturn"
+														listener="#{AddNewGroupFarmerProposalActionBean.returnChannel}"
+														update="channel bancaBranchPanelGroup bancaMethods" />
+												</p:commandButton>
+												<p:inputText id="channel" required="true"
+													style="width:250px;margin-left:-4px;"
+													readonly="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.channel == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+													value="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.channel == null ? '' : AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.channel.name}" />
+												<p:commandButton styleClass="red-button" icon="fa fa-times"
+													action="#{AddNewGroupFarmerProposalActionBean.removeChannel()}"
+													process="@this"
+													update="channel bancaBranchPanelGroup bancaMethods" />
+											</div>
+										</div>
+								</p:panelGrid>
+							</div>
+						
+							<div style="width: 137.32px; padding: 1px; margin-top: 3%;">
+								<h:outputText styleClass="input-label mandatory" value="Banca Branch" />
+							</div>
+							<div>
+							<p:panelGrid styleClass="ui-panelgrid-blank">
+									<div style="width: 292px; margin-left: -4px; margin-top: 3%;"
+										class="ui-g ui-fluid" jsf:id="bancaBranchPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button"
+												icon="fa fa-search"
+												actionListener="#{AddNewGroupFarmerProposalActionBean.selectBancaBranch()}"
+												id="selectBancaBranchlink" process="@this"
+												disabled="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.channel == null?true:false}">
+												<p:ajax event="dialogReturn"
+													listener="#{AddNewGroupFarmerProposalActionBean.returnBancaBranch}"
+													update="bancaBranch bancaMethods" />
+											</p:commandButton>
+											<p:inputText id="bancaBranch" required="true"
+												style="width:250px;margin-left:-4px;"
+												readonly="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaBranch == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaBranch == null ? '' : AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaBranch.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times"
+												disabled="#{AddNewGroupFarmerProposalActionBeanbancaassuranceProposal.channel == null? true:false}"
+												action="#{AddNewGroupFarmerProposalActionBean.removeBancaBranch()}"
+												process="@this" update="bancaBranch bancaMethods" />
+										</div>
+									</div>
+							</p:panelGrid>
+							</div>
+					<p:message for="bancaMethod" display="text" />
+					<div style="width: 137.32px; padding: 1px; margin-top: 2%;">
+						<h:outputText styleClass="input-label mandatory" value="Banca Method" />
+					</div>
+						<div jsf:id="bancaMethods">
+								<p:selectOneMenu converter="omnifaces.SelectItemsConverter"
+									required="true" id="bancaMethod"
+									style="width: 280px; margin-top: 3%;"
+									value="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaMethod}"
+									disabled="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaBranch == null?true:false}">
+									<f:selectItem itemLabel="" noSelectionOption="true" />
+									<f:selectItems
+										value="#{AddNewGroupFarmerProposalActionBean.bancaMethodList}"
+										var="bancaMethod" itemLabel="#{bancaMethod.name}"
+										itemValue="#{bancaMethod}" />
+									<p:ajax event="valueChange"
+										listener="#{AddNewGroupFarmerProposalActionBean.changeBancaEvent}"
+										update="@form" />
+								</p:selectOneMenu>
+						</div>
+					<c:if
+						test="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaMethod.name eq 'REFERRAL'}">
+						<p:message for="bancaBrm" display="text" />
+						<div style="width: 137.32px; padding: 1px; margin-top: 4%;">
+							<h:outputText styleClass="input-label mandatory" value="Banca BRM" />
+						</div>
+						<div>
+								<p:panelGrid styleClass="ui-panelgrid-blank"
+									id="bancaBRMPanelGroup">
+									<div style="width: 292px; margin-left: -4px; margin-top: 4%;"
+										class="ui-g ui-fluid">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button"
+												icon="fa fa-search"
+												actionListener="#{AddNewGroupFarmerProposalActionBean.selectBancaBrm()}"
+												id="selectBancaBrmlink" process="@this"
+												disabled="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaMethod == null?true:false}">
+												<p:ajax event="dialogReturn"
+													listener="#{AddNewGroupFarmerProposalActionBean.returnBancaBrm}"
+													update="bancaBrm bancaLICPanelGroup bancaReferralPanelGroup" />
+											</p:commandButton>
+											<p:inputText id="bancaBrm" required="true"
+												style="width: 292px; margin-left: -4px;"
+												readonly="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaBRM== null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaBRM == null ? '' : AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaBRM.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times"
+												disabled="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaMethod  == null?true:false}"
+												action="#{AddNewGroupFarmerProposalActionBean.removeBancaBRM()}"
+												process="@this"
+												update="bancaBrm bancaLICPanelGroup bancaReferralPanelGroup" />
+										</div>
+									</div>
+								</p:panelGrid>
+							</div>
+							<p:message for="bancaLIC" display="text" />
+							<div style="width: 137.32px; padding: 1px; margin-top: 3%;">
+								<h:outputText styleClass="input-label mandatory" value="Banca LIC" />
+							</div>
+							<div>
+								<p:panelGrid styleClass="ui-panelgrid-blank">
+									<div style="width: 292px; margin-left: -4px; margin-top: 3%;"
+										class="ui-g ui-fluid" jsf:id="bancaLICPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button"
+												icon="fa fa-search"
+												actionListener="#{AddNewGroupFarmerProposalActionBean.selectBancaLIC()}"
+												id="selectBancaCLIDialogLink" process="@this"
+												disabled="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaBRM == null?true:false}">
+												<p:ajax event="dialogReturn"
+													listener="#{AddNewGroupFarmerProposalActionBean.returnBancaLIC}"
+													update="bancaLIC bancaReferralPanelGroup" />
+											</p:commandButton>
+											<p:inputText id="bancaLIC" required="true"
+												style="width:250px;margin-left:-4px;"
+												readonly="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaLIC == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaLIC == null ? '' : AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaLIC.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times"
+												disabled="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaBRM  == null?true:false}"
+												action="#{AddNewGroupFarmerProposalActionBean.removeBancaLIC()}"
+												process="@this" update="bancaLIC bancaReferralPanelGroup" />
+										</div>
+									</div>
+								</p:panelGrid>
+							</div>
+							<p:message for="bancaReferral" display="text" />
+							<div style="width: 137.32px; padding: 1px; margin-top: 3%;">
+								<h:outputText value="Banca Refferal" id="bancaRefferalLabel" />
+							</div>
+							<div>
+								<p:panelGrid styleClass="ui-panelgrid-blank">
+									<div style="width: 292px; margin-left: -4px; margin-top: 3%;"
+										class="ui-g ui-fluid" jsf:id="bancaReferralPanelGroup">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button"
+												icon="fa fa-search"
+												actionListener="#{AddNewGroupFarmerProposalActionBean.selectBancaReferral()}"
+												id="selectBancaReferralDialogLink" process="@this"
+												disabled="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaLIC == null?true:false}">
+												<p:ajax event="dialogReturn"
+													listener="#{AddNewGroupFarmerProposalActionBean.returnBancaRefferal}"
+													update="bancaReferral" />
+											</p:commandButton>
+											<p:inputText id="bancaReferral" required="true"
+												style="width:250px;margin-left:-4px;"
+												readonly="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaRefferal == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaRefferal == null ? '' : AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaRefferal.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times"
+												disabled="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaLIC == null?true:false}"
+												action="#{AddNewGroupFarmerProposalActionBean.removeBancaReferral()}"
+												process="@this" update="bancaReferral" />
+										</div>
+									</div>
+								</p:panelGrid>
+							</div>
+					</c:if>
+					<c:if
+						test="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaMethod.name eq 'OTC'}">
+						<p:message for="bancaReferral" display="text" />
+						<div style="width: 137.32px; padding: 1px; margin-top: 3%;">
+							<h:outputText value="Banca Staff" id="bancaRefferalLabel" />
+						</div>
+						<div>
+								<p:panelGrid styleClass="ui-panelgrid-blank"
+									id="bancaReferralPanelGroup">
+									<div style="width: 292px; margin-left: -4px; margin-top: 3%;"
+										class="ui-g ui-fluid">
+										<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+											<p:commandButton styleClass="green-button"
+												icon="fa fa-search"
+												actionListener="#{AddNewGroupFarmerProposalActionBean.selectBancaReferralByOTC()}"
+												id="selectBancaReferralDialogLink" process="@this">
+												<p:ajax event="dialogReturn"
+													listener="#{AddNewGroupFarmerProposalActionBean.returnBancaRefferal}"
+													update="bancaReferral" />
+											</p:commandButton>
+											<p:inputText id="bancaReferral" required="true"
+												style="width:250px;margin-left:-4px;"
+												readonly="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaRefferal == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+												value="#{AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaRefferal == null ? '' : AddNewGroupFarmerProposalActionBean.bancaassuranceProposal.bancaRefferal.name}" />
+											<p:commandButton styleClass="red-button" icon="fa fa-times"
+												action="#{AddNewGroupFarmerProposalActionBean.removeBancaReferral()}"
+												process="@this" update="bancaReferral" />
+										</div>
+									</div>
+								</p:panelGrid>
+							</div>
+					</c:if>
+					</c:if>
+					
+					</div>
+					</p:panelGrid>
+					
+							
+					</tr>
+				</table>
+				<table>
+					<!-- <tr>
+					
+											<td>
+												<h:outputText id="eipsplan" styleClass="input-label mandatory" value="EIPS Plan" />
+											</td>
+											<td>
+												<p:selectBooleanCheckbox value="#{AddNewGroupFarmerProposalActionBean.selectItem}" noSelectionOption="true" itemDisabled="true">
+													<f:ajax execute="@this" render="groupFarmerProposalEntryForm"></f:ajax>
+												</p:selectBooleanCheckbox>
+											</td>
+										</tr> -->
+										<tr>
+										<td/>
+											<td>
+												<p:message for="ggiorganization" display="text" />
+											</td>
+											
+							</tr>
+										<tr>
+											<td>
+												<h:outputText id="ggi" styleClass="input-label mandatory" value="GGI Organization" rendered="#{AddNewGroupFarmerProposalActionBean.selectItem eq true}" />
+											</td>
+										
+											<td>
+											
+												<p:panelGrid styleClass="ui-panelgrid-blank">
+													<div style="width: 292px; margin-left: -4px;" class="ui-g ui-fluid">
+														<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+															<p:selectOneMenu required="true" id="ggiorganization" value="#{AddNewGroupFarmerProposalActionBean.ggiOrganization}"
+																rendered="#{AddNewGroupFarmerProposalActionBean.selectItem eq true}" converter="omnifaces.SelectItemsConverter">
+																<f:ajax execute="@this" render="staffSelect" listener="#{AddNewGroupFarmerProposalActionBean.selectStaffWithOrganization}" />
+																<f:selectItem itemLabel="" noSelectionOption="true" />
+																<f:selectItems itemLabel="#{t.name}" itemValue="#{t}" value="#{AddNewGroupFarmerProposalActionBean.ggiOrganizationList}" var="t" />
+															</p:selectOneMenu>
+														</div>
+													</div>
+												</p:panelGrid>
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="staffSelect" display="text" />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText id="staff" styleClass="input-label mandatory" value="Staff" rendered="#{AddNewGroupFarmerProposalActionBean.selectItem eq true}" />
+											</td>
+											<td>
+												<p:panelGrid styleClass="ui-panelgrid-blank">
+													<div style="width: 292px; margin-left: -4px;" class="ui-g ui-fluid">
+														<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+															<p:selectOneMenu required="true" id="staffSelect" value="#{AddNewGroupFarmerProposalActionBean.staff}"
+																rendered="#{AddNewGroupFarmerProposalActionBean.selectItem eq true}" converter="omnifaces.SelectItemsConverter">
+																<f:selectItem itemLabel="" noSelectionOption="true" />
+																<f:selectItems itemLabel="#{t.name.fullName}" itemValue="#{t}" value="#{AddNewGroupFarmerProposalActionBean.staffList}" var="t" />
+															</p:selectOneMenu>
+														</div>
+													</div>
+												</p:panelGrid>
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="relationShipType" display="text" />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText id="type" styleClass="input-label mandatory" value="RelationShip" rendered="#{AddNewGroupFarmerProposalActionBean.selectItem eq true}" />
+											</td>
+											<td>
+												<p:panelGrid styleClass="ui-panelgrid-blank">
+													<div style="width: 292px; margin-left: -4px;" class="ui-g ui-fluid">
+														<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+															<p:selectOneMenu required="true" id="relationShipType" value="#{AddNewGroupFarmerProposalActionBean.relationShipType}"
+																rendered="#{AddNewGroupFarmerProposalActionBean.selectItem eq true}" converter="omnifaces.SelectItemsConverter">
+																<f:ajax execute="@this" render="@this percentage" listener="#{AddNewGroupFarmerProposalActionBean.showPercentageWithRelationShip}" />
+																<f:selectItem itemLabel="" noSelectionOption="true" />
+																<f:selectItems itemLabel="#{t.name}" itemValue="#{t}" value="#{AddNewGroupFarmerProposalActionBean.relationShipTypeList}" var="t" />
+															</p:selectOneMenu>
+														</div>
+													</div>
+												</p:panelGrid>
+											</td>
+										</tr>
+										<tr>
+											<td />
+											<td>
+												<p:message for="percentage" display="text" />
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<h:outputText id="per" styleClass="input-label mandatory" value="Percentage" rendered="#{AddNewGroupFarmerProposalActionBean.selectItem eq true}" />
+											</td>
+											<td>
+												<p:panelGrid styleClass="ui-panelgrid-blank">
+													<div style="width: 292px; margin-left: -4px;" class="ui-g ui-fluid">
+														<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+															<p:inputText id="percentage" value="#{AddNewGroupFarmerProposalActionBean.percentage eq null ? 0 : AddNewGroupFarmerProposalActionBean.percentage.percent}" rendered="#{AddNewGroupFarmerProposalActionBean.selectItem eq true}"
+																disabled="true" />
+														</div>
+													</div>
+												</p:panelGrid>
+											</td>
+										
+						<td />
+					<tr>
+						<td colspan="2">
+							<fieldset>
+								<legend>
+									<h:outputText styleClass="input-label"
+										value="Proposal Attchment" />
+								</legend>
+								<table>
+									<tr>
+										<td valign="top"><p:fileUpload
+												allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+												fileUploadListener="#{AddNewGroupFarmerProposalActionBean.handleProposalAttachment}"
+												mode="advanced" multiple="true" sizeLimit="3000000"
+												update="proposalImageGrid" /></td>
+									</tr>
+									<tr>
+										<td valign="top"><p:dataGrid columns="8"
+												id="proposalImageGrid" paginator="true"
+												paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+												rows="16" var="image"
+												value="#{AddNewGroupFarmerProposalActionBean.proposalUploadedFileList}">
+												<p:graphicImage style="width:120px;height:120px;"
+													value="#{uploadRootPath}#{image}" />
+												<br />
+												<p:commandLink
+													action="#{AddNewGroupFarmerProposalActionBean.removeProposalUploadedFile(image)}"
+													immediate="true" update="proposalImageGrid">
+													<p:graphicImage
+														styleClass="#{ApplicationSetting.deleteStyleClass}"
+														value="#{ApplicationSetting.deleteIcon}" />
+												</p:commandLink>
+											</p:dataGrid></td>
+									</tr>
+								</table>
+							</fieldset>
+						</td>
+					</tr>
+					<td />
+					<td><p:message for="responsiblePerson" display="text" /></td>
+					</tr>
+					<tr>
+						<td><h:outputText style="color:red;" value="*" /> <h:outputText
+								styleClass="input-label" value="Responsible Person" /></td>
+						<td><h:panelGrid columns="3" id="responsiblePersonPanel">
+								<p:inputText id="responsiblePerson"
+									value="#{AddNewGroupFarmerProposalActionBean.responsiblePerson == null ? '' : AddNewGroupFarmerProposalActionBean.responsiblePerson.name}"
+									readonly="#{AddNewGroupFarmerProposalActionBean.responsiblePerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+									style="width:250px;margin-left:-4px;" required="true" />
+								<p:commandLink id="selectUserDialogLink"
+									actionListener="#{AddNewGroupFarmerProposalActionBean.selectUser()}"
+									immediate="true">
+									<h:graphicImage
+										styleClass="#{ApplicationSetting.searchStyleClass}"
+										url="#{ApplicationSetting.searchIcon}" />
+									<p:ajax event="dialogReturn"
+										listener="#{AddNewGroupFarmerProposalActionBean.returnUser}"
+										update="responsiblePersonPanel" />
+								</p:commandLink>
+							</h:panelGrid></td>
+					</tr>
+				</table>
+				<br />
+				<p:commandButton value="Submit"
+					action="#{AddNewGroupFarmerProposalActionBean.addNewGroupFarmerProposal()}"
+					update="@form"></p:commandButton>
+				<p:spacer width="10" />
+				<p:commandButton value="Reset"
+					actionListener="#{AddNewGroupFarmerProposalActionBean.createNewGroupFarmerProposal()}"
+					update="@form"></p:commandButton>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

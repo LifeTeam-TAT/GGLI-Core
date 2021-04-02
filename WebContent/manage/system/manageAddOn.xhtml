@@ -1,0 +1,149 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['MANAGE_ADDON_TITLE']}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+	
+	<style type="text/css">
+	     
+	    .ui-filter-column .ui-column-customfilter .custom-filter {
+	        width: 100%;
+	        box-sizing: border-box;
+	    }
+	    
+	</style>
+
+		<h:form id="addOnEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" />
+			 <p:panel>
+				
+				 <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+           			<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						
+						<p:outputLabel/>
+						<p:message for="name" display="text"/>
+						
+						<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_ADDON_NAME_LABEL']}" />
+						<p:inputText id="name" required="true" value="#{ManageAddOnActionBean.addOn.name}">
+							<f:validateLength maximum="50" />
+						</p:inputText>
+						
+						<p:outputLabel/>
+						<p:message for="value" display="text"/>
+						
+						<h:outputText styleClass="input-label mandatory" value="#{label['MANAGE_ADDON_VALUE_LABEL']}" />
+						<p:inputText id="value" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" required="true" value="#{ManageAddOnActionBean.addOn.value}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat2}" />
+						</p:inputText>
+						
+						<p:outputLabel/>
+						<p:message for="description" display="text"/>
+						<h:outputText styleClass="input-label" value="#{label['MANAGEMENT_ADDON_DESCRIPTION']}" />
+						<p:inputTextarea id="description"  rows="7" value="#{ManageAddOnActionBean.addOn.description}">
+							<f:validateLength maximum="300" />
+						</p:inputTextarea>
+           			
+           			</p:panelGrid>
+           			
+           			<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+           			
+           				<p:outputLabel/>
+						<p:message for="addOnType" display="text"/>
+						
+						<h:outputText styleClass="input-label" value="#{label['MANAGE_ADDON_ADDONTYPE_LABEL']}" />
+						<p:selectOneRadio required="true" converter="omnifaces.SelectItemsConverter" layout="grid" columns="1"
+							id="addOnType" value="#{ManageAddOnActionBean.addOn.addOnType}">
+							<f:selectItems itemLabel="#{type.label}" itemValue="#{type}" value="#{ManageAddOnActionBean.addOnTypeSelectItemList}" var="type" />
+							<p:ajax update="@form:maxminPanel" />
+						</p:selectOneRadio>
+           			
+           			</p:panelGrid>
+           			
+           			<p:panelGrid id="maxminPanel" columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+           			
+           				<p:outputLabel/>
+						<p:message for="minAmount" />
+						
+						<h:outputText rendered="#{ManageAddOnActionBean.addOn.basicSumInsured}" styleClass="input-label mandatory" value="Minimun Amount" />
+						<p:inputText id="minAmount" rendered="#{ManageAddOnActionBean.addOn.basicSumInsured}"  onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" 
+							required="true" value="#{ManageAddOnActionBean.addOn.minAmount}" />
+						
+						<p:outputLabel/>	
+						<p:message for="maxAmount" />
+						
+						<h:outputText rendered="#{ManageAddOnActionBean.addOn.basicAddOnSumInsured}" styleClass="input-label mandatory" value="Maximum Amount" />
+						<p:inputText id="maxAmount" rendered="#{ManageAddOnActionBean.addOn.basicAddOnSumInsured}"  onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"
+							required="true"  value="#{ManageAddOnActionBean.addOn.maxAmount}" />
+									
+           			</p:panelGrid>
+           			
+           		</p:panelGrid>
+           		
+			</p:panel>
+			<h:panelGrid>
+				<p:commandButton action="#{ManageAddOnActionBean.addNewAddOn}" id="addBtn" rendered="#{ManageAddOnActionBean.createNew}"  oncomplete="PF('addOnTable').filter();" style="width: 80px;"
+						update=":addOnEntryForm :addOnTableForm" value="#{label['COMMON_ADDNEW_BTN']}" />
+				<p:commandButton action="#{ManageAddOnActionBean.updateAddOn}" id="editBtn" oncomplete="PF('addOnTable').filter();" rendered="#{!ManageAddOnActionBean.createNew}"
+						update="addOnEntryForm :addOnTableForm" value="#{label['COMMON_UPDATE_BTN']}" />
+			</h:panelGrid>
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+			<p:separator style="height:2px;" />
+		</h:form>
+		<h:form id="addOnTableForm">
+			<h:commandLink action="#{ManageAddOnActionBean.createNewAddOn}">
+				<h:panelGrid columns="2">
+					<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+					<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+				</h:panelGrid>
+			</h:commandLink>
+			<p:outputPanel id="listPanel">
+				<p:dataTable id="addOnTable" paginator="true" paginatorPosition="bottom"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+					rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageAddOnActionBean.addOnList}" var="addOn" widgetVar="addOnTable">
+					<p:column filterBy="#{addOn.name}" filterMatchMode="contains" headerText="#{label['MANAGE_ADDON_NAME_LABEL']}">
+						<h:outputText value="#{addOn.name}" />
+					</p:column>
+					
+					<p:column filterStyle="width:100%"  filterBy="#{addOn.addOnType.label}" headerText="Brand" footerText="exact" filterMatchMode="exact">
+			            <f:facet name="filter" >
+			                <p:selectOneMenu onchange="PF('addOnTable').filter()" styleClass="custom-filter">
+			                   <f:selectItem itemLabel="Select One" itemValue="" noSelectionOption="true" />
+			                   <f:selectItems itemLabel="#{type.label}" itemValue="#{type.label}" value="#{ManageAddOnActionBean.addOnTypeSelectItemList}" var="type" />
+			                </p:selectOneMenu>
+			            </f:facet>
+			            <h:outputText value="#{addOn.addOnType.label}" />
+			        </p:column>
+        
+					<p:column headerText="#{label['MANAGE_ADDON_VALUE_LABEL']}" style="width:10%;">
+						<h:outputText value="#{addOn.value}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat2}" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="#{label['MANAGEMENT_ADDON_DESCRIPTION']}">
+						<h:outputText value="#{addOn.description}" />
+					</p:column>
+					
+					<p:column headerText="Edit" style="width:4%;">
+			   			<p:commandButton styleClass="green-button" icon="fa fa-paint-brush" action="#{ManageAddOnActionBean.prepareUpdateAddOn(addOn)}" update=":addOnEntryForm"/>
+					</p:column>
+					
+					<p:column headerText="Delete" style="width:4%;">
+					    <p:commandButton  oncomplete="PF('addOnTable').filter();" styleClass="red-button" icon="fa fa-times" action="#{ManageAddOnActionBean.deleteAddOn(addOn)}"  update=":addOnEntryForm :addOnTableForm">
+					    	<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+					    </p:commandButton>
+					 </p:column>
+			   
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		
+		<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		 	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+		</p:confirmDialog>
+		
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:param name="header" value="Person Travel Policy Issue" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<h:form id="personTravelPolicyIssueForm">
+			<p:growl escape="false" globalOnly="true" life="8000" showDetail="true" />
+			<p:panel>
+				<table width="100%">
+					<tr>
+						<td width="80px;">
+							<h:outputText value="Proposal No" styleClass="input-label" />
+						</td>
+						<td>
+							<h:panelGrid columns="2">
+								<p:inputText value="#{PersonTravelPolicyIssueActionBean.personTravelProposal.proposalNo}" style="width:250px; margin-left: -4px;" id="proposalNo" readonly="true" />
+								<p:commandLink id="detailsProposal" oncomplete="PF('travelProposalDetailsDialog').show()" immediate="true">
+									<h:graphicImage url="#{ApplicationSetting.detailIcon}" styleClass="#{ApplicationSetting.detailStyleClass}" />
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<h:panelGroup id="policyTablePanel">
+								<p:dataTable value="#{PersonTravelPolicyIssueActionBean.personTravelPolicyList}" var="ptPolicy" id="personTravelPolicyTable" style="width:100%" rowIndexVar="index">
+									<p:column headerText="Policy No">
+										<h:outputText value="#{ptPolicy.policyNo}" />
+									</p:column>
+									<p:column headerText="Premium">
+										<h:outputText style="float: right;" value="#{ptPolicy.personTravelPolicyInfo.totalBasicTermPremium}">
+											<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Sales Man">
+										<h:outputText value="#{ptPolicy.saleMan.fullName}" />
+									</p:column>
+									<p:column headerText="Branch">
+										<h:outputText value="#{ptPolicy.branch == null ? '-' : ptPolicy.branch.name}" />
+									</p:column>
+									<p:column headerText="Agent">
+										<h:outputText value="#{ptPolicy.agent == null ? '-' : ptPolicy.agent.fullName}" />
+									</p:column>
+									<p:column headerText="No of Unit">
+										<h:outputText value="#{ptPolicy.personTravelPolicyInfo.totalUnit}" style="text-align: right"/>
+									</p:column>
+									<p:column headerText="No of Passenger">
+										<h:outputText value="#{ptPolicy.personTravelPolicyInfo.noOfPassenger}" style="text-align: right"/>
+									</p:column>
+									<p:column headerText="Issue Status">
+										<h:outputText value="#{PersonTravelPolicyIssueActionBean.personTravelProposal.complete ? 'Yes' : 'No'}"/>
+									</p:column>
+									<p:column headerText="Issue Status" style="text-align: center;">
+										<p:commandButton id="pdfSingleBtn" value="Print Preview" oncomplete="PF('issuePolicyPDFDialogSingle').show()" action="#{PersonTravelPolicyIssueActionBean.generateReport(ptPolicy)}"
+											update=":pdfPrintForm" icon="ui-icon-print" style="height: 24px;"  disabled="#{PersonTravelPolicyIssueActionBean.disableIssueBtn}"/>
+									</p:column>
+								</p:dataTable>
+							</h:panelGroup>
+						</td>
+					</tr>
+				</table>
+			</p:panel>
+			<p:commandButton style="width: 80px;" id="issueBtn" value="Apply" action="#{PersonTravelPolicyIssueActionBean.issuePolicy}" disabled="#{!PersonTravelPolicyIssueActionBean.disableIssueBtn}"
+				update=":personTravelPolicyIssueForm" />
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" id="cancelBtn" value="Back" action="dashboard" immediate="true" />
+		</h:form>
+		<h:form id="travelProposalDetailsForm">
+			<p:dialog header="Life Proposal Details" widgetVar="travelProposalDetailsDialog" resizable="false" width="1200" height="550" showEffect="explode" hideEffect="explode"
+				id="travelProposalDetailsDialog" appendTo="@(body)">
+				<ui:include src="/manage/travel/personTravel/personTravelDetailTemplate.xhtml">
+					<ui:param name="personTravelProposal" value="#{PersonTravelPolicyIssueActionBean.personTravelProposal}" />
+					<ui:param name="personTravelRouteName" value="#{PersonTravelPolicyIssueActionBean.routeName}" />
+					<ui:param name="showPolicy" value="#{true}" />
+					<ui:param name="personTravelPolicy" value="#{PersonTravelPolicyIssueActionBean.personTravelPolicy}" />
+				</ui:include>
+			</p:dialog>
+		</h:form>
+		<h:form id="pdfPrintForm" enctype="multipart/form-data">
+			<p:dialog widgetVar="issuePolicyPDFDialogSingle" resizable="false" id="issuePolicyPDFDialogSingle" width="1070" height="505" appendTo="@(body)" dynamic="true">
+				<p:ajax event="close" update=":pdfPrintForm :personTravelPolicyIssueForm" listener="#{PersonTravelPolicyIssueActionBean.handleClose}" />
+				<p:media id="pdfPlayer" value="#{PersonTravelPolicyIssueActionBean.stream}" player="pdf" width="1050" height="500" cache="false"/>
+			</p:dialog>
+		</h:form>
+		<h:form id="pdfPrintSetUpForm" enctype="multipart/form-data">
+			<p:dialog widgetVar="issuePolicyPrintSetUpPDFDialog" resizable="false" id="issuePolicyPrintSetUpPDFDialog" width="1070" height="505" appendTo="@(body)" dynamic="true">
+				<p:ajax event="close" update=":pdfPrintSetUpForm :personTravelPolicyIssueForm" listener="#{PersonTravelPolicyIssueActionBean.handleCloseSetUp}" />
+				<p:media id="pdfPlayer1" value="#{PersonTravelPolicyIssueActionBean.printSetUpReportStream}" player="pdf" width="1050" height="500" cache="false" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

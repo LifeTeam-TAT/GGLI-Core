@@ -1,0 +1,140 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+   <ui:param name="header" value="#{label['MANAGE_MANUFACTURE_TITLE']}" />
+   <ui:param name="headerRendered" value="true" />
+   <ui:define name="content">
+      <h:form id="manufactureEntryForm">
+         <p:growl globalOnly="true" id="messages" showDetail="true" />
+         <div style="padding-left: 15px;">
+            <h:outputText value="#{label['MANAGE_MANUFACTURE_ADDNEW_LABEL']}" styleClass="table-title" style="padding-top:-10px;"
+               rendered="#{ManageManufactureActionBean.createNew}" />
+            <h:outputText value="#{label['MANAGE_MANUFACTURE_EDIT_LABEL']}" styleClass="table-title" style="padding-top:-10px;" rendered="#{!ManageManufactureActionBean.createNew}" />
+            <table>
+               <tr>
+                  <td valign="top">
+                     <table>
+                        <tr>
+                           <td>
+                              <h:outputText value="" />
+                           </td>
+                           <td style="width: 115px;">
+                              <p:message for="name" />
+                           </td>
+                        </tr>
+                        <tr>
+                           <td style="width: 115px;">
+                              <h:outputText value="#{label['STAR_SIGN_LABEL']}" style="color:red;" />
+                              <h:outputText value="#{label['MANAGE_MANUFACTURE_NAME_LABEL']}" styleClass="input-label" />
+                           </td>
+                           <td>
+                              <p:inputText value="#{ManageManufactureActionBean.manufacture.name}" style="width:250px;" id="name" required="true">
+                                 <f:validateLength maximum="50" />
+                              </p:inputText>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <h:outputText value="" />
+                           </td>
+                           <td style="width: 115px;">
+                              <p:message for="description" />
+                           </td>
+                        </tr>
+                        <tr>
+                           <td style="width: 115px;" valign="top">
+                              <h:outputText value="#{label['MANAGE_MANUFACTURE_DESCRIPTION_LABEL']}" styleClass="input-label" />
+                           </td>
+                           <td>
+                              <p:inputTextarea value="#{ManageManufactureActionBean.manufacture.description}" style="width:250px;" id="description" rows="5" autoResize="true">
+                                 <f:validateLength maximum="300" />
+                              </p:inputTextarea>
+                           </td>
+                        </tr>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                     <p:commandButton id="addBtn" value="#{label['COMMON_ADDNEW_BTN']}" action="#{ManageManufactureActionBean.addNewManufacture}"
+                        rendered="#{ManageManufactureActionBean.createNew}" update="manufactureEntryForm :manufactureTableForm" style="width: 80px;" />
+                     <p:commandButton id="editBtn" value="#{label['COMMON_UPDATE_BTN']}" action="#{ManageManufactureActionBean.updateManufacture}"
+                        rendered="#{!ManageManufactureActionBean.createNew}" update="manufactureEntryForm" oncomplete="PF('manufactureTable.filter();" />
+                  </td>
+               </tr>
+            </table>
+         </div>
+         <h:outputText value="#{label['COMMON_MSG_MANDATORY_LABEL']}" style="color:red;" />
+         <br />
+         <p:separator style="height:5px" />
+      </h:form>
+      <h:form id="manufactureTableForm">
+         <h:commandLink action="#{ManageManufactureActionBean.createNewManufacture}">
+            <h:panelGrid columns="2">
+               <h:graphicImage value="#{ApplicationSetting.addIcon}" styleClass="#{ApplicationSetting.addStyleClass}" />
+               <h:outputText value="#{label['COMMON_ADDNEW_LINK']}" styleClass="command-link" />
+            </h:panelGrid>
+         </h:commandLink>
+         <p:outputPanel id="listPanel">
+            <table>
+               <tr>
+                  <td>
+                     <h:outputText value="Name" />
+                  </td>
+                  <td>
+                     <p:inputText id="manufuctureCriteria" style="height:20px;width: 200px;" value="#{ManageManufactureActionBean.criteria}" />
+                  </td>
+                  <td>
+                     <p:commandButton action="#{ManageManufactureActionBean.searchManufacture}" id="searchManfucatureButtonBtn" update=":manufactureTableForm" value="Search" />
+                  </td>
+                  <td>
+                     <p:commandButton action="#{ManageManufactureActionBean.init()}" id="resetManufactureButtonBtn" update=":manufactureTableForm" value="Reset" />
+                  </td>
+               </tr>
+            </table>
+            <p:dataTable var="manufacture" value="#{ManageManufactureActionBean.manufactureList}" id="manufactureTable" paginator="true" rows="10" style="width:100%;"
+               widgetVar="manufactureTable"
+               paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+               rowsPerPageTemplate="5,10, 15" rowKey="index">
+               <p:column headerText="#{label['MANAGE_MANUFACTURE_NAME_LABEL']}" filterMatchMode="contains" filterBy="#{manufacture.name}">
+                  <h:outputText value="#{manufacture.name}" />
+               </p:column>
+               <p:column headerText="#{label['MANAGE_MANUFACTURE_DESCRIPTION_LABEL']}">
+                  <h:outputText value="#{manufacture.description}" />
+               </p:column>
+               <p:column style="width:50px;">
+                  <p:commandLink action="#{ManageManufactureActionBean.prepareUpdateManufacture(manufacture)}" update=":manufactureEntryForm">
+                     <p:graphicImage value="#{ApplicationSetting.editIcon}" styleClass="#{ApplicationSetting.editStyleClass}" />
+                  </p:commandLink>
+               </p:column>
+               <p:column style="width:50px;">
+                  <p:commandLink oncomplete="PF('confirmationDialog').show()" id="deleteGroupLink">
+                     <f:setPropertyActionListener target="#{ManageManufactureActionBean.manufacture}" value="#{manufacture}" />
+                     <p:graphicImage value="#{ApplicationSetting.deleteIcon}" styleClass="#{ApplicationSetting.deleteStyleClass}" />
+                  </p:commandLink>
+               </p:column>
+            </p:dataTable>
+         </p:outputPanel>
+      </h:form>
+      <h:form id="confiationForm">
+         <p:dialog header="#{label['MANAGE_MANUFACTURE_DELETE_CONFIRM']}" widgetVar="confirmationDialog" resizable="false" width="250" height="100" showEffect="explode"
+            hideEffect="explode" id="confirmationDialog">
+            <h:panelGroup id="confirmationPanel">
+               <table>
+                  <tr>
+                     <td align="left">
+                        <h:graphicImage url="/images/warning.png" style="width:30px;height:30px;" />
+                     </td>
+                     <td valign="middle">
+                        <h:outputText value="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" style="padding-top:-10px;text-decoration: none;font-size: 12px;" />
+                     </td>
+                  </tr>
+               </table>
+               <br />
+               <p:commandButton value="#{label['COMMON_YES_BTN']}" action="#{ManageManufactureActionBean.deleteManufacture}" update=":manufactureEntryForm"
+                  oncomplete="PF('confirmationDialog').hide(); manufactureTable.filter();" immediate="true" />
+               <p:commandButton value="#{label['COMMON_NO_BTN']}" oncomplete="PF('confirmationDialog').hide()" immediate="true" />
+            </h:panelGroup>
+         </p:dialog>
+      </h:form>
+   </ui:define>
+</ui:composition>

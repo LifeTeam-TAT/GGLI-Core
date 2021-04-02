@@ -1,0 +1,167 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="GroupLife Renewal Inform" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<h:form id="informLifeProposalForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" escape="false"/>
+			<p:panel>
+				<table>
+					<tr>
+						<td width="70">
+							<h:outputText styleClass="input-label" value="Proposal No"/>
+						</td>
+						<td align="left">
+							<h:panelGrid columns="2">
+								<p:inputText id="proposalNo" readonly="true" style="width:250px; margin-left:-4px;" value="#{RenewalGroupLifeInformActionBean.lifeProposal.proposalNo}"/>
+								<p:commandLink id="detailsProposal" immediate="true" oncomplete="PF('lifeProposalDetailsDialog').show()">
+									<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}"/>
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value=""/>
+						</td>
+						<td style="width: 155px;">
+							<p:message for="totalPremium"/>
+						</td>
+					</tr>
+					<h:panelGroup id="commonTotalPremium">
+						<tr>
+							<td style="width: 155px;">
+								<h:outputText styleClass="input-label" value="Total Premium"/>
+							</td>
+							<td>
+								<p:inputText id="totalPremium" readonly="true" style="width:250px; text-align: right;" value="#{RenewalGroupLifeInformActionBean.acceptedInfo.totalPremium}">
+									<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}"/>
+								</p:inputText>
+							</td>
+						</tr>
+					</h:panelGroup>
+					<tr height="3" />
+					<tr>
+						<td>
+							<h:outputText value=""/>
+						</td>
+						<td style="width: 155px;">
+							<p:message for="amount"/>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 155px;">
+							<h:outputText styleClass="input-label" value="Discount Percent"/>
+						</td>
+						<td>
+							<p:inputText id="amount" style="width:250px; text-align: right;" value="#{RenewalGroupLifeInformActionBean.acceptedInfo.discountPercent}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}"/>
+								<f:validateDoubleRange maximum="100"/>
+							</p:inputText>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value=""/>
+						</td>
+						<td style="width: 155px;">
+							<p:message for="additionalCharges"/>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 155px;">
+							<h:outputText styleClass="input-label" value="Service Charges"/>
+						</td>
+						<td>
+							<p:inputText id="additionalCharges" style="width:250px; text-align: right;" value="#{RenewalGroupLifeInformActionBean.acceptedInfo.servicesChargesNum}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}"/>
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td>
+							<h:outputText value=""/>
+						</td>
+						<td style="width: 155px;">
+							<p:message for="stampFees"/>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 155px;">
+							<h:outputText styleClass="input-label" value="Policy Stamp Fees"/>
+						</td>
+						<td>
+							<p:inputText disabled="true" id="stampFees" style="width:250px; text-align: right;" value="#{RenewalGroupLifeInformActionBean.acceptedInfo.stampFees}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}"/>
+							</p:inputText>
+						</td>
+					</tr>
+					<tr height="3" />
+					<tr>
+						<td valign="top">
+							<h:outputText styleClass="input-label" value="Remark"/>
+						</td>
+						<td valign="top">
+							<p:inputTextarea autoResize="true" id="remark" rows="7" style="width:400px;" value="#{RenewalGroupLifeInformActionBean.remark}">
+								<f:validateLength maximum="8000"/>
+							</p:inputTextarea>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value=""/>
+						</td>
+						<td style="width: 155px;">
+							<p:message for="responsiblePerson"/>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 155px;">
+							<h:outputText style="color:red;" value="*"/>
+							<h:outputText styleClass="input-label" value="Responsible Person"/>
+						</td>
+						<td>
+							<h:panelGrid columns="3" id="responsiblePersonPanel">
+								<p:inputText id="responsiblePerson" readonly="true" required="true" style="width:250px;margin-left:-4px;" value="#{RenewalGroupLifeInformActionBean.responsiblePerson == null ? '' : RenewalGroupLifeInformActionBean.responsiblePerson.name}"/>
+								<p:commandLink actionListener="#{RenewalGroupLifeInformActionBean.selectUser()}" id="selectUserDialogLink" immediate="true">
+									<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}"/>
+									<p:ajax event="dialogReturn" listener="#{RenewalGroupLifeInformActionBean.returnUser}" update="responsiblePersonPanel"/>
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+				</table>
+			</p:panel>
+			<p:commandButton action="#{RenewalGroupLifeInformActionBean.informApprovedLifeProposal}" disabled="#{!RenewalGroupLifeInformActionBean.disablePrintBtn}" id="approvedBtn" rendered="#{RenewalGroupLifeInformActionBean.approveProposal}" style="width: 80px;" 
+							update=":informLifeProposalForm" value="Approved"/>
+			<p:spacer width="5" />
+			<p:commandButton action="#{RenewalGroupLifeInformActionBean.informRejectLifeProposal}" disabled="#{!RenewalGroupLifeInformActionBean.disablePrintBtn}" id="rejectBtn" rendered="#{!RenewalGroupLifeInformActionBean.approveProposal}" style="width: 80px;" update=":informLifeProposalForm" value="Reject"/>
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" action="dashboard" id="cancelBtn" immediate="true" value="Cancel"/>
+			<p:spacer width="5" />
+			<p:commandButton action="#{RenewalGroupLifeInformActionBean.generateReport()}" disabled="#{RenewalGroupLifeInformActionBean.disablePrintBtn}" immediate="true" oncomplete="PF('pdfPreviewDialog').show()" update=":pdfPreviewForm" value="Print Preview" />
+		</h:form>
+		<h:form id="lifeProposalDetailsForm">
+			<p:dialog appendTo="@(body)" header="Life Proposal Details" height="550" hideEffect="explode" id="lifeProposalDetailsDialog" resizable="false" showEffect="explode" widgetVar="lifeProposalDetailsDialog" width="1200">
+				<ui:include src="/manage/life/lifeProposalInfoTemplate.xhtml">
+					<ui:param name="lifePolicySummary" value="#{RenewalGroupLifeInformActionBean.lifePolicySummary}" />
+					<ui:param name="isEndorse" value="#{RenewalGroupLifeInformActionBean.isEndorse(lifeproposal)}" />
+					<ui:param name="lifePolicyList" value="#{RenewalGroupLifeInformActionBean.lifePolicyList}" />
+					<ui:param name="lifePolicyHistoryList" value="#{RenewalGroupLifeInformActionBean.lifePolicyHistoryList}" />
+					<ui:param name="lifeProposal" value="#{RenewalGroupLifeInformActionBean.lifeProposal}"/>
+					<ui:param name="showPolicy" value="#{false}"/>
+					<ui:param name="workFlowList" value="#{RenewalGroupLifeInformActionBean.workFlowList}"/>
+				</ui:include>
+			</p:dialog>
+		</h:form>
+		<!--  Responsible Person Dialog -->
+		<!-- PDF Preview For imform Letter -->
+		<h:form enctype="multipart/form-data" id="pdfPreviewForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview (PDF)" width="1050" height="500" hideEffect="fade" id="pdfPreviewDialog" resizable="false" showEffect="fade" widgetVar="pdfPreviewDialog">
+				<p:ajax event="close" update=":pdfPreviewForm :informLifeProposalForm" listener="#{RenewalGroupLifeInformActionBean.handleClose}" />
+				<p:media width="1050" height="500" player="pdf" value="#{RenewalGroupLifeInformActionBean.stream}" cache="false"/>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

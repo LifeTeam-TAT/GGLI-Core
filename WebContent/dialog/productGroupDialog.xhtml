@@ -1,0 +1,29 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/dialog/dialogTemplate.xhtml">
+	<ui:define name="content">
+		<h:form>
+			<p:dataTable paginator="true" widgetVar="productGroupTable" rowIndexVar="index" value="#{ProductGroupDialogActionBean.productGroupList}" var="productGroup">
+				<p:column headerText="No" style="width:50px;">
+					<h:outputText value="#{index + 1}" />
+				</p:column>
+				<p:column headerText="Name">
+					<h:outputText value="#{productGroup.name}" />
+				</p:column>
+				<p:column filterBy="#{productGroup.groupType}" headerText="Insurance Type" filterMatchMode="exact" style="width:30%;">
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('productGroupTable').filter()">
+							<f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+							<f:selectItems value="#{JsfProductGroupType.ALL_ENUM_VALUES}" />
+						</p:selectOneMenu>
+					</f:facet>
+					<h:outputText value="#{productGroup.groupType}" />
+				</p:column>
+				<p:column style="width:30px;text-align: center;">
+					<p:commandLink action="#{ProductGroupDialogActionBean.selectProductGroup(productGroup)}" immediate="true">
+						<h:graphicImage styleClass="#{ApplicationSetting.selectStyleClass}" url="#{ApplicationSetting.selectIcon}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

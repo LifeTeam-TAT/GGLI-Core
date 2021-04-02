@@ -1,0 +1,4 @@
+1. The configuration file under class-path resources - 'spring-webservice.xml'
+2. For every newly created web service (endpoint & shcema), needs to config -
+	a. '<sws:dynamic-wsdl>' config AND
+	b. schema value config under validating interceptor bean  

@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:p="http://primefaces.org/ui" xmlns:cyc="http://www.cycdemo.com/java" template="/common/commonLayout.xhtml">
+   <ui:param name="header" value="Reverse TLF" />
+   <ui:param name="headerRendered" value="true" />
+   <ui:define name="content">
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/print.css" />
+      <h:form id="reverTLFForm">
+         <!-- <p:growl escape="false" showDetail="true" globalOnly="true" life="8000" /> -->
+         <p:messages globalOnly="true" showDetail="true" id="messages" />
+         <h:panelGrid>
+         	<h:panelGrid columns="4">
+         		<h:outputText value="Receipt No" />
+         		<p:inputText id="receiptNoId" value="#{ManageReverseTLFActionBean.criteria.receiptNo}">
+         			<!-- <p:ajax event="valueChange" process="@this" update="@this"/> -->
+         		</p:inputText>
+         		<h:outputText value="BPMS ReceiptNo" />
+         		<p:inputText id="bpmsReceiptNo" value="#{ManageReverseTLFActionBean.criteria.bpmsReceiptNo}">
+         		</p:inputText>
+         		<p:commandButton value="Search" action="#{ManageReverseTLFActionBean.searchPayment()}" update="paymentListPanel"/>
+         		<p:commandButton value="Reset" action="#{ManageReverseTLFActionBean.reset()}" update="@form"/>
+         	</h:panelGrid>
+         </h:panelGrid>
+         
+         <p:separator style="height:5px" />
+         <h:panelGroup id="paymentListPanel">
+            <p:dataTable style="width: 100%;" value="#{ManageReverseTLFActionBean.paymentList}" id="paymentTable" var="payment" rowIndexVar="rowIndex">
+               <p:column headerText="No." style="width:3px;">
+                  <h:outputText value="#{rowIndex + 1}" />
+               </p:column>
+               <p:column headerText="Receipt No" style="width:40px;">
+                  <h:outputText value="#{payment.receiptNo}" />
+               </p:column>
+               <p:column headerText="From Term"  style="width:5px;">
+                  <h:outputText value="#{payment.fromTerm}" />
+               </p:column>
+               <p:column headerText="To Term" style="width:5px;">
+                  <h:outputText value="#{payment.toTerm}" />
+               </p:column>
+               <p:column headerText="Payment Type" style="width:10px;">
+                  <h:outputText value="#{payment.paymentType.name}" />
+               </p:column>
+               <p:column headerText="Payment Date" style="width:15px;">
+                  <h:outputText value="#{payment.paymentDate}">
+                  <f:convertDateTime pattern="#{ApplicationSetting.dateTimeFormat}"/>
+                  </h:outputText>
+               </p:column>
+               <p:column headerText="Payment Channel" style="width:15px;">
+                  <h:outputText value="#{payment.paymentChannel}" />
+               </p:column>
+               <p:column headerText="Is Complete" style="width:5px;">
+                  <h:outputText value="#{payment.complete}" />
+               </p:column>
+               <p:column headerText = "Amount" style="width:10px;">
+               	<h:outputText value="#{payment.totalAmount}">
+               		<f:convertNumber pattern="#{ApplicationSetting.numberFormat}"/>
+               	</h:outputText>
+               </p:column>
+               <p:column headerText = "Is Reverse" style="width:5px;">
+               		<h:outputText value="#{payment.reverse}" />
+               </p:column>
+               <p:column style="width:15px;" headerText="Reverse">
+                  <p:commandButton value="Reverse" action="#{ManageReverseTLFActionBean.createTLFAndPaymentReverse(payment)}" disabled="#{payment.reverse or payment.complete}" update="@form">
+                      <p:confirm header="Confirmation" message="#{label['COMMON_MSG_REVERSE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+                  </p:commandButton>
+               </p:column>
+            </p:dataTable>
+         </h:panelGroup>
+      </h:form>
+      
+      <!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+	 	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+	</p:confirmDialog>  
+   </ui:define>
+</ui:composition>

@@ -1,0 +1,239 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['CUSTOMER_INFORMATION_REPORT']}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<style>
+.fixed-size {
+	table-layout: fixed;
+	word-wrap: break-word;
+}
+</style>
+		<h:form id="customerList">
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="startDate" value="Date of Birth (From)" />
+						<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{CustomerInformationReportActionBean.criteria.startDate}" />
+						<h:outputText value="Entity" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{CustomerInformationReportActionBean.selectEntity()}" id="entityDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{CustomerInformationReportActionBean.returnEntity}" update="entity branchPanelGroup salePontPanelGroup" />
+									</p:commandButton>
+									<p:inputText id="entity" readonly="true"
+										value="#{CustomerInformationReportActionBean.criteria.entity == null ? '' : CustomerInformationReportActionBean.criteria.entity.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{CustomerInformationReportActionBean.removeEntity}" process="@this"
+										update="entity branchPanelGroup salePontPanelGroup" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputLabel />
+						<h:outputLabel />
+						<h:outputLabel for="active1" value="Policy Count (From)" />
+						<p:inputText id="active1" value="#{CustomerInformationReportActionBean.criteria.activePolicy}" />
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="endDate" value="Date of Birth (To)" />
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{CustomerInformationReportActionBean.criteria.endDate}" />
+						<h:outputText styleClass="input-label" value="#{label['ADDNEWMOTORPROPOSAL_BRANCH_LABEL']}" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{CustomerInformationReportActionBean.selectBranch()}" id="selectBranchDialogLink"
+										process="@this" disabled="#{CustomerInformationReportActionBean.criteria.entity==null?true:false}">
+										<p:ajax event="dialogReturn" listener="#{CustomerInformationReportActionBean.returnBranch}" update="branch salePontPanelGroup" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true"
+										value="#{CustomerInformationReportActionBean.criteria.customerBrach == null ? '' : CustomerInformationReportActionBean.criteria.customerBrach.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{CustomerInformationReportActionBean.criteria.entity==null?true:false}"
+										action="#{CustomerInformationReportActionBean.removeBranch()}" process="@this" update="branch salePontPanelGroup" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputLabel />
+						<h:outputLabel />
+						<h:outputLabel for="active2" value="Policy Count(To)" />
+						<p:inputText id="active2" value="#{CustomerInformationReportActionBean.criteria.endActivePolicy}" />
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText styleClass="input-label" value="#{label['ADDNEWMOTORPROPOSAL_CUSTOMER_LABEL']}" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="customerPanelGroup">
+							<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="customerPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{CustomerInformationReportActionBean.selectCustomer()}" id="selectCustomerDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{CustomerInformationReportActionBean.returnCustomer}" update="customer" />
+									</p:commandButton>
+									<p:inputText id="customer" readonly="true" value="#{CustomerInformationReportActionBean.customer == null ? '' : CustomerInformationReportActionBean.customer.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{CustomerInformationReportActionBean.setCustomer(null)}" process="@this" update="customer" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText styleClass="input-label" value="#{label['CUSTOMER_REPORT_INFOTMATION_SALEPOINT_LABEL']}" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{CustomerInformationReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink"
+										process="@this" disabled="#{CustomerInformationReportActionBean.criteria.customerBrach==null?true:false}">
+										<p:ajax event="dialogReturn" listener="#{CustomerInformationReportActionBean.returnSalePoint}" update="salePoint" />
+									</p:commandButton>
+									<p:inputText id="salePoint" readonly="true"
+										value="#{CustomerInformationReportActionBean.criteria.customersalepoint == null ? '' : CustomerInformationReportActionBean.criteria.customersalepoint.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{CustomerInformationReportActionBean.criteria.customerBrach==null?true:false}"
+										action="#{CustomerInformationReportActionBean.criteria.setCustomersalepoint(null)}" process="@this" update="salePoint" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton action="#{CustomerInformationReportActionBean.filter}" update=":customerList:customerTable" value="Search" />
+				<p:commandButton action="#{CustomerInformationReportActionBean.init()}" update=":customerList" value="Reset" />
+			</h:panelGrid>
+			<br />
+			<p:dataTable id="customerTable" lazy="true" style="width: 119%" rowIndexVar="index" value="#{CustomerInformationReportActionBean.customerInformationList}" var="customer"
+				paginator="true" rows="10" rowsPerPageTemplate="5,10, 15">
+				<f:facet name="header">
+					<p:commandLink disabled="#{CustomerInformationReportActionBean.customerInformationList.size() lt 1 ? true : false}"
+						action="#{CustomerInformationReportActionBean.generateReport()}" immediate="true" oncomplete="PF('pdfPreviewDialog').show()">
+						<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" title="PDF Print" url="#{ApplicationSetting.printIcon}" />
+					</p:commandLink>
+				</f:facet>
+				<p:column headerText="No." width="4%">
+					<h:outputText style="float: right;" value="#{rowIndex + 1}" />
+				</p:column>
+				<p:column headerText="Name" width="10%">
+					<h:outputText value="#{customer.customerName}" />
+				</p:column>
+				<p:column headerText="Gender" width="5%">
+					<h:outputText value="#{customer.gender}" />
+				</p:column>
+				<p:column headerText="NRC No." width="11%">
+					<h:outputText value="#{customer.nrc}">
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Date of Birth" width="7%">
+					<h:outputText value="#{customer.dob}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Age" width="5%">
+					<h:outputText value="#{customer.age}" />
+				</p:column>
+				<p:column headerText="Phone" width="8%">
+					<h:outputText value="#{customer.phoneNo}" />
+				</p:column>
+				<p:column headerText="Mobile" width="8%">
+					<h:outputText value="#{customer.mobile}" />
+				</p:column>
+				<p:column headerText="Email" width="8%">
+					<h:outputText value="#{customer.email}" />
+				</p:column>
+				<p:column headerText="Address" width="15%">
+					<h:outputText value="#{customer.address}" />
+				</p:column>
+				<p:column headerText="Branch Name" width="15%">
+					<h:outputText value="#{customer.branchName}" />
+				</p:column>
+				<p:column headerText="SalePoint Name" width="15%">
+					<h:outputText value="#{customer.salePointName}" />
+				</p:column>
+				<p:column headerText="ActivePolicies" width="5%">
+					<p:commandLink disabled="#{customer.activePolicy gt 0 ? false : true}" action="#{CustomerInformationReportActionBean.findAllActivePolicies(customer)}"
+						oncomplete="PF('activePolicyDialog').show()" update=":activePolicyDialogForm">
+						<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column headerText="FamilyInfo" width="5%">
+					<p:commandLink action="#{CustomerInformationReportActionBean.generateReportIndividual(customer)}" oncomplete="PF('pdfPreviewDialog_1').show()" update=":pdfPreviewForm_1">
+						<h:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" title="PDF Print" url="#{ApplicationSetting.printIcon}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<!-- PDF Preview Form -->
+		<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview (PDF)" width="1070" height="505" hideEffect="fade" id="pdfPreviewDialog" modal="true" resizable="false"
+			showEffect="fade" widgetVar="pdfPreviewDialog">
+			<h:form enctype="multipart/form-data" id="pdfPreviewForm">
+				<p:media width="1050" height="500" player="pdf" value="#{CustomerInformationReportActionBean.stream}" cache="false" />
+			</h:form>
+		</p:dialog>
+		<!-- PDF Preview Form For Individual Print-->
+		<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview (PDF)" width="1070" height="505" hideEffect="fade" id="pdfPreviewDialog_1" modal="true" resizable="false"
+			showEffect="fade" widgetVar="pdfPreviewDialog_1">
+			<h:form enctype="multipart/form-data" id="pdfPreviewForm_1">
+				<p:media width="1050" height="500" player="pdf" value="#{CustomerInformationReportActionBean.streamIndividual}" cache="false" />
+			</h:form>
+		</p:dialog>
+		<!-- Active policy List Dialog -->
+		<p:dialog appendTo="@(body)" dynamic="true" modal="true" header="Active Policy Lists" width="1200" height="500" hideEffect="fade" id="activePolicyDialog" resizable="false"
+			showEffect="fade" widgetVar="activePolicyDialog">
+			<h:form enctype="multipart/form-data" id="activePolicyDialogForm">
+				<p:dataTable var="policy" value="#{CustomerInformationReportActionBean.policyList}" id="policyTable" paginator="true" rows="10" style="width:100%;"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10, 15"
+					rowKey="index" rowIndexVar="rowIndex">
+					<p:column headerText="No" style="width:15px;">
+						<h:outputText style="float: right;" value="#{rowIndex + 1}" />
+					</p:column>
+					<p:column headerText="Policy No.">
+						<h:outputText value="#{policy.policyNo}" />
+					</p:column>
+					<p:column headerText="Saleman">
+						<h:outputText value="#{policy.saleMan.fullName}" />
+					</p:column>
+					<p:column headerText="Agent">
+						<h:outputText value="#{policy.agent.fullName}" />
+					</p:column>
+					<p:column headerText="Branch">
+						<h:outputText value="#{policy.branch.name}" />
+					</p:column>
+					<p:column headerText="CommenaceDate">
+						<h:outputText value="#{policy.commenmanceDate}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateTimeFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Discount">
+						<h:outputText value="#{policy.totalDiscountAmount}" style="float:right;">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Premium">
+						<h:outputText value="#{policy.totalPremium}" style="float:right;">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="SumInsured">
+						<h:outputText value="#{policy.totalSumInsured}" style="float:right;">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Detail" style="width:30px;text-align: center;">
+						<p:commandLink id="detailPolicy" oncomplete="PF('policyDetailsDialog').show()" update=":policyDetailForm"
+							action="#{CustomerInformationReportActionBean.selectedPolicy(policy)}" immediate="true">
+							<h:graphicImage url="#{ApplicationSetting.detailIcon}" styleClass="#{ApplicationSetting.detailStyleClass}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:dialog>
+		<p:dialog appendTo="@(body)" modal="true" dynamic="true" header="Policy Detail Information" widgetVar="policyDetailsDialog" resizable="false" width="100%" height="600"
+			showEffect="explode" hideEffect="explode" id="policyDetailsDialog">
+			<h:form id="policyDetailForm">
+				<h:panelGroup rendered="#{CustomerInformationReportActionBean.lifePolicy}" id="lifePolicyPanel">
+					<ui:include src="/enquires/life/lifePolicyEnquiryTemplate.xhtml">
+						<ui:param name="lifePolicy" value="#{CustomerInformationReportActionBean.activedLifePolicy}" />
+						<ui:param name="workFlowList" value="#{CustomerInformationReportActionBean.workFlowList}" />
+					</ui:include>
+				</h:panelGroup>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

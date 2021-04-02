@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:cyc="http://www.cycdemo.com/java" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Regenerate Bill Collection Receipt" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<h:form id="billCollectionForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<p:panelGrid columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:panelGrid columns="4" columnClasses="ui-grid-col-1,ui-grid-col-4,ui-grid-col-5,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText value="Policy No" />
+					<p:inputText id="policyNo" value="#{RegenerateBillCollectionActionBean.policyNo}" required="true" />
+					<p:selectOneMenu autoWidth="false" converter="omnifaces.SelectItemsConverter" id="referenceType" value="#{RegenerateBillCollectionActionBean.paymentReferenceType}">
+						<f:selectItems itemLabel="#{type}" itemValue="#{type}" value="#{RegenerateBillCollectionActionBean.referenceTypeSelectedItemList}" var="type" />
+					</p:selectOneMenu>
+					<p:commandButton value="Search" action="#{RegenerateBillCollectionActionBean.search()}" update=":billCollectionForm" />
+				</p:panelGrid>
+				<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				</p:panelGrid>
+			</p:panelGrid>
+			<p:message for="receiptTable" />
+			<p:dataTable id="receiptTable" lazy="true" paginator="true" style="width:100%;" styleClass="fixed-size"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="10"
+				rowsPerPageTemplate="10, 20, 40, 60, 80, 100" value="#{RegenerateBillCollectionActionBean.paymentDataModel}" var="receipt" widgetVar="receiptTable"
+				selection="#{RegenerateBillCollectionActionBean.selectedPaymentList}">
+				<p:column selectionMode="multiple" style="width:3%" />
+				<p:column headerText="No" style="width:3%;;">
+					<h:outputText value="#{rowIndex + 1}" />
+				</p:column>
+				<p:column headerText="ReceiptNo" style="width:15%;">
+					<h:outputText value="#{receipt.receiptNo}" />
+				</p:column>
+				<p:column headerText="From Term" style="width:8%;">
+					<h:outputText value="#{receipt.fromTerm}" />
+				</p:column>
+				<p:column headerText="To Term" style="width:8%;">
+					<h:outputText value="#{receipt.toTerm}" />
+				</p:column>
+				<p:column headerText="ChequeNo" style="width:13%;">
+					<h:outputText value="#{receipt.chequeNo}" />
+				</p:column>
+				<p:column headerText="Service Charges" style="width:9%;">
+					<h:outputText value="#{receipt.servicesCharges}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Renewal Interest" style="width:9%;">
+					<h:outputText value="#{receipt.renewalInterest}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Discount Amount" style="width:9%;">
+					<h:outputText value="#{receipt.discountAmount}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="NetPremium" style="width:9%;">
+					<h:outputText value="#{receipt.netPremium}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Confirm Date" style="width:8%;">
+					<h:outputText value="#{receipt.confirmDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Payment Channel" style="text-align: center;width:6%;">
+					<h:outputText value="#{receipt.paymentChannel}" />
+				</p:column>
+			</p:dataTable>
+			<p:commandButton style="width: 80px;" action="#{RegenerateBillCollectionActionBean.generateCashReceipt}" update=":billCollectionForm :documentPrintForm" value="Print" />
+		</h:form>
+		<h:form enctype="multipart/form-data" id="documentPrintForm">
+			<p:dialog appendTo="@(body)" dynamic="true" modal="true" height="550" id="documentPrintDailog" resizable="false" widgetVar="documentPrintDailog" width="1024">
+				<p:ajax event="close" update=":documentPrintForm :billCollectionForm" listener="#{RegenerateBillCollectionActionBean.handleClose}" />
+				<p:media height="550" id="pdfPlayer" player="pdf" value="#{RegenerateBillCollectionActionBean.reportStream}" width="1000" cache="false"/>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

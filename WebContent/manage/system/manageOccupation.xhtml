@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['MANAGE_OCCUPATION_TITLE']}"/>
+	<ui:param name="headerRendered" value="true"/>
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="occupationEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true"/>
+			<div style="padding-left: 15px;">
+			</div>
+					<p:panelGrid  style="margin:10px;" columns="2" columnClasses="ui-grid-col-2,ui-grid-col-2" layout="grid" styleClass="ui-fluid">				
+						<h:outputText value="" />
+						<p:message for="name" display="text"/>
+						<h:outputText value="#{label['MANAGE_OCCUPATION_NAME_LABEL']}" styleClass="input-label mandatory"/>
+						<p:inputText value="#{ManageOccupationActionBean.occupation.name}" style="width:250px;" id="name" required="true">
+							<f:validateLength maximum="50" />
+						</p:inputText>
+				
+						<h:outputText value="" />
+						<p:message for="description" />
+						<h:outputText value="#{label['MANAGE_OCCUPATION_DESCRIPTION_LABEL']}" styleClass="input-label" />
+						<p:inputTextarea value="#{ManageOccupationActionBean.occupation.description}" style="width:250px;" id="description" rows="5" autoResize="true">
+							<f:validateLength maximum="300" />
+						</p:inputTextarea>
+					</p:panelGrid>
+							<p:commandButton id="addBtn" value="#{label['COMMON_ADDNEW_BTN']}" action="#{ManageOccupationActionBean.addNewOccupation}" rendered="#{ManageOccupationActionBean.createNew}"
+								update="occupationEntryForm :occupationTableForm" style="width: 80px;"  oncomplete="PF('occupationTable').filter();" />
+							<p:commandButton id="editBtn" value="#{label['COMMON_UPDATE_BTN']}"  action="#{ManageOccupationActionBean.updateOccupation}"
+								rendered="#{!ManageOccupationActionBean.createNew}" update=":occupationEntryForm :occupationTableForm" oncomplete="PF('occupationTable').filter();" />
+			<p:separator style="height:5px;" />
+		</h:form>
+		<h:form id="occupationTableForm">
+		<h:panelGrid columns="1">
+		<h:commandLink action="#{ManageOccupationActionBean.createNewOccupation}">
+				<h:panelGrid columns="2">
+					<h:graphicImage value="#{ApplicationSetting.addIcon}" styleClass="#{ApplicationSetting.addStyleClass}" />
+					<h:outputText value="#{label['COMMON_ADDNEW_LINK']}" styleClass="command-link" />
+				</h:panelGrid>
+			</h:commandLink>
+			</h:panelGrid>
+			
+				<p:panelGrid columns="2"  columnClasses="ui-grid-col-5,ui-grid-col-5" layout="grid"  styleClass="ui-panelgrid-blank ui-fluid">				
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-8" layout="grid"  styleClass="ui-panelgrid-blank ui-fluid">				
+						<h:outputText value="Name"/>
+						<p:inputText id="townshipCriteria" value="#{ManageOccupationActionBean.criteria}"/>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-2" layout="grid"  styleClass="ui-panelgrid-blank ui-fluid">				
+						<p:commandButton action="#{ManageOccupationActionBean.search}" id="searchButtonBtn" update=":occupationEntryForm :occupationTableForm:occupationTable" value="Search" oncomplete="PF('occupationTable').filter();" />
+						<p:commandButton action="#{ManageOccupationActionBean.init}" id="resetButtonBtn" update=":occupationEntryForm :occupationTableForm:occupationTable" value="Reset"/>
+					</p:panelGrid>
+				</p:panelGrid>
+				
+				<p:dataTable var="occupation" value="#{ManageOccupationActionBean.occupationList}" id="occupationTable" paginator="true" rows="10" style="width:100%;"
+					widgetVar="occupationTable" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10, 15" rowKey="index">
+					<p:column headerText="#{label['MANAGE_OCCUPATION_NAME_LABEL']}" filterMatchMode="contains" filterBy="#{occupation.name}">
+						<h:outputText value="#{occupation.name}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_OCCUPATION_DESCRIPTION_LABEL']}">
+						<h:outputText value="#{occupation.description}" />
+					</p:column>
+					<p:column style="width:50px;" headerText="Edit" >
+						<p:commandLink action="#{ManageOccupationActionBean.prepareUpdateOccupation(occupation)}" update=":occupationEntryForm :occupationTableForm" >
+							<p:graphicImage value="#{ApplicationSetting.editIcon}" styleClass="#{ApplicationSetting.editStyleClass}" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width:50px;" headerText="Delete">
+						<p:commandLink  id="deleteGroupLink" oncomplete="PF('occupationTable').filter();"  actionListener="#{ManageOccupationActionBean.deleteOccupation(occupation)}"   update=":occupationEntryForm :occupationTableForm"  >
+							<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+							<p:graphicImage value="#{ApplicationSetting.deleteIcon}" styleClass="#{ApplicationSetting.deleteStyleClass}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+	 	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+	</p:confirmDialog>  
+	</ui:define>
+</ui:composition>

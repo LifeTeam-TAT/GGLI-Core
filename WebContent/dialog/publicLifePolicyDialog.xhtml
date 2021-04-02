@@ -1,0 +1,65 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/dialog/dialogTemplate.xhtml">
+	<ui:define name="content">
+		<h:form id="policyNoForm">
+			<table>
+				<tr>
+					<td>
+						<p:message for="selectLifePolicyCriteria" />
+					</td>
+					<td>
+						<p:message for="policyCriteria" />
+					</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>
+						<p:selectOneMenu id="selectLifePolicyCriteria" value="#{PublicLifePolicyDialogActionBean.lifeEndowmentCriteria.lifePolicyCriteriaItems}">
+							<f:selectItem itemLabel="Select Criteria" />
+							<f:selectItems value="#{PublicLifePolicyDialogActionBean.lifePolicyCriteriaList}" var="criteriaItem" />
+						</p:selectOneMenu>
+					</td>
+					<td>
+						<p:inputText id="policyCriteria" value="#{PublicLifePolicyDialogActionBean.lifeEndowmentCriteria.criteriaValue}" style="height:20px;width: 200px;" required="true" />
+					</td>
+					<td>
+						<p:commandButton id="searchPolicyBtn" value="Search" action="#{PublicLifePolicyDialogActionBean.searchPolicyCriteria()}" update="policyNoForm" />
+						<p:commandButton id="resetCustomerButtonBtn" value="Reset" action="#{PublicLifePolicyDialogActionBean.resetPolicyCriteria()}" update="policyNoForm" />
+					</td>
+				</tr>
+			</table>
+			<p:dataTable id="customerTable" paginator="true" rowIndexVar="index" rows="10" value="#{PublicLifePolicyDialogActionBean.lifeEndowSearchList}" lazy="true" var="lifePolicy"
+				rowsPerPageTemplate="5,10, 15">
+				<p:column headerText="Policy No">
+					<h:outputText value="#{lifePolicy.policyNo}" />
+				</p:column>
+				<p:column headerText="Start Date">
+					<h:outputText value="#{lifePolicy.start}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="End Date">
+					<h:outputText value="#{lifePolicy.end}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Payment Type">
+					<h:outputText value="#{lifePolicy.paymentType}" />
+				</p:column>
+				<p:column headerText="Paid Term">
+					<h:outputText value="#{lifePolicy.paidTerm}" />
+				</p:column>
+				<p:column headerText="Paid Premium">
+					<h:outputText value="#{lifePolicy.paidPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width:30px;text-align: center;">
+					<p:commandLink action="#{PublicLifePolicyDialogActionBean.selectLifePolicyNo(lifePolicy)}" id="selectCustomerLink" immediate="true" update=":policyNoForm">
+						<h:graphicImage styleClass="#{ApplicationSetting.selectStyleClass}" url="#{ApplicationSetting.selectIcon}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>			
+		</h:form>
+	</ui:define>
+</ui:composition>

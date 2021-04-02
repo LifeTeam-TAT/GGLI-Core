@@ -1,0 +1,167 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Sale Point Report" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<style>
+.fixed-size {
+	table-layout: fixed;
+	word-wrap: break-word;
+}
+
+.ui-paginator a {
+	margin-right: 5px;
+}
+</style>
+		<h:form id="accountList">
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:message for="startDate" display="text" />
+						<p:outputLabel styleClass="input-lable mandatory" value="Start Date" />
+						<p:calendar value="#{NewSalePointReportActionBean.tlfCriteria.startDate}" pattern="#{ApplicationSetting.dateFormat}" id="startDate" timeZone="#{ApplicationSetting.timeZone}"
+							showOn="button" required="true" />
+						<h:outputText value="Entity" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{NewSalePointReportActionBean.selectEntity()}" id="entityDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{NewSalePointReportActionBean.returnEntity}" update="entity branchPanelGroup salePontPanelGroup" />
+									</p:commandButton>
+									<p:inputText id="entity" readonly="true" value="#{NewSalePointReportActionBean.tlfCriteria.entity == null ? '' : NewSalePointReportActionBean.tlfCriteria.entity.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{NewSalePointReportActionBean.removeEntity}" process="@this"
+										update="entity branchPanelGroup salePontPanelGroup" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:message for="endDate" display="text" />
+						<p:outputLabel styleClass="input-lable mandatory" value="End Date" />
+						<p:calendar required="true" value="#{NewSalePointReportActionBean.tlfCriteria.endDate}" pattern="#{ApplicationSetting.dateFormat}" id="endDate"
+							timeZone="#{ApplicationSetting.timeZone}" showOn="button" />
+						<h:outputText value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" disabled="#{NewSalePointReportActionBean.tlfCriteria.entity==null?true:false}"
+										actionListener="#{NewSalePointReportActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{NewSalePointReportActionBean.returnBranch}" update="branch salePontPanelGroup" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true" value="#{NewSalePointReportActionBean.tlfCriteria.branch == null ? '' : NewSalePointReportActionBean.tlfCriteria.branch.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{NewSalePointReportActionBean.tlfCriteria.entity==null?true:false}"
+										action="#{NewSalePointReportActionBean.removeBranch}" process="@this" update="branch salePontPanelGroup" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:message for="paymentChannel" display="text" />
+						<h:outputText value="Payment Channel" />
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="paymentChannel" value="#{NewSalePointReportActionBean.tlfCriteria.paymentChannel}">
+							<f:selectItem itemLabel="-- All Channel --" noSelectionOption="true" />
+							<f:selectItems value="#{NewSalePointReportActionBean.paymentChannels}" var="paymentChannel" itemLabel="#{paymentChannel.label}" itemValue="#{paymentChannel}" />
+						</p:selectOneMenu>
+						<h:outputText value="Sale Point" />
+						<p:panelGrid styleClass="ui-panelgrid-blank ">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" disabled="#{NewSalePointReportActionBean.tlfCriteria.branch==null?true:false}"
+										actionListener="#{NewSalePointReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{NewSalePointReportActionBean.returnSalePoint}" update="salePoint" />
+									</p:commandButton>
+									<p:inputText id="salePoint" readonly="true"
+										value="#{NewSalePointReportActionBean.tlfCriteria.salePoint == null ? '' : NewSalePointReportActionBean.tlfCriteria.salePoint.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{NewSalePointReportActionBean.tlfCriteria.branch==null?true:false}"
+										action="#{NewSalePointReportActionBean.tlfCriteria.setSalePoint(null)}" process="@this" update="salePoint" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton value="Search" action="#{NewSalePointReportActionBean.SearchDTOList}" update="@form,salePointTable" />
+				<p:commandButton value="Reset" action="#{NewSalePointReportActionBean.resetCriteria}" process="@this" update="@form" />
+			</h:panelGrid>
+			<br />
+			<p:panel>
+				<p:dataTable id="salePointTable" lazy="true" paginator="true" styleClass="fixed-size"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="10"
+					rowsPerPageTemplate="10,20,30" value="#{NewSalePointReportActionBean.salePointDTOList}" var="tlfDTO" style="width:100%;">
+					<f:facet name="header">
+						<div style="float: center;">
+							<h:commandLink action="#{NewSalePointReportActionBean.exportExcel}" immediate="true">
+								<p:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" value="/images/excel.png" />
+							</h:commandLink>
+							<p:message for="salePointTable" />
+						</div>
+					</f:facet>
+					<p:column headerText="No." width="4%">
+						<h:outputText value="#{rowIndex + 1}" />
+					</p:column>
+					<p:column width="9%" headerText="Policy No.">
+						<h:outputText value="#{tlfDTO.policyNo}" />
+					</p:column>
+					<p:column width="11%" headerText="Receipt No.">
+						<h:outputText value="#{tlfDTO.tlfNo}" />
+					</p:column>
+					<p:column width="5%" headerText="COA">
+						<h:outputText value="#{tlfDTO.coaId}" />
+					</p:column>
+					<p:column width="15%" headerText="Narration">
+						<h:outputText value="#{tlfDTO.narration}" />
+					</p:column>
+					<p:column width="9%" headerText="Sale Point">
+						<h:outputText value="#{tlfDTO.salePointName}" />
+					</p:column>
+					<p:column headerText="Payment Channel">
+						<h:outputText value="#{tlfDTO.paymentChannel}" />
+					</p:column>
+					<p:column headerText="Transaction Date">
+						<h:outputText value="#{tlfDTO.createdDate}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Cash Debit">
+						<h:outputText value="#{tlfDTO.cashDebit}" style="float:right;">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Cash Credit">
+						<h:outputText value="#{tlfDTO.cashCredit}" style="float:right;">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Transfer Debit">
+						<h:outputText value="#{tlfDTO.transferDebit}" style="float:right;">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Transfer Credit">
+						<h:outputText value="#{tlfDTO.transferCredit}" style="float:right;">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column width="4%" headerText="Agent Transaction">
+						<h:outputText value="#{tlfDTO.agentTransaction ? 'YES' : 'NO'}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+		<p:dialog appendTo="@(body)" modal="true" dynamic="true" header="Print Preview" width="1070" height="505" id="pdfPrintPreviewDialog" resizable="false"
+			widgetVar="pdfPrintPreviewDialog">
+			<h:form id="pdfPrintPreviewForm">
+				<p:media width="1050" height="500" player="pdf" value="#{NewSalePointReportActionBean.stream}" cache="false" />
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

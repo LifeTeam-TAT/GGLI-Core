@@ -1,0 +1,166 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Dialy Income Report (Sale Point )" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<h:form id="accountList">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+				<p:messages globalOnly="true" id="messages" showDetail="true" />
+			</div>
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:message for="startDate" display="text" />
+						<p:outputLabel value="Start Date" />
+						<p:calendar value="#{DailyIncomeReportActionBean.tlfCriteria.startDate}" pattern="#{ApplicationSetting.dateFormat}" id="startDate" timeZone="#{ApplicationSetting.timeZone}"
+							showOn="button" />
+						<h:outputLabel />
+						<h:outputLabel />
+						<h:outputText value="Entity" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="entityPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="entityPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{DailyIncomeReportActionBean.selectEntity()}" id="entityDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{DailyIncomeReportActionBean.returnEntity}" update="entity branchPanelGroup salePontPanelGroup" />
+									</p:commandButton>
+									<p:inputText id="entity" readonly="true" value="#{DailyIncomeReportActionBean.tlfCriteria.entity == null ? '' : DailyIncomeReportActionBean.tlfCriteria.entity.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{DailyIncomeReportActionBean.removeEntity}" process="@this"
+										update="entity branchPanelGroup salePontPanelGroup" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<p:outputLabel />
+						<p:message for="productTypeId" display="text" />
+						<h:outputText value="Product" />
+						<p:selectOneMenu id="productTypeId" value="#{DailyIncomeReportActionBean.productType}" converter="omnifaces.SelectItemsConverter">
+							<f:selectItem itemLabel="" noSelectionOption="true" />
+							<f:selectItems value="#{DailyIncomeReportActionBean.productTypes}" var="productType" itemLabel="#{productType.label}" itemValue="#{productType}" />
+							<p:ajax event="valueChange" process="@this" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:message for="endDate" display="text" />
+						<p:outputLabel value="End Date" />
+						<p:calendar value="#{DailyIncomeReportActionBean.tlfCriteria.endDate}" pattern="#{ApplicationSetting.dateFormat}" id="endDate" timeZone="#{ApplicationSetting.timeZone}"
+							showOn="button" />
+						<p:outputLabel />
+						<p:outputLabel />
+						<h:outputText value="#{label['ADDNEWLIFEPROPOSAL_BRANCH_LABEL']}" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="branchPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" disabled="#{DailyIncomeReportActionBean.tlfCriteria.entity==null?true:false}"
+										actionListener="#{DailyIncomeReportActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{DailyIncomeReportActionBean.returnBranch}" update="branch salePontPanelGroup" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true" value="#{DailyIncomeReportActionBean.tlfCriteria.branch == null ? '' :DailyIncomeReportActionBean.tlfCriteria.branch.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{DailyIncomeReportActionBean.removeBranch()}" process="@this"
+										disabled="#{DailyIncomeReportActionBean.tlfCriteria.entity==null?true:false}" update="branch salePontPanelGroup" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:message for="paymentChannel" display="text" />
+						<h:outputText value="Payment Channel" />
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="paymentChannel" value="#{DailyIncomeReportActionBean.tlfCriteria.paymentChannel}">
+							<f:selectItem itemLabel="All Channel" noSelectionOption="true" />
+							<f:selectItems value="#{DailyIncomeReportActionBean.paymentChannels}" var="paymentChannel" itemLabel="#{paymentChannel.label}" itemValue="#{paymentChannel}" />
+						</p:selectOneMenu>
+						<p:outputLabel />
+						<p:outputLabel />
+						<h:outputText value="Sale Point" />
+						<p:panelGrid styleClass="ui-panelgrid-blank">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" jsf:id="salePontPanelGroup">
+								<div class="ui-inputgroup ui-g-12 ui-md-6 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" disabled="#{DailyIncomeReportActionBean.tlfCriteria.branch==null?true:false}"
+										actionListener="#{DailyIncomeReportActionBean.selectSalePoint()}" id="selectSalePointDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{DailyIncomeReportActionBean.returnSalePoint}" update="salePoint" />
+									</p:commandButton>
+									<p:inputText id="salePoint" readonly="true"
+										value="#{DailyIncomeReportActionBean.tlfCriteria.salePoint == null ? '' : DailyIncomeReportActionBean.tlfCriteria.salePoint.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" disabled="#{DailyIncomeReportActionBean.tlfCriteria.branch==null?true:false}"
+										action="#{DailyIncomeReportActionBean.tlfCriteria.setSalePoint(null)}" process="@this" update="salePoint" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton value="Search" action="#{DailyIncomeReportActionBean.SearchDTOList}" update="dailyIncomeReportTable" />
+				<p:commandButton value="Reset" action="#{DailyIncomeReportActionBean.resetCriteria}" update="@form" />
+			</h:panelGrid>
+			<br />
+			<p:panel>
+				<h:panelGroup id="dailyIncomeReportTable">
+					<p:dataTable id="salePointTable" lazy="true" paginator="true"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="10"
+						rowsPerPageTemplate="10,20,30" value="#{DailyIncomeReportActionBean.dailyIncomeReportDTOList}" var="tlfDTO" style="width:100%;">
+						<f:facet name="header">
+							<div style="float: center;">
+								<h:commandLink action="#{DailyIncomeReportActionBean.exportExcel}" immediate="true">
+									<p:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" value="/images/excel.png" />
+								</h:commandLink>
+							</div>
+						</f:facet>
+						<p:column headerText="No." width="4%">
+							<h:outputText value="#{rowIndex + 1}" />
+						</p:column>
+						<!-- Product Name -->
+						<p:column headerText="Product Name" width="18%" styleClass="fixed-size">
+							<h:outputText value="#{tlfDTO.productName}" />
+						</p:column>
+						<!-- Policy No -->
+						<p:column headerText="Policy No." styleClass="fixed-size">
+							<h:outputText value="#{tlfDTO.policyNo}" />
+						</p:column>
+						<!-- Receipt No -->
+						<p:column headerText="Receipt No" styleClass="fixed-size">
+							<h:outputText value="#{tlfDTO.receiptNo}" />
+						</p:column>
+						<!-- Receive Date -->
+						<p:column headerText="Received Date" styleClass="fixed-size">
+							<h:outputText value="#{tlfDTO.receiveDate}">
+								<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+							</h:outputText>
+						</p:column>
+						<!-- Amount -->
+						<p:column headerText="Amount">
+							<h:outputText value="#{tlfDTO.amount}">
+								<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+							</h:outputText>
+						</p:column>
+						<!-- Payment Channel -->
+						<p:column headerText="Payment Channel">
+							<h:outputText value="#{tlfDTO.paymentChannel}" />
+						</p:column>
+						<p:column headerText="Branch" styleClass="fixed-size">
+							<h:outputText value="#{tlfDTO.branchName}" />
+						</p:column>
+						<!-- Sale Point Name -->
+						<p:column headerText="Sale Point" styleClass="fixed-size">
+							<h:outputText value="#{tlfDTO.salePointName}" />
+						</p:column>
+					</p:dataTable>
+				</h:panelGroup>
+			</p:panel>
+		</h:form>
+		<h:form id="pdfPrintPreviewForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Print Preview" width="1070" height="505" id="pdfPrintPreviewDialog" resizable="false" widgetVar="pdfPrintPreviewDialog">
+				<p:media width="1050" height="500" player="pdf" cache="false" value="#{DailyIncomeReportActionBean.stream}" />
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

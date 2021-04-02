@@ -1,0 +1,98 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+   <ui:param name="header" value="#{label['MANAGE_PRODUCT_TITLE']}" />
+   <ui:param name="headerRendered" value="true" />
+   <ui:define name="content">
+      <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+      <p:growl globalOnly="true" id="messages" showDetail="true" />
+      <h:form id="productTableForm">
+         <table width="100%">
+            <tr>
+               <td style="width: 30px;">
+                  <h:outputText style="padding-top:-10px;" styleClass="table-title" value="#{label['COMMON_ADDNEW_LINK']}" />
+               </td>
+               <td>
+                  <p:commandLink action="#{ManageProductActionBean.prepareForAddNewProduct()}" id="addProductLink" immediate="true">
+                     <h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+                  </p:commandLink>
+               </td>
+               <td>
+                  <p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="insuranceType" style="width:130px;" value="#{ManageProductActionBean.insuranceType}">
+                     <f:selectItem itemLabel="ALL" />
+                     <f:selectItems value="#{ManageProductActionBean.insuranceTypes}" />
+                     <p:ajax event="valueChange" listener="#{ManageProductActionBean.changeInsuranceType}" update=":productTableForm" />
+                  </p:selectOneMenu>
+               </td>
+               <td align="center" width="90%">
+                  <div style="z-index: 100; position: fixed; margin-top: -30px; width: 400px;">
+                     <p:messages globalOnly="true" id="messages" showDetail="true" />
+                  </div>
+               </td>
+            </tr>
+         </table>
+         <p:dataTable id="productTable" paginator="true"
+            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+            rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageProductActionBean.productList}" var="product" widgetVar="productTable">
+            <p:column filterBy="#{product.name}" filterMatchMode="contains" headerText="#{label['MANAGE_PRODUCT_NAME_LABEL']}">
+               <h:outputText value="#{product.name}" />
+            </p:column>
+            <p:column headerText="#{label['MANAGE_PRODUCT_AUTOCALUCULATE_LABEL']}" style="text-align: center;">
+               <h:outputText value="#{product.autoCalculate}" />
+            </p:column>
+            <p:column headerText="#{label['MANAGE_PRODUCT_FIXEDVALUE_LABEL']}">
+               <h:outputText value="#{product.fixedValue}" style="float: right;"/>
+            </p:column>
+            <p:column headerText="#{label['MANAGE_PRODUCT_STANDARDEXCESS_LABEL']}">
+               <h:outputText value="#{product.standardExcess}" style="float: right;"/>
+            </p:column>
+            <p:column headerText="#{label['MANAGE_PRODUCT_FIRSTCOMISSION_LABEL']}">
+               <h:outputText value="#{product.firstCommission}" style="float: right;"/>
+            </p:column>
+            <p:column headerText="#{label['MANAGE_PRODUCT_RENEWALCOMISSION_LABEL']}">
+               <h:outputText value="#{product.renewalCommission}" style="float: right;"/>
+            </p:column>
+            <p:column headerText="Insurnace Type">
+               <h:outputText value="#{product.insuranceType.label}" />
+            </p:column>
+            <p:column headerText="Config" style="width:30px;text-align: center;">
+               <p:commandLink action="#{ManageProductActionBean.prepareForPremiumRateConfig(product)}" ajax="false" id="premiumRateConfigLink" immediate="true">
+                  <p:graphicImage styleClass="#{ApplicationSetting.configStyleClass}" value="#{ApplicationSetting.configIcon}" />
+               </p:commandLink>
+            </p:column>
+            <p:column headerText="Edit" style="width:30px;text-align: center;">
+               <p:commandLink action="#{ManageProductActionBean.prepareForUpdateProduct(product)}" id="updateProductLink" immediate="true">
+                  <p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+               </p:commandLink>
+            </p:column>
+            <p:column headerText="Delete" style="width:30px;text-align: center;">
+               <p:commandLink id="deleteProductLink" oncomplete="PF('confirmationDialog').show()">
+                  <f:setPropertyActionListener target="#{ManageProductActionBean.product}" value="#{product}" />
+                  <p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+               </p:commandLink>
+            </p:column>
+         </p:dataTable>
+      </h:form>
+      <!-- Confirmation Dialog -->
+      <h:form id="confiationForm">
+         <p:dialog header="#{label['MANAGE_PRODUCT_DELETE_CONFIRM']}" height="100" hideEffect="explode" id="confirmationDialog" resizable="false" showEffect="explode"
+            widgetVar="confirmationDialog" width="250">
+            <h:panelGroup id="confirmationPanel">
+               <table>
+                  <tr>
+                     <td align="left">
+                        <h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+                     </td>
+                     <td valign="middle">
+                        <h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" />
+                     </td>
+                  </tr>
+               </table>
+               <br />
+               <p:commandButton action="#{ManageProductActionBean.deleteProduct}" immediate="true" oncomplete="PF('confirmationDialog').hide(); productTable.filter();"
+                  update=":productTableForm" value="#{label['COMMON_YES_BTN']}" />
+               <p:commandButton immediate="true" oncomplete="PF('confirmationDialog').hide()" value="#{label['COMMON_NO_BTN']}" />
+            </h:panelGroup>
+         </p:dialog>
+      </h:form>
+   </ui:define>
+</ui:composition>

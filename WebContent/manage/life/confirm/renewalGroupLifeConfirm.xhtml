@@ -1,0 +1,88 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="GroupLife Renewal Porposal Confirmation" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<h:form id="lifeConfirmaitonForm">
+			<p:panel>
+				<table>
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label" value="Proposal No"/>
+						</td>
+						<td>
+							<h:panelGrid columns="2">
+								<p:inputText id="proposalNo" readonly="true" style="width:250px; margin-left:-2px;" value="#{RenewalGroupLifeConfirmActionBean.lifeProposal.proposalNo}"/>
+								<p:commandLink id="detailsProposal" immediate="true" oncomplete="PF('lifeProposalDetailsDialog').show()">
+									<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}"/>
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value=""/>
+						</td>
+						<td>
+							<p:message for="remark"/>
+						</td>
+					</tr>
+					<tr>
+						<td valign="top">
+							<h:outputText styleClass="input-label" value="Remark"/>
+						</td>
+						<td valign="top">
+							<p:inputTextarea autoResize="true" id="remark" rows="7" style="width:400px;" value="#{RenewalGroupLifeConfirmActionBean.remark}">
+								<f:validateLength maximum="8000"/>
+							</p:inputTextarea>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value=""/>
+						</td>
+						<td style="width: 115px;">
+							<p:message for="responsiblePerson"/>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 115px;">
+							<h:outputText style="color:red;" value="*"/>
+							<h:outputText styleClass="input-label" value="Responsible Person"/>
+						</td>
+						<td>
+							<h:panelGrid columns="3" id="responsiblePersonPanel">
+								<p:inputText id="responsiblePerson" readonly="true" style="width:250px;margin-left:-4px;" value="#{RenewalGroupLifeConfirmActionBean.responsiblePerson == null ? '' : RenewalGroupLifeConfirmActionBean.responsiblePerson.name}"/>
+								<p:commandLink actionListener="#{RenewalGroupLifeConfirmActionBean.selectUser()}" disabled="#{!RenewalGroupLifeConfirmActionBean.approvedProposal}" id="selectUserDialogLink" immediate="true">
+									<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}"/>
+									<p:ajax event="dialogReturn" listener="#{RenewalGroupLifeConfirmActionBean.returnUser}" update="responsiblePersonPanel"/>
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+				</table>
+			</p:panel>
+			<p:commandButton style="width: 80px;" action="#{RenewalGroupLifeConfirmActionBean.confirmLifeProposal()}" id="addBtn" value="Confirm" update="lifeConfirmaitonForm"/>
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" action="#{RenewalGroupLifeConfirmActionBean.editLifeProposal()}" id="editBtn" value="Edit"/>
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" action="#{RenewalGroupLifeConfirmActionBean.denyLifeProposal()}" id="denyBtn" value="Deny"/>
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" action="dashboard" id="cancelBtn" immediate="true" value="Cancel"/>
+		</h:form>
+		<h:form id="lifeProposalDetailsForm">
+			<p:dialog appendTo="@(body)" header="Life Proposal Details" height="550" hideEffect="explode" id="lifeProposalDetailsDialog" resizable="false" showEffect="explode" widgetVar="lifeProposalDetailsDialog" width="1200">
+				<ui:include src="/manage/life/lifeProposalInfoTemplate.xhtml">
+					<ui:param name="lifePolicySummary" value="#{RenewalGroupLifeConfirmActionBean.lifePolicySummary}" />
+					<ui:param name="isEndorse" value="#{RenewalGroupLifeConfirmActionBean.isEndorse(lifeproposal)}" />
+					<ui:param name="lifePolicyList" value="#{RenewalGroupLifeConfirmActionBean.lifePolicyList}" />
+					<ui:param name="lifePolicyHistoryList" value="#{RenewalGroupLifeConfirmActionBean.lifePolicyHistoryList}" />
+					<ui:param name="lifeProposal" value="#{RenewalGroupLifeConfirmActionBean.lifeProposal}"/>
+					<ui:param name="showPolicy" value="#{false}"/>
+					<ui:param name="workFlowList" value="#{RenewalGroupLifeConfirmActionBean.workFlowList}"/>
+				</ui:include>
+			</p:dialog>
+		</h:form>
+		<!--  Responsible Person Dialog -->
+	</ui:define>
+</ui:composition>

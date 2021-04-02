@@ -1,0 +1,99 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Health Renewal Managment" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:head>
+			<style>
+				.ui-message-error {
+					width: 200px !important;
+				}
+			</style>
+		</h:head>
+		<h:form id="medicalRenewalForm">
+			<table>
+				<tr>
+					<td>
+						<p:message for="selectMedicalPolicyCriteria" />
+					</td>
+					<td>
+						<p:message for="policyCriteria" />
+					</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>
+						<p:selectOneMenu id="selectMedicalPolicyCriteria" style="width: 210px;" required="true" value="#{MedicalRenewalActionBean.criteria.medicalPolicyCriteriaItems}">
+							<f:selectItem itemLabel="Select Criteria" />
+							<f:selectItems value="#{MedicalRenewalActionBean.medicalPolicyCriteriaList}" var="criteriaItem" />
+						</p:selectOneMenu>
+					</td>
+					<td>
+						<p:inputText id="policyCriteria" value="#{MedicalRenewalActionBean.criteria.criteriaValue}" style="width: 200px;" required="true" />
+					</td>
+					<td>
+						<p:commandButton style="width: 65px;" id="searchPolicyBtn" value="Search" action="#{MedicalRenewalActionBean.search()}" update="@form" />
+						<p:spacer width="5" />
+						<p:commandButton style="width: 65px;" id="resetCustomerButtonBtn" value="Reset" action="#{MedicalRenewalActionBean.reset()}" update="@form" />
+					</td>
+				</tr>
+			</table>
+			<p:dataTable id="customerTable" paginator="true" rowIndexVar="index" rows="10" value="#{MedicalRenewalActionBean.policyList}" var="policy" rowsPerPageTemplate="5,10, 15"
+				style="width:100%;">
+				<p:column headerText="No." style="width:2%;">
+					<h:outputText value="#{index + 1}." style="float: right;" />
+				</p:column>
+				<p:column headerText="Policy No" style="width:15%;">
+					<h:outputText value="#{policy.policyNo}" />
+				</p:column>
+				<p:column headerText="Customer">
+					<h:outputText value="#{policy.customer}" />
+				</p:column>
+				<p:column headerText="Sale Person">
+					<h:outputText value="#{policy.agent}" rendered="#{policy.agent ne NULL}" />
+					<h:outputText value="#{policy.saleMan}" rendered="#{policy.saleMan ne NULL}" />
+				</p:column>
+				<p:column headerText="Unit" style="width:5%;">
+					<h:outputText value="#{policy.unit}" style="float: right;" />
+				</p:column>
+				<p:column headerText="PaymentType" style="width:8%;">
+					<h:outputText value="#{policy.paymentType}" />
+				</p:column>
+				<p:column headerText="PolicyEndDate" style="width:10%; text-align: center;">
+					<h:outputText value="#{policy.policyEndDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Branch">
+					<h:outputText value="#{policy.branch}" />
+				</p:column>
+				<p:column style="width: 5%; text-align: center;" headerText="Renew">
+					<p:commandLink id="renewalLink" action="#{MedicalRenewalActionBean.prepareToRenewPolicy(policy)}" oncomplete="PF('confirmDialog').show()">
+						<h:graphicImage styleClass="#{ApplicationSetting.renewStyleClass}" value="#{ApplicationSetting.renewIcon}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<p:dialog id="confirmDialog" appendTo="@(body)" dynamic="true" modal="true" height="auto" widgetVar="confirmDialog" resizable="flase" header="Are you sure to renew the policy?">
+			<h:form id="confirmForm">
+				<table style="width: 100%;">
+					<tr>
+						<td>
+							<h:outputText value="Active Policy End Date :" />
+							<h:outputText value="#{MedicalRenewalActionBean.policyDTO.policyEndDate}">
+								<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+							</h:outputText>
+						</td>
+					</tr>
+					<tr height="5px;" />
+					<tr>
+						<td>
+							<p:commandButton id="renewalBtn" style="width: 65px;" immediate="true" action="#{MedicalRenewalActionBean.renewPolicy}" value="Renew" oncomplete="PF('PF('confirmDialog').hide()" />
+						</td>
+					</tr>
+				</table>
+				<br />
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

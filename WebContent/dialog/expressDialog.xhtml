@@ -1,0 +1,46 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.exp/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/dialog/dialogTemplate.xhtml">
+	<ui:define name="content">
+		<h:form id="expressTableForm">
+			<table>
+				<tr>
+					<td>
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="selectCustomerCriteria" value="#{ExpressDialogActionBean.selectedCriteria}">
+							<f:selectItems value="#{ExpressDialogActionBean.expressCriteriaItemList}" var="criteriaItem" />
+						</p:selectOneMenu>
+					</td>
+					<td>
+						<p:inputText id="expressCriteria" style="height:20px;width: 200px;" value="#{ExpressDialogActionBean.expressCriteria.criteriaValue}" />
+					</td>
+					<td>
+						<p:commandButton action="#{ExpressDialogActionBean.search()}" id="searchExpressButtonBtn" update=":expressTableForm" value="Search" />
+					</td>
+					<td>
+						<p:commandButton action="#{ExpressDialogActionBean.reset()}" id="resetExpress" update=":expressTableForm" value="Reset" />
+					</td>
+				</tr>
+			</table>
+			<p:dataTable id="expressTable" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="index" rows="10"
+				rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ExpressDialogActionBean.expressList}" var="exp" widgetVar="expressTable">
+				<p:column headerText="No" style="width:50px;">
+					<h:outputText value="#{index + 1}" />
+				</p:column>
+				<p:column filterBy="#{exp.name}" filterMatchMode="contains" headerText="Name" style="width:110px;">
+					<h:outputText value="#{exp.name}" />
+				</p:column>
+				<p:column headerText="Express Code">
+					<h:outputText value="#{exp.codeNo}" />
+				</p:column>
+				<p:column headerText="Registration No.">
+					<h:outputText value="#{exp.regNo}" />
+				</p:column>
+				<p:column style="width:30px;text-align: center;">
+					<p:commandLink action="#{ExpressDialogActionBean.selectExpress(exp)}" id="selectExpressLink" immediate="true">
+						<h:graphicImage styleClass="#{ApplicationSetting.selectStyleClass}" url="#{ApplicationSetting.selectIcon}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

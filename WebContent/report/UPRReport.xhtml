@@ -1,0 +1,107 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="UPR Report" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<link href="#{request.contextPath}/css/print.css" rel="stylesheet" type="text/css" />
+		<h:form>
+		<style>
+			.fixed-size {
+			table-layout: fixed;
+			word-break: break-all;
+			}
+		</style>
+		
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-3,ui-grid-col-2,ui-grid-col-2" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:selectOneRadio value="#{ManageUPRReportActionBean.financialYear}">
+							<f:selectItem itemLabel="Calendar Year" itemValue="false"/>
+							<f:selectItem itemLabel="Financial Year" itemValue="true"/>
+						</p:selectOneRadio>
+						
+						<p:selectOneMenu value="#{ManageUPRReportActionBean.startYear}">
+							<f:selectItems value="#{ManageUPRReportActionBean.yearList}" var="year" itemLabel="#{year}" itemValue="#{year}" />
+						</p:selectOneMenu>
+						
+						<p:selectOneMenu value="#{ManageUPRReportActionBean.endYear}">
+							<f:selectItems value="#{ManageUPRReportActionBean.yearList}" var="year" itemLabel="#{year}" itemValue="#{year}" />
+						</p:selectOneMenu>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton value="Search" actionListener="#{ManageUPRReportActionBean.search}" update="reportTable"/>
+				<p:commandButton value="Reset" actionListener="#{ManageUPRReportActionBean.reset}" update="reportTable"/>
+			</h:panelGrid>
+			<br/>
+			<p:dataTable id="reportTable" widgetVar="reportTable" var="report" value="#{ManageUPRReportActionBean.reportList}" paginatorPosition="top"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}" paginator="true" rows="10"
+				rowKey="#{report.policyNo}" rowIndexVar="index">
+				 <f:facet name="{Exporters}">
+		            <div style="float:right;">
+		                <h:commandLink>
+					        <p:graphicImage styleClass="#{ApplicationSetting.printStyleClass}" value="/images/excel.png" />
+					        <p:dataExporter type="csv" target="reportTable" fileName="UPR Report"/>
+					    </h:commandLink>
+		            </div>
+		        </f:facet>
+				<p:column width="5%">
+					<f:facet name="header">
+						<h:outputText value="No." />
+					</f:facet>
+					<h:outputText value="#{index+1}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Line Of Business" />
+					</f:facet>
+					<h:outputText value="#{report.productName}" />
+				</p:column>
+				<p:column styleClass="fixed-size">
+					<f:facet name="header">
+						<h:outputText value="Policy Number" />
+					</f:facet>
+					<h:outputText value="#{report.policyNo}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Policy Inception Date" />
+					</f:facet>
+					<h:outputText value="#{report.policyInceptionDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Policy End Date" />
+					</f:facet>
+					<h:outputText value="#{report.policyEndDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Installment Premium" />
+					</f:facet>
+					<h:outputText value="#{report.premium}" style="float:right;">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Next Due Date" />
+					</f:facet>
+					<h:outputText value="#{report.premiumDueDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Payment Mode" />
+					</f:facet>
+					<h:outputText value="#{report.paymentType}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

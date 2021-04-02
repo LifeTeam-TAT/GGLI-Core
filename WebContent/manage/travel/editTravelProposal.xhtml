@@ -1,0 +1,350 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:fu="http://java.sun.com/jsf/fileUpload" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+   <ui:define name="content">
+      <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+      <link href="#{request.contextPath}/css/inputText.css" rel="stylesheet" type="text/css" />
+      <h:form enctype="multipart/form-data" id="travelProposalEntryForm">
+         <p:growl escape="false" globalOnly="true" life="8000" showDetail="true" />
+         <table width="100%">
+            <tr>
+               <td>
+                  <h:outputText  value="#{label['EDITNEWTRAVELPROPOSAL_TITLE']}" style="background:#C2D6FF;" styleClass="ui-widget ui-widget-header ui-corner-all submenu-title"/>
+               </td>
+            </tr>
+         </table>
+         <p:separator style="height:3px; margin-top:-1px;" />
+         <div style="padding-left: 15px;border-left: thick solid #C2D6FF; border-right: thick solid #C2D6FF;">
+         	<p:panel id="travelPanel" style="border:none;">
+         		<script>
+					function copy(element) {
+						var inputyy = document.getElementById("travelProposalEntryForm:noOfUnits");    
+						inputyy.value = element.value; 
+					}
+				</script>
+         	
+         		<table>
+         			<tr>
+						<td></td>
+						<td>
+							<p:message for="express" />
+						</td>
+					</tr>
+         			<tr>
+         				<td height="35px;">
+         					<h:outputText style="color:red;" value="*" />
+         					<h:outputText value="Express Name "/>
+         				</td>
+         				<td width="60%">
+         					<h:panelGrid columns="3" id="expressPanelGroup">
+                               <p:inputText id="express" readonly="true" style="width:200px;margin-left:-4px;"
+                                  value="#{EditTravelProposalActionBean.travelExpress.express == null ? '' : EditTravelProposalActionBean.travelExpress.express.name}" />
+                               <p:commandLink actionListener="#{EditTravelProposalActionBean.selectExpress()}" id="selectExpressDialogLink" immediate="true">
+                                  <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+                                  <p:ajax event="dialogReturn" listener="#{EditTravelProposalActionBean.returnExpress}" update="express" />
+                               </p:commandLink>
+                            </h:panelGrid>
+         				</td>
+         				
+         			</tr>
+         			<tr>
+						<td></td>
+						<td>
+							<p:message for="noOfPassenger" />
+						</td>
+					</tr>
+         			<tr>
+         				<td height="35px;">
+         					<h:outputText style="color:red;" value="*" />
+         					<h:outputText value="No. Of Passenger "/>
+         				</td>
+         				<td>
+         					<p:inputText id="noOfPassenger" value="#{EditTravelProposalActionBean.travelExpress.noOfPassenger}" style="width:200px;" onkeyup="copy(this)"/>
+         				</td>
+         				
+         			</tr>
+         			<tr>
+						<td></td>
+						<td>
+							<p:message for="noOfUnits" />
+						</td>
+					</tr>
+					<tr>
+						<td height="35px;">
+							<h:outputText style="color:red;" value="*" />
+							<h:outputText value="No. Of Units" />
+						</td>
+						<td>
+							<p:inputText id="noOfUnits" value="#{EditTravelProposalActionBean.travelExpress.noOfUnit}" style="width:200px;"/>
+						</td>
+					</tr>
+         			<tr>
+         				<td>
+	         				<p:commandButton value="#{EditTravelProposalActionBean.isCreateNew == true ? 'Add' : 'Update'}" action="#{EditTravelProposalActionBean.addExpress()}" 
+	         					update="expressListPanel travelPanel"/>
+         				</td>
+         			</tr>
+         		</table>
+         	</p:panel>
+         	<p:separator style="height:3px; margin-top:-1px;" />
+         	 <h:commandLink action="#{EditTravelProposalActionBean.createNewExpress}">
+             	 <f:ajax render="travelPanel"/>
+             	 <h:panelGrid columns="2">
+                	<p:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+             	 	<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}"/>
+             	 </h:panelGrid>
+             </h:commandLink>
+         	<p:panel id="expressListPanel">
+         		<p:message for="expressTable"/>
+         		<p:dataTable id="expressTable" rowIndexVar="index"  style="width:100%" value="#{EditTravelProposalActionBean.expressList}" var="express" rowStyleClass="#{(index mod 2) eq 0 ? 'second-row' : 'first-row'}">
+                   <p:column headerText="No." style="width:50px;text-align:center;">
+                      <h:outputText value="#{index + 1}" />
+                   </p:column>
+                   <p:column headerText="Express Name">
+                      <h:outputText value="#{express.express.name}"/>
+                   </p:column>
+                   <p:column headerText="No. of Passenger" style="width:100px;text-align:center;">
+                      <h:outputText value="#{express.noOfPassenger}" />
+                   </p:column>
+                   <p:column headerText="NetPremium" style="width:150px;text-align:center;">
+                      <h:outputText value="#{express.netPremium}" >
+                      	<f:convertNumber pattern="#{ApplicationSetting.currencyFormat3}"/>
+                      </h:outputText>
+                   </p:column>
+                   <p:column style="width:50px;text-align:center;">
+                      <h:commandLink action="#{EditTravelProposalActionBean.prepareEditExpressInfo(express)}" id="editExpressInfoLink">
+                      	 <f:ajax render=":travelProposalEntryForm:travelPanel"/>
+                         <p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+                      </h:commandLink>
+                   </p:column>
+                   <p:column style="width:50px;text-align:center;">
+                      <h:commandLink action="#{EditTravelProposalActionBean.removeExpress(express)}" id="removeExpressInfoLink">
+                      	 <f:ajax render=":travelProposalEntryForm:expressListPanel"/>
+                         <p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+                      </h:commandLink>
+                   </p:column>
+               </p:dataTable>
+               <br/>
+               <table>
+               		<tr>
+						<td></td>
+						<td>
+							<p:message for="submittedDate" />
+						</td>
+					</tr>
+	               	<tr>
+	               		<td>
+         					<h:outputText style="color:red;" value="*" />
+         					<h:outputText value="Submitted Date "/>
+         				</td>
+         				<td>
+         					<p:calendar value="#{EditTravelProposalActionBean.travelProposal.submittedDate}" pattern="#{ApplicationSetting.dateFormat}" showOn="button" size="30" 
+         						timeZone="#{ApplicationSetting.timeZone}" id="submittedDate"/>
+         				</td>
+	               	</tr>
+	               	<tr>
+							<td>
+								<h:outputText styleClass="input-label" value="Sale Channel" />
+							</td>
+							<td>
+								<p:selectBooleanCheckbox  value="#{EditTravelProposalActionBean.travelProposal.channel}">
+									 <p:ajax event="valueChange" update="expressListPanel" listener="#{EditTravelProposalActionBean.changeChannel}"/>
+								</p:selectBooleanCheckbox>
+							</td>
+					</tr>
+ 					<tr>
+						<td>
+							<p:message for="channel" display="text" />
+						</td>
+					</tr>							
+					<tr>
+						<td>
+							<h:outputText styleClass="input-label mandatory"   rendered="#{EditTravelProposalActionBean.travelProposal.channel}" id="channellabel" value="Channel" />					
+						</td>
+							<td> 
+								<h:panelGrid columns="3" id="channelPanelGroup"  rendered="#{EditTravelProposalActionBean.travelProposal.channel}" >
+									<p:inputText id="channel"  required="true" style="width:250px;margin-left:-4px;"
+										readonly="#{EditTravelProposalActionBean.bancaassuranceProposal.channel == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+										value="#{EditTravelProposalActionBean.bancaassuranceProposal.channel == null ? '' : EditTravelProposalActionBean.bancaassuranceProposal.channel.name}" />
+									<p:commandLink actionListener="#{EditTravelProposalActionBean.selectChannels()}" id="selectChannelDialogLink" immediate="true" process="@this">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+											<p:ajax event="dialogReturn" listener="#{EditTravelProposalActionBean.returnChannel}" update="channel" />
+										</p:commandLink>	
+								</h:panelGrid>
+							</td>
+				   </tr>
+				   	<tr>
+							<td>
+								<h:outputText styleClass="input-label mandatory" value="BancaBranch"  rendered="#{EditTravelProposalActionBean.travelProposal.channel}"  />								
+							</td>
+							<td> 
+								<h:panelGrid columns="3" id="bancaBranchPanelGroup"  rendered="#{EditTravelProposalActionBean.travelProposal.channel}" >
+									<p:inputText id="bancaBranch"  required="true" style="width:200px;margin-left:-4px;"
+										readonly="#{EditTravelProposalActionBean.bancaassuranceProposal.bancaBranch == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+										value="#{EditTravelProposalActionBean.bancaassuranceProposal.bancaBranch == null ? '' : EditTravelProposalActionBean.bancaassuranceProposal.bancaBranch.name}" />
+									<p:commandLink actionListener="#{EditTravelProposalActionBean.selectBancaBranch()}" id="selectBancaBranchlink" immediate="true" process="@this">
+										<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+										<p:ajax event="dialogReturn" listener="#{EditTravelProposalActionBean.returnBancaBranch}" update="bancaBranch" />
+									</p:commandLink>					
+								</h:panelGrid>
+							</td>
+					</tr>
+					<tr>
+											<td>
+												<h:outputText styleClass="input-label mandatory" value="BancaBrm"  rendered="#{EditTravelProposalActionBean.travelProposal.channel}"  />
+											</td>							
+											<td> 
+												<h:panelGrid columns="3" id="bancaBrmPanelGroup"  rendered="#{EditTravelProposalActionBean.travelProposal.channel}">
+														<p:inputText id="bancaBrm"  required="true" style="width:200px;margin-left:-4px;"
+															readonly="#{EditTravelProposalActionBean.bancaassuranceProposal.bancaBRM == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+															value="#{EditTravelProposalActionBean.bancaassuranceProposal.bancaBRM == null ? '' : EditTravelProposalActionBean.bancaassuranceProposal.bancaBRM.name}" />
+														<p:commandLink actionListener="#{EditTravelProposalActionBean.selectBancaBrm()}" id="selectBancaBRMDialogLink" immediate="true" process="@this">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditTravelProposalActionBean.returnBancaBrm}" update="bancaBrm" />
+														</p:commandLink>		
+												</h:panelGrid>
+											</td> 
+										</tr>
+										<tr>
+											<td>
+												<h:outputText styleClass="input-label mandatory" value="BancaCLI"  rendered="#{EditTravelProposalActionBean.travelProposal.channel}"/>									
+											</td>
+			 								<td> 
+												<h:panelGrid columns="3" id="bancaLICPanelGroup"  rendered="#{EditTravelProposalActionBean.travelProposal.channel}">
+														<p:inputText id="bancaLIC"  required="true" style="width:200px;margin-left:-4px;"
+															readonly="#{EditTravelProposalActionBean.bancaassuranceProposal.bancaLIC == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+															value="#{EditTravelProposalActionBean.bancaassuranceProposal.bancaLIC == null ? '' : EditTravelProposalActionBean.bancaassuranceProposal.bancaLIC.name}" />
+														<p:commandLink actionListener="#{EditTravelProposalActionBean.selectBancaCLI()}" id="selectBancaCLIDialogLink" immediate="true" process="@this">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditTravelProposalActionBean.returnBancaLIC}" update="bancaLIC" />
+														</p:commandLink>		
+												</h:panelGrid>
+											</td> 
+										</tr>	
+										<tr>
+											<td>
+												<h:outputText styleClass="input-label mandatory" value="Banca Method"  rendered="#{EditTravelProposalActionBean.travelProposal.channel}" />									
+											</td>
+											<td> 
+												<p:selectOneMenu converter="omnifaces.SelectItemsConverter"  rendered="#{EditTravelProposalActionBean.travelProposal.channel}" style="width:250px;margin-left:-4px;"  required="true" id="bancaMethod" value="#{EditTravelProposalActionBean.bancaassuranceProposal.bancaMethod}">
+													<f:selectItem itemLabel="" noSelectionOption="true" />
+													<f:selectItems value="#{EditTravelProposalActionBean.bancaMethodList}" var="bancaMethod" itemLabel="#{bancaMethod.name}" itemValue="#{bancaMethod}" />
+								    				<p:ajax event="valueChange" update="expressListPanel" />
+												</p:selectOneMenu>
+											</td>
+										</tr> 
+										<tr>
+											<td>
+												 <h:outputText value="Banca Refferal"  id="bancaRefferalLabel" rendered="#{EditTravelProposalActionBean.travelProposal.channel}" />							
+											</td>
+											<td> 
+												<h:panelGrid columns="3" id="bancaReferralPanelGroup" rendered="#{EditTravelProposalActionBean.travelProposal.channel}">
+														<p:inputText id="bancaReferral"  required="true" style="width:200px;margin-left:-4px;"
+														readonly="#{EditTravelProposalActionBean.bancaassuranceProposal.bancaRefferal == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+														value="#{EditTravelProposalActionBean.bancaassuranceProposal.bancaRefferal == null ? '' : EditTravelProposalActionBean.bancaassuranceProposal.bancaRefferal.name}" />
+														<p:commandLink actionListener="#{EditTravelProposalActionBean.selectBancaReferral()}" id="selectBancaReferralDialogLink" immediate="true" process="@this">
+															<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+															<p:ajax event="dialogReturn" listener="#{EditTravelProposalActionBean.returnBancaRefferal}" update="bancaReferral" />
+														</p:commandLink>		
+												</h:panelGrid>
+											</td>
+										</tr>	
+	               	<tr>
+						<td></td>
+						<td>
+							<p:message for="branch" />
+						</td>
+					</tr>
+	               	<tr>
+	               		<td>
+         					<h:outputText style="color:red;" value="*" />
+         					<h:outputText value="Branch "/>
+         				</td>
+         				<td>
+         					<h:panelGrid columns="3" id="branchPanelGroup">
+                               <p:inputText id="branch" readonly="true" style="width:200px;margin-left:-4px;"
+                                  value="#{EditTravelProposalActionBean.travelProposal.branch == null ? '' : EditTravelProposalActionBean.travelProposal.branch.name}" />
+                               <p:commandLink actionListener="#{EditTravelProposalActionBean.selectBranch()}" id="selectBranchDialogLink" immediate="true">
+                                  <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+                                  <p:ajax event="dialogReturn" listener="#{EditTravelProposalActionBean.returnBranch}" update="branch salePoint" />
+                               </p:commandLink>
+                            </h:panelGrid>
+         				</td>
+	               	</tr>
+	               	<tr>
+						<td></td>
+						<td>
+							<p:message for="salePoint" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText style="color: red;" value="*" />
+							<h:outputText value="Sale Point" />
+						</td>
+						<td>
+							<h:panelGrid columns="3" id="salePontPanelGroup">
+								<p:inputText id="salePoint" style="width:200px;margin-left:-4px;" readonly="{EditTravelProposalActionBean.travelProposal.salePoint == null ? facesContext.currentPhaseId.ordinal eq 6 : true"  required="true"
+									value="#{EditTravelProposalActionBean.travelProposal.salePoint == null ? '' : EditTravelProposalActionBean.travelProposal.salePoint.name}" />
+								<p:commandLink  actionListener="#{EditTravelProposalActionBean.selectSalePoint()}" id="selectSalePointDialogLink" immediate="true">
+									<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+									<p:ajax event="dialogReturn" listener="#{EditTravelProposalActionBean.returnSalePoint}" update="salePontPanelGroup" />
+								</p:commandLink>
+							</h:panelGrid>
+						</td>
+					</tr>
+	               	<tr>
+						<td></td>
+						<td>
+							<p:message for="paymentType" />
+						</td>
+					</tr>
+	               	<tr>
+	               		<td>
+         					<h:outputText style="color:red;" value="*" />
+         					<h:outputText value="Payment Type "/>
+         				</td>
+         				<td>
+         					<h:panelGrid columns="3" id="paymentTypePanelGroup">
+                               <p:inputText id="paymentType" readonly="true" style="width:200px;margin-left:-4px;"
+                                  value="#{EditTravelProposalActionBean.travelProposal.paymentType == null ? '' : EditTravelProposalActionBean.travelProposal.paymentType.name}" />
+                               <p:commandLink actionListener="#{EditTravelProposalActionBean.selectPaymentType()}" id="selectPaymentTypeDialogLink" immediate="true">
+                                  <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+                                  <p:ajax event="dialogReturn" listener="#{EditTravelProposalActionBean.returnPaymentType}" update="paymentType" />
+                               </p:commandLink>
+                            </h:panelGrid>
+         				</td>
+	               	</tr>
+	               	<tr>
+						<td></td>
+						<td>
+							<p:message for="responsiblePerson" />
+						</td>
+					</tr>
+	               	<tr>
+	               		<td>
+	               			<h:outputText style="color:red;" value="*" />
+         					<h:outputText value="Responsible Person "/>
+	               		</td>
+	               		<td>
+	               		  <h:panelGrid columns="3" id="responsiblePersonPanel">
+	               		  		<p:inputText id="responsiblePerson" readonly="true" style="width:200px;margin-left:-4px;"
+                                  value="#{EditTravelProposalActionBean.responsiblePerson == null ? '' : EditTravelProposalActionBean.responsiblePerson.name}" />
+		               			<p:commandLink actionListener="#{EditTravelProposalActionBean.selectUser()}" id="selectUserDialogLink" immediate="true">
+				                   <h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}" />
+				                   <p:ajax event="dialogReturn" listener="#{EditTravelProposalActionBean.returnUser}" update="responsiblePersonPanel" />
+				                </p:commandLink>
+			               </h:panelGrid>
+	               		</td>
+	               	</tr>
+	               	<tr>
+	               		<td>
+	               			<p:commandButton value="Save" action="#{EditTravelProposalActionBean.updateNewTravelPropoasl()}" update="expressListPanel"/>
+	               			<p:commandButton value="Cancel" action="travelConfirm" immediate="true"/>
+	               		</td>
+	               	</tr>
+               </table>
+         	</p:panel>
+         </div>
+      </h:form>
+   </ui:define>
+</ui:composition>

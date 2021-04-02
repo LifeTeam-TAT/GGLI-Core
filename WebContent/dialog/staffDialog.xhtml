@@ -1,0 +1,42 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/dialog/dialogTemplate.xhtml">
+	<ui:define name="content">
+		<h:form id="staffDialogForm">
+			<title>Select Staff</title> 
+			<p:panelGrid style="margin: 5px;" columns="3" columnClasses="ui-grid-col-3,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+				<p:outputLabel/>
+				<p:message for="staffCriteria" display="text"/>
+				<p:outputLabel/>
+				<p:selectOneMenu id="selectStaffCriteria" value="#{StaffDialogActionBean.staffCriteria}">
+					<f:selectItems value="#{StaffDialogActionBean.criteriaItems}" var="criteriaItem"  itemLabel="#{criteriaItem.label}"  itemValue="#{criteriaItem}"/>
+				</p:selectOneMenu>
+				<p:inputText required="true" id="staffCriteria" value="#{StaffDialogActionBean.criteriaValue}" />
+				<p:panelGrid columns="2">
+					<p:commandButton action="#{StaffDialogActionBean.search}" id="searchStaffButtonBtn" update="@form" value="Search" />
+					<p:commandButton action="#{StaffDialogActionBean.init()}" id="resetStaffButtonBtn" process="@this" update="@form" value="Reset" />
+				</p:panelGrid>
+			</p:panelGrid>
+			<div class="ui-g" style="margin : 8px;">
+				<p:dataTable id="staffTable" paginator="true" paginatorPosition="top"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="index" rows="10"
+					rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{StaffDialogActionBean.staffList}" var="staff" widgetVar="staffTable">
+					<p:column headerText="No" style="width:30px;">
+						<h:outputText value="#{index + 1}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_AGENT_NAME_LABEL']}" style="width:120px;">
+						<h:outputText value="#{staff.name}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_AGENT_IDNO_LABEL']}">
+						<h:outputText value="#{staff.idNo}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_AGENT_BRANCH_LABEL']}">
+						<h:outputText value="#{staff.branch}" />
+					</p:column>
+					 <p:column width="6%">
+		            	<p:commandButton action="#{StaffDialogActionBean.selectStaff(staff)}" id="selectStaffLink" update="@form" styleClass="green-button" icon="fa fa-check" immediate="true" />
+		            </p:column>
+				</p:dataTable>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

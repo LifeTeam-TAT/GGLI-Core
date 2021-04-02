@@ -1,0 +1,69 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{AddNewStudentLifeConfirmationActionBean.getPageHeader()}" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="lifeConfirmaitonForm">
+			<p:panel>
+				<p:panelGrid columns="2" style="width:500px;" columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<h:outputText styleClass="input-label" value="Proposal No" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="detailProposal">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:inputText id="proposalNo" readonly="true" value="#{AddNewStudentLifeConfirmationActionBean.lifeProposal.proposalNo}" />
+								<p:commandButton actionListener="#{AddNewStudentLifeConfirmationActionBean.openTemplateDialog()}" immediate="true" styleClass="green-button" icon="fa fa-laptop" />
+							</div>
+						</div>
+					</p:panelGrid>
+						<h:outputText styleClass="input-label" value="Already Paid" rendered="false" />
+						<p:selectBooleanCheckbox value="#{AddNewStudentLifeConfirmationActionBean.lifeProposal.skipPaymentTLF}" rendered="false">
+							<p:ajax event="valueChange" listener="#{AddNewStudentLifeConfirmationActionBean.setResponsiblePerson(null)}"  update="responsiblePerson" />
+						</p:selectBooleanCheckbox>
+					<h:outputText styleClass="input-label" value="Remark" />
+					<p:inputTextarea autoResize="true" id="remark" rows="7" value="#{AddNewStudentLifeConfirmationActionBean.remark}">
+						<f:validateLength maximum="8000" />
+					</p:inputTextarea>
+					<h:outputText value="" />
+					<p:message for="responsiblePerson" />
+					<h:outputText styleClass="input-label mandatory" value="Accountant" />
+					<p:panelGrid styleClass="ui-panelgrid-blank">
+						<div style="margin-top: -5px; margin-left: -5px;" class="ui-g ui-fluid" id="responsiblePersonPanel">
+							<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+								<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{AddNewStudentLifeConfirmationActionBean.selectUser()}" id="selectUserDialogLink"
+									process="@this">
+									<p:ajax event="dialogReturn" listener="#{AddNewStudentLifeConfirmationActionBean.returnUser}" update="responsiblePerson" />
+								</p:commandButton>
+								<p:inputText id="responsiblePerson" readonly="#{AddNewStudentLifeConfirmationActionBean.responsiblePerson == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"
+									required="true" value="#{AddNewStudentLifeConfirmationActionBean.responsiblePerson == null ? '':AddNewStudentLifeConfirmationActionBean.responsiblePerson.name}" />
+								<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{AddNewStudentLifeConfirmationActionBean.setResponsiblePerson(null)}" process="@this"
+									update="responsiblePerson" />
+							</div>
+						</div>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<br />
+			<p:commandButton style="width: 80px;" action="#{AddNewStudentLifeConfirmationActionBean.confirmLifeProposal()}"
+				disabled="#{!AddNewStudentLifeConfirmationActionBean.approvedProposal}" id="addBtn" value="Confirm" update="lifeConfirmaitonForm" />
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" action="#{AddNewStudentLifeConfirmationActionBean.editLifeProposal()}" immediate="true" id="editBtn" value="Edit" />
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" oncomplete="PF('denyDialog').show();" immediate="true" id="denyBtn" value="Deny" />
+			<p:spacer width="5" />
+			<p:commandButton style="width: 80px;" action="dashboard" id="cancelBtn" immediate="true" value="Cancel" />
+			<br />
+			<br />
+		</h:form>
+		<p:dialog header="Deny Status" id="denyDialog" widgetVar="denyDialog" height="140">
+			<h:form id="dialogForm">
+				<p:message for="status" />
+				<p:selectOneRadio id="status" required="true" value="#{AddNewStudentLifeConfirmationActionBean.lifeProposal.proposalStatus}" layout="grid" columns="1">
+					<f:selectItems value="#{AddNewStudentLifeConfirmationActionBean.proposalStatus}" var="status" itemLabel="#{status.label}" itemValue="#{status}" />
+				</p:selectOneRadio>
+				<p:commandButton action="#{AddNewStudentLifeConfirmationActionBean.denyLifeProposal()}" style="margin-top:5px;" id="deny" value="Deny" update="dialogForm">
+				</p:commandButton>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,690 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:param name="uploadRootPath" value="/image" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<p:wizard widgetVar="wiz">
+		<p:tab id="proposalInfo" title="Proposal Info">
+			<p:panel header="Proposal Info" style="min-height:410px;">
+				<table>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td width="120px;">
+										<h:outputText value="#{label['ADDNEWLIFEOPOSAL_PROPOSALNO_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{medicalProposal.proposalNo}" styleClass="readOnly-textbox" style="width:250px;" id="detailsProposalNo" readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{label['ADDNEWLIFEPROPOSAL_CUSTOMER_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{medicalProposal.customerName}" styleClass="readOnly-textbox" style="width:250px;" id="customer" required="true" readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{label['ADDNEWLIFEPROPOSAL_PAYMENTTYPE_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{medicalProposal.paymentType == null ? '' : medicalProposal.paymentType.description}" styleClass="readOnly-textbox" style="width:250px;"
+											id="paymentType" required="true" readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="Branch" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{medicalProposal.branch == null ? '' : medicalProposal.branch.name}" styleClass="readOnly-textbox" style="width:250px;" id="branch" required="true"
+											readonly="true" />
+									</td>
+								</tr>
+							</table>
+						</td>
+						<td>
+							<p:spacer style="width:30px;" />
+						</td>
+						<td valign="top">
+							<table>
+								<tr>
+									<td>
+										<h:outputText value="Submitted Date" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText showOn="button" value="#{medicalProposal.submittedDate}" styleClass="readOnly-textbox" style="width:250px;" id="submittedDate" readonly="true">
+											<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{label['ADDNEWLIFEPROPOSAL_AGENT_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{medicalProposal.agent == null ? '' : medicalProposal.agent.fullName}" styleClass="readOnly-textbox" style="width:250px;" id="agent" required="true"
+											readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{label['ADDNEWLIFEPROPOSAL_REFERRAL_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{medicalProposal.referral == null ? '' : medicalProposal.referral.fullName}" styleClass="readOnly-textbox" style="width:250px;" id="referral"
+											required="true" readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{label['ADDNEWLIFEPROPOSAL_SALEMAN_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{medicalProposal.saleMan == null ? '' : medicalProposal.saleMan.fullName}" styleClass="readOnly-textbox" style="width:250px;" id="saleMan"
+											required="true" readonly="true">
+											<f:validateLength maximum="20" />
+										</p:inputText>
+									</td>
+								</tr>
+							</table>
+						</td>
+						
+						<td style="width: 50px;"></td>
+						<td valign="top">
+							<table>
+							<tr>
+									<td>
+										<h:outputText value="SaleChannel" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{medicalProposal.saleChannelType == null ? '' : medicalProposal.saleChannelType.name()}" style="width:250px;" id="saleChannel" readonly="true">
+											<f:validateLength maximum="20" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="Channel" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{bancaproposal.channel == null ? '' : bancaproposal.channel.name}" style="width:250px;" id="channel" required="true" readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="Banca Branch" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{bancaproposal.bancaBranch == null ? '' : bancaproposal.bancaBranch.name}" style="width:250px;" id="bancaBranch" required="true" readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="Banca Method" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{bancaproposal.bancaMethod == null ? '' : bancaproposal.bancaMethod.name}" style="width:250px;" id="bancaMethod" required="true" readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="Banca LIC" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{bancaproposal.bancaLIC == null ? '' : bancaproposal.bancaLIC.name}" style="width:250px;" id="bancaLIC" required="true" readonly="true" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+									<td>
+										<p:spacer style="height:5px" />
+									</td>
+								</tr>
+								<c:if test="#{bancaproposal.bancaMethod.name eq 'OTC'}">
+								<tr>
+									<td>
+										<h:outputText value="Banca Staff
+										" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{bancaproposal.bancaRefferal == null ? '' : bancaproposal.bancaRefferal.name}" style="width:250px;" id="bancaRefferal" required="true" readonly="true" />
+
+									</td>
+								</tr>
+								</c:if>
+								<c:if test="#{bancaproposal.bancaMethod.name eq 'REFERRAL'}">
+								<tr>
+									<td>
+										<h:outputText value="Banca Referral" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{bancaproposal.bancaRefferal == null ? '' : bancaproposal.bancaRefferal.name}" style="width:250px;" id="bancaRefferal" required="true" readonly="true" />
+
+									</td>
+								</tr>
+								</c:if>
+							</table>
+						</td>
+						
+						
+						
+						
+						
+					</tr>
+				</table>
+				<p:spacer style="height:30px;" />
+				<table>
+					<tr>
+						<td valign="top">
+							<h:panelGroup>
+								<fieldset>
+									<legend>
+										<h:outputText value="Proposal Premium and Number Of Unit" styleClass="input-label" />
+									</legend>
+									<table border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+										<tr>
+											<td style="width: 250px;"></td>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+										</tr>
+										<tr>
+											<td style="height: 25px; width: 100px;">
+												<h:outputText value="#{medicalProposal.proposalNo}" />
+											</td>
+											<td align="center" style="width: 120px;">
+												<font style="font-size: 11px; font-weight: bold;">No Of Units</font>
+											</td>
+											<td align="center" style="width: 120px;">
+												<font style="font-size: 11px; font-weight: bold;">Period of Insurance(Year)</font>
+											</td>
+											<td align="center" style="width: 120px;">
+												<font style="font-size: 11px; font-weight: bold;">Premium</font>
+											</td>
+										</tr>
+										<ui:repeat value="#{medicalProposal.medProInsuDTOList}" var="insuredPerson">
+											<tr>
+												<td style="height: 25px;">
+													<h:outputText value="#{insuredPerson.product.name}" />
+												</td>
+												<td align="right">
+													<h:outputText value="#{insuredPerson.unit}" style="margin-right: 5px; "/>
+												</td>
+												<td align="right">
+													<h:outputText value="#{insuredPerson.periodYear}" style="margin-right: 5px; "/>
+												</td>
+												<td align="right">
+													<h:outputText value="#{insuredPerson.proposedPremium}" style="margin-right: 5px; ">
+														<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+													</h:outputText>
+												</td>
+											</tr>
+											<!-- <tr>
+												<td style="height: 25px;">
+													<h:outputText value="BASIC PLUS" rendered="!microHealthDisable" />
+												</td>
+												<td align="right">
+													<h:outputText value="#{insuredPerson.basicPlusUnit}" rendered="!microHealthDisable" style="margin-right: 5px; "/>
+												</td>
+												<td align="right">
+													<h:outputText value="#{insuredPerson.periodYear}" rendered="!microHealthDisable" style="margin-right: 5px; "/>
+												</td>
+												<td align="right">
+													<h:outputText value="#{insuredPerson.basicPlusPremium}" rendered="!microHealthDisable" style="margin-right: 5px; ">
+														<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+													</h:outputText>
+												</td>
+											</tr> -->
+											<ui:repeat value="#{insuredPerson.insuredPersonAddOnList}" var="addon">
+												<tr style="height: 25px;">
+													<td style="width: 120px;" colspan="1">
+														<font style="font-size: 11px; font-weight: bold;">
+															<h:outputText value="#{addon.addOn.name}"/>	
+														</font>
+													</td>
+													<td align="right">
+														<h:outputText value="#{addon.unit}" style="margin-right: 5px; ">
+														</h:outputText>
+													</td>
+													<td style="width: 100px;">
+														<h:outputText value="#{addon.proposalInsuredPerson.periodMonth}" style="margin-right: 5px; "/>
+													</td>
+													<td align="right">
+														<h:outputText value="#{addon.proposedPremium}" colspan="3" style="margin-right: 5px; ">
+															<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+														</h:outputText>
+													</td>
+												</tr>
+											</ui:repeat>
+										</ui:repeat>
+										<tr>
+											<td colspan="3" style="height: 25px;" align="right">
+												<b>Total Premium</b>
+											</td>
+											<td align="right" >
+												<h:outputText value="#{medicalProposal.totalPremium}" style="margin-right: 5px; ">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</h:panelGroup>
+						</td>
+						<td valign="top">
+							<h:panelGroup rendered="#{showPolicy}">
+								<fieldset>
+									<legend>
+										<h:outputText value="Policy Premium and Number Of Unit" styleClass="input-label" />
+									</legend>
+									<table border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+										<tr>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+											<td style="width: 100px;"></td>
+										</tr>
+										<tr>
+											<td colspan="4" style="height: 25px; width: 150px;">
+												<h:outputText value="#{medicalPolicy.policyNo}" />
+											</td>
+											<td align="center" style="width: 50px;">
+												<font style="font-size: 11px; font-weight: bold;">Units</font>
+											</td>
+											<td align="center" style="width: 120px;">
+												<font style="font-size: 11px; font-weight: bold;">Period of Insurance(Year)</font>
+											</td>
+											<td align="center" style="width: 120px;">
+												<font style="font-size: 11px; font-weight: bold;">Premium</font>
+											</td>
+										</tr>
+										<ui:repeat value="#{medicalPolicy.policyInsuredPersonList}" var="insuredPerson">
+											<tr>
+												<td colspan="2" style="height: 25px; width: 100px;">
+													<h:outputText value="#{insuredPerson.fullName}" />
+												</td>
+												<td colspan="2" style="height: 50px;">
+													<h:outputText value="#{insuredPerson.product.name}" />
+												</td>
+												<td align="right" style="width: 50px;">
+													<h:outputText value="#{insuredPerson.unit}"  style="margin-right: 5px; "/>
+												</td>
+												<td align="right">
+													<h:outputText value="#{insuredPerson.periodYears}"  style="margin-right: 5px; "/>
+												</td>
+												<td align="right">
+													<h:outputText value="#{insuredPerson.premium}"  style="margin-right: 5px; ">
+														<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+													</h:outputText>
+												</td>
+											</tr>
+											<!-- <tr>
+												<td colspan="2" style="height: 25px; width: 100px;">
+													<h:outputText value="#{insuredPerson.fullName}" />
+												</td>
+												<td colspan="2" style="height: 25px;">
+													<h:outputText value="BASIC PLUS" />
+												</td>
+												<td align="right">
+													<h:outputText value="#{insuredPerson.basicPlusUnit}" />
+												</td>
+												<td align="right">
+													<h:outputText value="#{insuredPerson.periodYears}" />
+												</td>
+												<td align="right">
+													<h:outputText value="#{insuredPerson.basicPlusPremium}">
+														<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+													</h:outputText>
+												</td>
+											</tr> -->
+											<ui:repeat value="#{insuredPerson.policyInsuredPersonAddOnList}" var="addon">
+												<tr>
+													<td style="width: 120px;" colspan="4">
+														<font style="font-size: 11px; font-weight: bold;">#{addon.addOn.name}</font>
+													</td>
+													<td align="right">
+														<h:outputText value="#{addon.unit}"  style="margin-right: 5px; "/>
+													</td>
+													<td style="height: 25px; width: 100px;"></td>
+													<td align="right">
+														<h:outputText value="#{addon.premium}" colspan="3"  style="margin-right: 5px; ">
+															<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+														</h:outputText>
+													</td>
+												</tr>
+											</ui:repeat>
+										</ui:repeat>
+										<tr>
+											<td colspan="5" style="height: 25px;" align="right">
+												<b>Total Premium</b>
+											</td>
+											<td align="right" colspan="2">
+												<h:outputText value="#{medicalPolicy.totalPremium}"  style="margin-right: 5px; ">
+													<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+												</h:outputText>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</h:panelGroup>
+						</td>
+					</tr>
+				</table>
+			</p:panel>
+		</p:tab>
+		<p:tab id="questionInfo" title="Survey Questin Information" rendered="#{surveyQuestinList !=null and surveyQuestinList.size() > 0}">
+			<p:panel id="surveyQuestinInfoPanel" style="min-height:410px;">
+				<p:dataTable id="questionTable" rowIndexVar="index" style="width:100%" value="#{surveyQuestinList}" var="question">
+					<p:column headerText="No" style="width: 2%;">
+						<h:outputText style="float: right;" value="#{index + 1}." />
+					</p:column>
+					<p:column headerText="Question" style="width: 73%">
+						<h:outputText value="#{question.description}" escape="false" styleClass="myanmar-label" />
+					</p:column>
+					<p:column headerText="Answer" style="width: 25%;">
+						<h:outputText escape="false" value="#{question.answer}" styleClass="myanmar-label" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</p:tab>
+		<p:tab id="insuredPersonInfo" title="Insured Person Info" rendered="#{medicalProposal.medProInsuDTOList !=null and medicalProposal.medProInsuDTOList.size() > 0}">
+			<p:panel header="Insured Person Information" id="insuredPersonInfoWizardPanel" style="min-height:410px;">
+				<p:dataTable value="#{medicalProposal.medProInsuDTOList}" var="insuredPerson" id="insuredPerson" style="width:100%" paginator="true" rows="10">
+					<p:column headerText="Insured Person Name" style="width: 20%;">
+						<h:outputText value="#{insuredPerson.customer.fullName}" />
+					</p:column>
+					<p:column headerText="Date of Birth" style="width: 7%;">
+						<h:outputText value="#{empty insuredPerson.customer.dateOfBirth ? '-' : insuredPerson.customer.dateOfBirth}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Product Type" style="width: 15%;">
+						<h:outputText value="#{empty insuredPerson.product ? '' :  insuredPerson.product.name}" />
+					</p:column>
+					<p:column headerText="Premium" style="width: 10%;">
+						<h:outputText style="float: right;" value="#{insuredPerson.proposedPremium}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="No Of Unit" style="width: 5%;">
+						<h:outputText value="#{insuredPerson.unit}" style="width: 90%;"/>
+					</p:column>
+					<p:column headerText="Basic Plus Unit" style="width: 5%;" rendered="!microHealthDisable">
+						<h:outputText value="#{insuredPerson.basicPlusUnit}"  style="width: 90%;"/>
+					</p:column>					
+					<p:column headerText="Period of Insured" style="width: 5%;">
+						<h:outputText value="#{insuredPerson.periodYear} - Years" />
+					</p:column>
+					<p:column style="width: 3%;" rendered="!microHealthDisable">
+						<p:commandLink immediate="true" oncomplete="PF('addOnDetailsDialog#{insuredPerson.id}').show()">
+							<p:graphicImage value="/images/addOn.png" styleClass="command-image" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width: 3%;">
+						<p:commandLink immediate="true" oncomplete="PF('medicalProposalInsuredPersonDetailsDialog#{insuredPerson.id}').show()">
+							<p:graphicImage value="/images/approval.png" style="width:25px;heifht:32px;" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width: 3%;">
+						<p:commandLink immediate="true" oncomplete="PF('medicalProposalInsuredPersonAttachmentDialog#{insuredPerson.id}').show()">
+							<p:graphicImage value="#{ApplicationSetting.attachIcon}" styleClass="#{ApplicationSetting.attachStyleClass}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</p:tab>
+		<p:tab id="attachmentWizardTab" title="Attachment">
+			<p:panel header="Attachment Detail" style="min-height:410px;">
+				<p:dataGrid var="image" value="#{medicalProposal.attachmentList}" columns="8" rows="16" paginator="true" id="proposalImageGrid"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+					<h:outputLink onclick="window.open('/ggli/image/#{image.filePath}');return false;">
+						<h:graphicImage value="#{uploadRootPath}#{image.filePath}" style="width:120px;height:120px;" />
+					</h:outputLink>
+				</p:dataGrid>
+			</p:panel>
+		</p:tab>
+		<p:tab id="workFlowWizardTab" title="Remark" rendered="#{workFlowList !=null and workFlowList.size() > 0}">
+			<p:panel header="Remark" id="workflowWizardPanel" style="min-height:410px;">
+				<p:dataTable value="#{workFlowList}" var="workflow" id="workflow" style="width:100%" paginator="true" rows="10">
+					<p:column headerText="From">
+						<h:outputText value="#{workflow.createdUser.name}" />
+					</p:column>
+					<p:column headerText="To">
+						<h:outputText value="#{workflow.responsiblePerson.name}" />
+					</p:column>
+					<p:column headerText="Task">
+						<h:outputText value="#{workflow.workflowTask.label}" />
+					</p:column>
+					<p:column headerText="Remark">
+						<h:outputText value="#{workflow.remark}" />
+					</p:column>
+					<p:column headerText="Date">
+						<h:outputText value="#{workflow.workflowDate}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateTimeFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</p:tab>
+	</p:wizard>
+	<ui:repeat var="var" value="#{medicalProposal.medProInsuDTOList}">
+		<p:dialog header="Add On Detail" widgetVar="addOnDetailsDialog#{var.id}" resizable="false" showEffect="explode" hideEffect="explode" id="addOnDetailsDialog#{var.id}">
+			<p:dataTable value="#{var.insuredPersonAddOnList}" var="insuredPersonAddOn" id="addOnTable" style="width:100%">
+				<p:column headerText="Addition Cover">
+					<h:outputText value="#{insuredPersonAddOn.addOn.name}" />
+				</p:column>
+				<p:column headerText="Premium">
+					<h:outputText value="#{insuredPersonAddOn.proposedPremium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+		</p:dialog>
+	</ui:repeat>
+	<ui:repeat var="var" value="#{medicalProposal.medProInsuDTOList}">
+		<p:dialog header="Attachment" widgetVar="medicalProposalInsuredPersonAttachmentDialog#{var.id}" resizable="false" showEffect="explode" hideEffect="explode"
+			id="medicalProposalInsuredPersonAttachmentDialog#{var.id}">
+			<p:dataGrid var="image" value="#{var.attachmentList}" columns="8" rows="16" paginator="true" id="insuredPersonImageGrid"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+				<h:outputLink onclick="window.open('/ggli/image/#{image.filePath}');return false;">
+					<h:graphicImage value="#{uploadRootPath}#{image.filePath}" style="width:120px;height:120px;" />
+				</h:outputLink>
+			</p:dataGrid>
+		</p:dialog>
+	</ui:repeat>
+	<ui:repeat var="insuredPerson" value="#{medicalProposal.medProInsuDTOList}">
+		<p:dialog header="InsuredPerson Details" widgetVar="medicalProposalInsuredPersonDetailsDialog#{insuredPerson.id}" resizable="false" width="300" height="430" showEffect="explode"
+			hideEffect="explode" id="medicalProposalInsuredPersonDetailsDialog#{insuredPerson.id}">
+			<table cellspacing="5" cellpadding="6">
+				<tr>
+					<td>
+						<h:outputText value="Insured Person Name" />
+					</td>
+					<td>
+						<h:outputText value="#{empty insuredPerson.customer.fullName ? '-' : insuredPerson.customer.fullName}" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value="Date Of Birth " />
+					</td>
+					<td>
+						<h:outputText value="#{empty insuredPerson.customer.dateOfBirth ? '-' : insuredPerson.customer.dateOfBirth}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value="Age (Next Year)" />
+					</td>
+					<td>
+						<h:outputText value="#{insuredPerson.customer.ageForNextYear}" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value="Policy Type" />
+					</td>
+					<td>
+						<h:outputText value="#{empty insuredPerson.product ? '-' :  insuredPerson.product.name}" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value="Premium" />
+					</td>
+					<td>
+						<h:outputText value="#{insuredPerson.proposedPremium}">
+							<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+						</h:outputText>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value="No Of Unit" />
+					</td>
+					<td>
+						<h:outputText value="#{insuredPerson.unit}" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value="Basic Plus Unit"  rendered="!microHealthDisable"/>
+					</td>
+					<td>
+						<h:outputText value="#{insuredPerson.basicPlusUnit}"  rendered="!microHealthDisable"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value="Policy Term" />
+					</td>
+					<td>
+						<h:outputText value="#{empty insuredPerson.periodYear ? '' : insuredPerson.periodYear}" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value="Mode of Premium" />
+					</td>
+					<td>
+						<h:outputText value="#{empty medicalProposal.paymentType  ? '' : medicalProposal.paymentType.description}" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value="Is already approved ?" />
+					</td>
+					<td>
+						<h:outputText value="#{insuredPerson.approved ? 'Yes' : 'No'}" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value="Need to Medical Check Up again ?" />
+					</td>
+					<td>
+						<h:outputText value="#{insuredPerson.needMedicalCheckup? 'Yes' : 'No'}" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value="Reject Reason" />
+					</td>
+					<td>
+						<h:outputText value="#{empty insuredPerson.approved ? '-' : insuredPerson.rejectReason}" />
+					</td>
+				</tr>
+			</table>
+		</p:dialog>
+	</ui:repeat>
+</ui:composition>

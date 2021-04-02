@@ -1,0 +1,231 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:define name="content">
+		<h:form id="familyInfoConfigForm">
+			<table width="100%">
+				<tr>
+					<td>
+						<h:outputText styleClass="table-title" value="Family Information"/>
+					</td>
+					<td align="center" width="70%">
+						<div style="z-index: 100; position: fixed; margin-top: -30px; width: 700px;">
+							<p:messages globalOnly="true" id="messages" showDetail="true"/>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<p:separator style="height:5px"/>
+			<table cellspacing="5">
+				<tr>
+					<td>
+						<h:outputText value=""/>
+					</td>
+					<td style="width: 115px;">
+						<p:message for="initialId"/>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 115px;">
+						<h:outputText style="color:red;" value="*"/>
+						<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_INITIALID_LABEL']}"/>
+					</td>
+					<td>
+						<p:inputText id="initialId" required="true" style="width:250px;" value="#{FamilyInfoConfigActionBean.familyInfoDTO.initialId}">
+							<f:validateLength maximum="36"/>
+						</p:inputText>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value=""/>
+					</td>
+					<td style="width: 115px;">
+						<p:message for="firstName"/>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 115px;">
+						<h:outputText style="color:red;" value="*"/>
+						<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_FIRSTNAME_LABEL']}"/>
+					</td>
+					<td>
+						<p:inputText id="firstName" required="true" style="width:250px;" value="#{FamilyInfoConfigActionBean.familyInfoDTO.name.firstName}">
+							<f:validateLength maximum="50"/>
+						</p:inputText>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value=""/>
+					</td>
+					<td style="width: 115px;">
+						<p:message for="middleName"/>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 115px;">
+						<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_MIDDLENAME_LABEL']}"/>
+					</td>
+					<td>
+						<p:inputText id="middleName" style="width:250px;" value="#{FamilyInfoConfigActionBean.familyInfoDTO.name.middleName}">
+							<f:validateLength maximum="50"/>
+						</p:inputText>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value=""/>
+					</td>
+					<td style="width: 115px;">
+						<p:message for="lastName"/>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 115px;">
+						<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_LASTNAME_LABEL']}"/>
+					</td>
+					<td>
+						<p:inputText id="lastName" style="width:250px;" value="#{FamilyInfoConfigActionBean.familyInfoDTO.name.lastName}">
+							<f:validateLength maximum="50"/>
+						</p:inputText>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value=""/>
+					</td>
+					<td style="width: 115px;">
+						<p:message for="idNo"/>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 115px;">
+						<h:outputText style="color:red;" value="*"/>
+						<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_IDNO_LABEL']}"/>
+					</td>
+					<td>
+						<p:inputText id="idNo" required="true" style="width:250px;" value="#{FamilyInfoConfigActionBean.familyInfoDTO.idNo}">
+							<f:validateLength maximum="50"/>
+						</p:inputText>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value=""/>
+					</td>
+					<td style="width: 115px;">
+						<p:message for="dob"/>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 115px;">
+						<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_DOB_LABEL']}"/>
+					</td>
+					<td>
+						<p:inputText id="dob" style="width:250px;" value="#{FamilyInfoConfigActionBean.familyInfoDTO.dateOfBirth}">
+							<f:validateLength maximum="50"/>
+						</p:inputText>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value=""/>
+					</td>
+					<td style="width: 115px;">
+						<p:message for="occupation"/>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 115px;">
+						<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_OCCUPATION_LABEL']}"/>
+					</td>
+					<td>
+						<h:panelGrid columns="3" id="occupationPanelGroup">
+							<p:inputText id="occupation" readonly="true" style="width:250px;margin-left:-4px;" value="#{FamilyInfoConfigActionBean.familyInfoDTO.occupation == null ? '' : FamilyInfoConfigActionBean.familyInfoDTO.occupation.name}"/>
+							<p:commandLink actionListener="#{FamilyInfoConfigActionBean.selectOccupation()}" id="selectOccupationDialogLink" immediate="true">
+								<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}"/>
+								<p:ajax event="dialogReturn" listener="#{FamilyInfoConfigActionBean.returnOccupation}" update="occupationPanelGroup"/>
+							</p:commandLink>
+						</h:panelGrid>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value=""/>
+					</td>
+					<td style="width: 115px;">
+						<p:message for="industry"/>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 115px;">
+						<h:outputText style="color:red;" value="*"/>
+						<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_INDUSTRY_LABEL']}"/>
+					</td>
+					<td>
+						<h:panelGrid columns="3" id="industryPanelGroup">
+							<p:inputText id="industry" readonly="true" style="width:250px;margin-left:-4px;" value="#{FamilyInfoConfigActionBean.familyInfoDTO.industry== null ? '' : FamilyInfoConfigActionBean.familyInfoDTO.industry.name}"/>
+							<p:commandLink actionListener="#{FamilyInfoConfigActionBean.selectIndustry()}" id="selectIndustryDialogLink" immediate="true">
+								<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}"/>
+								<p:ajax event="dialogReturn" listener="#{FamilyInfoConfigActionBean.returnIndustry}" update="industryPanelGroup"/>
+							</p:commandLink>
+						</h:panelGrid>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value=""/>
+					</td>
+					<td>
+						<div style="width: 270px; margin-left: -5px;">
+							<p:message for="relationShip"/>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 115px;">
+						<h:panelGroup>
+							<h:outputText style="color:red;" value="*"/>
+							<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_FAMILYINFO_RELSHIP_LABLE']}"/>
+						</h:panelGroup>
+					</td>
+					<td>
+						<p:selectOneMenu converter="omnifaces.SelectItemsConverter" id="relationShip" required="true" style="height:24px;width: 258px;" value="#{FamilyInfoConfigActionBean.selectedRelationShipId}">
+							<p:ajax listener="#{FamilyInfoConfigActionBean.changeRelationShip}"/>
+							<f:selectItems value="#{FamilyInfoConfigActionBean.relationShipItemList}"/>
+						</p:selectOneMenu>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h:outputText value=""/>
+					</td>
+					<td style="width: 115px;">
+						<p:message for="refcustomer"/>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 115px;">
+						<h:outputText styleClass="input-label" value="#{label['MANAGE_CUSTOMER_REFCUSTOMER_LABEL']}"/>
+					</td>
+					<td>
+						<h:panelGrid columns="3" id="refCustomerPanelGroup">
+							<p:inputText id="refcustomer" readonly="true" style="width:250px;margin-left:-4px;" value="#{FamilyInfoConfigActionBean.familyInfoDTO.refCustomerId == null ? '' : FamilyInfoConfigActionBean.familyInfoDTO.refCustomerId.name}"/>
+							<p:commandLink actionListener="#{FamilyInfoConfigActionBean.selectRefCustomer()}" id="selectRefCustomerDialogLink" immediate="true">
+								<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}"/>
+								<p:ajax event="dialogReturn" listener="#{FamilyInfoConfigActionBean.returnRefCustomer}" update="refCustomerPanelGroup"/>
+							</p:commandLink>
+						</h:panelGrid>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p:commandButton action="#{FamilyInfoConfigActionBean.addFamilyInfo}" style="width: 80px;" update="familyInfoConfigForm" value="Apply"/>
+					</td>
+				</tr>
+			</table>
+			<p:separator style="height:5px"/>
+			<p:commandButton action="#{FamilyInfoConfigActionBean.applyFamilyInfo()}" immediate="true" value="Apply"/>
+			<p:commandButton action="manageCustomer" value="Cancel"/>
+		</h:form>
+	</ui:define>
+</ui:composition>

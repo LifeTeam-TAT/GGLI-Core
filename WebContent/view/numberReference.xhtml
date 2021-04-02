@@ -1,0 +1,70 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" template="/common/commonLayout.xhtml">
+	<ui:define name="content">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<h:form id="numberReferenceForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true" />
+			<div style="float:left;margin-left:5%;width:300px" >
+				<div>
+					<p:outputLabel value="Old Number"></p:outputLabel>
+				</div>
+				<div>
+					<p:inputText value="#{NumberReferenceActionBean.oldNumber}" style="width:200px" >
+					<p:ajax process="@this"></p:ajax>
+					</p:inputText>
+				</div>
+			</div>
+			<div style="margin-left:30%;width:300px">
+				<div>
+					<p:outputLabel value="New Number"></p:outputLabel>
+				</div>
+				<div>
+					<p:inputText value="#{NumberReferenceActionBean.newNumber}" style="width:200px">
+					<p:ajax event="valueChange" listener="#{NumberReferenceActionBean.resetOldNumber}" update="@form"></p:ajax>
+					</p:inputText>
+				</div>
+			</div>
+			<div style="margin-left:5%;margin-top:2%">
+				<p:commandButton  value="Search" action="#{NumberReferenceActionBean.search}" process="@this" update="@form"></p:commandButton>
+				<p:commandButton style="margin-left:0.5%;" value="Reset" action="#{NumberReferenceActionBean.reset}" update="@form"></p:commandButton>
+			</div>
+		
+		<p:panel id="numberReferencePanel" rendered="#{NumberReferenceActionBean.lifePolicy ne null}">
+		<table width="100%">
+			<tr>
+				<th>Policy no</th>
+				<th>Customer</th>
+				<th>Policy Status</th>
+				<th>Payment Type</th>
+				<th>Policy Start Date</th>
+				<th>Policy End Date</th>
+			</tr>
+			<tr>
+				<td align="center">
+					<h:outputText value="#{NumberReferenceActionBean.lifePolicy.policyNo}" style="align: center;" />
+				</td>
+				<td align="center">
+					<h:outputText value="#{NumberReferenceActionBean.lifePolicy.customer.fullName}" />
+				</td>
+				<td align="center">
+					<h:outputText value="#{NumberReferenceActionBean.lifePolicy.policyStatus.label}" />
+				</td>
+				<td align="center">
+					<h:outputText value="#{NumberReferenceActionBean.lifePolicy.paymentType.name}" />
+				</td>
+				<td align="center">
+					<h:outputText value="#{NumberReferenceActionBean.lifePolicy.activedPolicyStartDate}">
+								<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+							</h:outputText>
+				</td>
+				<td align="center">
+					<h:outputText value="#{NumberReferenceActionBean.lifePolicy.activedPolicyEndDate}">
+								<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+							</h:outputText>
+				</td>
+			</tr>
+		</table>
+		</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

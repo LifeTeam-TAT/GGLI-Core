@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OutCoInsuranceMotorPolicy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="LANGUAGE_en" isIgnorePagination="true" uuid="f9685632-b8a3-4a0c-9e92-f4395e1cc754">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="234"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="DefaultFont" isDefault="true" fontName="Zawgyi-One" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="HeaderOne" fontName="Zawgyi-One" fontSize="16" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="HeaderTwo" fontName="Zawgyi-One" fontSize="14" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="HeaderThree" fontName="Zawgyi-One" fontSize="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF"/>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="dataset1" uuid="acc4e346-0f42-4d99-9bfe-d5b8b4b14cfe">
+		<field name="name" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="CoinsuranceList" uuid="a0191629-ce51-4b3e-aaeb-10536fd16b5a">
+		<field name="coinsuranceCompany" class="org.ace.insurance.system.common.coinsurancecompany.CoinsuranceCompany"/>
+		<field name="sumInsuranced" class="java.lang.Double"/>
+		<field name="netPremium" class="java.lang.Double"/>
+		<field name="commissionPercentString" class="java.lang.String"/>
+		<field name="invoiceNo" class="java.lang.String"/>
+		<field name="invoiceDate" class="java.util.Date"/>
+		<field name="premium" class="java.lang.Double"/>
+	</subDataset>
+	<parameter name="sumInsured" class="java.lang.String"/>
+	<parameter name="startDate" class="java.lang.String"/>
+	<parameter name="endDate" class="java.lang.String"/>
+	<parameter name="policyNo" class="java.lang.String"/>
+	<parameter name="commenceDate" class="java.lang.String"/>
+	<parameter name="customerAddress" class="java.lang.String"/>
+	<parameter name="customerName" class="java.lang.String"/>
+	<parameter name="netPremium" class="java.lang.String"/>
+	<parameter name="coInsuranceCompany" class="java.lang.String"/>
+	<parameter name="todayDate" class="java.lang.String"/>
+	<parameter name="letterNo" class="java.lang.String"/>
+	<parameter name="TableDataSource" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="cashReceptNo" class="java.lang.String"/>
+	<parameter name="paymentDate" class="java.lang.String"/>
+	<parameter name="policyTotalPremium" class="java.lang.String"/>
+	<parameter name="agentComissionPercentage" class="java.lang.String"/>
+	<parameter name="policyNetPremium" class="java.lang.String"/>
+	<parameter name="TableDataSource2" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="companyTotalSumInsured" class="java.lang.String"/>
+	<parameter name="companyTotalNetPremium" class="java.lang.String"/>
+	<parameter name="companyTotalComission" class="java.lang.String"/>
+	<parameter name="manufacture" class="java.lang.String"/>
+	<parameter name="cubicCapacity" class="java.lang.String"/>
+	<parameter name="chassisNo" class="java.lang.String"/>
+	<parameter name="engineNo" class="java.lang.String"/>
+	<parameter name="yearOfManu" class="java.lang.String"/>
+	<parameter name="registerNo" class="java.lang.String"/>
+	<parameter name="typeOfBody" class="java.lang.String"/>
+	<title>
+		<band height="640" splitType="Stretch">
+			<staticText>
+				<reportElement x="17" y="129" width="55" height="20" uuid="1ccdd9b2-aea4-4a23-879d-c1c1a96f51fb"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[စာအမွတ္ -]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="17" y="158" width="517" height="76" uuid="3b07a66c-9f8a-41a2-bc9e-8f221f92f87c"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{GRAND_GUARDIAN_LABEL}+" သည္ အာမခံတန္ဖုိး စုစုေပါင္း က်ပ္ "+ $P{sumInsured}+" ကုိ "+$P{startDate}+" မွ "+$P{endDate} +" အထိ အာမခံသက္တမ္းအတြက္ အလံုးစံုအာမခံေပၚလစီအမွတ္  "+$P{policyNo}+" ျဖင့္ လက္ခံ ေဆာင္ရြက္ရာတြင္ အာမခံလုပ္ငန္းၾကီးၾကပ္ေရးအဖဲြ႔ ေရွ႕ ေမွာက္တြင္ ခ်ဳပ္ဆိုထားခဲ႔ေသာ "+$P{commenceDate} +" ရက္စဲြပါ အက်ိဳးတူ အခ်ိဳးက်အာမခံစာခ်ဳပ္ (Co-insurance Agreement)   အရ  ပူးေပါင္းလက္ခံႀကရန္အတြက္ကမ္းလွမ္း အေၾကာင္းၾကားအပ္ပါသည္။"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="18" y="252" width="253" height="20" uuid="c36e8c24-ce64-4a91-92f7-4fad919e50a8"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အာမခံျခင္း ဆုိင္ရာ သတင္းအခ်က္အလက္အက်ဥ္း]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="307" width="184" height="20" uuid="490e4fed-4088-466a-ab33-35fc051b5113"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အာမခံထားသူအမည္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="333" width="184" height="20" uuid="22ca1284-544c-44ac-8f04-b93394ecc6a7"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ေနရပ္လိပ္စာ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="129" width="30" height="20" uuid="f18c0628-c0d2-4ed5-b369-c99879c20154"/>
+				<textElement textAlignment="Center">
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ရက္စဲြ -]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="212" y="307" width="330" height="20" uuid="0a20e240-ed55-4950-ac70-00405978b53c"/>
+				<textFieldExpression><![CDATA[$P{customerName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="212" y="333" width="334" height="40" uuid="5e675563-a64b-462f-82e4-e432f426b4d5"/>
+				<textFieldExpression><![CDATA[$P{customerAddress}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="455" y="1" width="100" height="20" uuid="96e83b4b-e2fd-4c64-a875-609ea72ae253"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[ေနာက္ဆက္တဲြ ပံုစံ-၅	]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="468" y="129" width="87" height="20" uuid="2637689d-ae1a-46a4-82c9-8dc088cbb9d8"/>
+				<textFieldExpression><![CDATA[$P{todayDate}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{DATE_FORMAT}]]></patternExpression>
+			</textField>
+			<elementGroup>
+				<elementGroup/>
+			</elementGroup>
+			<elementGroup>
+				<elementGroup/>
+				<elementGroup/>
+			</elementGroup>
+			<elementGroup/>
+			<textField>
+				<reportElement x="76" y="129" width="332" height="20" uuid="780d3cef-43f0-41a0-8133-0d147ae69124"/>
+				<textFieldExpression><![CDATA[$P{letterNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="28" y="-178" width="184" height="20" uuid="76674670-bcad-45bc-9ba1-5da869eab6e2"/>
+				<text><![CDATA[အာမခံထားေငြ စုစုေပါင္း]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="614" width="184" height="20" uuid="e91204a4-72f1-4148-9eab-939ff5d01b5f"/>
+				<textElement>
+					<font fontName="Zawgyi-One"/>
+				</textElement>
+				<text><![CDATA[အာမခံအကာအကြယ္]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="202" y="614" width="350" height="20" uuid="5890bf40-3f02-41da-9c36-1bd268a55ca4"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="dataset1" uuid="5f978d0b-212c-47d7-9bda-b9fc7e0a8a00">
+						<dataSourceExpression><![CDATA[$P{TableDataSource}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="350">
+						<textField>
+							<reportElement x="12" y="0" width="330" height="20" uuid="828ece84-ebcf-4a64-9e20-4fcd454ea331"/>
+							<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement x="18" y="586" width="184" height="20" uuid="028e7b78-20bd-4607-b7f6-a76fc22a558a"/>
+				<text><![CDATA[အာမခံထားေငြ ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="212" y="586" width="332" height="20" uuid="6946fe4a-1fc2-4411-a798-81ec6a90ae02"/>
+				<textFieldExpression><![CDATA[$P{sumInsured}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="19" y="379" width="184" height="20" uuid="dc8d7316-f937-41b9-9141-e6ad64b0a8de"/>
+				<text><![CDATA[ယာဥ္အမွတ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="409" width="184" height="20" uuid="477ab2ec-d10b-4a92-9119-7280b1205516"/>
+				<text><![CDATA[ယာဥ္အမ်ိဳးစား]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="440" width="184" height="20" uuid="4e3c1764-6b46-444c-abd8-18d3250d3368"/>
+				<text><![CDATA[ျမင္းေကာင္ေရ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="467" width="184" height="20" uuid="5d1cfc43-4a27-4ec2-bb34-03594a47c8b8"/>
+				<text><![CDATA[ယာဥ္အမ်ိဳးအမည္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="496" width="184" height="20" uuid="cbece8dc-75f3-4610-a7ac-a3786e896cf6"/>
+				<text><![CDATA[အင္ဂ်င္အမွတ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="525" width="184" height="20" uuid="16de316e-44e2-4465-bf4f-f365888ebf93"/>
+				<text><![CDATA[ဖရိန္အမွတ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="554" width="184" height="20" uuid="28c5d28c-de38-40d3-965d-99fef25f2e41"/>
+				<text><![CDATA[ထုတ္လုပ္သည္႔ခုႏွစ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="279" width="184" height="20" uuid="3558d8c6-42ba-4ed8-9162-e5f1340b4a2d"/>
+				<text><![CDATA[ဤကုမၸဏီမွထုတ္ေပးသည့္  ေပၚလစီအမွတ္]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="63" width="515" height="40" uuid="f374b558-9c4f-4eb1-91de-771460863945"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[အက်ိဳးတူ အခ်ိဳးက်အာမခံ (Co-insurance) စနစ္ျဖင့္ အလံုးစံုေမာ္ေတာ္ယာဥ္အာမခံ လက္ခံျခင္း အေၾကာင္းၾကားလႊာ]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="HeaderOne" x="3" y="32" width="553" height="24" uuid="3dbc61b4-3b9e-4388-9f66-6781b8eeb2ec"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Zawgyi-One" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{GRAND_GUARDIAN_LABEL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="212" y="279" width="334" height="20" uuid="a90f21f8-e7e2-4ece-9014-3d3311642a36"/>
+				<textFieldExpression><![CDATA[$P{policyNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="212" y="467" width="330" height="20" uuid="d600e2c3-9326-43b0-8d05-e976e3afe6ba"/>
+				<textFieldExpression><![CDATA[$P{manufacture}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="212" y="496" width="330" height="20" uuid="aaee8251-ae70-4025-bb57-7f8cb1a1aa34"/>
+				<textFieldExpression><![CDATA[$P{engineNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="214" y="525" width="328" height="20" uuid="0639a403-598c-44bf-bb69-4463a15f38e8"/>
+				<textFieldExpression><![CDATA[$P{chassisNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="212" y="439" width="330" height="20" uuid="9072571a-11a1-47f2-a818-9501f90e37bc"/>
+				<textFieldExpression><![CDATA[$P{cubicCapacity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="212" y="554" width="330" height="20" uuid="e2f9348b-3f85-4f64-abf5-4acd600ed541"/>
+				<textFieldExpression><![CDATA[$P{yearOfManu}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="212" y="379" width="334" height="20" uuid="b11e9c37-8157-4931-aac1-36fde7511004"/>
+				<textFieldExpression><![CDATA[$P{registerNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="212" y="409" width="330" height="20" uuid="e57cec51-10bf-485e-b9b4-c0e4add907b8"/>
+				<textFieldExpression><![CDATA[$P{typeOfBody}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="147">
+			<elementGroup>
+				<elementGroup/>
+			</elementGroup>
+			<elementGroup>
+				<elementGroup>
+					<elementGroup/>
+				</elementGroup>
+			</elementGroup>
+			<elementGroup>
+				<elementGroup/>
+			</elementGroup>
+			<elementGroup>
+				<elementGroup/>
+			</elementGroup>
+			<elementGroup>
+				<elementGroup>
+					<elementGroup/>
+				</elementGroup>
+			</elementGroup>
+			<elementGroup>
+				<elementGroup>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="212" y="5" width="332" height="20" uuid="a3c77e36-bfc0-40ff-8bdf-9a4745ddfeb8"/>
+						<textFieldExpression><![CDATA[$P{cashReceptNo}+" / "+$P{paymentDate}+" ျဖင့္ လက္ခံရရွိေသာ က်သင့္ပရီမီယံ "+$P{policyTotalPremium}]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="19" y="5" width="183" height="20" uuid="256221df-93b1-4078-b5a5-8086702c51d1"/>
+						<text><![CDATA[ေငြရေျပစာအမွတ္/ ရက္စဲြ]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true">
+						<reportElement positionType="Float" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="19" y="36" width="523" height="21" isPrintWhenDetailOverflows="true" uuid="2c6c2001-2305-4a13-95a8-154add99f455"/>
+						<textFieldExpression><![CDATA["ကုိယ္စားလွယ္ေကာ္မရွင္                              ("+$P{agentComissionPercentage}+"%) ခုႏွိမ္ျပီး က်န္ရွိေသာအသားတင္ပရီမီယံ  "+$P{policyNetPremium}]]></textFieldExpression>
+					</textField>
+				</elementGroup>
+			</elementGroup>
+			<elementGroup>
+				<elementGroup>
+					<componentElement>
+						<reportElement key="table 1" style="table 1" x="58" y="99" width="442" height="48" uuid="b5e30436-9ae1-4438-abb1-4f87f25ff921"/>
+						<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+							<datasetRun subDataset="CoinsuranceList" uuid="4b92eeba-83bf-498e-b86a-96c38b74cbfa">
+								<dataSourceExpression><![CDATA[$P{TableDataSource2}]]></dataSourceExpression>
+							</datasetRun>
+							<jr:column width="172" uuid="773c8a9d-4373-4b85-9e08-5d770d9a6e0e">
+								<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+									<staticText>
+										<reportElement x="0" y="0" width="172" height="30" uuid="9d1716d3-adcb-40a1-9b13-66e0573d7660"/>
+										<textElement textAlignment="Center"/>
+										<text><![CDATA[အာမခံကုမၸဏီ ]]></text>
+									</staticText>
+								</jr:columnHeader>
+								<jr:detailCell style="table 1_TD" height="31" rowSpan="1">
+									<textField isStretchWithOverflow="true">
+										<reportElement x="0" y="0" width="172" height="30" uuid="b8991429-79df-48b0-9f00-9257b323fc9f"/>
+										<textElement>
+											<paragraph leftIndent="2"/>
+										</textElement>
+										<textFieldExpression><![CDATA[$F{coinsuranceCompany}.getName()]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="90" uuid="492394d5-eb01-4036-87c7-bd9b52f85c02">
+								<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+									<staticText>
+										<reportElement x="0" y="0" width="90" height="30" uuid="83099268-0a8f-4786-ab2c-daecac78ab0c"/>
+										<textElement textAlignment="Center"/>
+										<text><![CDATA[အာမခံထားေငြ ]]></text>
+									</staticText>
+								</jr:columnHeader>
+								<jr:detailCell style="table 1_TD" height="31" rowSpan="1">
+									<textField isStretchWithOverflow="true" pattern="">
+										<reportElement x="0" y="0" width="90" height="30" uuid="88120f74-3147-44cf-ab7d-cbae4274a679"/>
+										<textElement textAlignment="Right">
+											<paragraph rightIndent="2"/>
+										</textElement>
+										<textFieldExpression><![CDATA[$F{sumInsuranced}]]></textFieldExpression>
+										<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="90" uuid="72fb5247-8ec5-4c51-99b4-0123c3c07e5e">
+								<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+									<staticText>
+										<reportElement x="0" y="0" width="90" height="30" uuid="209a1879-d4a8-4ef3-995c-fab710dcdee6"/>
+										<textElement textAlignment="Center"/>
+										<text><![CDATA[အသားတင္ပရီမီယံ  ]]></text>
+									</staticText>
+								</jr:columnHeader>
+								<jr:detailCell style="table 1_TD" height="31" rowSpan="1">
+									<textField isStretchWithOverflow="true" pattern="">
+										<reportElement x="0" y="0" width="90" height="30" uuid="46da3d8c-43b1-4c05-85bf-08636b89605d"/>
+										<textElement textAlignment="Right">
+											<paragraph rightIndent="2"/>
+										</textElement>
+										<textFieldExpression><![CDATA[$F{premium}]]></textFieldExpression>
+										<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+							<jr:column width="90" uuid="c4e77451-1edd-45e8-9668-b9d009874dbd">
+								<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+									<staticText>
+										<reportElement x="0" y="0" width="90" height="30" uuid="e951b458-d042-4e73-9430-0f381d4ffec7"/>
+										<textElement textAlignment="Center"/>
+										<text><![CDATA[ေကာ္မရွင္
+(+/-) ]]></text>
+									</staticText>
+								</jr:columnHeader>
+								<jr:detailCell style="table 1_TD" height="31" rowSpan="1">
+									<textField>
+										<reportElement x="0" y="0" width="90" height="31" uuid="efaa397e-20d1-4918-a6ed-9f3b107c438e"/>
+										<textElement textAlignment="Right">
+											<paragraph rightIndent="5"/>
+										</textElement>
+										<textFieldExpression><![CDATA[$F{commissionPercentString}]]></textFieldExpression>
+									</textField>
+								</jr:detailCell>
+							</jr:column>
+						</jr:table>
+					</componentElement>
+				</elementGroup>
+			</elementGroup>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="19" y="56" width="534" height="44" uuid="4135d561-97c9-4648-8ce6-16c3aa30113c"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[
+အာမခံတာဝန္ ၊ ပရီမီယံႏွင့္ အက်ိဳးတူ အခ်ိဳးက်အာမခံ ေကာ္မရွင္ ခဲြေဝျခင္း
+
+
+
+]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<summary>
+		<band height="240">
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="58" y="0" width="172" height="24" uuid="52f69b67-cc6a-4410-b4e4-1cfcd7706ed9"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[စုစုေပါင္း]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="126" width="378" height="20" uuid="65d8e088-7af7-47ad-8411-3b691bb359b9"/>
+				<text><![CDATA[ျဖန္႔ေဝျခင္း       - အာမခံလုပ္ငန္းၾကီးၾကပ္ေရးအဖြဲ႔ သိသာႏုိင္ပါရန္ တင္ျပအပ္ပါသည္။]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="438" y="87" width="100" height="39" uuid="13f243ff-cf1c-4466-9aba-e27957f1a613"/>
+				<text><![CDATA[ကုမၸဏီတာဝန္ခံ
+အမည္/လက္မွတ္]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="230" y="0" width="90" height="24" uuid="0ec6ba14-6c1f-4e2a-8532-293c742c168b"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{companyTotalSumInsured}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="0" width="90" height="24" uuid="a53832d6-7792-4690-9bf7-413ad6e26a57"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{companyTotalNetPremium}]]></textFieldExpression>
+				<patternExpression><![CDATA[$R{CURRENCY_FORMAT}]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="80" y="148" width="362" height="20" uuid="303ae0f7-f34d-493b-a89b-c5b84094c429"/>
+				<text><![CDATA[-အက်ိဳးတူ အခ်ိဳးက်အာမခံသူမ်ား (Co-insured) အားလံုး]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="0" width="90" height="24" uuid="e18f5c69-f17d-49be-b28c-1697403a5d24"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

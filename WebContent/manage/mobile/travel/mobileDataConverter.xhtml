@@ -1,0 +1,80 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Mobile Data Converter" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="mobiledataqueryForm">
+			<p:messages globalOnly="true" id="messages" showDetail="true" />
+			<table border="0" width="100%">
+				<tr>
+					<td style="width: 150px;">
+						<h:outputLabel value="Mobile Payment Date:" />
+					</td>
+					<td>
+						<h:panelGrid columns="5" id="selectDate">
+							<h:outputText value="Start Date : " />
+							<h:panelGroup>
+								<p:message for="paymentStartDate" />
+								<p:calendar id="paymentStartDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" size="30" timeZone="#{ApplicationSetting.timeZone}"
+									value="#{MobileDataConverterActionBean.travelProposalCriteria.startDate}" />
+							</h:panelGroup>
+							<h:outputText value="~" />
+							<h:outputText value="End Date : " />
+							<h:panelGroup>
+								<p:message for="paymentEndDate" />
+								<p:calendar id="paymentEndDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" size="30" timeZone="#{ApplicationSetting.timeZone}"
+									value="#{MobileDataConverterActionBean.travelProposalCriteria.endDate}" />
+							</h:panelGroup>
+						</h:panelGrid>
+					</td>
+				</tr>
+			</table>
+			<br />
+			<p:commandButton style="width: 80px;" action="#{MobileDataConverterActionBean.search()}" id="searchBtn" value="Search"
+				update=":mobiledataqueryForm :mobiledataqueryForm:mobileDataTable" />
+			<p:spacer width="10" />
+			<p:commandButton style="width: 80px;" action="#{MobileDataConverterActionBean.reset()}" id="resetBtn" value="Reset"
+				update=":mobiledataqueryForm :mobiledataqueryForm:mobileDataTable" />
+			<br />
+			<br />
+			<br />
+			<p:message for="mobileDataTable" />
+			<p:dataTable id="mobileDataTable" var="mTravelProposal" selection="#{MobileDataConverterActionBean.selectedMobileTravelList}" rowKey="#{mTravelProposal.travelProposalId}"
+				style="width:100%;" value="#{MobileDataConverterActionBean.mobileTravelProposalList}" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="rowIndex" rows="10"
+				rowsPerPageTemplate="10,20, 30" paginatorPosition="top">
+				<p:column selectionMode="multiple" style="width:2%" />
+				<p:column headerText="Mobile User Name" style="width:165px;">
+					<h:outputText value="#{mTravelProposal.mobileUserName}" />
+				</p:column>
+				<p:column headerText="Mobile Policy No" style="width:165px;">
+					<h:outputText value="#{mTravelProposal.policyNo}" />
+				</p:column>
+				<p:column headerText="Premium" style="width:165px;">
+					<h:outputText value="#{mTravelProposal.premium}" />
+				</p:column>
+				<p:column headerText="Mobile Payment Date" style="width:165px;">
+					<h:outputText value="#{mTravelProposal.paymentDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+			<br />
+			<br />
+			<h:panelGrid columns="3" id="date">
+				<h:outputText style="color:red;" value="*" />
+				<h:outputLabel value="Payment Date:" />
+				<h:panelGroup>
+					<p:message for="paymentDate" />
+					<p:calendar id="paymentDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{MobileDataConverterActionBean.paymentDate}" />
+				</h:panelGroup>
+			</h:panelGrid>
+			<br />
+			<br />
+			<p:commandButton style="width: 80px;" action="#{MobileDataConverterActionBean.convertToCore()}" id="convertbtn" value="Convert"
+				update=":mobiledataqueryForm :mobiledataqueryForm:mobileDataTable" />
+			<p:spacer width="10" />
+			<p:commandButton style="width: 80px;" action="dashboard" id="cancelbtn" value="Cancel" immediate="true" />
+		</h:form>
+	</ui:define>
+</ui:composition>

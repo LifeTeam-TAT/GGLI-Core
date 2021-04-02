@@ -1,0 +1,197 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Notification Management" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<div style="padding-left: 15px; padding-right: 15px;">
+			<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+			<h:form id="notificationEntryForm" enctype="multipart/form-data">
+				<style>
+.ql-snow .ql-picker.ql-font .ql-header {
+	display: none;
+	width: 108px
+}
+
+.ui-fluid .ui-calendar, .ui-fluid .ui-calendar input {
+	width: 250px;
+}
+</style>
+				<p:growl globalOnly="true" id="messages" showDetail="true" escape="false" />
+				<div class="ui-g" style="margin-left: -10px;">
+					<table>
+						<tr>
+							<td valign="top">
+								<table>
+									<tr>
+										<td>
+											<h:outputText styleClass="input-label mandatory" value="Title" />
+										</td>
+									</tr>
+									<tr>
+										<td valign="top">
+											<h:panelGrid columns="1">
+												<h:panelGroup id="titleGroup" style="text-align: center;">
+													<p:inputText id="title" required="true" value="#{ManageNotificationActionBean.notification.title}" style="width: 250px;">
+														<f:validateLength maximum="500" />
+														<p:ajax update="@form " listener="#{ManageNotificationActionBean.checkBUI}" />
+													</p:inputText>
+													<p:spacer width="10" />
+													<h:outputText value="#{ManageNotificationActionBean.title}" id="sampleFont" escape="false" />
+													<p:spacer width="20" />
+													<h:outputText value="Bold: " />
+													<p:selectBooleanCheckbox value="#{ManageNotificationActionBean.bold}" style="width:40px;">
+														<p:ajax listener="#{ManageNotificationActionBean.checkBUI}" />
+													</p:selectBooleanCheckbox>
+													<h:outputText value="Italic: " />
+													<p:selectBooleanCheckbox value="#{ManageNotificationActionBean.italic}" style="width:40px;">
+														<p:ajax listener="#{ManageNotificationActionBean.checkBUI}" />
+													</p:selectBooleanCheckbox>
+													<h:outputText value="Underline: " />
+													<p:selectBooleanCheckbox value="#{ManageNotificationActionBean.underline}">
+														<p:ajax listener="#{ManageNotificationActionBean.checkBUI}" />
+													</p:selectBooleanCheckbox>
+												</h:panelGroup>
+												<p:message for="title" />
+											</h:panelGrid>
+										</td>
+									</tr>
+									<tr height="20px;" />
+									<tr>
+										<td>
+											<h:outputText styleClass="input-label mandatory" value="Body" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<p:message for="editor" />
+											<p:editor id="editor" widgetVar="body" required="true" value="#{ManageNotificationActionBean.notification.body}" height="200" style="width: 95%;">
+												<f:validateLength maximum="2000" />
+											</p:editor>
+										</td>
+									</tr>
+								</table>
+							</td>
+							<td width="50px;" />
+							<td valign="top">
+								<table>
+									<tr height="70px;" />
+									<tr>
+										<td>
+											<h:outputText value="IsPushNotification" />
+											<p:spacer width="10px;" />
+											<p:selectBooleanCheckbox id="isPush" value="#{ManageNotificationActionBean.notification.push}" />
+											<p:message for="isPush" />
+										</td>
+									</tr>
+									<tr height="30px;" />
+									<tr>
+										<td>
+											<h:outputText value="Start Date" styleClass="mandatory" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<p:calendar mask="true" id="startDate" required="true" value="#{ManageNotificationActionBean.notification.startDate}" pattern="#{ApplicationSetting.dateFormat}"
+												showOn="button" timeZone="#{ApplicationSetting.timeZone}" style="width: 150px!important;">
+												<p:ajax event="dateSelect" update="endDate" />
+											</p:calendar>
+											<p:message for="startDate" />
+										</td>
+									</tr>
+									<tr height="30px;" />
+									<tr>
+										<td>
+											<h:outputText value="End Date" styleClass="mandatory" />
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<p:calendar mask="true" id="endDate" required="true" value="#{ManageNotificationActionBean.notification.endDate}" pattern="#{ApplicationSetting.dateFormat}"
+												showOn="button" timeZone="#{ApplicationSetting.timeZone}" mindate="#{ManageNotificationActionBean.notification.startDate}" style="width: 150px!important;" />
+											<p:message for="endDate" />
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<p:commandButton action="#{ManageNotificationActionBean.addNewNotification}" id="addBtn" oncomplete="PF('PF('notificationTable').filter();"
+					rendered="#{ManageNotificationActionBean.createNew}" style="width: 65px;" update="@form" value="#{label['COMMON_ADDNEW_BTN']}" />
+				<p:commandButton style="width: 65px;" action="#{ManageNotificationActionBean.updateNotification}" id="editBtn" oncomplete="PF('PF('notificationTable').filter();"
+					rendered="#{!ManageNotificationActionBean.createNew}" update="@form" process="@form" value="#{label['COMMON_UPDATE_BTN']}" />
+				<p:spacer width="15" />
+				<p:commandButton action="#{ManageNotificationActionBean.createNewInstance}" oncomplete="PF('PF('notificationTable').filter();" style="width: 65px;" update=":notificationEntryForm"
+					value="Cancel" />
+				<p:spacer width="15" />
+				<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}" />
+				<p:separator style="height:3px;" />
+				<h:panelGrid columns="1" style="margin-left: -5px;">
+					<p:commandLink action="#{ManageNotificationActionBean.createNewInstance}" process="@this" update="@form" title="New Notification">
+						<h:panelGrid columns="2">
+							<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}" />
+							<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}" />
+						</h:panelGrid>
+					</p:commandLink>
+				</h:panelGrid>
+				<p:dataTable id="notificationTable" paginator="true" rowIndexVar="index"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+					rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageNotificationActionBean.notificationList}" var="notification" widgetVar="notificationTable"
+					paginatorPosition="bottom">
+					<p:column headerText="No" style="width: 4%; text-align: center">
+						<h:outputText value="#{index + 1}." style="float: right;" />
+					</p:column>
+					<p:column filterBy="#{notification.title}" filterMatchMode="contains" headerText="Title" style="width: 58%;">
+						<h:outputText value="#{notification.title}" escape="false" />
+					</p:column>
+					<p:column headerText="Start Date" style="width: 10%; text-align: center">
+						<h:outputText value="#{notification.startDate}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="End Date" style="width: 10%; text-align: center">
+						<h:outputText value="#{notification.endDate}">
+							<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Push Notification" style="width: 10%; text-align: center">
+						<h:outputText value="#{notification.push ? 'True' : 'False'}" />
+					</p:column>
+					<p:column style="width: 4%; text-align: center;" headerText="Edit">
+						<p:commandLink action="#{ManageNotificationActionBean.prepareUpdateNotification(notification)}" process="@this" update="@form">
+							<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width: 4%; text-align: center;" headerText="Delete">
+						<p:commandLink id="deleteNotationLink" oncomplete="PF('confirmationDialog').show()" process="@this">
+							<f:setPropertyActionListener value="#{notification.id}" target="#{ManageNotificationActionBean.notification.id}" />
+							<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+				<!-- Confirmation Dialog -->
+			</h:form>
+			<h:form id="confiationForm">
+				<p:dialog dynamic="true" header="#{label['MANAGE_NOTIFICATION_DELETE_CONFIRM']}" height="100" hideEffect="explode" id="confirmationDialog" resizable="false"
+					showEffect="explode" widgetVar="confirmationDialog" width="250">
+					<h:panelGroup id="confirmationPanel">
+						<table>
+							<tr>
+								<td align="left">
+									<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+								</td>
+								<td valign="middle">
+									<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" />
+								</td>
+							</tr>
+						</table>
+						<br />
+						<p:commandButton action="#{ManageNotificationActionBean.deleteNotification}" immediate="true" oncomplete="PF('confirmationDialog').hide();" update=":notificationEntryForm "
+							value="#{label['COMMON_YES_BTN']}" />
+						<p:commandButton immediate="true" oncomplete="PF('confirmationDialog').hide()" value="#{label['COMMON_NO_BTN']}" />
+					</h:panelGroup>
+				</p:dialog>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

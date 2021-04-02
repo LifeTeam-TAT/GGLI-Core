@@ -1,0 +1,53 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/dialog/dialogTemplate.xhtml">
+	<ui:define name="content">
+		<h:form id="declarationPolicyNoForm">
+			<table>
+				<tr>
+					<td>
+						<p:message for="selectFirePolicyCriteria" />
+					</td>
+					<td>
+						<p:message for="policyCriteria" />
+					</td>
+					<td />
+					<td />
+				</tr>
+				<tr>
+					<td>
+						<p:selectOneMenu id="selectFirePolicyCriteria" required="true" value="#{DeclarationPolicyNoDialogActionBean.firePolicyCriteria.firePolicyCriteriaItems}">
+							<f:selectItem itemLabel="Select Criteria" />
+							<f:selectItems value="#{DeclarationPolicyNoDialogActionBean.firePolicyCriteriaList}" var="criteriaItem" />
+						</p:selectOneMenu>
+					</td>
+					<td>
+						<p:inputText id="policyCriteria" value="#{DeclarationPolicyNoDialogActionBean.firePolicyCriteria.criteriaValue}" style="height:20px;width: 200px;" required="true" />
+					</td>
+					<td>
+						<p:commandButton id="searchPolicyBtn" value="Search" action="#{DeclarationPolicyNoDialogActionBean.searchPolicyCriteria()}" update="declarationPolicyNoForm" />
+					</td>
+					<td>
+						<p:commandButton id="resetCustomerButtonBtn" value="Reset" action="#{DeclarationPolicyNoDialogActionBean.resetPolicyCriteria()}" update="declarationPolicyNoForm" />
+					</td>
+				</tr>
+			</table>
+			<p:dataTable id="customerTable" paginator="true" rowIndexVar="index" rows="10" value="#{DeclarationPolicyNoDialogActionBean.policySearchList}" lazy="true" var="policy"
+				rowsPerPageTemplate="5,10, 15" style="width:100%;">
+				<p:column headerText="Policy No">
+					<h:outputText value="#{policy.policyNo}" />
+				</p:column>
+				<p:column headerText="CustomerName">
+					<h:outputText value="#{policy.customerName}" />
+				</p:column>
+				<p:column headerText="Branch">
+					<h:outputText value="#{policy.branch}" />
+				</p:column>
+				<p:column style="width:30px;text-align: center;">
+					<p:commandLink action="#{DeclarationPolicyNoDialogActionBean.selectFirePolicyNo(policy)}" id="selectCustomerLink" immediate="true" update=":declarationPolicyNoForm">
+						<h:graphicImage styleClass="#{ApplicationSetting.selectStyleClass}" url="#{ApplicationSetting.selectIcon}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,153 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['MANAGE_BANK_TITLE']}"/>
+	<ui:param name="headerRendered" value="true"/>
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<h:form id="bankEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true"/>
+			<div style="padding-left: 15px;">
+				<table>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td>
+										<h:outputText value=""/>
+									</td>
+									<td style="width: 115px;">
+										<p:message for="name"/>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;">
+										<h:outputText style="color:red;" value="*"/>
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_BANK_NAME_LABEL']}"/>
+									</td>
+									<td>
+										<p:inputText id="name" required="true" style="width:250px;" value="#{ManageBankActionBean.bank.name}">
+											<f:validateLength maximum="50"/>
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value=""/>
+									</td>
+									<td style="width: 115px;">
+										<p:message for="description"/>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;" valign="top">
+										<h:outputText styleClass="input-label" value="#{label['MANAGE_BANK_DESCRIPTION_LABEL']}"/>
+									</td>
+									<td>
+										<p:inputTextarea autoResize="true" id="description" rows="5" style="width:250px;" value="#{ManageBankActionBean.bank.description}">
+											<f:validateLength maximum="300"/>
+										</p:inputTextarea>
+									</td>
+								</tr>
+								<!-- prepare -->
+								<tr>
+									<td>
+										<h:outputText value=""/>
+									</td>
+									<td>
+										<p:message for="coa"/>
+									</td>
+								</tr>
+								<tr>
+									<td valign="top">
+										<h:outputText styleClass="input-label" value="ACODE"/>
+									</td>
+									<td>
+										<h:panelGrid columns="3" id="coaPanel">
+											<p:inputText id="coa" readonly="true" style="width:250px;" value="#{ManageBankActionBean.bank.acode == null ? '' : ManageBankActionBean.bank.acode}"/>
+											<p:commandLink actionListener="#{ManageBankActionBean.selectCoa()}" id="selectCoaDialogLink" immediate="true">
+												<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}"/>
+												<p:ajax event="dialogReturn" listener="#{ManageBankActionBean.returnCoa}" update="coaPanel"/>
+											</p:commandLink>
+										</h:panelGrid>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value=""/>
+									</td>
+									<td>
+										<p:message for="branch"/>
+									</td>
+								</tr>
+								<tr>
+									<td valign="top">
+										<h:outputText styleClass="input-label" value="Branch"/>
+									</td>
+									<td>
+										<h:panelGrid columns="3" id="branchPanel">
+											<p:inputText id="branch" readonly="#{ManageBankActionBean.bank.branch == null ? facesContext.currentPhaseId.ordinal eq 6 : true}"   required="true" style="width:250px;" value="#{ManageBankActionBean.bank.branch == null ? '' : ManageBankActionBean.bank.branch.name}"/>
+											<p:commandLink actionListener="#{ManageBankActionBean.selectBranch()}" id="selectBranchDialogLink" immediate="true">
+												<h:graphicImage styleClass="#{ApplicationSetting.searchStyleClass}" url="#{ApplicationSetting.searchIcon}"/>
+												<p:ajax event="dialogReturn" listener="#{ManageBankActionBean.returnBranch}" update="branchPanel"/>
+											</p:commandLink>
+										</h:panelGrid>
+									</td>
+							    </tr>
+								<!-- prepare -->
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p:commandButton action="#{ManageBankActionBean.addNewBank}" id="addBtn" rendered="#{ManageBankActionBean.createNew}"  oncomplete="PF('bankTable').filter();" style="width: 80px;" update=":bankEntryForm :bankTableForm" value="#{label['COMMON_ADDNEW_BTN']}"/>
+							<p:commandButton action="#{ManageBankActionBean.updateBank}" id="editBtn" oncomplete="PF('bankTable').filter();" rendered="#{!ManageBankActionBean.createNew}" update=":bankEntryForm" value="#{label['COMMON_UPDATE_BTN']}"/>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<h:outputText style="color:red;" value="#{label['COMMON_MSG_MANDATORY_LABEL']}"/>
+			<br/>
+			<p:separator style="height:5px"/>
+		</h:form>
+		<h:form id="bankTableForm">
+			<h:commandLink action="#{ManageBankActionBean.createNewBank}">
+				<h:panelGrid columns="2">
+					<h:graphicImage styleClass="#{ApplicationSetting.addStyleClass}" value="#{ApplicationSetting.addIcon}"/>
+					<h:outputText styleClass="command-link" value="#{label['COMMON_ADDNEW_LINK']}"/>
+				</h:panelGrid>
+			</h:commandLink>
+			<p:outputPanel id="listPanel">
+				<p:dataTable id="bankTable" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10" rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{ManageBankActionBean.bankList}" var="bank" widgetVar="bankTable">
+					<p:column filterBy="#{bank.name}" filterMatchMode="contains" headerText="#{label['MANAGE_BANK_NAME_LABEL']}">
+						<h:outputText value="#{bank.name}"/>
+					</p:column>
+					<p:column headerText="#{label['MANAGE_BANK_DESCRIPTION_LABEL']}">
+						<h:outputText value="#{bank.description}"/>
+					</p:column>
+					<p:column headerText="ACODE">
+						<h:outputText value="#{bank.acode}"/>
+					</p:column>
+					<p:column headerText="Branch">
+						<h:outputText value="#{bank.branch.name}"/>
+					</p:column>
+					<p:column style="width:50px;" headerText="Edit">
+						<p:commandLink action="#{ManageBankActionBean.prepareUpdateBank(bank)}" update=":bankEntryForm">
+							<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}"/>
+						</p:commandLink>
+					</p:column>
+					<p:column style="width:50px;" headerText="Delete">
+						<p:commandLink id="deleteGroupLink" oncomplete="PF('bankTable').filter()" action="#{ManageBankActionBean.deleteBank(bank)}" update=":bankEntryForm :bankTableForm">
+						 	<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+							<p:graphicImage styleClass="#{ApplicationSetting.deleteStyleClass}" value="#{ApplicationSetting.deleteIcon}"/>
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		 	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+		</p:confirmDialog>
+		<!-- Coa dialog -->
+	</ui:define>
+</ui:composition>

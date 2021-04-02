@@ -1,0 +1,230 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:cyc="http://www.cycdemo.com/java" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="Renewal Group Life Proposal Enquiry" />
+	<ui:param name="headerRendered" value="true" />
+	<ui:define name="content">
+		<h:form id="renewalGrouplifeEquiryForm">
+			<style>
+.fixed-size {
+	table-layout: fixed;
+	word-break: break-all;
+}
+</style>
+			<p:panel>
+				<p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="startDate" value="Start Date" />
+						<p:calendar id="startDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{RenewalGroupLifeEnquiryActionBean.criteria.startDate}" />
+						<h:outputText value="Customer" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectCustomerPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectCustomerPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{RenewalGroupLifeEnquiryActionBean.selectCustomer()}" id="selectCustomerDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{RenewalGroupLifeEnquiryActionBean.returnCustomer}" update="customer" />
+									</p:commandButton>
+									<p:inputText id="customer" readonly="true"
+										value="#{RenewalGroupLifeEnquiryActionBean.criteria.customer == null ? '' : RenewalGroupLifeEnquiryActionBean.criteria.customer.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{RenewalGroupLifeEnquiryActionBean.criteria.setCustomer(null)}" process="@this" update="customer" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText value="SaleMan" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectSaleManPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectSaleManPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{RenewalGroupLifeEnquiryActionBean.selectSaleMan()}" id="selectSaleManDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{RenewalGroupLifeEnquiryActionBean.returnSaleMan}" update="saleMan" />
+									</p:commandButton>
+									<p:inputText id="saleMan" readonly="true"
+										value="#{RenewalGroupLifeEnquiryActionBean.criteria.saleMan == null ? '' : RenewalGroupLifeEnquiryActionBean.criteria.saleMan.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{RenewalGroupLifeEnquiryActionBean.criteria.setSaleMan(null)}" process="@this" update="saleMan" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputLabel for="endDate" value="End Date" />
+						<p:calendar id="endDate" pattern="#{ApplicationSetting.dateFormat}" showOn="button" value="#{RenewalGroupLifeEnquiryActionBean.criteria.endDate}" />
+						<h:outputText value="Organization" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectOrganizationPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectOrganizationPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{RenewalGroupLifeEnquiryActionBean.selectOrganization()}" id="selectOrganizationDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{RenewalGroupLifeEnquiryActionBean.returnOrganization}" update="organization" />
+									</p:commandButton>
+									<p:inputText id="organization" readonly="true"
+										value="#{RenewalGroupLifeEnquiryActionBean.criteria.organization == null ? '' : RenewalGroupLifeEnquiryActionBean.criteria.organization.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{RenewalGroupLifeEnquiryActionBean.criteria.setOrganization(null)}" process="@this"
+										update="organization" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText value="Branch" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectBranchPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectBranchPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton disabled="#{!RenewalGroupLifeEnquiryActionBean.isAccessBranches}" styleClass="green-button" icon="fa fa-search"
+										actionListener="#{RenewalGroupLifeEnquiryActionBean.selectBranch()}" id="selectBranchDialogLink" process="@this">
+										<p:ajax event="dialogReturn" listener="#{RenewalGroupLifeEnquiryActionBean.returnBranch}" update="branch" />
+									</p:commandButton>
+									<p:inputText id="branch" readonly="true" value="#{RenewalGroupLifeEnquiryActionBean.criteria.branch == null ? '' : RenewalGroupLifeEnquiryActionBean.criteria.branch.name}" />
+									<p:commandButton disabled="#{!RenewalGroupLifeEnquiryActionBean.isAccessBranches}" styleClass="red-button" icon="fa fa-times"
+										action="#{RenewalGroupLifeEnquiryActionBean.criteria.setAgent(null)}" process="@this" update="branch" />
+								</div>
+							</div>
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<h:outputText value="Agent" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectagentPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectagentPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{RenewalGroupLifeEnquiryActionBean.selectAgent()}" id="selectAgentDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{RenewalGroupLifeEnquiryActionBean.returnAgent}" update="agent" />
+									</p:commandButton>
+									<p:inputText id="agent" readonly="true"
+										value="#{RenewalGroupLifeEnquiryActionBean.criteria.agent == null ? '' : RenewalGroupLifeEnquiryActionBean.criteria.agent.name.fullName}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{RenewalGroupLifeEnquiryActionBean.criteria.setAgent(null)}" process="@this" update="agent" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText value="Product" />
+						<p:panelGrid styleClass="ui-panelgrid-blank" id="selectProductPanelGrid">
+							<div style="margin: -6px -6px;" class="ui-g ui-fluid" id="selectProductPanelGrid">
+								<div class="ui-inputgroup ui-g-12 ui-lg-12 ui-lg-12">
+									<p:commandButton styleClass="green-button" icon="fa fa-search" actionListener="#{RenewalGroupLifeEnquiryActionBean.selectProduct()}" id="selectProductDialogLink"
+										process="@this">
+										<p:ajax event="dialogReturn" listener="#{RenewalGroupLifeEnquiryActionBean.returnProduct}" update="product" />
+									</p:commandButton>
+									<p:inputText id="product" readonly="true"
+										value="#{RenewalGroupLifeEnquiryActionBean.criteria.product == null ? '' : RenewalGroupLifeEnquiryActionBean.criteria.product.name}" />
+									<p:commandButton styleClass="red-button" icon="fa fa-times" action="#{RenewalGroupLifeEnquiryActionBean.criteria.setProduct(null)}" process="@this" update="product" />
+								</div>
+							</div>
+						</p:panelGrid>
+						<h:outputText for="proposalNo" value="Proposal No." />
+						<p:inputText id="proposalNo" value="#{RenewalGroupLifeEnquiryActionBean.criteria.number}" />
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2">
+				<p:commandButton style="width: 80px;" id="searchBtn" action="#{RenewalGroupLifeEnquiryActionBean.findLifeProposalListByEnquiryCriteria}" update=":renewalGrouplifeEquiryForm"
+					value="Search" />
+				<p:commandButton style="width: 80px;" action="#{RenewalGroupLifeEnquiryActionBean.resetCriteria}" update=":renewalGrouplifeEquiryForm" value="Reset" />
+			</h:panelGrid>
+			<p:dataTable id="renewalGrouplifeProposalTable" paginator="true" rowIndexVar="indexVar" paginatorPosition="bottom"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowKey="index" rows="10"
+				rowsPerPageTemplate="5,10, 15" style="width:100%;" value="#{RenewalGroupLifeEnquiryActionBean.lifeProposalList}" var="lifeProposal">
+				<p:column headerText="No." style="width:3%;" styleClass="fixed-size">
+					<h:outputText value="#{indexVar + 1}." style="float: right;" />
+				</p:column>
+				<p:column headerText="Proposal No." style="width: 11%;" styleClass="fixed-size">
+					<h:outputText value="#{lifeProposal.proposalNo}" />
+				</p:column>
+				<p:column headerText="SalePersonName" style="width: 10%;">
+					<h:outputText value="#{lifeProposal.salePersonName}" />
+				</p:column>
+				<p:column headerText="Customer" style="width: 10%;">
+					<h:outputText value="#{lifeProposal.customerName}" />
+				</p:column>
+				<p:column headerText="Branch" style="width: 10%;">
+					<h:outputText value="#{lifeProposal.branch}" />
+				</p:column>
+				<p:column headerText="Total Premium" style="width: 9%;" styleClass="fixed-size">
+					<h:outputText style="float: right;" value="#{lifeProposal.premium}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Total Sum Insured" style="width: 10%;" styleClass="fixed-size">
+					<h:outputText style="float: right;" value="#{lifeProposal.sumInsured}">
+						<f:convertNumber pattern="#{ApplicationSetting.currencyFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="PaymentType" style="width: 8%; text-align: center;" styleClass="fixed-size">
+					<h:outputText value="#{lifeProposal.paymentType}" />
+				</p:column>
+				<p:column headerText="Submitted Date" style="width: 9%; text-align: center;" styleClass="fixed-size">
+					<h:outputText pattern="#{ApplicationSetting.dateFormat}" value="#{lifeProposal.submittedDate}">
+						<f:convertDateTime pattern="#{ApplicationSetting.dateFormat}" timeZone="#{ApplicationSetting.timeZone}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Deatil" style="width: 5%; text-align: center;" styleClass="fixed-size">
+					<p:commandLink action="#{RenewalGroupLifeEnquiryActionBean.ShowDetailLifeProposal(lifeProposal)}" id="detailsProposal" immediate="true"
+						oncomplete="PF('lifeProposalDetailsDialog').show()" update=":lifeProposalDetailsForm:detailPannel">
+						<h:graphicImage styleClass="#{ApplicationSetting.detailStyleClass}" url="#{ApplicationSetting.detailIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column headerText="Edit" style="width: 4%; text-align: center;" styleClass="fixed-size">
+					<p:commandLink id="editLink" action="#{RenewalGroupLifeEnquiryActionBean.editLifeProposal(lifeProposal)}" update=":informationForm">
+						<p:graphicImage styleClass="#{ApplicationSetting.editStyleClass}" value="#{ApplicationSetting.editIcon}" />
+					</p:commandLink>
+				</p:column>
+				<p:column width="11%" headerText="Premium&#10;Ledger">
+					<p:splitButton value="Document" icon="ui-icon-disk">
+						<p:menuitem value="Sanction" actionListener="#{RenewalGroupLifeEnquiryActionBean.generateLifeSanction(lifeProposal)}" id="policySanctionLink" immediate="true"
+							update=":informationForm :documentPrintForm" icon="ui-icon-print" />
+						<p:menuitem value="Accepted Letter" actionListener="#{RenewalGroupLifeEnquiryActionBean.printAcceptedLetter(lifeProposal)}" id="acceptedLetterDialogLink" immediate="true"
+							update=":informationForm" icon="ui-icon-print" />
+						<p:menuitem value="Cash Receipt" actionListener="#{RenewalGroupLifeEnquiryActionBean.generateCashReceipt(lifeProposal)}" id="printCashReceiptDialogLink" immediate="true"
+							update=":informationForm :documentCashReceiptForm" icon="ui-icon-print :documentCashReceiptForm" />
+						<p:menuitem value="Policy Issue" actionListener="#{RenewalGroupLifeEnquiryActionBean.printIssuePolicy(lifeProposal)}" id="policyIssueDialogLink" immediate="true"
+							update=":informationForm" icon="ui-icon-print" />
+						<p:menuitem value="Schedule" actionListener="#{RenewalGroupLifeEnquiryActionBean.generateLifePolicyLedger(lifeProposal)}" id="policyLedgerLink" immediate="true"
+							update=":informationForm :documentPolicyLedgerForm" icon="ui-icon-print" />
+					</p:splitButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<h:form id="lifeProposalDetailsForm">
+			<p:dialog appendTo="@(body)" dynamic="true" header="Renewal Group Life Proposal Details" height="550" hideEffect="explode" id="lifeProposalDetailsDialog" resizable="false"
+				modal="true" showEffect="explode" widgetVar="lifeProposalDetailsDialog" width="1200">
+				<p:outputPanel id="detailPannel">
+					<ui:include src="/manage/life/lifeProposalInfoTemplate.xhtml">
+						<ui:param name="lifeProposal" value="#{RenewalGroupLifeEnquiryActionBean.lifeProposal}" />
+						<ui:param name="workFlowList" value="#{RenewalGroupLifeEnquiryActionBean.workFlowList}" />
+						<ui:param name="showPolicy" value="#{false}" />
+						<ui:param name="showPolicyHistory" value="#{true}" />
+					</ui:include>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+		<h:form enctype="multipart/form-data" id="documentPrintForm">
+			<p:dialog appendTo="@(body)" dynamic="true" height="550" id="documentPrintDailog" resizable="false" widgetVar="documentPrintDailog" width="1024">
+				<p:ajax event="close" update=":documentPrintForm :renewalGrouplifeEquiryForm" listener="#{RenewalGroupLifeEnquiryActionBean.handleCloseLifeSanction}" />
+				<p:media height="550" id="pdfPlayer" player="pdf" value="#{RenewalGroupLifeEnquiryActionBean.reportStream}" width="1000"  cache="false" />
+			</p:dialog>
+		</h:form>
+		<h:form enctype="multipart/form-data" id="documentCashReceiptForm">
+			<p:dialog appendTo="@(body)" dynamic="true" height="550" id="documentCashReceiptDailog" resizable="false" widgetVar="documentPrintDailog" width="1024">
+				<p:ajax event="close" update=":documentCashReceiptForm :renewalGrouplifeEquiryForm" listener="#{RenewalGroupLifeEnquiryActionBean.handleCloseCashReceipt}" />
+				<p:media height="550" id="pdfPlayer" player="pdf" value="#{RenewalGroupLifeEnquiryActionBean.reportStream}" width="1000" cache="false" />
+			</p:dialog>
+		</h:form>
+		<h:form enctype="multipart/form-data" id="documentPolicyLedgerForm">
+			<p:dialog appendTo="@(body)" dynamic="true" height="550" id="documentPolicyLedgerDailog" resizable="false" widgetVar="documentPrintDailog" width="1024">
+				<p:ajax event="close" update=":documentPolicyLedgerForm :renewalGrouplifeEquiryForm" listener="#{RenewalGroupLifeEnquiryActionBean.handleCloseLifePolicyLedger}" />
+				<p:media height="550" id="pdfPlayer" player="pdf" value="#{RenewalGroupLifeEnquiryActionBean.reportStream}" width="1000"  cache="false"/>
+			</p:dialog>
+		</h:form>
+		<h:form id="informationForm">
+			<p:dialog header="Proposal Information" height="100" hideEffect="explode" id="informationDialog" resizable="false" showEffect="explode" widgetVar="informationDialog" width="250">
+				<h:panelGroup id="informationPanel">
+					<table>
+						<tr>
+							<td align="left">
+								<h:graphicImage style="width:30px;height:30px;" url="/images/warning.png" />
+							</td>
+							<td valign="middle">
+								<h:outputText style="padding-top:-10px;text-decoration: none;font-size: 12px;" value="#{RenewalGroupLifeEnquiryActionBean.message}" />
+							</td>
+						</tr>
+					</table>
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

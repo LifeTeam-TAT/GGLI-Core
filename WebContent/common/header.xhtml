@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form id="headerForm">
+		<table width="100%">
+			<tr style="height: 35px;">
+				<td align="left">
+					<table>
+						<tr>
+							<td>
+								<h:graphicImage value="/images/logo_1.jpg" style="width:40px;height:40px;margin-top:-11px;" />
+							</td>
+							<td valign="top">
+								<h:graphicImage value="/images/gglinipponlogo1.png" style="width:200px;height:40px;margin-top:-9px;" />
+								<!-- <br />
+								<h:graphicImage value="/images/logo_3.jpg" style="width:200px;height:20px;margin-top: 2px;" /> -->
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td align="right" width="40%">
+					<div style="margin-top: 20px;">
+					<h:outputText value="version : 1.10.9 | " style="font-family:Century;font-size:14px;" />
+						<h:outputText value="#{label['WELCOME_LABEL']} : #{sessionScope.LoginUser.name} | " style="font-family:Century;font-size:14px;"
+							rendered="#{empty sessionScope.LoginUser ? false : true}" />
+						<h:commandLink value="Profile" action="changePassword" style="font-family:Century;font-size:14px;" immediate="true" rendered="#{empty sessionScope.LoginUser ? false : true}" />
+						<h:outputLabel value=" | " style="font-family:Century;font-size:14px;" rendered="#{empty sessionScope.LoginUser ? false : true}" />
+						<h:commandLink value="#{label['LOGIN_LABEL']}" action="login" style="font-family:Century;font-size:14px;" immediate="true"
+							rendered="#{empty sessionScope.LoginUser ? true : false}" />
+						<h:commandLink id="logout" value="#{label['LOOUT_LABEL']}" action="#{LoginBean.logout}" style="font-family:Century;font-size:14px;" immediate="true"
+							rendered="#{empty sessionScope.LoginUser ? false : true}" />
+					</div>
+				</td>
+			</tr>
+		</table>
+	</h:form>
+</ui:composition>

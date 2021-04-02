@@ -1,0 +1,124 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/common/commonLayout.xhtml">
+	<ui:param name="header" value="#{label['MANAGE_RELATIONSHIP_TITLE']}"/>
+	<ui:param name="headerRendered" value="true"/>
+	<ui:define name="content">
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<h:form id="relationShipEntryForm">
+			<p:growl globalOnly="true" id="messages" showDetail="true"/>
+			<div style="padding-left: 15px;">
+				<table>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 115px;">
+										<p:message for="name" display="text"/>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;">
+										<h:outputText value="*" style="color:red;" />
+										<h:outputText value="#{label['MANAGE_RELATIONSHIP_NAME_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputText value="#{ManageRelationShipActionBean.relationShip.name}" style="width:250px;" id="name" required="true">
+											<f:validateLength maximum="50" />
+										</p:inputText>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="" />
+									</td>
+									<td style="width: 115px;">
+										<p:message for="description" />
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 115px;" valign="top">
+										<h:outputText value="#{label['MANAGE_RELATIONSHIP_DESCRIPTION_LABEL']}" styleClass="input-label" />
+									</td>
+									<td>
+										<p:inputTextarea value="#{ManageRelationShipActionBean.relationShip.description}" style="width:250px;" id="description" rows="5" autoResize="true">
+											<f:validateLength maximum="300" />
+										</p:inputTextarea>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p:commandButton id="addBtn" value="#{label['COMMON_ADDNEW_BTN']}" action="#{ManageRelationShipActionBean.addNewRelationShip}"
+								rendered="#{ManageRelationShipActionBean.createNew}" update="relationShipEntryForm :relationShipTableForm" style="width: 80px;"  oncomplete="PF('relationShipTable').filter();" />
+							<p:commandButton id="editBtn" value="#{label['COMMON_UPDATE_BTN']}" action="#{ManageRelationShipActionBean.updateRelationShip}"
+								rendered="#{!ManageRelationShipActionBean.createNew}" update="relationShipEntryForm :relationShipTableForm"
+								 oncomplete="PF('relationShipTable').filter();" />
+						</td>
+					</tr>
+				</table>
+			</div>
+			<h:outputText value="#{label['COMMON_MSG_MANDATORY_LABEL']}" style="color:red;" />
+			<br />
+			<p:separator style="height:5px;" />
+		</h:form>
+		<h:form id="relationShipTableForm">
+			<h:commandLink action="#{ManageRelationShipActionBean.createNewRelationShip}">
+				<h:panelGrid columns="2">
+					<h:graphicImage value="#{ApplicationSetting.addIcon}" styleClass="#{ApplicationSetting.addStyleClass}" />
+					<h:outputText value="#{label['COMMON_ADDNEW_LINK']}" styleClass="command-link" />
+				</h:panelGrid>
+			</h:commandLink>
+			<p:outputPanel id="listPanel">
+			<table>
+				<tr>
+					<td>
+						<h:outputText value="Name"/>
+					</td>
+					<td>
+						<p:inputText id="townshipCriteria" style="height:20px;width: 200px;" value="#{ManageRelationShipActionBean.criteria}"/>
+					</td>
+					<td>
+						<p:commandButton action="#{ManageRelationShipActionBean.search}" id="searchButtonBtn" update=":relationShipTableForm" value="Search"  oncomplete="PF('relationShipTable').filter();" />
+					</td>
+					<td>
+						<p:commandButton action="#{ManageRelationShipActionBean.init()}" id="resetButtonBtn" update=":relationShipTableForm" value="Reset" />
+					</td>
+					
+				</tr>
+			</table>
+			
+				<p:dataTable var="relationShip" value="#{ManageRelationShipActionBean.relationShipList}" id="relationShipTable" paginator="true" rows="10" style="width:100%;"
+					widgetVar="relationShipTable" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10, 15" rowKey="index">
+					<p:column headerText="#{label['MANAGE_RELATIONSHIP_NAME_LABEL']}" filterMatchMode="contains" filterBy="#{relationShip.name}">
+						<h:outputText value="#{relationShip.name}" />
+					</p:column>
+					<p:column headerText="#{label['MANAGE_RELATIONSHIP_DESCRIPTION_LABEL']}">
+						<h:outputText value="#{relationShip.description}" />
+					</p:column>
+					<p:column style="width:50px;" headerText="Edit" >
+						<p:commandLink action="#{ManageRelationShipActionBean.prepareUpdateRelationShip(relationShip)}" update=":relationShipEntryForm">
+							<p:graphicImage value="#{ApplicationSetting.editIcon}" styleClass="#{ApplicationSetting.editStyleClass}" />
+						</p:commandLink>
+					</p:column>
+					<p:column style="width:50px;" headerText="Delete" >
+						<p:commandLink oncomplete="PF('relationShipTable').filter()" id="deleteGroupLink" action="#{ManageRelationShipActionBean.deleteRelationShip(relationShip)}" update=":relationShipEntryForm :relationShipTableForm" >
+						<p:confirm header="Confirmation" message="#{label['COMMON_MSG_DELETE_CONFIRM_LABEL']}" icon="fa fa-exclamation-triangle" />
+							<p:graphicImage value="#{ApplicationSetting.deleteIcon}" styleClass="#{ApplicationSetting.deleteStyleClass}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</h:form>
+		<!-- Confirmation Dialog -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+	 	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+			<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+	</p:confirmDialog>  
+		</ui:define>
+</ui:composition>
